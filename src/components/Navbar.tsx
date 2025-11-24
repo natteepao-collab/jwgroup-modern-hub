@@ -12,6 +12,7 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
 
 export const Navbar = () => {
@@ -32,16 +33,16 @@ export const Navbar = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-card/95 backdrop-blur-sm shadow-md py-2'
-          : 'bg-transparent py-4'
+          ? 'bg-card/95 backdrop-blur-md shadow-md py-2'
+          : 'bg-card/80 backdrop-blur-sm shadow-sm py-4'
       )}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 drop-shadow-sm">
             <div className="text-2xl font-bold text-primary">JW</div>
-            <div className="text-xl font-semibold text-foreground">Group</div>
+            <div className="text-xl font-semibold text-foreground drop-shadow-sm">Group</div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -159,11 +160,13 @@ export const Navbar = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
+            <ThemeToggle />
             <LanguageSwitcher />
             <Button
               variant="ghost"

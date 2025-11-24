@@ -8,6 +8,7 @@ import i18n from './i18n/config';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
+import FloatingContact from './components/FloatingContact';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Business from "./pages/Business";
@@ -49,6 +50,7 @@ const App = () => (
             </main>
             <Footer />
             <BackToTop />
+            <FloatingContact />
           </div>
         </BrowserRouter>
       </TooltipProvider>
