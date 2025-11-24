@@ -18,15 +18,16 @@ export const NewsCard = ({ id, title, excerpt, category, date, image }: NewsCard
   const { t } = useTranslation();
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col">
+    <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col hover:-translate-y-1">
       <div className="relative overflow-hidden h-48">
         <img
           src={image}
-          alt={title}
+          alt={`${title} - ${category}`}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          loading="lazy"
         />
         <div className="absolute top-4 left-4">
-          <Badge variant="secondary" className="bg-primary text-primary-foreground">
+          <Badge variant="secondary" className="bg-primary text-primary-foreground shadow-lg">
             {category}
           </Badge>
         </div>

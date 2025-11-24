@@ -20,10 +20,12 @@ const resources = {
         awards: 'รางวัลและความสำเร็จ',
       },
       hero: {
+        welcome: 'ยินดีต้อนรับสู่',
         headline: 'JW Group',
-        subheadline: 'กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า',
+        tagline: 'กลุ่มธุรกิจชั้นนำ ครบวงจรอสังหาฯ โรงแรม สัตวแพทย์ และสุขภาพ',
+        subheadline: 'มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่าให้กับทุกคน',
         ctaLearn: 'รู้จัก JW Group',
-        ctaBusiness: 'ดูธุรกิจของเรา',
+        ctaBusiness: 'สำรวจธุรกิจของเรา',
       },
       aboutSection: {
         title: 'เกี่ยวกับ JW Group',
@@ -34,7 +36,8 @@ const resources = {
       },
       business: {
         title: 'ธุรกิจของเรา',
-        subtitle: 'กลุ่มธุรกิจที่หลากหลายภายใต้ JW Group',
+        sectionLabel: 'กลุ่มธุรกิจ',
+        subtitle: 'ธุรกิจที่หลากหลายและครบวงจร พร้อมให้บริการด้วยมาตรฐานระดับสากล',
         viewWebsite: 'เยี่ยมชมเว็บไซต์',
         learnMore: 'ดูเพิ่มเติม',
         realEstate: {
@@ -56,6 +59,8 @@ const resources = {
       },
       news: {
         title: 'ข่าวสารล่าสุด',
+        sectionLabel: 'ข่าวสารและกิจกรรม',
+        subtitle: 'ติดตามความเคลื่อนไหวและข่าวสารจาก JW Group',
         viewAll: 'ดูข่าวทั้งหมด',
         companyNews: 'ข่าวบริษัท',
         pressRelease: 'ข่าวประชาสัมพันธ์',
@@ -84,8 +89,13 @@ const resources = {
         },
       },
       footer: {
+        companyDescription: 'กลุ่มธุรกิจชั้นนำที่มุ่งมั่นสร้างสรรค์คุณภาพชีวิตที่ดีกว่าผ่านธุรกิจที่หลากหลาย',
         quickLinks: 'ลิงก์ทางลัด',
+        contactInfo: 'ข้อมูลติดต่อ',
+        address: '123 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110',
         followUs: 'ติดตามเรา',
+        businessHours: 'เวลาทำการ',
+        hours: 'จันทร์ - ศุกร์: 9:00 - 18:00 น.',
         copyright: '© 2024 JW Group. สงวนลิขสิทธิ์',
         privacy: 'นโยบายความเป็นส่วนตัว',
         terms: 'ข้อกำหนดและเงื่อนไข',
@@ -117,10 +127,12 @@ const resources = {
         awards: 'Awards & Achievements',
       },
       hero: {
+        welcome: 'Welcome to',
         headline: 'JW Group',
-        subheadline: 'Comprehensive business group committed to creating innovation and better quality of life',
-        ctaLearn: 'About JW Group',
-        ctaBusiness: 'Our Business',
+        tagline: 'Leading Comprehensive Business Group in Real Estate, Hospitality, Veterinary & Wellness',
+        subheadline: 'Committed to creating innovation and better quality of life for everyone',
+        ctaLearn: 'Discover JW Group',
+        ctaBusiness: 'Explore Our Business',
       },
       aboutSection: {
         title: 'About JW Group',
@@ -131,7 +143,8 @@ const resources = {
       },
       business: {
         title: 'Our Business',
-        subtitle: 'Diverse businesses under JW Group',
+        sectionLabel: 'Business Portfolio',
+        subtitle: 'Diverse and comprehensive business offerings with world-class standards',
         viewWebsite: 'Visit Website',
         learnMore: 'Learn More',
         realEstate: {
@@ -153,6 +166,8 @@ const resources = {
       },
       news: {
         title: 'Latest News',
+        sectionLabel: 'News & Activities',
+        subtitle: 'Stay updated with the latest news and activities from JW Group',
         viewAll: 'View All News',
         companyNews: 'Company News',
         pressRelease: 'Press Release',
@@ -181,8 +196,13 @@ const resources = {
         },
       },
       footer: {
+        companyDescription: 'Leading business group committed to creating better quality of life through diverse businesses',
         quickLinks: 'Quick Links',
+        contactInfo: 'Contact Information',
+        address: '123 Sukhumvit Road, Khlong Toei, Bangkok 10110, Thailand',
         followUs: 'Follow Us',
+        businessHours: 'Business Hours',
+        hours: 'Monday - Friday: 9:00 AM - 6:00 PM',
         copyright: '© 2024 JW Group. All rights reserved',
         privacy: 'Privacy Policy',
         terms: 'Terms & Conditions',
@@ -214,10 +234,12 @@ const resources = {
         awards: '奖项与成就',
       },
       hero: {
+        welcome: '欢迎来到',
         headline: 'JW集团',
-        subheadline: '致力于创造创新和更好生活质量的综合商业集团',
+        tagline: '领先的综合商业集团，涵盖房地产、酒店、兽医和健康领域',
+        subheadline: '致力于为每个人创造创新和更好的生活质量',
         ctaLearn: '了解JW集团',
-        ctaBusiness: '我们的业务',
+        ctaBusiness: '探索我们的业务',
       },
       aboutSection: {
         title: '关于JW集团',
@@ -228,7 +250,8 @@ const resources = {
       },
       business: {
         title: '我们的业务',
-        subtitle: 'JW集团旗下多元化业务',
+        sectionLabel: '业务组合',
+        subtitle: '多元化和全面的业务，提供世界级标准的服务',
         viewWebsite: '访问网站',
         learnMore: '了解更多',
         realEstate: {
@@ -250,6 +273,8 @@ const resources = {
       },
       news: {
         title: '最新消息',
+        sectionLabel: '新闻与活动',
+        subtitle: '关注JW集团的最新动态和活动',
         viewAll: '查看所有新闻',
         companyNews: '公司新闻',
         pressRelease: '新闻稿',
@@ -278,8 +303,13 @@ const resources = {
         },
       },
       footer: {
+        companyDescription: '领先的商业集团，致力于通过多元化业务创造更好的生活质量',
         quickLinks: '快速链接',
+        contactInfo: '联系信息',
+        address: '泰国曼谷空堤区素坤逸路123号 10110',
         followUs: '关注我们',
+        businessHours: '营业时间',
+        hours: '周一至周五：上午9:00 - 下午6:00',
         copyright: '© 2024 JW集团。保留所有权利',
         privacy: '隐私政策',
         terms: '条款与条件',
