@@ -7,6 +7,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/config';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { BackToTop } from './components/BackToTop';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Business from "./pages/Business";
@@ -47,6 +48,7 @@ const App = () => (
               </Routes>
             </main>
             <Footer />
+            <BackToTop />
           </div>
         </BrowserRouter>
       </TooltipProvider>

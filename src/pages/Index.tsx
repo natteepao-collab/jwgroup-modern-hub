@@ -88,23 +88,31 @@ const Index = () => {
           backgroundAttachment: 'fixed',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/50" />
         <div
           className={`container mx-auto px-4 relative z-10 text-center transition-all duration-1000 ${
             heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6">
+          <div className="mb-4">
+            <p className="text-primary text-lg md:text-xl font-semibold tracking-wide uppercase mb-2">
+              {t('hero.welcome')}
+            </p>
+          </div>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground mb-6 leading-tight">
             {t('hero.headline')}
           </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl lg:text-3xl text-primary-foreground/95 mb-4 max-w-4xl mx-auto font-light">
+            {t('hero.tagline')}
+          </p>
+          <p className="text-base md:text-lg text-primary-foreground/85 mb-10 max-w-3xl mx-auto">
             {t('hero.subheadline')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg">
+            <Button asChild size="lg" className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all">
               <Link to="/about/history">{t('hero.ctaLearn')}</Link>
             </Button>
-            <Button asChild size="lg" variant="secondary" className="text-lg">
+            <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all">
               <Link to="/business">{t('hero.ctaBusiness')}</Link>
             </Button>
           </div>
@@ -165,10 +173,15 @@ const Index = () => {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
+            <div className="inline-block mb-2">
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+                {t('business.sectionLabel')}
+              </span>
+            </div>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               {t('business.title')}
             </h2>
-            <p className="text-lg text-muted-foreground">{t('business.subtitle')}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('business.subtitle')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -197,11 +210,17 @@ const Index = () => {
         }`}
       >
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+          <div className="text-center mb-12">
+            <div className="inline-block mb-2">
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+                {t('news.sectionLabel')}
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               {t('news.title')}
             </h2>
-            <Button asChild variant="outline">
+            <p className="text-lg text-muted-foreground mb-6">{t('news.subtitle')}</p>
+            <Button asChild variant="outline" size="lg">
               <Link to="/news" className="flex items-center gap-2">
                 {t('news.viewAll')}
                 <ArrowRight className="h-4 w-4" />
