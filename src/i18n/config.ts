@@ -77,6 +77,12 @@ const resources = {
       contactModal: {
         appointment: 'นัดหมายเข้าชม',
       },
+      welcomeModal: {
+        title: 'ยินดีต้อนรับสู่ JWGROUP',
+        description: 'ตั้งมั่นประสบการณ์การพักผ่อนระดับพรีเมียม กับ 12 The Residence การดูแลสัตว์เลี้ยงที่ทุกคนรัก 3DPET อมถุนสมุนไพรและความงามผ่านผลิตภัณฑ์ VFLOW โดย JWHERBAL',
+        cta: 'เข้าสู่เว็บไซต์',
+        escHint: 'กด ESC เพื่อปิดหรือคลิกด้านนอก',
+      },
       contact: {
         title: 'ติดต่อเรา',
         address: 'ที่อยู่',
@@ -187,6 +193,12 @@ const resources = {
       contactModal: {
         appointment: 'Schedule Visit',
       },
+      welcomeModal: {
+        title: 'Welcome to JWGROUP',
+        description: 'Experience premium hospitality with 12 The Residence, caring for your beloved pets at 3DPET, and herbal health and beauty through VFLOW by JWHERBAL',
+        cta: 'Enter Website',
+        escHint: 'Press ESC to close or click outside',
+      },
       contact: {
         title: 'Contact Us',
         address: 'Address',
@@ -296,6 +308,12 @@ const resources = {
       },
       contactModal: {
         appointment: '预约参观',
+      },
+      welcomeModal: {
+        title: '欢迎来到JWGROUP',
+        description: '体验12 The Residence的优质住宿，3DPET的宠物护理服务，以及JWHERBAL的VFLOW草药健康美容产品',
+        cta: '进入网站',
+        escHint: '按ESC键关闭或点击外部',
       },
       contact: {
         title: '联系我们',

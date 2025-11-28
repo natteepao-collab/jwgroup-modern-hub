@@ -3,8 +3,11 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-import { X, Phone, MapPin, Calendar, MessageCircle } from "lucide-react";
+import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import jwLogo from "@/assets/jw-group-logo.png";
+import modalImage from "@/assets/modal-realestate.jpg";
 
 interface AnnouncementModalProps {
   open?: boolean;
@@ -36,73 +39,80 @@ export const AnnouncementModal = ({
     }
   }, [autoShow, delay, isControlled]);
 
-  const contactOptions = [
-    {
-      icon: Phone,
-      label: "Call Center",
-      sublabel: "โทร 02-XXX-XXXX",
-      action: () => window.open("tel:02-xxx-xxxx"),
-    },
-    {
-      icon: MapPin,
-      label: "Dealer",
-      sublabel: "ค้นหาตัวแทนใกล้คุณ",
-      action: () => setIsOpen(false),
-    },
-    {
-      icon: Calendar,
-      label: t('contactModal.appointment'),
-      sublabel: "นัดหมายเข้าชมโครงการ",
-      action: () => setIsOpen(false),
-    },
-    {
-      icon: MessageCircle,
-      label: "Chat Sales",
-      sublabel: "แชทกับเจ้าหน้าที่",
-      action: () => window.open("https://line.me/ti/p/@jwgroup", "_blank"),
-    },
-  ];
+  const handleEnter = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, setIsOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-sm p-0 gap-0 overflow-hidden border-0 bg-card shadow-2xl rounded-3xl">
+      <DialogContent className="max-w-6xl p-0 gap-0 overflow-hidden border-0 shadow-2xl rounded-2xl">
         {/* Close Button */}
         <button
           onClick={() => setIsOpen(false)}
-          className="absolute right-3 top-3 z-50 rounded-full p-1.5 bg-background/90 hover:bg-background transition-colors shadow-lg"
+          className="absolute right-4 top-4 z-50 rounded-lg p-2 bg-card hover:bg-accent transition-colors shadow-lg"
           aria-label="Close"
         >
-          <X className="h-4 w-4 text-foreground" />
+          <X className="h-5 w-5 text-foreground" />
         </button>
 
-        {/* Contact Options */}
-        <div className="py-6">
-          {contactOptions.map((option, index) => {
-            const Icon = option.icon;
-            return (
-              <button
-                key={index}
-                onClick={option.action}
-                className="w-full px-6 py-4 flex items-center gap-4 hover:bg-accent/50 transition-colors group"
-              >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Icon className="h-6 w-6 text-primary" />
-                </div>
-                <div className="flex-1 text-left">
-                  <div className="font-semibold text-foreground text-base">
-                    {option.label}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {option.sublabel}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
+        {/* Two Column Layout */}
+        <div className="grid md:grid-cols-2 min-h-[600px]">
+          {/* Left Column - Content */}
+          <div className="bg-card p-8 md:p-12 flex flex-col justify-center">
+            {/* Logo */}
+            <div className="mb-8">
+              <img 
+                src={jwLogo} 
+                alt="JWGROUP Logo" 
+                className="h-16 md:h-20 w-auto"
+              />
+            </div>
 
-        {/* Bottom Accent */}
-        <div className="h-1.5 bg-gradient-to-r from-primary via-primary/80 to-primary" />
+            {/* Headline */}
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              {t('welcomeModal.title')}
+            </h2>
+
+            {/* Description */}
+            <p className="text-muted-foreground text-base md:text-lg mb-8 leading-relaxed">
+              {t('welcomeModal.description')}
+            </p>
+
+            {/* CTA Button */}
+            <Button
+              onClick={handleEnter}
+              size="lg"
+              className="w-full md:w-auto px-8 py-6 text-lg font-semibold"
+            >
+              {t('welcomeModal.cta')}
+            </Button>
+          </div>
+
+          {/* Right Column - Image */}
+          <div className="relative bg-gradient-to-br from-primary/20 to-primary/5 hidden md:block">
+            <img
+              src={modalImage}
+              alt="JW Group Real Estate"
+              className="w-full h-full object-cover"
+            />
+            
+            {/* ESC Hint */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-background/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm text-muted-foreground">
+              {t('welcomeModal.escHint')}
+            </div>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
