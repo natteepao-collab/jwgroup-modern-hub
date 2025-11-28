@@ -2,13 +2,9 @@ import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import jwGroupLogo from "@/assets/jw-group-logo.png";
+import { X, Phone, MapPin, Calendar, MessageCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface AnnouncementModalProps {
   open?: boolean;
@@ -24,6 +20,7 @@ export const AnnouncementModal = ({
   delay = 2000,
 }: AnnouncementModalProps) => {
   const [internalOpen, setInternalOpen] = useState(false);
+  const { t } = useTranslation();
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -39,61 +36,73 @@ export const AnnouncementModal = ({
     }
   }, [autoShow, delay, isControlled]);
 
+  const contactOptions = [
+    {
+      icon: Phone,
+      label: "Call Center",
+      sublabel: "โทร 02-XXX-XXXX",
+      action: () => window.open("tel:02-xxx-xxxx"),
+    },
+    {
+      icon: MapPin,
+      label: "Dealer",
+      sublabel: "ค้นหาตัวแทนใกล้คุณ",
+      action: () => setIsOpen(false),
+    },
+    {
+      icon: Calendar,
+      label: t('contactModal.appointment'),
+      sublabel: "นัดหมายเข้าชมโครงการ",
+      action: () => setIsOpen(false),
+    },
+    {
+      icon: MessageCircle,
+      label: "Chat Sales",
+      sublabel: "แชทกับเจ้าหน้าที่",
+      action: () => window.open("https://line.me/ti/p/@jwgroup", "_blank"),
+    },
+  ];
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden border-0 bg-background shadow-2xl rounded-2xl">
+      <DialogContent className="max-w-sm p-0 gap-0 overflow-hidden border-0 bg-card shadow-2xl rounded-3xl">
         {/* Close Button */}
         <button
           onClick={() => setIsOpen(false)}
-          className="absolute right-4 top-4 z-50 rounded-full p-2 bg-background/80 hover:bg-background transition-colors shadow-md"
+          className="absolute right-3 top-3 z-50 rounded-full p-1.5 bg-background/90 hover:bg-background transition-colors shadow-lg"
           aria-label="Close"
         >
           <X className="h-4 w-4 text-foreground" />
         </button>
 
-        {/* Logo Section */}
-        <div className="flex justify-center pt-8 pb-6 px-8 bg-gradient-to-b from-primary/5 to-transparent">
-          <img
-            src={jwGroupLogo}
-            alt="JW GROUP Logo"
-            className="h-16 w-auto object-contain"
-          />
+        {/* Contact Options */}
+        <div className="py-6">
+          {contactOptions.map((option, index) => {
+            const Icon = option.icon;
+            return (
+              <button
+                key={index}
+                onClick={option.action}
+                className="w-full px-6 py-4 flex items-center gap-4 hover:bg-accent/50 transition-colors group"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <Icon className="h-6 w-6 text-primary" />
+                </div>
+                <div className="flex-1 text-left">
+                  <div className="font-semibold text-foreground text-base">
+                    {option.label}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {option.sublabel}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Content Section */}
-        <div className="px-8 pb-8 pt-4">
-          <DialogHeader className="space-y-4 text-center">
-            <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
-              ยินดีต้อนรับสู่ JW Group
-            </DialogTitle>
-            <DialogDescription className="text-base text-muted-foreground leading-relaxed">
-              กลุ่มธุรกิจครบวงจร ผู้นำด้านอสังหาริมทรัพย์ โรงแรม สัตวแพทย์ และสุขภาพ
-              พร้อมมอบประสบการณ์ระดับพรีเมียมให้กับคุณ
-            </DialogDescription>
-          </DialogHeader>
-
-          {/* CTA Buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              onClick={() => setIsOpen(false)}
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 px-8"
-            >
-              สำรวจธุรกิจของเรา
-            </Button>
-            <Button
-              onClick={() => setIsOpen(false)}
-              variant="outline"
-              size="lg"
-              className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold transition-all duration-300 px-8"
-            >
-              ติดต่อเรา
-            </Button>
-          </div>
-        </div>
-
-        {/* Bottom Accent Bar */}
-        <div className="h-2 bg-gradient-to-r from-primary via-primary/80 to-primary" />
+        {/* Bottom Accent */}
+        <div className="h-1.5 bg-gradient-to-r from-primary via-primary/80 to-primary" />
       </DialogContent>
     </Dialog>
   );
