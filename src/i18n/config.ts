@@ -74,6 +74,9 @@ const resources = {
         benefits: 'สวัสดิการ',
         apply: 'สมัครงาน',
       },
+      contactModal: {
+        appointment: 'นัดหมายเข้าชม',
+      },
       contact: {
         title: 'ติดต่อเรา',
         address: 'ที่อยู่',
@@ -181,6 +184,9 @@ const resources = {
         benefits: 'Benefits',
         apply: 'Apply Now',
       },
+      contactModal: {
+        appointment: 'Schedule Visit',
+      },
       contact: {
         title: 'Contact Us',
         address: 'Address',
@@ -287,6 +293,9 @@ const resources = {
         positions: '所有职位',
         benefits: '福利',
         apply: '立即申请',
+      },
+      contactModal: {
+        appointment: '预约参观',
       },
       contact: {
         title: '联系我们',
