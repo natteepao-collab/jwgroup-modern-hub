@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Building2, TrendingUp, Users } from 'lucide-react';
 import { BusinessCard } from '@/components/BusinessCard';
 import { NewsCard } from '@/components/NewsCard';
+import { AnnouncementModal } from '@/components/AnnouncementModal';
 import heroBg from '@/assets/hero-bg.jpg';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
@@ -77,6 +78,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <AnnouncementModal autoShow delay={1500} />
+      
       {/* Hero Section */}
       <section
         ref={heroRef}
