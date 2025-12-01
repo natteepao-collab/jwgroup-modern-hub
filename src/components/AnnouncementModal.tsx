@@ -80,12 +80,12 @@ export const AnnouncementModal = ({
             </div>
 
             {/* Headline */}
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
               {t('welcomeModal.title')}
             </h2>
 
             {/* Description */}
-            <p className="text-muted-foreground text-base md:text-lg mb-8 leading-relaxed">
+            <p className="text-foreground/90 text-lg md:text-xl mb-8 leading-relaxed font-medium">
               {t('welcomeModal.description')}
             </p>
 
