@@ -6,7 +6,6 @@ import { ArrowRight, Building2, TrendingUp, Users } from 'lucide-react';
 import { BusinessCard } from '@/components/BusinessCard';
 import { NewsCard } from '@/components/NewsCard';
 import { AnnouncementModal } from '@/components/AnnouncementModal';
-import heroBg from '@/assets/hero-bg.jpg';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -83,15 +82,21 @@ const Index = () => {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative h-screen flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${heroBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }}
+        className="relative h-screen flex items-center justify-center overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/60" />
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/60 to-black/50" />
         <div
           className={`container mx-auto px-4 relative z-10 text-center transition-all duration-1000 ${
             heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
