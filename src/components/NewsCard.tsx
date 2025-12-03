@@ -18,16 +18,17 @@ export const NewsCard = ({ id, title, excerpt, category, date, image }: NewsCard
   const { t } = useTranslation();
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col hover:-translate-y-1">
+    <Card className="group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 overflow-hidden h-full flex flex-col hover:-translate-y-2">
       <div className="relative overflow-hidden h-48">
         <img
           src={image}
           alt={`${title} - ${category}`}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute top-4 left-4">
-          <Badge variant="secondary" className="bg-primary text-primary-foreground shadow-lg">
+          <Badge variant="secondary" className="bg-primary text-primary-foreground shadow-lg transition-transform duration-300 group-hover:scale-105">
             {category}
           </Badge>
         </div>
@@ -37,13 +38,13 @@ export const NewsCard = ({ id, title, excerpt, category, date, image }: NewsCard
           <Calendar className="h-4 w-4" />
           <span>{date}</span>
         </div>
-        <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">
+        <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300 line-clamp-2">
           {title}
         </CardTitle>
         <CardDescription className="line-clamp-3">{excerpt}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button asChild variant="ghost" className="w-full group-hover:bg-accent">
+        <Button asChild variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300">
           <Link to={`/news/${id}`}>{t('news.readMore')}</Link>
         </Button>
       </CardFooter>
