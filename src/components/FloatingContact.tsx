@@ -38,10 +38,10 @@ const FloatingContact = () => {
   ];
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col-reverse items-end gap-3">
-      {/* Contact Buttons */}
-      <div className={`flex flex-col-reverse gap-3 transition-all duration-300 ${
-        isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+    <div className="fixed bottom-8 right-24 z-50 flex flex-col items-end gap-3">
+      {/* Contact Buttons - Slide up from bottom */}
+      <div className={`flex flex-col gap-3 transition-all duration-300 ${
+        isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
       }`}>
         {contacts.map((contact, index) => (
           <a
