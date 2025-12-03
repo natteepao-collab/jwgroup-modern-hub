@@ -59,7 +59,7 @@ const FloatingActions = () => {
             href={contact.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-12 h-12 rounded-full ${contact.bgColor} text-white flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 hover:shadow-xl`}
+            className={`w-12 h-12 rounded-full ${contact.bgColor} text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1`}
             style={{ transitionDelay: isContactOpen ? `${index * 50}ms` : '0ms' }}
             aria-label={contact.label}
           >
@@ -71,8 +71,10 @@ const FloatingActions = () => {
       {/* Main Contact Toggle Button */}
       <button
         onClick={() => setIsContactOpen(!isContactOpen)}
-        className={`w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300 hover:shadow-xl ${
-          isContactOpen ? 'rotate-45 bg-muted-foreground' : 'hover:scale-105'
+        className={`w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300 ${
+          isContactOpen 
+            ? 'rotate-45 bg-muted-foreground hover:bg-muted-foreground/80' 
+            : 'hover:scale-110 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-1'
         }`}
         aria-label={isContactOpen ? 'Close contact menu' : 'Open contact menu'}
       >
@@ -82,7 +84,7 @@ const FloatingActions = () => {
       {/* Back to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 ${
+        className={`w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-1 ${
           showBackToTop 
             ? 'opacity-100 translate-y-0' 
             : 'opacity-0 translate-y-4 pointer-events-none'
