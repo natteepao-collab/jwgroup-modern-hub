@@ -14,6 +14,7 @@ import {
 import { LanguageSwitcher } from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
+import jwLogo from '@/assets/jw-group-logo-full.png';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -40,9 +41,15 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 drop-shadow-sm">
-            <div className="text-2xl font-bold text-primary">JW</div>
-            <div className="text-xl font-semibold text-foreground drop-shadow-sm">Group</div>
+          <Link to="/" className="flex items-center">
+            <img 
+              src={jwLogo} 
+              alt="JW Group" 
+              className={cn(
+                "transition-all duration-300",
+                isScrolled ? "h-10" : "h-12"
+              )}
+            />
           </Link>
 
           {/* Desktop Navigation */}
