@@ -5,7 +5,6 @@ import {
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
 import jwLogo from "@/assets/jw-group-logo.png";
 import modalImage from "@/assets/modal-realestate.jpg";
 
@@ -56,51 +55,65 @@ export const AnnouncementModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-6xl p-0 gap-0 overflow-hidden border-0 shadow-2xl rounded-2xl">
-        {/* Close Button */}
-        <button
-          onClick={() => setIsOpen(false)}
-          className="absolute right-4 top-4 z-50 rounded-lg p-2 bg-card hover:bg-accent transition-colors shadow-lg"
-          aria-label="Close"
-        >
-          <X className="h-5 w-5 text-foreground" />
-        </button>
-
+      <DialogContent className="max-w-5xl p-0 gap-0 overflow-hidden border-0 shadow-2xl rounded-3xl">
         {/* Two Column Layout */}
-        <div className="grid md:grid-cols-2 min-h-[600px]">
-          {/* Left Column - Content */}
-          <div className="bg-card p-8 md:p-12 flex flex-col justify-center">
+        <div className="grid md:grid-cols-2 min-h-[550px]">
+          {/* Left Column - Content with Cream Background */}
+          <div className="p-10 md:p-14 flex flex-col justify-center" style={{ backgroundColor: '#F5F0E8' }}>
             {/* Logo */}
             <div className="mb-8">
               <img 
                 src={jwLogo} 
                 alt="JWGROUP Logo" 
-                className="h-16 md:h-20 w-auto"
+                className="h-20 md:h-24 w-auto"
               />
             </div>
 
-            {/* Headline */}
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+            {/* Main Headline */}
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight" style={{ color: '#2D2D2D' }}>
               {t('welcomeModal.title')}
             </h2>
 
+            {/* Subheadline in quotes */}
+            <p className="text-xl md:text-2xl mb-6 font-medium" style={{ color: '#D4812A' }}>
+              "{t('welcomeModal.subtitle')}"
+            </p>
+
             {/* Description */}
-            <p className="text-foreground/90 text-lg md:text-xl mb-8 leading-relaxed font-medium">
+            <p className="text-base md:text-lg mb-10 leading-relaxed" style={{ color: '#4A4A4A' }}>
               {t('welcomeModal.description')}
             </p>
 
-            {/* CTA Button */}
-            <Button
+            {/* CTA Button - Orange */}
+            <button
               onClick={handleEnter}
-              size="lg"
-              className="w-full md:w-auto px-8 py-6 text-lg font-semibold"
+              className="w-fit px-10 py-4 text-lg font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+              style={{ 
+                backgroundColor: '#D4812A', 
+                color: 'white',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#3C2A1E';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#D4812A';
+              }}
             >
               {t('welcomeModal.cta')}
-            </Button>
+            </button>
           </div>
 
           {/* Right Column - Image */}
-          <div className="relative bg-gradient-to-br from-primary/20 to-primary/5 hidden md:block">
+          <div className="relative hidden md:block">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute right-4 top-4 z-50 rounded-lg p-2 bg-white hover:bg-gray-100 transition-colors shadow-lg"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" style={{ color: '#2D2D2D' }} />
+            </button>
+
             <img
               src={modalImage}
               alt="JW Group Real Estate"
@@ -108,10 +121,20 @@ export const AnnouncementModal = ({
             />
             
             {/* ESC Hint */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-background/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm text-muted-foreground">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>
               {t('welcomeModal.escHint')}
             </div>
           </div>
+
+          {/* Mobile Close Button */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute right-4 top-4 z-50 rounded-lg p-2 md:hidden"
+            style={{ backgroundColor: '#F5F0E8' }}
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" style={{ color: '#2D2D2D' }} />
+          </button>
         </div>
       </DialogContent>
     </Dialog>
