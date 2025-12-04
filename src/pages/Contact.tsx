@@ -19,7 +19,7 @@ const Contact = () => {
             inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('contact.title')}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">{t('contact.title')}</h1>
           <p className="text-lg text-muted-foreground">
             เราพร้อมรับฟังและให้บริการคุณ
           </p>
@@ -101,21 +101,21 @@ const Contact = () => {
               <CardDescription>กรอกข้อมูลด้านล่างและเราจะติดต่อกลับโดยเร็ว</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4">
+              <form className="space-y-6">
                 <div>
-                  <Input placeholder={t('contact.form.name')} />
+                  <Input placeholder={t('contact.form.name')} className="h-12 text-base" />
                 </div>
                 <div>
-                  <Input type="email" placeholder={t('contact.form.email')} />
+                  <Input type="email" placeholder={t('contact.form.email')} className="h-12 text-base" />
                 </div>
                 <div>
-                  <Input type="tel" placeholder={t('contact.form.phone')} />
+                  <Input type="tel" placeholder={t('contact.form.phone')} className="h-12 text-base" />
                 </div>
                 <div>
-                  <Input placeholder={t('contact.form.subject')} />
+                  <Input placeholder={t('contact.form.subject')} className="h-12 text-base" />
                 </div>
                 <div>
-                  <Textarea placeholder={t('contact.form.message')} rows={5} />
+                  <Textarea placeholder={t('contact.form.message')} rows={6} className="text-base py-3" />
                 </div>
                 <Button className="w-full" size="lg">
                   {t('contact.form.send')}
