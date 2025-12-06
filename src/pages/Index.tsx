@@ -255,6 +255,42 @@ const Index = () => {
         <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
         
+        {/* Animated Particles */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white/20 animate-float-particle"
+            style={{
+              width: `${Math.random() * 8 + 4}px`,
+              height: `${Math.random() * 8 + 4}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${Math.random() * 10 + 10}s`,
+            }}
+          />
+        ))}
+        
+        {/* Sparkle Effects */}
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={`sparkle-${i}`}
+            className="absolute animate-sparkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" className="text-white/40">
+              <path
+                fill="currentColor"
+                d="M10 0L12 8L20 10L12 12L10 20L8 12L0 10L8 8L10 0Z"
+              />
+            </svg>
+          </div>
+        ))}
+        
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">{t('careers.title')}</h2>
           <p className="text-xl mb-8 text-white/90 drop-shadow-md">{t('careers.description')}</p>
