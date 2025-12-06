@@ -245,18 +245,24 @@ const Index = () => {
       {/* Careers Teaser Section */}
       <section
         ref={careersRef}
-        className={`py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground transition-all duration-1000 ${
+        className={`py-20 relative overflow-hidden transition-all duration-1000 ${
           careersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">{t('careers.title')}</h2>
-          <p className="text-xl mb-8 opacity-90">{t('careers.description')}</p>
+        {/* Orange Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-accent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/50 via-transparent to-primary/30" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+        
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">{t('careers.title')}</h2>
+          <p className="text-xl mb-8 text-white/90 drop-shadow-md">{t('careers.description')}</p>
           <Button
             asChild
             size="lg"
             variant="secondary"
-            className="text-lg"
+            className="text-lg shadow-xl hover:shadow-2xl"
           >
             <Link to="/careers">{t('careers.viewPositions')}</Link>
           </Button>
