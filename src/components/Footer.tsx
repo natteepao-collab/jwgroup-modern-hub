@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Facebook, Linkedin, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import jwLogo from '@/assets/jw-group-logo-full.png';
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -11,9 +12,8 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="text-2xl font-bold text-primary">JW</div>
-              <div className="text-xl font-semibold">Group</div>
+            <Link to="/" className="inline-block mb-4">
+              <img src={jwLogo} alt="JW Group" className="h-12" />
             </Link>
             <p className="text-sm opacity-90 mb-4 leading-relaxed">
               {t('footer.companyDescription')}
