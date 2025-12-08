@@ -1,13 +1,18 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { NewsCard } from '@/components/NewsCard';
+import { Button } from '@/components/ui/button';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
 
+type FilterType = 'all' | 'company' | 'press';
+
 const News = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   const allNews = [
     {
@@ -15,6 +20,7 @@ const News = () => {
       title: 'JW Group เปิดตัวโครงการอสังหาริมทรัพย์ใหม่มูลค่ากว่า 5,000 ล้านบาท',
       excerpt: 'กลุ่มบริษัท JW Group ประกาศเปิดตัวโครงการอสังหาริมทรัพย์ระดับพรีเมียมใจกลางกรุงเทพฯ พร้อมสิ่งอำนวยความสะดวกครบครันและดีไซน์สมัยใหม่',
       category: t('news.companyNews'),
+      categoryType: 'company' as const,
       date: '2024-01-15',
       image: realEstate,
     },
@@ -23,6 +29,7 @@ const News = () => {
       title: '12 The Residence Hotel คว้ารางวัลโรงแรมบูติกยอดเยี่ยม 2024',
       excerpt: 'โรงแรม 12 The Residence ได้รับรางวัลโรงแรมบูติกยอดเยี่ยมแห่งปี 2024 จากสมาคมโรงแรมไทย ด้วยมาตรฐานการบริการที่เป็นเลิศ',
       category: t('news.pressRelease'),
+      categoryType: 'press' as const,
       date: '2024-01-10',
       image: hotel,
     },
@@ -31,6 +38,7 @@ const News = () => {
       title: '3DPet Hospital เปิดสาขาใหม่ พร้อมเทคโนโลยีการรักษาสัตว์ล้ำสมัย',
       excerpt: 'โรงพยาบาลสัตว์ 3DPet ขยายสาขาครั้งใหญ่ พร้อมนำเข้าเทคโนโลยีการรักษาสัตว์ระดับโลก เพื่อให้บริการที่ดีที่สุดแก่สัตว์เลี้ยงของคุณ',
       category: t('news.companyNews'),
+      categoryType: 'company' as const,
       date: '2024-01-05',
       image: pet,
     },
@@ -39,6 +47,7 @@ const News = () => {
       title: 'JW Group ร่วมกับมหาวิทยาลัยชั้นนำพัฒนาผลิตภัณฑ์สมุนไพร',
       excerpt: 'ความร่วมมือครั้งใหม่ในการวิจัยและพัฒนาผลิตภัณฑ์สมุนไพรและเวลเนส เพื่อสุขภาพที่ดีของคนไทย',
       category: t('news.companyNews'),
+      categoryType: 'company' as const,
       date: '2023-12-28',
       image: realEstate,
     },
@@ -47,6 +56,7 @@ const News = () => {
       title: 'JW Group ประกาศนโยบาย ESG และความยั่งยืน',
       excerpt: 'เปิดตัวนโยบาย ESG ฉบับใหม่ มุ่งสู่องค์กรที่ยั่งยืนและเป็นมิตรต่อสิ่งแวดล้อม',
       category: t('news.pressRelease'),
+      categoryType: 'press' as const,
       date: '2023-12-20',
       image: hotel,
     },
@@ -55,9 +65,20 @@ const News = () => {
       title: '3DPet Hospital จัดกิจกรรมรับบริจาคเพื่อสัตว์จรจัด',
       excerpt: 'โครงการ CSR ครั้งใหญ่ช่วยเหลือสัตว์จรจัดในชุมชน พร้อมให้บริการรักษาฟรี',
       category: t('news.companyNews'),
+      categoryType: 'company' as const,
       date: '2023-12-15',
       image: pet,
     },
+  ];
+
+  const filteredNews = activeFilter === 'all' 
+    ? allNews 
+    : allNews.filter(news => news.categoryType === activeFilter);
+
+  const filters: { key: FilterType; label: string }[] = [
+    { key: 'all', label: t('news.all') },
+    { key: 'company', label: t('news.companyNews') },
+    { key: 'press', label: t('news.pressRelease') },
   ];
 
   return (
@@ -75,8 +96,22 @@ const News = () => {
           </p>
         </div>
 
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {filters.map((filter) => (
+            <Button
+              key={filter.key}
+              variant={activeFilter === filter.key ? 'default' : 'outline'}
+              onClick={() => setActiveFilter(filter.key)}
+              className="transition-all duration-300"
+            >
+              {filter.label}
+            </Button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allNews.map((news, index) => (
+          {filteredNews.map((news, index) => (
             <div
               key={news.id}
               className={`transition-all duration-500 ${
@@ -88,6 +123,12 @@ const News = () => {
             </div>
           ))}
         </div>
+
+        {filteredNews.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            ไม่พบข่าวสารในหมวดหมู่นี้
+          </div>
+        )}
       </div>
     </div>
   );
