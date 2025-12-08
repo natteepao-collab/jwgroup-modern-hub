@@ -92,7 +92,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 )}
               >
                 {/* Logo Container */}
-                <div className="w-14 h-14 bg-white rounded-lg p-2 shadow-lg flex items-center justify-center shrink-0 border border-stone-200/50">
+                <div className="w-20 h-20 bg-white rounded-xl p-3 shadow-lg flex items-center justify-center shrink-0 border border-stone-200/50">
                   <img
                     src={business.image}
                     alt={business.name}
@@ -119,7 +119,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 )}
               >
                 {/* Large Logo Container */}
-                <div className="w-24 h-24 bg-white rounded-2xl p-4 shadow-xl flex items-center justify-center mb-6 border border-stone-200/50">
+                <div className="w-32 h-32 bg-white rounded-2xl p-5 shadow-xl flex items-center justify-center mb-6 border border-stone-200/50">
                   <img
                     src={business.image}
                     alt={business.name}
