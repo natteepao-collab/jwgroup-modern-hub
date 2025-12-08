@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Facebook, Linkedin, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { useSiteContent } from '@/hooks/useSiteContent';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const { getContent } = useSiteContent();
+
+  // Get contact data from database
+  const addressContent = getContent('contact_address');
+  const phoneContent = getContent('contact_phone');
+  const emailContent = getContent('contact_email');
+  const hoursContent = getContent('contact_hours');
 
   return (
     <footer className="bg-secondary text-secondary-foreground">
@@ -58,18 +66,26 @@ export const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
-                <span className="opacity-90">{t('footer.address')}</span>
+                <span className="opacity-90">
+                  {addressContent.content || t('footer.address')}
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary" />
-                <a href="tel:+6622345678" className="hover:text-primary transition-colors opacity-90">
-                  +66 2 234 5678
+                <a 
+                  href={`tel:${phoneContent.content?.replace(/\s/g, '') || '+6622345678'}`} 
+                  className="hover:text-primary transition-colors opacity-90"
+                >
+                  {phoneContent.content || '+66 2 234 5678'}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary" />
-                <a href="mailto:info@jwgroup.com" className="hover:text-primary transition-colors opacity-90">
-                  info@jwgroup.com
+                <a 
+                  href={`mailto:${emailContent.content || 'info@jwgroup.com'}`} 
+                  className="hover:text-primary transition-colors opacity-90"
+                >
+                  {emailContent.content || 'info@jwgroup.com'}
                 </a>
               </li>
               <li className="opacity-90">LINE: @jwgroup</li>
@@ -119,7 +135,7 @@ export const Footer = () => {
             </div>
             <div className="text-sm opacity-90">
               <p className="mb-2 font-semibold">{t('footer.businessHours')}</p>
-              <p>{t('footer.hours')}</p>
+              <p>{hoursContent.content || t('footer.hours')}</p>
             </div>
           </div>
         </div>
