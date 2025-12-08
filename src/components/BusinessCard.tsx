@@ -15,17 +15,17 @@ export const BusinessCard = ({ name, description, url, image }: BusinessCardProp
 
   return (
     <Card className="group hover:shadow-2xl hover:shadow-primary/15 transition-all duration-300 overflow-hidden h-full flex flex-col hover:-translate-y-2">
-      <div className="relative overflow-hidden h-56">
+      <div className="relative overflow-hidden h-56 bg-gradient-to-br from-muted/50 to-muted flex items-center justify-center p-6">
         <img
           src={image}
           alt={`${name} - ${description}`}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="max-w-[80%] max-h-[80%] w-auto h-auto object-contain transition-all duration-500 group-hover:scale-110 drop-shadow-md"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-primary/80 group-hover:via-primary/30 transition-all duration-500" />
-        <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-white text-xl font-bold drop-shadow-lg transition-transform duration-300 group-hover:translate-y-[-4px]">{name}</h3>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+      </div>
+      <div className="px-4 pt-4">
+        <h3 className="text-foreground text-xl font-bold transition-colors duration-300 group-hover:text-primary">{name}</h3>
       </div>
       <CardHeader className="flex-grow">
         <CardDescription className="text-muted-foreground">{description}</CardDescription>
