@@ -14,7 +14,7 @@ const Hero3DBackground = () => {
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
       
-      setMousePosition({ x: x * 30, y: y * 15 });
+      setMousePosition({ x: x * 15, y: y * 10 });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -26,61 +26,34 @@ const Hero3DBackground = () => {
       ref={containerRef}
       className="absolute inset-0 z-0 overflow-hidden"
     >
-      {/* Animated background container */}
+      {/* Animated background container with parallax */}
       <div 
-        className="absolute inset-0 transition-transform duration-1000 ease-out"
+        className="absolute inset-0 transition-transform duration-700 ease-out"
         style={{
-          transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px) scale(1.15)`,
+          transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px) scale(1.08)`,
         }}
       >
-        {/* Main panoramic image with auto-pan animation */}
-        <div 
-          className={`absolute inset-0 animate-pan-horizontal transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        {/* Main image - full display */}
+        <img
+          src={stationRamintra}
+          alt="Station Ramintra"
+          className={`w-full h-full object-cover object-center transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={() => setIsLoaded(true)}
           style={{
-            backgroundImage: `url(${stationRamintra})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            width: '120%',
-            height: '120%',
-            left: '-10%',
-            top: '-10%',
+            minHeight: '100%',
+            minWidth: '100%',
           }}
         />
-        
-        {/* Preload image */}
-        <img 
-          src={stationRamintra} 
-          alt="" 
-          className="hidden" 
-          onLoad={() => setIsLoaded(true)}
-        />
       </div>
 
-      {/* Gradient overlays for depth effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background opacity-80" />
+      {/* Subtle gradient overlay - only at bottom for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-70" />
       
-      {/* Animated particles overlay */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/30 rounded-full animate-float-particle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${8 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
+      {/* Very subtle side vignette */}
+      <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-transparent to-background/30" />
 
-      {/* Subtle light flares */}
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/3 left-1/3 w-48 h-48 bg-primary/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+      {/* Subtle light flares for premium effect */}
+      <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse pointer-events-none" />
     </div>
   );
 };
