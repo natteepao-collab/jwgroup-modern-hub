@@ -32,24 +32,28 @@ const Business = () => {
       description: t('business.realEstate.description'),
       url: 'https://jwrealestate.com',
       image: getBusinessImage('business_realestate_image'),
+      backgroundImage: getBusinessImage('business_realestate_bg'),
     },
     {
       name: t('business.hotel.name'),
       description: t('business.hotel.description'),
       url: 'https://12theresidence.com/th-th/',
       image: getBusinessImage('business_hotel_image'),
+      backgroundImage: getBusinessImage('business_hotel_bg'),
     },
     {
       name: t('business.pet.name'),
       description: t('business.pet.description'),
       url: 'https://www.3dpethospital.com/',
       image: getBusinessImage('business_pet_image'),
+      backgroundImage: getBusinessImage('business_pet_bg'),
     },
     {
       name: t('business.wellness.name'),
       description: t('business.wellness.description'),
       url: 'https://jwherbal-roots-and-remedies.lovable.app',
       image: getBusinessImage('business_wellness_image'),
+      backgroundImage: getBusinessImage('business_wellness_bg'),
     },
   ];
 

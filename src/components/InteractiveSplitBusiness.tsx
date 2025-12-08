@@ -8,7 +8,8 @@ interface BusinessItem {
   name: string;
   description: string;
   url: string;
-  image: string;
+  image: string; // Logo image
+  backgroundImage?: string; // Optional separate background image
 }
 
 interface InteractiveSplitBusinessProps {
@@ -26,6 +27,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
       <div className="hidden lg:flex h-[520px] gap-1.5 overflow-hidden rounded-2xl shadow-2xl bg-stone-200 dark:bg-stone-800 p-1.5">
         {businesses.map((business, index) => {
           const isActive = activeIndex === index;
+          const bgImage = business.backgroundImage || business.image;
           
           return (
             <div
@@ -39,31 +41,55 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
             >
               {/* Background Layer */}
               <div className="absolute inset-0">
-                {/* Background Image */}
-                <img
-                  src={business.image}
-                  alt={business.name}
-                  className={cn(
-                    "w-full h-full object-cover transition-all duration-700",
-                    isActive ? "scale-110 blur-sm" : "scale-100"
-                  )}
-                />
+                {/* Background Image - Large watermark style */}
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={bgImage}
+                    alt=""
+                    className={cn(
+                      "w-[80%] h-[80%] object-contain transition-all duration-700",
+                      isActive 
+                        ? "opacity-20 scale-110 blur-sm" 
+                        : "opacity-30 scale-100"
+                    )}
+                    style={{
+                      filter: isActive ? 'blur(4px) grayscale(0.3)' : 'grayscale(0.5)'
+                    }}
+                  />
+                </div>
                 
-                {/* Overlay - Dimmed for collapsed, Light cream for expanded */}
+                {/* Solid color overlay */}
                 <div 
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
                     isActive 
                       ? "bg-gradient-to-b from-amber-50/95 via-orange-50/90 to-amber-100/95 dark:from-amber-950/95 dark:via-stone-900/90 dark:to-amber-950/95" 
-                      : "bg-gradient-to-b from-stone-800/80 via-stone-900/75 to-stone-800/85 dark:from-stone-900/85 dark:via-stone-950/80 dark:to-stone-900/90"
+                      : "bg-stone-600/85 dark:bg-stone-800/90"
                   )}
                 />
+                
+                {/* Background Image as watermark */}
+                <div 
+                  className={cn(
+                    "absolute inset-0 flex items-center justify-center overflow-hidden transition-all duration-700",
+                    isActive ? "opacity-0" : "opacity-100"
+                  )}
+                >
+                  <img
+                    src={bgImage}
+                    alt=""
+                    className="w-[70%] h-auto max-h-[60%] object-contain opacity-40"
+                    style={{
+                      filter: 'brightness(0.6) contrast(1.1)'
+                    }}
+                  />
+                </div>
               </div>
               
               {/* Collapsed State - Logo + Vertical Text */}
               <div
                 className={cn(
-                  "absolute inset-0 flex flex-col items-center pt-8 pb-8 transition-all duration-500",
+                  "absolute inset-0 flex flex-col items-center pt-8 pb-8 transition-all duration-500 z-10",
                   isActive ? "opacity-0 pointer-events-none scale-95" : "opacity-100 scale-100"
                 )}
               >
@@ -90,7 +116,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               {/* Expanded State - Full Content */}
               <div
                 className={cn(
-                  "absolute inset-0 flex flex-col items-center justify-center px-8 py-10 transition-all duration-700",
+                  "absolute inset-0 flex flex-col items-center justify-center px-8 py-10 transition-all duration-700 z-10",
                   isActive ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-95 pointer-events-none"
                 )}
               >
@@ -134,7 +160,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               {/* Bottom Accent Line */}
               <div 
                 className={cn(
-                  "absolute bottom-0 left-0 right-0 h-1 bg-primary transition-all duration-500",
+                  "absolute bottom-0 left-0 right-0 h-1 bg-primary transition-all duration-500 z-20",
                   isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
                 )}
               />
@@ -147,21 +173,34 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
       <div className="lg:hidden flex flex-col gap-2 bg-stone-100 dark:bg-stone-800 p-2 rounded-2xl">
         {businesses.map((business, index) => {
           const isActive = mobileActiveIndex === index;
+          const bgImage = business.backgroundImage || business.image;
           
           return (
             <div
               key={index}
               className={cn(
-                "rounded-xl overflow-hidden transition-all duration-500",
+                "rounded-xl overflow-hidden transition-all duration-500 relative",
                 isActive 
                   ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/50 dark:to-stone-900" 
-                  : "bg-white dark:bg-stone-900"
+                  : "bg-stone-500 dark:bg-stone-700"
               )}
             >
+              {/* Background watermark for mobile */}
+              {!isActive && (
+                <div className="absolute inset-0 flex items-center justify-end overflow-hidden opacity-30 pr-4">
+                  <img
+                    src={bgImage}
+                    alt=""
+                    className="h-[80%] w-auto object-contain"
+                    style={{ filter: 'brightness(0.7)' }}
+                  />
+                </div>
+              )}
+              
               {/* Header - Always visible */}
               <button
                 onClick={() => setMobileActiveIndex(isActive ? null : index)}
-                className="w-full flex items-center justify-between p-4"
+                className="w-full flex items-center justify-between p-4 relative z-10"
               >
                 <div className="flex items-center gap-4">
                   {/* Logo */}
@@ -174,7 +213,10 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   </div>
                   
                   {/* Title */}
-                  <h3 className="font-bold text-stone-800 dark:text-white text-left">
+                  <h3 className={cn(
+                    "font-bold text-left transition-colors",
+                    isActive ? "text-stone-800 dark:text-white" : "text-white"
+                  )}>
                     {business.name}
                   </h3>
                 </div>
@@ -182,8 +224,8 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 {/* Arrow */}
                 <ChevronDown 
                   className={cn(
-                    "h-5 w-5 text-stone-500 dark:text-stone-400 transition-transform duration-300 shrink-0",
-                    isActive && "rotate-180"
+                    "h-5 w-5 transition-all duration-300 shrink-0",
+                    isActive ? "rotate-180 text-stone-500 dark:text-stone-400" : "text-white/80"
                   )} 
                 />
               </button>
@@ -191,7 +233,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               {/* Expandable Content */}
               <div
                 className={cn(
-                  "overflow-hidden transition-all duration-500 ease-out",
+                  "overflow-hidden transition-all duration-500 ease-out relative z-10",
                   isActive ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
                 )}
               >
