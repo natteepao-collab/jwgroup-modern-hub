@@ -1,28 +1,25 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { NewsCard } from '@/components/NewsCard';
-import { Button } from '@/components/ui/button';
+import { BentoNewsSection } from '@/components/BentoNewsSection';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
-
-type FilterType = 'all' | 'company' | 'press';
+import wellness from '@/assets/business-wellness.jpg';
 
 const News = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   const allNews = [
     {
       id: '1',
       title: 'JW Group เปิดตัวโครงการอสังหาริมทรัพย์ใหม่มูลค่ากว่า 5,000 ล้านบาท',
-      excerpt: 'กลุ่มบริษัท JW Group ประกาศเปิดตัวโครงการอสังหาริมทรัพย์ระดับพรีเมียมใจกลางกรุงเทพฯ พร้อมสิ่งอำนวยความสะดวกครบครันและดีไซน์สมัยใหม่',
+      excerpt: 'กลุ่มบริษัท JW Group ประกาศเปิดตัวโครงการอสังหาริมทรัพย์ระดับพรีเมียมใจกลางกรุงเทพฯ พร้อมสิ่งอำนวยความสะดวกครบครันและดีไซน์สมัยใหม่ ตอบโจทย์ไลฟ์สไตล์คนเมืองยุคใหม่',
       category: t('news.companyNews'),
       categoryType: 'company' as const,
       date: '2024-01-15',
       image: realEstate,
+      isVideo: true,
     },
     {
       id: '2',
@@ -49,7 +46,7 @@ const News = () => {
       category: t('news.companyNews'),
       categoryType: 'company' as const,
       date: '2023-12-28',
-      image: realEstate,
+      image: wellness,
     },
     {
       id: '5',
@@ -69,16 +66,24 @@ const News = () => {
       date: '2023-12-15',
       image: pet,
     },
-  ];
-
-  const filteredNews = activeFilter === 'all' 
-    ? allNews 
-    : allNews.filter(news => news.categoryType === activeFilter);
-
-  const filters: { key: FilterType; label: string }[] = [
-    { key: 'all', label: t('news.all') },
-    { key: 'company', label: t('news.companyNews') },
-    { key: 'press', label: t('news.pressRelease') },
+    {
+      id: '7',
+      title: 'JW Real Estate เปิดตัว Station Ramintra โครงการใหม่ล่าสุด',
+      excerpt: 'โครงการคอนโดมิเนียมระดับพรีเมียมทำเลรามอินทรา ใกล้รถไฟฟ้าสายสีชมพู',
+      category: t('news.companyNews'),
+      categoryType: 'company' as const,
+      date: '2023-12-10',
+      image: realEstate,
+    },
+    {
+      id: '8',
+      title: 'JW Herbal เปิดตัวผลิตภัณฑ์สมุนไพรออร์แกนิก',
+      excerpt: 'ผลิตภัณฑ์สมุนไพรจากธรรมชาติ 100% ปลอดสารเคมี',
+      category: t('news.pressRelease'),
+      categoryType: 'press' as const,
+      date: '2023-12-05',
+      image: wellness,
+    },
   ];
 
   return (
@@ -96,39 +101,7 @@ const News = () => {
           </p>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {filters.map((filter) => (
-            <Button
-              key={filter.key}
-              variant={activeFilter === filter.key ? 'default' : 'outline'}
-              onClick={() => setActiveFilter(filter.key)}
-              className="transition-all duration-300"
-            >
-              {filter.label}
-            </Button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredNews.map((news, index) => (
-            <div
-              key={news.id}
-              className={`transition-all duration-500 ${
-                inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ transitionDelay: `${index * 50}ms` }}
-            >
-              <NewsCard {...news} />
-            </div>
-          ))}
-        </div>
-
-        {filteredNews.length === 0 && (
-          <div className="text-center py-12 text-muted-foreground">
-            ไม่พบข่าวสารในหมวดหมู่นี้
-          </div>
-        )}
+        <BentoNewsSection news={allNews} showFilters={true} />
       </div>
     </div>
   );
