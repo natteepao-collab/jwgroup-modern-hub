@@ -1,39 +1,55 @@
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
+import { useSiteContent } from '@/hooks/useSiteContent';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
 import wellness from '@/assets/business-wellness.jpg';
 
+// Default images fallback
+const defaultBusinessImages: Record<string, string> = {
+  business_realestate_image: realEstate,
+  business_hotel_image: hotel,
+  business_pet_image: pet,
+  business_wellness_image: wellness,
+};
+
 const Business = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { getImage } = useSiteContent();
+
+  // Get business images from database or fallback to defaults
+  const getBusinessImage = (sectionKey: string) => {
+    const dbImage = getImage(sectionKey);
+    return dbImage?.url || defaultBusinessImages[sectionKey] || realEstate;
+  };
 
   const businesses = [
     {
       name: t('business.realEstate.name'),
       description: t('business.realEstate.description'),
       url: 'https://jwrealestate.com',
-      image: realEstate,
+      image: getBusinessImage('business_realestate_image'),
     },
     {
       name: t('business.hotel.name'),
       description: t('business.hotel.description'),
       url: 'https://12theresidence.com/th-th/',
-      image: hotel,
+      image: getBusinessImage('business_hotel_image'),
     },
     {
       name: t('business.pet.name'),
       description: t('business.pet.description'),
       url: 'https://www.3dpethospital.com/',
-      image: pet,
+      image: getBusinessImage('business_pet_image'),
     },
     {
       name: t('business.wellness.name'),
       description: t('business.wellness.description'),
       url: 'https://jwherbal-roots-and-remedies.lovable.app',
-      image: wellness,
+      image: getBusinessImage('business_wellness_image'),
     },
   ];
 
