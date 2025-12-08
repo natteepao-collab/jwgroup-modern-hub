@@ -5,8 +5,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
-import { Users, Shield, UserCheck, UserX, RefreshCw, Trash2 } from 'lucide-react';
+import { Users, Shield, UserCheck, UserX, RefreshCw, Trash2, UserMinus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -137,6 +148,47 @@ export const UserManagement = () => {
     setIsSaving(null);
   };
 
+  const deleteUser = async (userId: string, userEmail: string | null) => {
+    if (!isAdmin) {
+      toast.error('คุณไม่มีสิทธิ์ลบผู้ใช้');
+      return;
+    }
+
+    // Prevent deleting yourself
+    if (userId === currentUser?.id) {
+      toast.error('ไม่สามารถลบบัญชีของตัวเองได้');
+      return;
+    }
+
+    setIsSaving(userId);
+    try {
+      // First delete user roles
+      const { error: rolesError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (rolesError) {
+        console.error('Error deleting user roles:', rolesError);
+      }
+
+      // Then delete profile
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (profileError) throw profileError;
+
+      toast.success(`ลบผู้ใช้ ${userEmail || userId} สำเร็จ`);
+      fetchUsers();
+    } catch (error: any) {
+      console.error('Error deleting user:', error);
+      toast.error(error.message || 'เกิดข้อผิดพลาดในการลบผู้ใช้');
+    }
+    setIsSaving(null);
+  };
+
   const getRoleBadgeColor = (role: AppRole) => {
     switch (role) {
       case 'admin':
@@ -224,13 +276,14 @@ export const UserManagement = () => {
                 <TableHead>อีเมล</TableHead>
                 <TableHead>Role ปัจจุบัน</TableHead>
                 <TableHead>สมัครเมื่อ</TableHead>
-                <TableHead className="text-right">จัดการ Role</TableHead>
+                <TableHead>จัดการ Role</TableHead>
+                <TableHead className="text-right">ลบ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {users.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                     ยังไม่มีผู้ใช้งานในระบบ
                   </TableCell>
                 </TableRow>
@@ -314,6 +367,42 @@ export const UserManagement = () => {
                           </SelectItem>
                         </SelectContent>
                       </Select>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {user.user_id !== currentUser?.id ? (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                              disabled={isSaving === user.user_id}
+                            >
+                              <UserMinus className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>ยืนยันการลบผู้ใช้</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                คุณต้องการลบผู้ใช้ <strong>{user.email || user.full_name || 'ไม่ระบุ'}</strong> ใช่หรือไม่?
+                                การดำเนินการนี้จะลบข้อมูลโปรไฟล์และ Role ทั้งหมดของผู้ใช้
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteUser(user.user_id, user.email)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                ลบผู้ใช้
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">-</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
