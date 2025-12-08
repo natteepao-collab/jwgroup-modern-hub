@@ -22,6 +22,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
+import { UserManagement } from '@/components/admin/UserManagement';
 
 interface SiteContent {
   id: string;
@@ -422,15 +423,7 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="users">
-            <Card>
-              <CardHeader>
-                <CardTitle>การจัดการผู้ใช้งาน</CardTitle>
-                <CardDescription>ดูและจัดการผู้ใช้งานในระบบ</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">ฟีเจอร์นี้กำลังพัฒนา...</p>
-              </CardContent>
-            </Card>
+            <UserManagement />
           </TabsContent>
 
           <TabsContent value="settings">
