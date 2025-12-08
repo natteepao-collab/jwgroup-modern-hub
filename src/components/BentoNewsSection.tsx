@@ -2,10 +2,20 @@ import { useState, useRef, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { Calendar, ArrowRight, Play } from 'lucide-react';
+import { Calendar, ArrowRight, Play, ImageIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+// Placeholder image component for news without images
+const NewsPlaceholder = ({ isLarge = false }: { isLarge?: boolean }) => (
+  <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/10 to-muted flex flex-col items-center justify-center">
+    <ImageIcon className={cn("text-primary/40", isLarge ? "h-16 w-16" : "h-10 w-10")} />
+    <span className={cn("text-primary/50 mt-2", isLarge ? "text-base" : "text-xs")}>
+      รอการอัพโหลดรูปภาพ
+    </span>
+  </div>
+);
 
 type FilterType = 'all' | 'company' | 'press' | 'csr';
 
@@ -129,15 +139,19 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
       >
         {/* Background Image with Zoom Effect */}
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
-          <img
-            src={news.image}
-            alt={news.title}
-            className={cn(
-              "w-full h-full object-cover transition-all duration-700",
-              isHovered ? "scale-110 brightness-110" : "scale-100"
-            )}
-            loading="lazy"
-          />
+          {news.image && news.image !== '/placeholder.svg' ? (
+            <img
+              src={news.image}
+              alt={news.title}
+              className={cn(
+                "w-full h-full object-cover transition-all duration-700",
+                isHovered ? "scale-110 brightness-110" : "scale-100"
+              )}
+              loading="lazy"
+            />
+          ) : (
+            <NewsPlaceholder isLarge={isLarge} />
+          )}
           {/* Video Play Icon */}
           {news.isVideo && (
             <div className="absolute inset-0 flex items-center justify-center">
