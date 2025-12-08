@@ -10,6 +10,11 @@ interface BusinessItem {
   url: string;
   image: string; // Logo image
   backgroundImage?: string; // Optional separate background image
+  brandColor?: {
+    collapsed: string; // Collapsed state bg color
+    expanded: string; // Expanded state gradient
+    expandedDark: string; // Expanded state gradient for dark mode
+  };
 }
 
 interface InteractiveSplitBusinessProps {
@@ -62,11 +67,21 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 <div 
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
-                    isActive 
-                      ? "bg-gradient-to-b from-amber-50/95 via-orange-50/90 to-amber-100/95 dark:from-amber-950/95 dark:via-stone-900/90 dark:to-amber-950/95" 
-                      : "bg-stone-600/85 dark:bg-stone-800/90"
+                    !isActive && (business.brandColor?.collapsed || "bg-stone-600/85 dark:bg-stone-800/90")
                   )}
+                  style={isActive ? {
+                    background: `var(--tw-dark, ${business.brandColor?.expandedDark || 'linear-gradient(to bottom, rgba(78, 52, 46, 0.95), rgba(41, 37, 36, 0.9), rgba(78, 52, 46, 0.95))'})`,
+                  } : undefined}
                 />
+                {/* Light mode expanded overlay */}
+                {isActive && (
+                  <div 
+                    className="absolute inset-0 dark:hidden"
+                    style={{
+                      background: business.brandColor?.expanded || 'linear-gradient(to bottom, rgba(255, 251, 235, 0.95), rgba(255, 237, 213, 0.9), rgba(254, 243, 199, 0.95))'
+                    }}
+                  />
+                )}
                 
                 {/* Background Image as watermark */}
                 <div 
@@ -180,10 +195,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               key={index}
               className={cn(
                 "rounded-xl overflow-hidden transition-all duration-500 relative",
-                isActive 
-                  ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/50 dark:to-stone-900" 
-                  : "bg-stone-500 dark:bg-stone-700"
+                !isActive && (business.brandColor?.collapsed || "bg-stone-500 dark:bg-stone-700")
               )}
+              style={isActive ? {
+                background: business.brandColor?.expanded || 'linear-gradient(to right, rgba(255, 251, 235, 1), rgba(255, 237, 213, 1))'
+              } : undefined}
             >
               {/* Background watermark for mobile */}
               {!isActive && (
