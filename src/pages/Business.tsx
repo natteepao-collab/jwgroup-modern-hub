@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { BusinessCard } from '@/components/BusinessCard';
+import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -52,18 +52,13 @@ const Business = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {businesses.map((business, index) => (
-            <div
-              key={index}
-              className={`transition-all duration-500 ${
-                inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <BusinessCard {...business} />
-            </div>
-          ))}
+        <div
+          className={`transition-all duration-700 ${
+            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+          style={{ transitionDelay: '200ms' }}
+        >
+          <InteractiveSplitBusiness businesses={businesses} />
         </div>
       </div>
     </div>
