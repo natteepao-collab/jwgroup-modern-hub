@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Building2, TrendingUp, Users } from 'lucide-react';
 import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
-import { NewsCard } from '@/components/NewsCard';
+import { BentoNewsSection } from '@/components/BentoNewsSection';
 import { AnnouncementModal } from '@/components/AnnouncementModal';
 import Hero3DBackground from '@/components/Hero3DBackground';
 import { useSiteContent } from '@/hooks/useSiteContent';
@@ -87,26 +87,48 @@ const Index = () => {
     {
       id: '1',
       title: 'JW Group เปิดตัวโครงการอสังหาริมทรัพย์ใหม่มูลค่ากว่า 5,000 ล้านบาท',
-      excerpt: 'กลุ่มบริษัท JW Group ประกาศเปิดตัวโครงการอสังหาริมทรัพย์ระดับพรีเมียมใจกลางกรุงเทพฯ...',
+      excerpt: 'กลุ่มบริษัท JW Group ประกาศเปิดตัวโครงการอสังหาริมทรัพย์ระดับพรีเมียมใจกลางกรุงเทพฯ พร้อมสิ่งอำนวยความสะดวกครบครันและดีไซน์สมัยใหม่',
       category: t('news.companyNews'),
+      categoryType: 'company' as const,
       date: '2024-01-15',
       image: realEstate,
+      isVideo: true,
     },
     {
       id: '2',
       title: '12 The Residence Hotel คว้ารางวัลโรงแรมบูติกยอดเยี่ยม 2024',
-      excerpt: 'โรงแรม 12 The Residence ได้รับรางวัลโรงแรมบูติกยอดเยี่ยมแห่งปี 2024 จากสมาคมโรงแรมไทย...',
+      excerpt: 'โรงแรม 12 The Residence ได้รับรางวัลโรงแรมบูติกยอดเยี่ยมแห่งปี 2024 จากสมาคมโรงแรมไทย ด้วยมาตรฐานการบริการที่เป็นเลิศ',
       category: t('news.pressRelease'),
+      categoryType: 'press' as const,
       date: '2024-01-10',
       image: hotel,
     },
     {
       id: '3',
       title: '3DPet Hospital เปิดสาขาใหม่ พร้อมเทคโนโลยีการรักษาสัตว์ล้ำสมัย',
-      excerpt: 'โรงพยาบาลสัตว์ 3DPet ขยายสาขาครั้งใหญ่ พร้อมนำเข้าเทคโนโลยีการรักษาสัตว์ระดับโลก...',
+      excerpt: 'โรงพยาบาลสัตว์ 3DPet ขยายสาขาครั้งใหญ่ พร้อมนำเข้าเทคโนโลยีการรักษาสัตว์ระดับโลก เพื่อให้บริการที่ดีที่สุดแก่สัตว์เลี้ยงของคุณ',
       category: t('news.companyNews'),
+      categoryType: 'company' as const,
       date: '2024-01-05',
       image: pet,
+    },
+    {
+      id: '4',
+      title: 'JW Group ร่วมกับมหาวิทยาลัยชั้นนำพัฒนาผลิตภัณฑ์สมุนไพร',
+      excerpt: 'ความร่วมมือครั้งใหม่ในการวิจัยและพัฒนาผลิตภัณฑ์สมุนไพรและเวลเนส เพื่อสุขภาพที่ดีของคนไทย',
+      category: t('news.companyNews'),
+      categoryType: 'company' as const,
+      date: '2023-12-28',
+      image: wellness,
+    },
+    {
+      id: '5',
+      title: 'JW Group ประกาศนโยบาย ESG และความยั่งยืน',
+      excerpt: 'เปิดตัวนโยบาย ESG ฉบับใหม่ มุ่งสู่องค์กรที่ยั่งยืนและเป็นมิตรต่อสิ่งแวดล้อม',
+      category: t('news.pressRelease'),
+      categoryType: 'press' as const,
+      date: '2023-12-20',
+      image: hotel,
     },
   ];
 
@@ -265,19 +287,11 @@ const Index = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockNews.map((news, index) => (
-              <div
-                key={news.id}
-                className={`transition-all duration-500 ${
-                  newsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <NewsCard {...news} />
-              </div>
-            ))}
-          </div>
+          <BentoNewsSection 
+            news={mockNews} 
+            showFilters={false}
+            maxItems={5}
+          />
         </div>
       </section>
 
