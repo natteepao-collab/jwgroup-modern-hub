@@ -55,21 +55,21 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                       "w-full h-full object-cover transition-all duration-700",
                       isActive 
                         ? "opacity-100 scale-110" 
-                        : "opacity-60 scale-100"
+                        : "opacity-90 scale-100"
                     )}
                     style={{
-                      filter: isActive ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.7)'
+                      filter: isActive ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.85) saturate(0.9)'
                     }}
                   />
                 </div>
                 
-                {/* Gradient overlay for expanded state - more natural */}
+                {/* Gradient overlay - lighter for collapsed, gradient for expanded */}
                 <div 
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
                     isActive 
                       ? "bg-gradient-to-t from-white/95 via-white/70 to-white/40 dark:from-stone-900/95 dark:via-stone-900/70 dark:to-stone-900/40" 
-                      : "bg-stone-700/85 dark:bg-stone-800/90"
+                      : "bg-stone-500/40 dark:bg-stone-700/50"
                   )}
                 />
               </div>
