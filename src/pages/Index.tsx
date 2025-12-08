@@ -169,11 +169,17 @@ const Index = () => {
       </section>
 
       {/* Chairman Quote Section */}
-      <ChairmanQuote 
-        quote="เราเชื่อมั่นว่าคุณภาพและความใส่ใจในทุกรายละเอียด คือหัวใจสำคัญที่จะสร้างความไว้วางใจจากลูกค้า และนำพาองค์กรไปสู่ความสำเร็จอย่างยั่งยืน"
-        name="คุณสมชาย วิสุทธิ์ธรรม"
-        title="ประธานกรรมการบริหาร JW GROUP"
-      />
+      {(() => {
+        const quoteContent = getContent('chairman_quote');
+        const metadata = quoteContent.metadata as Record<string, string> | null;
+        return (
+          <ChairmanQuote 
+            quote={quoteContent.content || 'เราเชื่อมั่นว่าคุณภาพและความใส่ใจในทุกรายละเอียด คือหัวใจสำคัญที่จะสร้างความไว้วางใจจากลูกค้า และนำพาองค์กรไปสู่ความสำเร็จอย่างยั่งยืน'}
+            name={quoteContent.title || 'คุณสมชาย วิสุทธิ์ธรรม'}
+            title={metadata?.position_th || metadata?.position_en || 'ประธานกรรมการบริหาร JW GROUP'}
+          />
+        );
+      })()}
 
       {/* Business Section */}
       <section

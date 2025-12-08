@@ -53,6 +53,7 @@ const sectionLabels: Record<string, string> = {
   'news_section': 'หมวดข่าวสาร',
   'careers_section': 'หมวดร่วมงานกับเรา',
   'modal_welcome': 'ป๊อปอัพต้อนรับ',
+  'chairman_quote': 'คำกล่าวประธานกรรมการ',
 };
 
 export const ContentManagement = () => {
@@ -124,7 +125,7 @@ export const ContentManagement = () => {
     // Map old section keys to categories
     const categoryMapping: Record<string, string[]> = {
       'hero': ['hero_headline', 'hero_tagline', 'hero_subheadline'],
-      'about': ['about_section', 'about_stats'],
+      'about': ['about_section', 'about_stats', 'chairman_quote'],
       'business': ['business_section', 'business_realestate', 'business_hotel', 'business_pet', 'business_wellness'],
       'news': ['news_section'],
       'careers': ['careers_section'],
