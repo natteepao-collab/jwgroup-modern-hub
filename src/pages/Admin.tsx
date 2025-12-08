@@ -18,6 +18,7 @@ import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ContentManagement } from '@/components/admin/ContentManagement';
 import { ImageManagement } from '@/components/admin/ImageManagement';
+import { ChairmanImageUpload } from '@/components/admin/ChairmanImageUpload';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -123,7 +124,8 @@ const Admin = () => {
             <ContentManagement />
           </TabsContent>
 
-          <TabsContent value="images">
+          <TabsContent value="images" className="space-y-6">
+            <ChairmanImageUpload />
             <ImageManagement />
           </TabsContent>
 
