@@ -8,6 +8,7 @@ import { NewsCard } from '@/components/NewsCard';
 import { AnnouncementModal } from '@/components/AnnouncementModal';
 import Hero3DBackground from '@/components/Hero3DBackground';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { ChairmanQuote } from '@/components/ChairmanQuote';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -166,6 +167,13 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Chairman Quote Section */}
+      <ChairmanQuote 
+        quote="เราเชื่อมั่นว่าคุณภาพและความใส่ใจในทุกรายละเอียด คือหัวใจสำคัญที่จะสร้างความไว้วางใจจากลูกค้า และนำพาองค์กรไปสู่ความสำเร็จอย่างยั่งยืน"
+        name="คุณสมชาย วิสุทธิ์ธรรม"
+        title="ประธานกรรมการบริหาร JW GROUP"
+      />
 
       {/* Business Section */}
       <section
