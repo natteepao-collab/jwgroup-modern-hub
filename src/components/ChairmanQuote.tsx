@@ -1,21 +1,42 @@
+import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Quote } from 'lucide-react';
-import chairmanImage from '@/assets/chairman-portrait.jpg';
+import { supabase } from '@/integrations/supabase/client';
+import chairmanDefault from '@/assets/chairman-portrait.jpg';
 
 interface ChairmanQuoteProps {
   quote: string;
   name: string;
   title: string;
-  image?: string;
 }
 
 export const ChairmanQuote = ({ 
   quote, 
   name, 
-  title, 
-  image = chairmanImage 
+  title
 }: ChairmanQuoteProps) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [imageUrl, setImageUrl] = useState<string>(chairmanDefault);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('site_images')
+          .select('image_url')
+          .eq('section_key', 'chairman_portrait')
+          .single();
+
+        if (!error && data?.image_url) {
+          setImageUrl(data.image_url);
+        }
+      } catch (error) {
+        console.error('Error fetching chairman image:', error);
+      }
+    };
+
+    fetchImage();
+  }, []);
 
   return (
     <section
@@ -36,7 +57,7 @@ export const ChairmanQuote = ({
               <div className="relative">
                 <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-primary/20 shadow-2xl">
                   <img 
-                    src={image} 
+                    src={imageUrl} 
                     alt={name}
                     className="w-full h-full object-cover"
                   />
