@@ -180,3 +180,20 @@ All colors MUST be HSL.
 .animate-sparkle {
   animation: sparkle 3s ease-in-out infinite;
 }
+
+/* Pan Animation for Hero Background */
+@keyframes pan-horizontal {
+  0% {
+    transform: translateX(0) scale(1.05);
+  }
+  50% {
+    transform: translateX(-3%) scale(1.08);
+  }
+  100% {
+    transform: translateX(0) scale(1.05);
+  }
+}
+
+.animate-pan-horizontal {
+  animation: pan-horizontal 20s ease-in-out infinite;
+}
