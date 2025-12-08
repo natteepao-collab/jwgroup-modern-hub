@@ -109,7 +109,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 )}
               >
                 {/* Large Logo Container */}
-                <div className="w-32 h-32 bg-white rounded-2xl p-5 shadow-xl flex items-center justify-center mb-6 border border-stone-200/50">
+                <div className="w-32 h-32 bg-white rounded-2xl p-5 flex items-center justify-center mb-6">
                   <img
                     src={business.image}
                     alt={business.name}
