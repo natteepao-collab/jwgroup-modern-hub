@@ -46,19 +46,19 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
             >
               {/* Background Layer */}
               <div className="absolute inset-0">
-                {/* Background Image - Large watermark style */}
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                {/* Full-size Background Image */}
+                <div className="absolute inset-0 overflow-hidden">
                   <img
                     src={bgImage}
                     alt=""
                     className={cn(
-                      "w-[80%] h-[80%] object-contain transition-all duration-700",
+                      "w-full h-full object-cover transition-all duration-700",
                       isActive 
-                        ? "opacity-20 scale-110 blur-sm" 
-                        : "opacity-30 scale-100"
+                        ? "opacity-30 scale-105" 
+                        : "opacity-60 scale-100"
                     )}
                     style={{
-                      filter: isActive ? 'blur(4px) grayscale(0.3)' : 'grayscale(0.5)'
+                      filter: isActive ? 'blur(2px) brightness(0.9)' : 'brightness(0.7)'
                     }}
                   />
                 </div>
@@ -82,23 +82,6 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                     }}
                   />
                 )}
-                
-                {/* Background Image as watermark */}
-                <div 
-                  className={cn(
-                    "absolute inset-0 flex items-center justify-center overflow-hidden transition-all duration-700",
-                    isActive ? "opacity-0" : "opacity-100"
-                  )}
-                >
-                  <img
-                    src={bgImage}
-                    alt=""
-                    className="w-[70%] h-auto max-h-[60%] object-contain opacity-40"
-                    style={{
-                      filter: 'brightness(0.6) contrast(1.1)'
-                    }}
-                  />
-                </div>
               </div>
               
               {/* Collapsed State - Logo + Vertical Text */}
@@ -201,13 +184,13 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 background: business.brandColor?.expanded || 'linear-gradient(to right, rgba(255, 251, 235, 1), rgba(255, 237, 213, 1))'
               } : undefined}
             >
-              {/* Background watermark for mobile */}
+              {/* Full-size Background Image for mobile */}
               {!isActive && (
-                <div className="absolute inset-0 flex items-center justify-end overflow-hidden opacity-30 pr-4">
+                <div className="absolute inset-0 overflow-hidden">
                   <img
                     src={bgImage}
                     alt=""
-                    className="h-[80%] w-auto object-contain"
+                    className="w-full h-full object-cover opacity-50"
                     style={{ filter: 'brightness(0.7)' }}
                   />
                 </div>
