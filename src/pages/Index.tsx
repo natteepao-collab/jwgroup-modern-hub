@@ -40,54 +40,46 @@ const Index = () => {
     return dbImage?.url || defaultBusinessImages[sectionKey] || realEstate;
   };
 
+  // Get business content from database
+  const realEstateContent = getContent('business_realestate');
+  const hotelContent = getContent('business_hotel');
+  const petContent = getContent('business_pet');
+  const wellnessContent = getContent('business_wellness');
+
+  // Get URLs from metadata or use defaults
+  const getBusinessUrl = (content: ReturnType<typeof getContent>, defaultUrl: string) => {
+    const metadata = content.metadata as Record<string, string> | null;
+    return metadata?.url || defaultUrl;
+  };
+
   const businesses = [
     {
-      name: t('business.realEstate.name'),
-      description: t('business.realEstate.description'),
-      url: 'https://jwrealestate.com',
+      name: realEstateContent.title || t('business.realEstate.name'),
+      description: realEstateContent.content || t('business.realEstate.description'),
+      url: getBusinessUrl(realEstateContent, 'https://jwrealestate.com'),
       image: getBusinessImage('business_realestate_image'),
       backgroundImage: getBusinessImage('business_realestate_bg'),
-      brandColor: {
-        collapsed: 'bg-orange-600/90 dark:bg-orange-700/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(60, 42, 30, 0.95), rgba(41, 37, 36, 0.9), rgba(60, 42, 30, 0.95))',
-      },
     },
     {
-      name: t('business.hotel.name'),
-      description: t('business.hotel.description'),
-      url: 'https://12theresidence.com/th-th/',
+      name: hotelContent.title || t('business.hotel.name'),
+      description: hotelContent.content || t('business.hotel.description'),
+      url: getBusinessUrl(hotelContent, 'https://12theresidence.com/th-th/'),
       image: getBusinessImage('business_hotel_image'),
       backgroundImage: getBusinessImage('business_hotel_bg'),
-      brandColor: {
-        collapsed: 'bg-neutral-900/95 dark:bg-black/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(23, 23, 23, 0.95), rgba(10, 10, 10, 0.9), rgba(23, 23, 23, 0.95))',
-      },
     },
     {
-      name: t('business.pet.name'),
-      description: t('business.pet.description'),
-      url: 'https://www.3dpethospital.com/',
+      name: petContent.title || t('business.pet.name'),
+      description: petContent.content || t('business.pet.description'),
+      url: getBusinessUrl(petContent, 'https://www.3dpethospital.com/'),
       image: getBusinessImage('business_pet_image'),
       backgroundImage: getBusinessImage('business_pet_bg'),
-      brandColor: {
-        collapsed: 'bg-teal-500/90 dark:bg-teal-600/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(17, 94, 89, 0.95), rgba(19, 78, 74, 0.9), rgba(17, 94, 89, 0.95))',
-      },
     },
     {
-      name: t('business.wellness.name'),
-      description: t('business.wellness.description'),
-      url: 'https://jwherbal-roots-and-remedies.lovable.app',
+      name: wellnessContent.title || t('business.wellness.name'),
+      description: wellnessContent.content || t('business.wellness.description'),
+      url: getBusinessUrl(wellnessContent, 'https://jwherbal-roots-and-remedies.lovable.app'),
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
-      brandColor: {
-        collapsed: 'bg-green-400/90 dark:bg-green-500/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(22, 101, 52, 0.95), rgba(20, 83, 45, 0.9), rgba(22, 101, 52, 0.95))',
-      },
     },
   ];
 
