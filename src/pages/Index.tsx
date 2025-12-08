@@ -97,7 +97,7 @@ const Index = () => {
             <img 
               src={jwLogo} 
               alt="JW Group" 
-              className="h-24 md:h-32 lg:h-40 mx-auto"
+              className="h-32 md:h-40 lg:h-52 mx-auto"
               style={{
                 filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2))'
               }}
