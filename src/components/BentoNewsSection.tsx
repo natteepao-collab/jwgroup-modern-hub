@@ -7,15 +7,67 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-// Placeholder image component for news without images
-const NewsPlaceholder = ({ isLarge = false }: { isLarge?: boolean }) => (
-  <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/10 to-muted flex flex-col items-center justify-center">
-    <ImageIcon className={cn("text-primary/40", isLarge ? "h-16 w-16" : "h-10 w-10")} />
-    <span className={cn("text-primary/50 mt-2", isLarge ? "text-base" : "text-xs")}>
-      รอการอัพโหลดรูปภาพ
-    </span>
-  </div>
-);
+// Enhanced Mockup placeholder for news without images
+const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: boolean; title?: string }) => {
+  // Generate a gradient based on title for variety
+  const gradients = [
+    'from-blue-500/30 via-blue-400/20 to-indigo-500/30',
+    'from-orange-500/30 via-amber-400/20 to-yellow-500/30',
+    'from-green-500/30 via-emerald-400/20 to-teal-500/30',
+    'from-purple-500/30 via-violet-400/20 to-pink-500/30',
+    'from-rose-500/30 via-red-400/20 to-orange-500/30',
+  ];
+  
+  const gradientIndex = title ? title.charCodeAt(0) % gradients.length : 0;
+  const gradient = gradients[gradientIndex];
+
+  return (
+    <div className={cn(
+      "w-full h-full flex flex-col items-center justify-center relative overflow-hidden",
+      `bg-gradient-to-br ${gradient}`
+    )}>
+      {/* Decorative elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-4 left-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
+        <div className="absolute bottom-8 right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
+      </div>
+      
+      {/* Content */}
+      <div className="relative z-10 text-center p-6">
+        <div className={cn(
+          "mx-auto mb-4 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center",
+          isLarge ? "w-20 h-20" : "w-14 h-14"
+        )}>
+          <ImageIcon className={cn(
+            "text-white/70",
+            isLarge ? "h-10 w-10" : "h-7 w-7"
+          )} />
+        </div>
+        <p className={cn(
+          "text-white/80 font-medium",
+          isLarge ? "text-base" : "text-sm"
+        )}>
+          JW GROUP
+        </p>
+        <p className={cn(
+          "text-white/60 mt-1",
+          isLarge ? "text-sm" : "text-xs"
+        )}>
+          รอการอัพโหลดรูปภาพ
+        </p>
+      </div>
+      
+      {/* Pattern overlay */}
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
+    </div>
+  );
+};
 
 type FilterType = 'all' | 'company' | 'press' | 'csr';
 
@@ -139,7 +191,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
       >
         {/* Background Image with Zoom Effect */}
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
-          {news.image && news.image !== '/placeholder.svg' ? (
+          {news.image && news.image !== '/placeholder.svg' && news.image !== '' ? (
             <img
               src={news.image}
               alt={news.title}
@@ -150,7 +202,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
               loading="lazy"
             />
           ) : (
-            <NewsPlaceholder isLarge={isLarge} />
+            <NewsMockupPlaceholder isLarge={isLarge} title={news.title} />
           )}
           {/* Video Play Icon */}
           {news.isVideo && (

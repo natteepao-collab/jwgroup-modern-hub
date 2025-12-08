@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
@@ -83,6 +84,41 @@ export const useNews = () => {
     },
   });
 
+  // Subscribe to realtime updates
+  useEffect(() => {
+    const channel = supabase
+      .channel('news-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'news'
+        },
+        (payload) => {
+          console.log('News realtime update:', payload);
+          // Invalidate and refetch news data
+          queryClient.invalidateQueries({ queryKey: ['news'] });
+          queryClient.invalidateQueries({ queryKey: ['news-admin'] });
+          
+          // Show toast notification for new news
+          if (payload.eventType === 'INSERT') {
+            const newNews = payload.new as NewsItem;
+            if (newNews.is_published) {
+              toast.info('มีข่าวใหม่!', {
+                description: newNews.title_th,
+              });
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   const formattedNews: FormattedNewsItem[] = (newsItems || []).map((item) => ({
     id: item.id,
     title: getLocalizedField(item, 'title'),
@@ -91,7 +127,7 @@ export const useNews = () => {
     category: getCategoryLabel(item.category),
     categoryType: item.category as FormattedNewsItem['categoryType'],
     date: formatDate(item.published_at),
-    image: item.image_url || '/placeholder.svg',
+    image: item.image_url || '',
     isVideo: !!item.video_url,
     isFeatured: item.is_featured,
   }));
@@ -119,6 +155,28 @@ export const useNewsAdmin = () => {
       return data;
     },
   });
+
+  // Subscribe to realtime updates for admin
+  useEffect(() => {
+    const channel = supabase
+      .channel('news-admin-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'news'
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['news-admin'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const createNews = useMutation({
     mutationFn: async (newsData: { title_th: string } & Partial<Omit<NewsItem, 'title_th'>>) => {

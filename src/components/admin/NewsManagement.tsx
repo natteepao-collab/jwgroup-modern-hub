@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useNewsAdmin } from '@/hooks/useNews';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -11,9 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Upload, X, Image as ImageIcon, Loader2, FileImage } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 interface NewsFormData {
   title_th: string;
@@ -49,13 +50,175 @@ const initialFormData: NewsFormData = {
   is_published: true,
 };
 
-// Placeholder image component
-const PlaceholderImage = () => (
-  <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex flex-col items-center justify-center text-muted-foreground">
-    <ImageIcon className="h-8 w-8 mb-2 opacity-50" />
-    <span className="text-xs">ยังไม่มีรูปภาพ</span>
-  </div>
-);
+// Mockup placeholder image for news
+const NewsMockupImage = ({ size = 'default' }: { size?: 'small' | 'default' | 'large' }) => {
+  const sizeClasses = {
+    small: 'h-12',
+    default: 'h-32',
+    large: 'h-48',
+  };
+
+  return (
+    <div className={cn(
+      "w-full bg-gradient-to-br from-primary/30 via-primary/20 to-accent/30 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary/30",
+      sizeClasses[size]
+    )}>
+      <div className="relative">
+        <FileImage className={cn(
+          "text-primary/50",
+          size === 'small' ? 'h-5 w-5' : size === 'large' ? 'h-12 w-12' : 'h-8 w-8'
+        )} />
+        <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary/60 rounded-full animate-pulse" />
+      </div>
+      {size !== 'small' && (
+        <span className={cn(
+          "text-primary/60 mt-2 font-medium",
+          size === 'large' ? 'text-sm' : 'text-xs'
+        )}>
+          รอการอัพโหลดรูปภาพ
+        </span>
+      )}
+    </div>
+  );
+};
+
+// Drag & Drop Upload Component
+interface DragDropUploadProps {
+  onUpload: (file: File) => void;
+  isUploading: boolean;
+  currentImage: string | null;
+  onRemove: () => void;
+}
+
+const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragDropUploadProps) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      if (file.type.startsWith('image/')) {
+        onUpload(file);
+      } else {
+        toast.error('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
+      }
+    }
+  }, [onUpload]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onUpload(file);
+    }
+  };
+
+  if (currentImage) {
+    return (
+      <div className="relative group">
+        <div className="w-full h-48 rounded-lg overflow-hidden border bg-muted">
+          <img 
+            src={currentImage} 
+            alt="Preview" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+          <Button 
+            type="button" 
+            variant="secondary" 
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Upload className="h-4 w-4 mr-2" />
+            เปลี่ยนรูป
+          </Button>
+          <Button 
+            type="button" 
+            variant="destructive" 
+            size="sm"
+            onClick={onRemove}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            ลบ
+          </Button>
+        </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      onClick={() => !isUploading && fileInputRef.current?.click()}
+      className={cn(
+        "w-full h-48 rounded-lg border-2 border-dashed transition-all cursor-pointer",
+        "flex flex-col items-center justify-center gap-3",
+        isDragging 
+          ? "border-primary bg-primary/10 scale-[1.02]" 
+          : "border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/50",
+        isUploading && "pointer-events-none opacity-70"
+      )}
+    >
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      
+      {isUploading ? (
+        <>
+          <Loader2 className="h-10 w-10 text-primary animate-spin" />
+          <span className="text-sm text-muted-foreground">กำลังอัพโหลด...</span>
+        </>
+      ) : (
+        <>
+          <div className={cn(
+            "p-4 rounded-full transition-colors",
+            isDragging ? "bg-primary/20" : "bg-muted"
+          )}>
+            <Upload className={cn(
+              "h-8 w-8 transition-colors",
+              isDragging ? "text-primary" : "text-muted-foreground"
+            )} />
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-medium text-foreground">
+              {isDragging ? 'วางไฟล์ที่นี่' : 'ลากไฟล์มาวางที่นี่'}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              หรือ คลิกเพื่อเลือกไฟล์ (JPG, PNG, WebP สูงสุด 10MB)
+            </p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 export const NewsManagement = () => {
   const { news, isLoading, createNews, updateNews, deleteNews } = useNewsAdmin();
@@ -65,12 +228,8 @@ export const NewsManagement = () => {
   const [activeTab, setActiveTab] = useState<'th' | 'en' | 'cn'>('th');
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const handleImageUpload = async (file: File) => {
     // Validate file type
     if (!file.type.startsWith('image/')) {
       toast.error('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
@@ -132,9 +291,6 @@ export const NewsManagement = () => {
     
     setFormData({ ...formData, image_url: '' });
     setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
     toast.success('ลบรูปภาพสำเร็จ');
   };
 
@@ -177,10 +333,8 @@ export const NewsManagement = () => {
 
   const handleDelete = async (id: string) => {
     if (confirm('คุณต้องการลบข่าวนี้หรือไม่?')) {
-      // Find the news item to get its image URL
       const newsItem = news.find((n: any) => n.id === id);
       if (newsItem?.image_url) {
-        // Delete image from storage
         const urlParts = newsItem.image_url.split('/news-images/');
         if (urlParts.length > 1) {
           try {
@@ -231,7 +385,12 @@ export const NewsManagement = () => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>จัดการข่าวสาร</CardTitle>
+        <div>
+          <CardTitle>จัดการข่าวสาร</CardTitle>
+          <p className="text-sm text-muted-foreground mt-1">
+            ข่าวจะอัพเดทอัตโนมัติแบบ Realtime
+          </p>
+        </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleOpenDialog}>
@@ -244,67 +403,15 @@ export const NewsManagement = () => {
               <DialogTitle>{editingId ? 'แก้ไขข่าว' : 'เพิ่มข่าวใหม่'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Image Upload Section */}
+              {/* Drag & Drop Image Upload Section */}
               <div className="space-y-3">
                 <Label>รูปภาพข่าว</Label>
-                <div className="flex gap-4">
-                  {/* Image Preview */}
-                  <div className="w-48 h-32 rounded-lg overflow-hidden border bg-muted flex-shrink-0">
-                    {imagePreview || formData.image_url ? (
-                      <img 
-                        src={imagePreview || formData.image_url} 
-                        alt="Preview" 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <PlaceholderImage />
-                    )}
-                  </div>
-                  
-                  {/* Upload Controls */}
-                  <div className="flex flex-col gap-2 justify-center">
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={isUploading}
-                    >
-                      {isUploading ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          กำลังอัพโหลด...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="h-4 w-4 mr-2" />
-                          อัพโหลดรูปภาพ
-                        </>
-                      )}
-                    </Button>
-                    {(imagePreview || formData.image_url) && (
-                      <Button 
-                        type="button" 
-                        variant="destructive" 
-                        size="sm"
-                        onClick={handleRemoveImage}
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        ลบรูปภาพ
-                      </Button>
-                    )}
-                    <p className="text-xs text-muted-foreground">
-                      รองรับ JPG, PNG, WebP (สูงสุด 10MB)
-                    </p>
-                  </div>
-                </div>
+                <DragDropUpload
+                  onUpload={handleImageUpload}
+                  isUploading={isUploading}
+                  currentImage={imagePreview || formData.image_url || null}
+                  onRemove={handleRemoveImage}
+                />
               </div>
 
               {/* Language Tabs */}
@@ -500,7 +607,7 @@ export const NewsManagement = () => {
             {news.map((item: any) => (
               <TableRow key={item.id}>
                 <TableCell>
-                  <div className="w-16 h-12 rounded overflow-hidden bg-muted">
+                  <div className="w-16 h-12 rounded overflow-hidden">
                     {item.image_url ? (
                       <img 
                         src={item.image_url} 
@@ -508,7 +615,7 @@ export const NewsManagement = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <PlaceholderImage />
+                      <NewsMockupImage size="small" />
                     )}
                   </div>
                 </TableCell>
