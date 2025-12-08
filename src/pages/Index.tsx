@@ -10,6 +10,7 @@ import Hero3DBackground from '@/components/Hero3DBackground';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { useNews } from '@/hooks/useNews';
 import { ChairmanQuote } from '@/components/ChairmanQuote';
+import { GoogleMapSection } from '@/components/GoogleMapSection';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -317,6 +318,9 @@ const Index = () => {
           </Button>
         </div>
       </section>
+
+      {/* Google Map Section */}
+      <GoogleMapSection />
     </div>
   );
 };
