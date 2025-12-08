@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -15,9 +15,11 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
 import jwLogo from '@/assets/jw-group-logo-full.png';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const Navbar = () => {
   const { t } = useTranslation();
+  const { user, isAdmin } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -167,12 +169,25 @@ export const Navbar = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
+            {/* Admin Panel Button */}
+            <Link to={user ? '/admin' : '/auth'}>
+              <Button variant="ghost" size="sm" className="flex items-center gap-1.5">
+                <Shield className="h-4 w-4" />
+                <span className="text-xs">Admin</span>
+              </Button>
+            </Link>
+
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
+            <Link to={user ? '/admin' : '/auth'}>
+              <Button variant="ghost" size="icon">
+                <Shield className="h-4 w-4" />
+              </Button>
+            </Link>
             <ThemeToggle />
             <LanguageSwitcher />
             <Button
