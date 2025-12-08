@@ -12,13 +12,15 @@ import {
   Image as ImageIcon,
   Home,
   Users,
-  Settings
+  Settings,
+  Newspaper
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ContentManagement } from '@/components/admin/ContentManagement';
 import { ImageManagement } from '@/components/admin/ImageManagement';
 import { ChairmanImageUpload } from '@/components/admin/ChairmanImageUpload';
+import { NewsManagement } from '@/components/admin/NewsManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -100,8 +102,12 @@ const Admin = () => {
           <p className="text-muted-foreground mt-1">แก้ไขเนื้อหา รูปภาพ และจัดการผู้ใช้งาน</p>
         </div>
 
-        <Tabs defaultValue="content" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="news" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="news" className="flex items-center gap-2">
+              <Newspaper className="h-4 w-4" />
+              <span className="hidden sm:inline">ข่าวสาร</span>
+            </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">เนื้อหา</span>
@@ -119,6 +125,10 @@ const Admin = () => {
               <span className="hidden sm:inline">ตั้งค่า</span>
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="news">
+            <NewsManagement />
+          </TabsContent>
 
           <TabsContent value="content">
             <ContentManagement />
