@@ -1,11 +1,22 @@
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
 export const GoogleMapSection = () => {
   const { t } = useTranslation();
+  const { getContent } = useSiteContent();
   
-  // Coordinates: 13.9264, 100.6043136
-  const mapSrc = "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2738.3039992956906!2d100.5983544271213!3d13.926024549077948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x30e2826bc528edb1%3A0x1a95b4253779ef2c!2sJW%20Group%20Head%20Office!3m2!1d13.9273592!2d100.600054!4m5!1s0x30e2826bc528edb1%3A0x1a95b4253779ef2c!2z4LmA4Lil4LiC4LiX4Li14LmIIDkg4LiL4Lit4Lia4Liq4Lij4LiT4LiE4Lih4LiZ4LmMIDEyIFRoYW5vbiBTb25nIFByYXBoYSwgU2kgS2FuLCBEb24gTXVlYW5nLCBCYW5na29rIDEwMjEw!3m2!1d13.9273592!2d100.600054!5e0!3m2!1sth!2sth!4v1765186944901!5m2!1sth!2sth";
+  // Get contact data from database
+  const addressContent = getContent('contact_address');
+  const phoneContent = getContent('contact_phone');
+  const emailContent = getContent('contact_email');
+  const hoursContent = getContent('contact_hours');
+  const mapContent = getContent('contact_map');
+
+  // Default map URL fallback
+  const defaultMapSrc = "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2738.3039992956906!2d100.5983544271213!3d13.926024549077948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x30e2826bc528edb1%3A0x1a95b4253779ef2c!2sJW%20Group%20Head%20Office!3m2!1d13.9273592!2d100.600054!4m5!1s0x30e2826bc528edb1%3A0x1a95b4253779ef2c!2z4LmA4Lil4LiC4LiX4Li14LmIIDkg4LiL4Lit4Lia4Liq4Lij4LiT4LiE4Lih4LiZ4LmMIDEyIFRoYW5vbiBTb25nIFByYXBoYSwgU2kgS2FuLCBEb24gTXVlYW5nLCBCYW5na29rIDEwMjEw!3m2!1d13.9273592!2d100.600054!5e0!3m2!1sth!2sth!4v1765186944901!5m2!1sth!2sth";
+  
+  const mapSrc = mapContent.content || defaultMapSrc;
 
   return (
     <section className="py-16 bg-muted/30">
@@ -34,10 +45,10 @@ export const GoogleMapSection = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">
-                    {t('contact.addressTitle', 'ที่อยู่')}
+                    {addressContent.title || t('contact.addressTitle', 'ที่อยู่')}
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    {t('footer.address', 'เลขที่ 123 อาคาร JW Tower ชั้น 15 ถนนรัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพฯ 10400')}
+                    {addressContent.content || t('footer.address')}
                   </p>
                 </div>
               </div>
@@ -50,10 +61,13 @@ export const GoogleMapSection = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">
-                    {t('contact.phoneTitle', 'โทรศัพท์')}
+                    {phoneContent.title || t('contact.phoneTitle', 'โทรศัพท์')}
                   </h3>
-                  <a href="tel:+6622345678" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    +66 2 234 5678
+                  <a 
+                    href={`tel:${phoneContent.content?.replace(/\s/g, '') || '+6622345678'}`} 
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {phoneContent.content || '+66 2 234 5678'}
                   </a>
                 </div>
               </div>
@@ -66,10 +80,13 @@ export const GoogleMapSection = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">
-                    {t('contact.emailTitle', 'อีเมล')}
+                    {emailContent.title || t('contact.emailTitle', 'อีเมล')}
                   </h3>
-                  <a href="mailto:info@jwgroup.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    info@jwgroup.com
+                  <a 
+                    href={`mailto:${emailContent.content || 'info@jwgroup.com'}`} 
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {emailContent.content || 'info@jwgroup.com'}
                   </a>
                 </div>
               </div>
@@ -82,10 +99,10 @@ export const GoogleMapSection = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">
-                    {t('contact.hoursTitle', 'เวลาทำการ')}
+                    {hoursContent.title || t('contact.hoursTitle', 'เวลาทำการ')}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    {t('footer.hours', 'จันทร์ - ศุกร์: 08:30 - 17:30')}
+                    {hoursContent.content || t('footer.hours')}
                   </p>
                 </div>
               </div>
