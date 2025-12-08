@@ -105,7 +105,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className="flex-1 flex items-center justify-center mt-6"
                   style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
                 >
-                  <span className="text-white font-bold text-xs tracking-[0.25em] uppercase text-center drop-shadow-lg whitespace-nowrap">
+                  <span className="text-white font-bold text-sm tracking-[0.2em] uppercase text-center drop-shadow-lg whitespace-nowrap">
                     {business.name}
                   </span>
                 </div>
