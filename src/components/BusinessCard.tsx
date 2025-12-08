@@ -15,7 +15,7 @@ export const BusinessCard = ({ name, description, url, image }: BusinessCardProp
 
   return (
     <Card className="group hover:shadow-2xl hover:shadow-primary/15 transition-all duration-300 overflow-hidden h-full flex flex-col hover:-translate-y-2">
-      <div className="relative overflow-hidden h-56 bg-gradient-to-br from-muted/50 to-muted flex items-center justify-center p-6">
+      <div className="relative overflow-hidden h-56 bg-white flex items-center justify-center p-6">
         <img
           src={image}
           alt={`${name} - ${description}`}
