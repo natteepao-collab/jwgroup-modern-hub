@@ -8,6 +8,7 @@ import { BentoNewsSection } from '@/components/BentoNewsSection';
 import { AnnouncementModal } from '@/components/AnnouncementModal';
 import Hero3DBackground from '@/components/Hero3DBackground';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { useNews } from '@/hooks/useNews';
 import { ChairmanQuote } from '@/components/ChairmanQuote';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
@@ -26,6 +27,7 @@ const defaultBusinessImages: Record<string, string> = {
 const Index = () => {
   const { t } = useTranslation();
   const { getContent, getImage, isLoading } = useSiteContent();
+  const { news: dbNews, isLoading: newsLoading } = useNews();
 
   // Scroll reveal animations
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -83,54 +85,8 @@ const Index = () => {
     },
   ];
 
-  const mockNews = [
-    {
-      id: '1',
-      title: 'JW Group เปิดตัวโครงการอสังหาริมทรัพย์ใหม่มูลค่ากว่า 5,000 ล้านบาท',
-      excerpt: 'กลุ่มบริษัท JW Group ประกาศเปิดตัวโครงการอสังหาริมทรัพย์ระดับพรีเมียมใจกลางกรุงเทพฯ พร้อมสิ่งอำนวยความสะดวกครบครันและดีไซน์สมัยใหม่',
-      category: t('news.companyNews'),
-      categoryType: 'company' as const,
-      date: '2024-01-15',
-      image: realEstate,
-      isVideo: true,
-    },
-    {
-      id: '2',
-      title: '12 The Residence Hotel คว้ารางวัลโรงแรมบูติกยอดเยี่ยม 2024',
-      excerpt: 'โรงแรม 12 The Residence ได้รับรางวัลโรงแรมบูติกยอดเยี่ยมแห่งปี 2024 จากสมาคมโรงแรมไทย ด้วยมาตรฐานการบริการที่เป็นเลิศ',
-      category: t('news.pressRelease'),
-      categoryType: 'press' as const,
-      date: '2024-01-10',
-      image: hotel,
-    },
-    {
-      id: '3',
-      title: '3DPet Hospital เปิดสาขาใหม่ พร้อมเทคโนโลยีการรักษาสัตว์ล้ำสมัย',
-      excerpt: 'โรงพยาบาลสัตว์ 3DPet ขยายสาขาครั้งใหญ่ พร้อมนำเข้าเทคโนโลยีการรักษาสัตว์ระดับโลก เพื่อให้บริการที่ดีที่สุดแก่สัตว์เลี้ยงของคุณ',
-      category: t('news.companyNews'),
-      categoryType: 'company' as const,
-      date: '2024-01-05',
-      image: pet,
-    },
-    {
-      id: '4',
-      title: 'JW Group ร่วมกับมหาวิทยาลัยชั้นนำพัฒนาผลิตภัณฑ์สมุนไพร',
-      excerpt: 'ความร่วมมือครั้งใหม่ในการวิจัยและพัฒนาผลิตภัณฑ์สมุนไพรและเวลเนส เพื่อสุขภาพที่ดีของคนไทย',
-      category: t('news.companyNews'),
-      categoryType: 'company' as const,
-      date: '2023-12-28',
-      image: wellness,
-    },
-    {
-      id: '5',
-      title: 'JW Group ประกาศนโยบาย ESG และความยั่งยืน',
-      excerpt: 'เปิดตัวนโยบาย ESG ฉบับใหม่ มุ่งสู่องค์กรที่ยั่งยืนและเป็นมิตรต่อสิ่งแวดล้อม',
-      category: t('news.pressRelease'),
-      categoryType: 'press' as const,
-      date: '2023-12-20',
-      image: hotel,
-    },
-  ];
+  // Use database news or empty array while loading
+  const displayNews = dbNews.length > 0 ? dbNews : [];
 
   return (
     <div className="min-h-screen">
@@ -288,7 +244,7 @@ const Index = () => {
           </div>
 
           <BentoNewsSection 
-            news={mockNews} 
+            news={displayNews} 
             showFilters={false}
             maxItems={5}
           />
