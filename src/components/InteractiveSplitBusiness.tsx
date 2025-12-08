@@ -68,7 +68,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
                     isActive 
-                      ? "bg-gradient-to-b from-amber-50/95 via-orange-50/90 to-amber-50/95 dark:from-stone-800/95 dark:via-stone-900/90 dark:to-stone-800/95" 
+                      ? "bg-white dark:bg-stone-900" 
                       : "bg-stone-700/85 dark:bg-stone-800/90"
                   )}
                 />
@@ -169,7 +169,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               className={cn(
                 "rounded-xl overflow-hidden transition-all duration-500 relative",
                 isActive 
-                  ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-stone-800 dark:to-stone-900" 
+                  ? "bg-white dark:bg-stone-900" 
                   : "bg-stone-600 dark:bg-stone-700"
               )}
             >
