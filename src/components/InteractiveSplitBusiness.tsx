@@ -63,25 +63,15 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   />
                 </div>
                 
-                {/* Solid color overlay */}
+                {/* Unified dark overlay */}
                 <div 
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
-                    !isActive && (business.brandColor?.collapsed || "bg-stone-600/85 dark:bg-stone-800/90")
+                    isActive 
+                      ? "bg-gradient-to-b from-amber-50/95 via-orange-50/90 to-amber-50/95 dark:from-stone-800/95 dark:via-stone-900/90 dark:to-stone-800/95" 
+                      : "bg-stone-700/85 dark:bg-stone-800/90"
                   )}
-                  style={isActive ? {
-                    background: `var(--tw-dark, ${business.brandColor?.expandedDark || 'linear-gradient(to bottom, rgba(78, 52, 46, 0.95), rgba(41, 37, 36, 0.9), rgba(78, 52, 46, 0.95))'})`,
-                  } : undefined}
                 />
-                {/* Light mode expanded overlay */}
-                {isActive && (
-                  <div 
-                    className="absolute inset-0 dark:hidden"
-                    style={{
-                      background: business.brandColor?.expanded || 'linear-gradient(to bottom, rgba(255, 251, 235, 0.95), rgba(255, 237, 213, 0.9), rgba(254, 243, 199, 0.95))'
-                    }}
-                  />
-                )}
               </div>
               
               {/* Collapsed State - Logo + Vertical Text */}
@@ -105,7 +95,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className="flex-1 flex items-center justify-center mt-6"
                   style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
                 >
-                  <span className="text-white font-bold text-sm tracking-[0.2em] uppercase text-center drop-shadow-lg whitespace-nowrap">
+                  <span className="text-white font-bold text-sm tracking-[0.2em] uppercase text-center whitespace-nowrap" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 4px 16px rgba(0,0,0,0.5)' }}>
                     {business.name}
                   </span>
                 </div>
@@ -178,11 +168,10 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               key={index}
               className={cn(
                 "rounded-xl overflow-hidden transition-all duration-500 relative",
-                !isActive && (business.brandColor?.collapsed || "bg-stone-500 dark:bg-stone-700")
+                isActive 
+                  ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-stone-800 dark:to-stone-900" 
+                  : "bg-stone-600 dark:bg-stone-700"
               )}
-              style={isActive ? {
-                background: business.brandColor?.expanded || 'linear-gradient(to right, rgba(255, 251, 235, 1), rgba(255, 237, 213, 1))'
-              } : undefined}
             >
               {/* Full-size Background Image for mobile */}
               {!isActive && (
