@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { toast } from 'sonner';
-import { Save, FileText, Home, Building2, Newspaper, Briefcase, Info, RefreshCw } from 'lucide-react';
+import { Save, FileText, Home, Building2, Newspaper, Briefcase, Info, RefreshCw, MessageSquare } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SiteContent {
@@ -36,6 +36,7 @@ const categories: ContentCategory[] = [
   { key: 'business', label: 'ธุรกิจของเรา', icon: <Building2 className="h-4 w-4" />, description: 'ข้อมูลธุรกิจ 4 หมวด' },
   { key: 'news', label: 'ข่าวสาร', icon: <Newspaper className="h-4 w-4" />, description: 'ข่าวและบทความ' },
   { key: 'careers', label: 'ร่วมงานกับเรา', icon: <Briefcase className="h-4 w-4" />, description: 'ข้อมูลสมัครงาน' },
+  { key: 'modal', label: 'Popup Modal', icon: <MessageSquare className="h-4 w-4" />, description: 'ป๊อปอัพต้อนรับ' },
 ];
 
 const sectionLabels: Record<string, string> = {
@@ -51,6 +52,7 @@ const sectionLabels: Record<string, string> = {
   'business_wellness': 'JW Herbal & Wellness',
   'news_section': 'หมวดข่าวสาร',
   'careers_section': 'หมวดร่วมงานกับเรา',
+  'modal_welcome': 'ป๊อปอัพต้อนรับ',
 };
 
 export const ContentManagement = () => {
@@ -126,6 +128,7 @@ export const ContentManagement = () => {
       'business': ['business_section', 'business_realestate', 'business_hotel', 'business_pet', 'business_wellness'],
       'news': ['news_section'],
       'careers': ['careers_section'],
+      'modal': ['modal_welcome'],
     };
 
     const sectionKeys = categoryMapping[category] || [];
@@ -175,7 +178,7 @@ export const ContentManagement = () => {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="hero" className="space-y-4">
-          <TabsList className="grid grid-cols-5 w-full">
+          <TabsList className="grid grid-cols-6 w-full">
             {categories.map(cat => (
               <TabsTrigger key={cat.key} value={cat.key} className="flex items-center gap-2">
                 {cat.icon}
