@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Shield, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -19,7 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export const Navbar = () => {
   const { t } = useTranslation();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -169,13 +169,30 @@ export const Navbar = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* Admin Panel Button */}
-            <Link to={user ? '/admin' : '/auth'}>
-              <Button variant="ghost" size="sm" className="flex items-center gap-1.5">
-                <Shield className="h-4 w-4" />
-                <span className="text-xs">Admin</span>
+            {/* Admin Panel Button - Only visible to admins */}
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="ghost" size="sm" className="flex items-center gap-1.5">
+                  <Shield className="h-4 w-4" />
+                  <span className="text-xs">Admin</span>
+                </Button>
+              </Link>
+            )}
+
+            {/* Login/Logout Button */}
+            {user ? (
+              <Button variant="ghost" size="sm" className="flex items-center gap-1.5" onClick={() => signOut()}>
+                <LogOut className="h-4 w-4" />
+                <span className="text-xs">ออกจากระบบ</span>
               </Button>
-            </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="ghost" size="sm" className="flex items-center gap-1.5">
+                  <LogIn className="h-4 w-4" />
+                  <span className="text-xs">เข้าสู่ระบบ</span>
+                </Button>
+              </Link>
+            )}
 
             <ThemeToggle />
             <LanguageSwitcher />
@@ -183,11 +200,24 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
-            <Link to={user ? '/admin' : '/auth'}>
-              <Button variant="ghost" size="icon">
-                <Shield className="h-4 w-4" />
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="ghost" size="icon">
+                  <Shield className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+            {user ? (
+              <Button variant="ghost" size="icon" onClick={() => signOut()}>
+                <LogOut className="h-4 w-4" />
               </Button>
-            </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="ghost" size="icon">
+                  <LogIn className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
             <ThemeToggle />
             <LanguageSwitcher />
             <Button
