@@ -11,6 +11,7 @@ import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
 import wellness from '@/assets/business-wellness.jpg';
+import jwLogo from '@/assets/jw-group-logo-full.png';
 
 const Index = () => {
   const { t } = useTranslation();
@@ -92,14 +93,13 @@ const Index = () => {
             heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="mb-4">
-            <p className="text-primary text-lg md:text-xl font-bold tracking-wide uppercase mb-2 drop-shadow-lg">
-              {t('hero.welcome')}
-            </p>
+          <div className="mb-6">
+            <img 
+              src={jwLogo} 
+              alt="JW Group" 
+              className="h-24 md:h-32 lg:h-40 mx-auto drop-shadow-2xl"
+            />
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight drop-shadow-2xl">
-            {t('hero.headline')}
-          </h1>
           <p className="text-xl md:text-2xl lg:text-3xl text-white/95 mb-4 max-w-4xl mx-auto font-light drop-shadow-lg">
             {t('hero.tagline')}
           </p>
