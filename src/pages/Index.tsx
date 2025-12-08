@@ -97,7 +97,10 @@ const Index = () => {
             <img 
               src={jwLogo} 
               alt="JW Group" 
-              className="h-24 md:h-32 lg:h-40 mx-auto drop-shadow-2xl"
+              className="h-24 md:h-32 lg:h-40 mx-auto"
+              style={{
+                filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2))'
+              }}
             />
           </div>
           <p className="text-xl md:text-2xl lg:text-3xl text-white/95 mb-4 max-w-4xl mx-auto font-light drop-shadow-lg">
