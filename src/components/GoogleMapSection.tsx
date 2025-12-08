@@ -5,7 +5,7 @@ export const GoogleMapSection = () => {
   const { t } = useTranslation();
   
   // Coordinates: 13.9264, 100.6043136
-  const mapSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3871.5!2d100.6043136!3d13.9264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDU1JzM1LjAiTiAxMDDCsDM2JzE1LjUiRQ!5e0!3m2!1sth!2sth!4v1699999999999!5m2!1sth!2sth";
+  const mapSrc = "https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d2738.3039992956906!2d100.5983544271213!3d13.926024549077948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d13.9264!2d100.6043136!4m5!1s0x30e2826bc528edb1%3A0x1a95b4253779ef2c!2z4LmA4Lil4LiC4LiX4Li14LmIIDkg4LiL4Lit4Lia4Liq4Lij4LiT4LiE4Lih4LiZ4LmMIDEyIFRoYW5vbiBTb25nIFByYXBoYSwgU2kgS2FuLCBEb24gTXVlYW5nLCBCYW5na29rIDEwMjEw!3m2!1d13.9273592!2d100.600054!5e0!3m2!1sth!2sth!4v1765186847162!5m2!1sth!2sth";
 
   return (
     <section className="py-16 bg-muted/30">
