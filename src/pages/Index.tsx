@@ -7,6 +7,7 @@ import { BusinessCard } from '@/components/BusinessCard';
 import { NewsCard } from '@/components/NewsCard';
 import { AnnouncementModal } from '@/components/AnnouncementModal';
 import Hero3DBackground from '@/components/Hero3DBackground';
+import { useSiteContent } from '@/hooks/useSiteContent';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -15,6 +16,7 @@ import jwLogo from '@/assets/jw-group-logo-full.png';
 
 const Index = () => {
   const { t } = useTranslation();
+  const { getContent, isLoading } = useSiteContent();
 
   // Scroll reveal animations
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -104,10 +106,10 @@ const Index = () => {
             />
           </div>
           <p className="text-xl md:text-2xl lg:text-3xl text-white/95 mb-4 max-w-4xl mx-auto font-light drop-shadow-lg">
-            {t('hero.tagline')}
+            {getContent('hero_tagline').content || t('hero.tagline')}
           </p>
           <p className="text-base md:text-lg text-white/90 mb-10 max-w-3xl mx-auto drop-shadow-lg">
-            {t('hero.subheadline')}
+            {getContent('hero_subheadline').content || t('hero.subheadline')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all">
@@ -130,10 +132,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              {t('aboutSection.title')}
+              {getContent('about_section').title || t('aboutSection.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              {t('aboutSection.description')}
+              {getContent('about_section').content || t('aboutSection.description')}
             </p>
           </div>
 
@@ -180,9 +182,11 @@ const Index = () => {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              {t('business.title')}
+              {getContent('business_section').title || t('business.title')}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('business.subtitle')}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {getContent('business_section').content || t('business.subtitle')}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -218,9 +222,11 @@ const Index = () => {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              {t('news.title')}
+              {getContent('news_section').title || t('news.title')}
             </h2>
-            <p className="text-lg text-muted-foreground mb-6">{t('news.subtitle')}</p>
+            <p className="text-lg text-muted-foreground mb-6">
+              {getContent('news_section').content || t('news.subtitle')}
+            </p>
             <Button asChild variant="outline" size="lg">
               <Link to="/news" className="flex items-center gap-2">
                 {t('news.viewAll')}
@@ -295,8 +301,12 @@ const Index = () => {
         ))}
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">{t('careers.title')}</h2>
-          <p className="text-xl mb-8 text-white/90 drop-shadow-md">{t('careers.description')}</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">
+            {getContent('careers_section').title || t('careers.title')}
+          </h2>
+          <p className="text-xl mb-8 text-white/90 drop-shadow-md">
+            {getContent('careers_section').content || t('careers.description')}
+          </p>
           <Button
             asChild
             size="lg"
