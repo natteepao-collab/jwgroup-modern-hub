@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Building2, TrendingUp, Users } from 'lucide-react';
-import { BusinessCard } from '@/components/BusinessCard';
+import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
 import { NewsCard } from '@/components/NewsCard';
 import { AnnouncementModal } from '@/components/AnnouncementModal';
 import Hero3DBackground from '@/components/Hero3DBackground';
@@ -217,21 +217,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {businesses.map((business, index) => (
-              <div
-                key={index}
-                className={`transition-all duration-500 ${
-                  businessInView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <BusinessCard {...business} />
-              </div>
-            ))}
-          </div>
+          <InteractiveSplitBusiness businesses={businesses} />
         </div>
       </section>
 
