@@ -61,6 +61,9 @@ export const Navbar = () => {
     { path: '/about/awards', label: 'รางวัลและความสำเร็จ', icon: Award },
   ];
 
+  // Determine if we need dark text (for light backgrounds when scrolled)
+  const needsDarkText = isScrolled;
+
   return (
     <>
       {/* Main Navbar */}
@@ -69,7 +72,7 @@ export const Navbar = () => {
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           isScrolled
             ? 'bg-card/95 backdrop-blur-md shadow-md py-3'
-            : 'bg-transparent py-4'
+            : 'bg-background/30 backdrop-blur-sm py-4'
         )}
       >
         <div className="container mx-auto px-4">
@@ -77,14 +80,26 @@ export const Navbar = () => {
             {/* Left - Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+              className={cn(
+                "flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-300",
+                "hover:bg-foreground/10",
+                isScrolled 
+                  ? "text-foreground" 
+                  : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+              )}
             >
               <Menu className="h-6 w-6" strokeWidth={2.5} />
-              <span className="text-sm font-semibold tracking-wide hidden sm:inline">เมนู</span>
+              <span className="text-sm font-bold tracking-wide hidden sm:inline uppercase">เมนู</span>
             </button>
 
             {/* Center - Logo */}
-            <Link to="/" className="absolute left-1/2 -translate-x-1/2">
+            <Link 
+              to="/" 
+              className={cn(
+                "absolute left-1/2 -translate-x-1/2",
+                !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+              )}
+            >
               <img 
                 src={jwLogo} 
                 alt="JW Group" 
