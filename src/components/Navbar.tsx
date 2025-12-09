@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Shield, LogIn, LogOut, ChevronRight, Home, Building2, Newspaper, Users, Phone, X, Info, Eye, Network, UserCircle, Award } from 'lucide-react';
+import { Menu, X, Shield, LogIn, LogOut, ChevronRight, Home, Building2, Newspaper, Users, Phone, Info, Eye, Network, UserCircle, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -16,8 +14,8 @@ export const Navbar = () => {
   const { user, isAdmin, signOut } = useAuth();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [aboutExpanded, setAboutExpanded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,10 +25,23 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close sidebar on route change
+  // Close menu on route change
   useEffect(() => {
-    setIsOpen(false);
+    setIsMenuOpen(false);
+    setAboutExpanded(false);
   }, [location.pathname]);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
 
   const isActive = (path: string) => location.pathname === path;
   const isAboutActive = location.pathname.startsWith('/about');
@@ -52,182 +63,233 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled
-          ? 'bg-card/95 backdrop-blur-md shadow-md py-2'
-          : 'bg-transparent py-4'
-      )}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src={jwLogo} 
-              alt="JW Group" 
-              className={cn(
-                "transition-all duration-300",
-                isScrolled ? "h-10" : "h-12"
-              )}
-            />
-          </Link>
+    <>
+      {/* Main Navbar */}
+      <nav
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          isScrolled
+            ? 'bg-card/95 backdrop-blur-md shadow-md py-3'
+            : 'bg-transparent py-4'
+        )}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
+            {/* Left - Hamburger Menu */}
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+            >
+              <Menu className="h-6 w-6" />
+              <span className="text-sm font-medium hidden sm:inline">เมนู</span>
+            </button>
 
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-2">
-            {/* Admin Panel Button - Only visible to admins */}
-            {isAdmin && (
-              <Link to="/admin">
-                <Button variant="ghost" size="icon" className="hidden sm:flex">
-                  <Shield className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
+            {/* Center - Logo */}
+            <Link to="/" className="absolute left-1/2 -translate-x-1/2">
+              <img 
+                src={jwLogo} 
+                alt="JW Group" 
+                className={cn(
+                  "transition-all duration-300",
+                  isScrolled ? "h-8 sm:h-10" : "h-10 sm:h-12"
+                )}
+              />
+            </Link>
 
-            {/* Login/Logout Button */}
-            {user ? (
-              <Button variant="ghost" size="icon" className="hidden sm:flex" onClick={() => signOut()}>
-                <LogOut className="h-4 w-4" />
-              </Button>
-            ) : (
-              <Link to="/auth" className="hidden sm:flex">
-                <Button variant="ghost" size="icon">
-                  <LogIn className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
+            {/* Right - Actions */}
+            <div className="flex items-center gap-1 sm:gap-2">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
+          </div>
+        </div>
+      </nav>
 
-            <ThemeToggle />
-            <LanguageSwitcher />
+      {/* Fullscreen Overlay Menu */}
+      <div
+        className={cn(
+          'fixed inset-0 z-[100] transition-all duration-500',
+          isMenuOpen ? 'visible' : 'invisible'
+        )}
+      >
+        {/* Backdrop */}
+        <div 
+          className={cn(
+            'absolute inset-0 bg-background/98 backdrop-blur-lg transition-opacity duration-500',
+            isMenuOpen ? 'opacity-100' : 'opacity-0'
+          )}
+          onClick={() => setIsMenuOpen(false)}
+        />
 
-            {/* Hamburger Menu Button */}
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="relative"
+        {/* Menu Content */}
+        <div
+          className={cn(
+            'relative h-full w-full overflow-y-auto transition-all duration-500',
+            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
+          )}
+        >
+          {/* Header */}
+          <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
                 >
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent 
-                side="right" 
-                className="w-[320px] sm:w-[380px] p-0 bg-card border-l border-border"
-              >
-                <SheetHeader className="p-6 pb-4 border-b border-border">
-                  <SheetTitle className="flex items-center gap-3">
-                    <img src={jwLogo} alt="JW Group" className="h-10" />
-                  </SheetTitle>
-                </SheetHeader>
+                  <X className="h-6 w-6" />
+                  <span className="text-sm font-medium">ปิดเมนู</span>
+                </button>
 
-                {/* Navigation Links */}
-                <div className="flex flex-col py-4">
-                  {/* Home */}
-                  <Link
-                    to="/"
+                <img src={jwLogo} alt="JW Group" className="h-8" />
+
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  <LanguageSwitcher />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Menu Items */}
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-2xl mx-auto">
+              {/* Main Navigation */}
+              <nav className="space-y-1">
+                {/* Home */}
+                <Link
+                  to="/"
+                  className={cn(
+                    'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300 group',
+                    'hover:bg-accent hover:pl-6',
+                    isActive('/') && 'bg-primary/10 text-primary'
+                  )}
+                >
+                  <div className="flex items-center gap-4">
+                    <Home className="h-5 w-5" />
+                    <span className="text-lg font-medium">{t('nav.home')}</span>
+                  </div>
+                  <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+
+                {/* About Us - Expandable */}
+                <div>
+                  <button
+                    onClick={() => setAboutExpanded(!aboutExpanded)}
                     className={cn(
-                      "flex items-center gap-4 px-6 py-4 transition-all duration-200",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      isActive('/') && "bg-primary/10 text-primary border-r-4 border-primary"
+                      'w-full flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300',
+                      'hover:bg-accent hover:pl-6',
+                      isAboutActive && 'bg-primary/10 text-primary'
                     )}
                   >
-                    <Home className="h-5 w-5" />
-                    <span className="font-medium">{t('nav.home')}</span>
-                  </Link>
+                    <div className="flex items-center gap-4">
+                      <Info className="h-5 w-5" />
+                      <span className="text-lg font-medium">{t('nav.about')}</span>
+                    </div>
+                    <ChevronRight 
+                      className={cn(
+                        'h-5 w-5 transition-transform duration-300',
+                        aboutExpanded && 'rotate-90'
+                      )} 
+                    />
+                  </button>
 
-                  {/* About Us - Collapsible */}
-                  <Collapsible open={aboutOpen || isAboutActive} onOpenChange={setAboutOpen}>
-                    <CollapsibleTrigger className={cn(
-                      "flex items-center justify-between w-full px-6 py-4 transition-all duration-200",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      isAboutActive && "bg-primary/10 text-primary border-r-4 border-primary"
-                    )}>
-                      <div className="flex items-center gap-4">
-                        <Info className="h-5 w-5" />
-                        <span className="font-medium">{t('nav.about')}</span>
-                      </div>
-                      <ChevronRight className={cn(
-                        "h-4 w-4 transition-transform duration-200",
-                        (aboutOpen || isAboutActive) && "rotate-90"
-                      )} />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="bg-muted/30">
+                  {/* Submenu */}
+                  <div
+                    className={cn(
+                      'overflow-hidden transition-all duration-300',
+                      aboutExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    )}
+                  >
+                    <div className="pl-8 pr-4 py-2 space-y-1">
                       {aboutSubItems.map((item) => (
                         <Link
                           key={item.path}
                           to={item.path}
                           className={cn(
-                            "flex items-center gap-4 pl-14 pr-6 py-3 transition-all duration-200",
-                            "hover:bg-accent hover:text-accent-foreground text-sm",
-                            isActive(item.path) && "text-primary font-medium"
+                            'flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-300',
+                            'hover:bg-accent hover:pl-6 text-muted-foreground hover:text-foreground',
+                            isActive(item.path) && 'text-primary font-medium'
                           )}
                         >
                           <item.icon className="h-4 w-4" />
                           <span>{item.label}</span>
                         </Link>
                       ))}
-                    </CollapsibleContent>
-                  </Collapsible>
+                    </div>
+                  </div>
+                </div>
 
-                  {/* Other Menu Items */}
-                  {menuItems.slice(1).map((item) => (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      className={cn(
-                        "flex items-center gap-4 px-6 py-4 transition-all duration-200",
-                        "hover:bg-accent hover:text-accent-foreground",
-                        isActive(item.path) && "bg-primary/10 text-primary border-r-4 border-primary"
-                      )}
-                    >
+                {/* Other Menu Items */}
+                {menuItems.slice(1).map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={cn(
+                      'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300 group',
+                      'hover:bg-accent hover:pl-6',
+                      isActive(item.path) && 'bg-primary/10 text-primary'
+                    )}
+                  >
+                    <div className="flex items-center gap-4">
                       <item.icon className="h-5 w-5" />
-                      <span className="font-medium">{item.label}</span>
-                    </Link>
-                  ))}
-                </div>
+                      <span className="text-lg font-medium">{item.label}</span>
+                    </div>
+                    <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                ))}
+              </nav>
 
-                {/* Footer Actions */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border bg-card">
-                  {/* Admin - Mobile Only */}
-                  {isAdmin && (
-                    <Link
-                      to="/admin"
-                      className="flex items-center gap-3 px-4 py-3 mb-3 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                    >
-                      <Shield className="h-5 w-5" />
-                      <span className="font-medium">Admin Panel</span>
-                    </Link>
-                  )}
-                  
-                  {/* Login/Logout */}
-                  {user ? (
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start gap-3" 
-                      onClick={() => {
-                        signOut();
-                        setIsOpen(false);
-                      }}
-                    >
-                      <LogOut className="h-5 w-5" />
-                      <span>ออกจากระบบ</span>
-                    </Button>
-                  ) : (
-                    <Link to="/auth" className="block">
-                      <Button variant="outline" className="w-full justify-start gap-3">
-                        <LogIn className="h-5 w-5" />
-                        <span>เข้าสู่ระบบ</span>
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-              </SheetContent>
-            </Sheet>
+              {/* Divider */}
+              <div className="my-8 border-t border-border" />
+
+              {/* Admin & Auth Section */}
+              <div className="space-y-3">
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center gap-4 py-3 px-4 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                  >
+                    <Shield className="h-5 w-5" />
+                    <span className="font-medium">Admin Panel</span>
+                  </Link>
+                )}
+
+                {user ? (
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-4 py-3 px-4 rounded-xl border border-border hover:bg-accent transition-colors"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    <span className="font-medium">ออกจากระบบ</span>
+                  </button>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="flex items-center gap-4 py-3 px-4 rounded-xl border border-border hover:bg-accent transition-colors"
+                  >
+                    <LogIn className="h-5 w-5" />
+                    <span className="font-medium">เข้าสู่ระบบ</span>
+                  </Link>
+                )}
+              </div>
+
+              {/* Contact Info */}
+              <div className="mt-12 text-center">
+                <p className="text-muted-foreground text-sm mb-2">ติดต่อเรา</p>
+                <a 
+                  href="tel:+6622345678" 
+                  className="text-2xl font-display font-bold text-primary hover:underline"
+                >
+                  02-234-5678
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 };
