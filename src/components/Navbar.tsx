@@ -71,17 +71,21 @@ export const Navbar = () => {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           isScrolled
-            ? 'bg-card/95 backdrop-blur-md shadow-md py-3'
-            : 'bg-background/30 backdrop-blur-sm py-4'
+            ? 'bg-card/95 backdrop-blur-md shadow-md'
+            : 'bg-background/30 backdrop-blur-sm'
         )}
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            {/* Left - Hamburger Menu */}
+          {/* Top Row - Logo, Language, Menu */}
+          <div className={cn(
+            "flex items-center justify-between transition-all duration-300",
+            isScrolled ? "py-2" : "py-3"
+          )}>
+            {/* Left - Empty for balance on desktop, Hamburger on mobile */}
             <button
               onClick={() => setIsMenuOpen(true)}
               className={cn(
-                "flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-300",
+                "flex lg:hidden items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-300",
                 "hover:bg-foreground/10",
                 isScrolled 
                   ? "text-foreground" 
@@ -89,14 +93,16 @@ export const Navbar = () => {
               )}
             >
               <Menu className="h-6 w-6" strokeWidth={2.5} />
-              <span className="text-sm font-bold tracking-wide hidden sm:inline uppercase">เมนู</span>
             </button>
+            
+            {/* Hidden spacer for desktop */}
+            <div className="hidden lg:block w-24" />
 
             {/* Center - Logo */}
             <Link 
               to="/" 
               className={cn(
-                "absolute left-1/2 -translate-x-1/2",
+                "absolute left-1/2 -translate-x-1/2 lg:relative lg:left-auto lg:translate-x-0",
                 !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
               )}
             >
@@ -114,7 +120,59 @@ export const Navbar = () => {
             <div className="flex items-center gap-1 sm:gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
+              {/* Desktop Hamburger */}
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className={cn(
+                  "hidden lg:flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300",
+                  "hover:bg-foreground/10",
+                  isScrolled 
+                    ? "text-foreground" 
+                    : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                <Menu className="h-5 w-5" strokeWidth={2.5} />
+              </button>
             </div>
+          </div>
+
+          {/* Bottom Row - Navigation Links (Desktop Only) */}
+          <div className={cn(
+            "hidden lg:flex items-center justify-center gap-8 border-t border-foreground/10 transition-all duration-300",
+            isScrolled ? "py-2" : "py-3"
+          )}>
+            <Link
+              to="/about/history"
+              className={cn(
+                "text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                isAboutActive ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+              )}
+            >
+              เกี่ยวกับเรา
+            </Link>
+            {menuItems.slice(1).map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                  isActive(item.path) ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={cn(
+                  "text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                  isActive('/admin') ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                Admin
+              </Link>
+            )}
           </div>
         </div>
       </nav>
