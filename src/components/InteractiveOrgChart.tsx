@@ -1,267 +1,242 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Users, Building2, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, Maximize2, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useInView } from 'react-intersection-observer';
-import chairmanImage from '@/assets/executives/chairman-wisit.jpg';
-import directorsImage from '@/assets/executives/directors-team.jpg';
 
-interface TeamMember {
-  name: string;
-  nameTh: string;
-  position: string;
-  positionTh: string;
-  department?: string;
-}
+// Import all slides
+import slide1 from '@/assets/org-slides/slide-1.jpg';
+import slide2 from '@/assets/org-slides/slide-2.jpg';
+import slide3 from '@/assets/org-slides/slide-3.jpg';
+import slide4 from '@/assets/org-slides/slide-4.jpg';
+import slide5 from '@/assets/org-slides/slide-5.jpg';
+import slide6 from '@/assets/org-slides/slide-6.jpg';
 
 const InteractiveOrgChart = () => {
-  const { t, i18n } = useTranslation();
-  const [expandedSection, setExpandedSection] = useState<string | null>('chairman');
+  const { i18n } = useTranslation();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const chairman = {
-    name: 'Mr. Wisit Korworrakul',
-    nameTh: 'คุณวิศิษฏ์ กอวรกุล',
-    position: 'Chairman of Executive Board',
-    positionTh: 'ประธานกรรมการบริหาร',
-  };
-
-  const directors: TeamMember[] = [
-    {
-      name: 'Khun Chalisa Korworrakul',
-      nameTh: 'คุณชลิสา กอวรกุล',
-      position: 'Managing Director',
-      positionTh: 'กรรมการผู้จัดการ',
-    },
-    {
-      name: 'Khun Pornnatcha Korworrakul',
-      nameTh: 'คุณพรณัชชา กอวรกุล',
-      position: 'Managing Director',
-      positionTh: 'กรรมการผู้จัดการ',
-    },
-  ];
-
-  const managementTeam: { category: string; categoryTh: string; members: TeamMember[] }[] = [
-    {
-      category: 'Operations',
-      categoryTh: 'ฝ่ายปฏิบัติการ',
-      members: [
-        { name: 'Piyadech Changradom', nameTh: 'ปิยเดช จันทราดม', position: 'Project Manager', positionTh: 'ผู้จัดการโครงการ' },
-        { name: 'Suchanat Muangnim', nameTh: 'สุชนาฏ เมืองนิม', position: 'Head of Arch & Design', positionTh: 'หัวหน้าฝ่ายสถาปัตย์และออกแบบ' },
-        { name: 'Metika Tawethikul', nameTh: 'เมธิกา ทวีธีรกุล', position: 'Secretary', positionTh: 'เลขานุการ' },
-      ],
-    },
-    {
-      category: 'Corporate Support',
-      categoryTh: 'ฝ่ายสนับสนุนองค์กร',
-      members: [
-        { name: 'Noranat Suphachokkasemsan', nameTh: 'นราณัฐ สุภโชติกเสมสันต์', position: 'Legal Manager', positionTh: 'ผู้จัดการฝ่ายกฎหมาย' },
-        { name: 'Korn-on Ritkhamrop', nameTh: 'กรอรณ์ ริดข้ามแรบ', position: 'HR Manager', positionTh: 'ผู้จัดการฝ่ายทรัพยากรบุคคล' },
-      ],
-    },
-    {
-      category: 'Commercial',
-      categoryTh: 'ฝ่ายพาณิชย์',
-      members: [
-        { name: 'Phansak Chantaphat', nameTh: 'พันธ์ศักดิ์ จันทผาด', position: 'Sales Manager', positionTh: 'ผู้จัดการฝ่ายขาย' },
-        { name: 'Net Thongchan', nameTh: 'เนตร ทองจันทร์', position: 'Accounting & Finance Manager', positionTh: 'ผู้จัดการฝ่ายบัญชีและการเงิน' },
-        { name: 'MN', nameTh: 'MN', position: 'Head of Purchasing', positionTh: 'หัวหน้าฝ่ายจัดซื้อ' },
-        { name: 'Nichanun S.', nameTh: 'นิชานันท์', position: 'Head of Marketing', positionTh: 'หัวหน้าฝ่ายการตลาด' },
-      ],
-    },
+  const slides = [
+    { image: slide1, title: 'Cover', titleTh: 'หน้าปก' },
+    { image: slide2, title: 'Chairman of Executive Board', titleTh: 'ประธานกรรมการบริหาร' },
+    { image: slide3, title: 'Executive Directors', titleTh: 'กรรมการบริหาร' },
+    { image: slide4, title: 'Organizational Structure', titleTh: 'โครงสร้างองค์กร' },
+    { image: slide5, title: 'Management Team', titleTh: 'ทีมผู้บริหาร' },
+    { image: slide6, title: 'Q&A', titleTh: 'ถาม-ตอบ' },
   ];
 
   const isEnglish = i18n.language === 'en';
 
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  return (
-    <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display text-foreground">
-          {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {isEnglish 
-            ? 'JW GROUP Executive Committee - Organization Chart & Management'
-            : 'คณะกรรมการบริหาร JW GROUP - แผนภูมิองค์กรและการบริหาร'}
-        </p>
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Auto-play functionality
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isAutoPlay) {
+      interval = setInterval(() => {
+        nextSlide();
+      }, 4000);
+    }
+    return () => clearInterval(interval);
+  }, [isAutoPlay, nextSlide]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'Escape') setIsFullscreen(false);
+      if (e.key === ' ') {
+        e.preventDefault();
+        setIsAutoPlay((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextSlide]);
+
+  const SlideViewer = ({ fullscreen = false }: { fullscreen?: boolean }) => (
+    <div className={`relative ${fullscreen ? 'h-screen w-screen' : 'aspect-video'} bg-background rounded-2xl overflow-hidden shadow-2xl`}>
+      {/* Slide Image */}
+      <div className="relative w-full h-full">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+              index === currentSlide 
+                ? 'opacity-100 scale-100' 
+                : index < currentSlide 
+                  ? 'opacity-0 -translate-x-full scale-95' 
+                  : 'opacity-0 translate-x-full scale-95'
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={isEnglish ? slide.title : slide.titleTh}
+              className="w-full h-full object-contain bg-gradient-to-br from-muted/50 to-muted"
+            />
+          </div>
+        ))}
       </div>
 
-      {/* Org Chart */}
-      <div className="space-y-6">
-        {/* Chairman */}
-        <div 
-          className={`cursor-pointer transition-all duration-500 ${expandedSection === 'chairman' ? 'scale-100' : 'scale-[0.98]'}`}
-          onClick={() => toggleSection('chairman')}
-        >
-          <Card className={`overflow-hidden border-2 transition-all duration-300 ${expandedSection === 'chairman' ? 'border-primary shadow-2xl' : 'border-border hover:border-primary/50'}`}>
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-full bg-primary/20">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <h2 className="text-xl font-bold text-foreground">
-                  {isEnglish ? 'Chairman of Executive Board' : 'ประธานกรรมการบริหาร'}
-                </h2>
-              </div>
-              {expandedSection === 'chairman' ? <ChevronUp className="h-5 w-5 text-muted-foreground" /> : <ChevronDown className="h-5 w-5 text-muted-foreground" />}
-            </div>
-            
-            <div className={`transition-all duration-500 overflow-hidden ${expandedSection === 'chairman' ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row items-center gap-8">
-                  <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-xl flex-shrink-0 ring-4 ring-primary/20">
-                    <img 
-                      src={chairmanImage} 
-                      alt={chairman.name}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-110"
-                    />
-                  </div>
-                  <div className="text-center md:text-left">
-                    <h3 className="text-3xl font-bold text-foreground mb-2">
-                      {isEnglish ? chairman.name : chairman.nameTh}
-                    </h3>
-                    <Badge variant="secondary" className="text-lg px-4 py-1 bg-primary/10 text-primary">
-                      {isEnglish ? chairman.position : chairman.positionTh}
-                    </Badge>
-                    <p className="mt-4 text-muted-foreground max-w-md">
-                      {isEnglish 
-                        ? 'Leading JW GROUP with vision and expertise in real estate, hospitality, and wellness industries.'
-                        : 'นำทีม JW GROUP ด้วยวิสัยทัศน์และความเชี่ยวชาญในอุตสาหกรรมอสังหาริมทรัพย์ การโรงแรม และสุขภาพ'}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </div>
-          </Card>
+      {/* Navigation Arrows */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background backdrop-blur-sm shadow-lg h-12 w-12 rounded-full"
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background backdrop-blur-sm shadow-lg h-12 w-12 rounded-full"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </Button>
+
+      {/* Bottom Controls */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4 md:p-6">
+        <div className="flex items-center justify-between gap-4">
+          {/* Slide Title */}
+          <div className="flex-1">
+            <p className="text-sm text-muted-foreground">
+              {isEnglish ? 'Slide' : 'สไลด์'} {currentSlide + 1} / {slides.length}
+            </p>
+            <h3 className="text-lg md:text-xl font-bold text-foreground">
+              {isEnglish ? slides[currentSlide].title : slides[currentSlide].titleTh}
+            </h3>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsAutoPlay(!isAutoPlay)}
+              className="h-10 w-10 rounded-full bg-primary/10 hover:bg-primary/20"
+            >
+              {isAutoPlay ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+            </Button>
+            {!fullscreen && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsFullscreen(true)}
+                className="h-10 w-10 rounded-full bg-primary/10 hover:bg-primary/20"
+              >
+                <Maximize2 className="h-5 w-5" />
+              </Button>
+            )}
+            {fullscreen && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsFullscreen(false)}
+                className="h-10 w-10 rounded-full bg-primary/10 hover:bg-primary/20"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            )}
+          </div>
         </div>
 
-        {/* Connecting Line */}
-        <div className="flex justify-center">
-          <div className="w-0.5 h-8 bg-gradient-to-b from-primary to-primary/30"></div>
+        {/* Progress Dots */}
+        <div className="flex justify-center gap-2 mt-4">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentSlide 
+                  ? 'w-8 h-2 bg-primary' 
+                  : 'w-2 h-2 bg-muted-foreground/40 hover:bg-muted-foreground/60'
+              }`}
+            />
+          ))}
         </div>
-
-        {/* Managing Directors */}
-        <div 
-          className={`cursor-pointer transition-all duration-500 ${expandedSection === 'directors' ? 'scale-100' : 'scale-[0.98]'}`}
-          onClick={() => toggleSection('directors')}
-        >
-          <Card className={`overflow-hidden border-2 transition-all duration-300 ${expandedSection === 'directors' ? 'border-primary shadow-2xl' : 'border-border hover:border-primary/50'}`}>
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-full bg-primary/20">
-                  <Building2 className="h-6 w-6 text-primary" />
-                </div>
-                <h2 className="text-xl font-bold text-foreground">
-                  {isEnglish ? 'Executive Directors' : 'กรรมการบริหาร'}
-                </h2>
-              </div>
-              {expandedSection === 'directors' ? <ChevronUp className="h-5 w-5 text-muted-foreground" /> : <ChevronDown className="h-5 w-5 text-muted-foreground" />}
-            </div>
-            
-            <div className={`transition-all duration-500 overflow-hidden ${expandedSection === 'directors' ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
-              <CardContent className="p-6">
-                <div className="mb-8">
-                  <div className="w-full h-48 md:h-64 rounded-2xl overflow-hidden shadow-xl ring-4 ring-primary/20">
-                    <img 
-                      src={directorsImage} 
-                      alt="Executive Directors"
-                      className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
-                    />
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {directors.map((director, index) => (
-                    <div 
-                      key={index}
-                      className="p-6 rounded-xl bg-muted/50 hover:bg-muted transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                    >
-                      <h3 className="text-xl font-bold text-foreground mb-2">
-                        {isEnglish ? director.name : director.nameTh}
-                      </h3>
-                      <Badge variant="outline" className="border-primary/50 text-primary">
-                        {isEnglish ? director.position : director.positionTh}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </div>
-          </Card>
-        </div>
-
-        {/* Connecting Line */}
-        <div className="flex justify-center">
-          <div className="w-0.5 h-8 bg-gradient-to-b from-primary to-primary/30"></div>
-        </div>
-
-        {/* Management Team */}
-        <div 
-          className={`cursor-pointer transition-all duration-500 ${expandedSection === 'management' ? 'scale-100' : 'scale-[0.98]'}`}
-          onClick={() => toggleSection('management')}
-        >
-          <Card className={`overflow-hidden border-2 transition-all duration-300 ${expandedSection === 'management' ? 'border-primary shadow-2xl' : 'border-border hover:border-primary/50'}`}>
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-full bg-primary/20">
-                  <Briefcase className="h-6 w-6 text-primary" />
-                </div>
-                <h2 className="text-xl font-bold text-foreground">
-                  {isEnglish ? 'Management Team' : 'ทีมผู้บริหาร'}
-                </h2>
-              </div>
-              {expandedSection === 'management' ? <ChevronUp className="h-5 w-5 text-muted-foreground" /> : <ChevronDown className="h-5 w-5 text-muted-foreground" />}
-            </div>
-            
-            <div className={`transition-all duration-500 overflow-hidden ${expandedSection === 'management' ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-              <CardContent className="p-6">
-                <div className="grid md:grid-cols-3 gap-6">
-                  {managementTeam.map((dept, deptIndex) => (
-                    <div 
-                      key={deptIndex}
-                      className="p-6 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all duration-300"
-                    >
-                      <h3 className="text-lg font-bold text-primary mb-4 pb-2 border-b border-primary/20">
-                        {isEnglish ? dept.category : dept.categoryTh}
-                      </h3>
-                      <div className="space-y-4">
-                        {dept.members.map((member, memberIndex) => (
-                          <div 
-                            key={memberIndex}
-                            className="p-3 rounded-lg bg-background/50 hover:bg-background transition-all duration-300 hover:shadow-md"
-                          >
-                            <p className="font-semibold text-foreground text-sm">
-                              {isEnglish ? member.name : member.nameTh}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              {isEnglish ? member.position : member.positionTh}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </div>
-          </Card>
-        </div>
-      </div>
-
-      {/* Expand All Hint */}
-      <div className="mt-8 text-center">
-        <p className="text-sm text-muted-foreground">
-          {isEnglish 
-            ? '💡 Click on each section to expand/collapse details'
-            : '💡 คลิกที่แต่ละส่วนเพื่อแสดง/ซ่อนรายละเอียด'}
-        </p>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display text-foreground">
+            {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            {isEnglish 
+              ? 'JW GROUP Executive Committee - Organization Chart & Management'
+              : 'คณะกรรมการบริหาร JW GROUP - แผนภูมิองค์กรและการบริหาร'}
+          </p>
+        </div>
+
+        {/* Main Slide Viewer */}
+        <div className="max-w-5xl mx-auto">
+          <SlideViewer />
+        </div>
+
+        {/* Thumbnail Navigation */}
+        <div className="mt-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+            {slides.map((slide, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`relative aspect-video rounded-lg overflow-hidden transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-105 shadow-lg' 
+                    : 'opacity-60 hover:opacity-100 hover:scale-102'
+                }`}
+              >
+                <img
+                  src={slide.image}
+                  alt={isEnglish ? slide.title : slide.titleTh}
+                  className="w-full h-full object-cover"
+                />
+                <div className={`absolute inset-0 bg-primary/20 transition-opacity ${index === currentSlide ? 'opacity-0' : 'opacity-0 hover:opacity-100'}`} />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Keyboard Hints */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            {isEnglish 
+              ? '💡 Use arrow keys to navigate, Space to play/pause, F for fullscreen'
+              : '💡 ใช้ลูกศรซ้าย-ขวาเพื่อเปลี่ยนสไลด์ | Space เพื่อเล่น/หยุดอัตโนมัติ | คลิกขยายเต็มจอ'}
+          </p>
+        </div>
+      </div>
+
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-7xl">
+            <SlideViewer fullscreen />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
