@@ -119,189 +119,179 @@ export const Navbar = () => {
         </div>
       </nav>
 
-      {/* Fullscreen Overlay Menu */}
+      {/* Drawer Overlay Menu */}
       <div
         className={cn(
-          'fixed inset-0 z-[100] transition-all duration-500',
-          isMenuOpen ? 'visible' : 'invisible'
+          'fixed inset-0 z-[100] transition-all duration-300',
+          isMenuOpen ? 'visible' : 'invisible pointer-events-none'
         )}
       >
-        {/* Solid Dark Backdrop */}
+        {/* Dark Backdrop */}
         <div 
           className={cn(
-            'absolute inset-0 bg-[#1a1a2e] transition-opacity duration-500',
+            'absolute inset-0 bg-black/60 transition-opacity duration-300',
             isMenuOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setIsMenuOpen(false)}
         />
 
-        {/* Menu Content */}
+        {/* Drawer Panel - Slide from Left */}
         <div
           className={cn(
-            'relative h-full w-full overflow-y-auto transition-all duration-500',
-            isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
+            'absolute top-0 left-0 h-full w-[85%] max-w-[400px] bg-[#1a1a2e] shadow-2xl transition-transform duration-300 ease-out overflow-y-auto',
+            isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
           {/* Header */}
           <div className="sticky top-0 z-10 bg-[#1a1a2e] border-b border-white/10">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex items-center justify-between">
+            <div className="px-5 py-4 flex items-center justify-between">
+              <img src={jwLogo} alt="JW Group" className="h-8" />
+              
+              <div className="flex items-center gap-2">
+                <LanguageSwitcher />
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-2.5 text-white/90 hover:text-primary transition-colors"
+                  className="p-2 text-white/80 hover:text-white transition-colors"
                 >
                   <X className="h-6 w-6" strokeWidth={2.5} />
-                  <span className="text-sm font-bold tracking-wide uppercase">ปิดเมนู</span>
                 </button>
-
-                <img src={jwLogo} alt="JW Group" className="h-8" />
-
-                <div className="flex items-center gap-2">
-                  <ThemeToggle />
-                  <LanguageSwitcher />
-                </div>
               </div>
             </div>
           </div>
 
           {/* Menu Items */}
-          <div className="container mx-auto px-4 py-10">
-            <div className="max-w-xl mx-auto">
-              {/* Main Navigation */}
-              <nav className="space-y-3">
-                {/* Home */}
-                <Link
-                  to="/"
+          <div className="px-5 py-6">
+            {/* Main Navigation */}
+            <nav className="space-y-1">
+              {/* Home */}
+              <Link
+                to="/"
+                className={cn(
+                  'flex items-center gap-4 py-4 px-4 rounded-xl transition-all duration-200',
+                  'hover:bg-white/10',
+                  isActive('/') ? 'text-primary' : 'text-white'
+                )}
+              >
+                <Home className="h-5 w-5" strokeWidth={2} />
+                <span className="text-base font-semibold">หน้าแรก</span>
+              </Link>
+
+              {/* About Us - Expandable */}
+              <div>
+                <button
+                  onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
-                    'flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300 group',
-                    'hover:bg-white/10 hover:pl-8',
-                    isActive('/') ? 'bg-primary/20 text-primary' : 'text-white'
+                    'w-full flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-200',
+                    'hover:bg-white/10',
+                    isAboutActive ? 'text-primary' : 'text-white'
                   )}
                 >
-                  <div className="flex items-center gap-5">
-                    <Home className="h-6 w-6" strokeWidth={2.5} />
-                    <span className="text-xl font-bold tracking-wide">หน้าแรก</span>
+                  <div className="flex items-center gap-4">
+                    <Info className="h-5 w-5" strokeWidth={2} />
+                    <span className="text-base font-semibold">เกี่ยวกับเรา</span>
                   </div>
-                  <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
-                </Link>
-
-                {/* About Us - Expandable */}
-                <div>
-                  <button
-                    onClick={() => setAboutExpanded(!aboutExpanded)}
+                  <ChevronRight 
                     className={cn(
-                      'w-full flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300',
-                      'hover:bg-white/10 hover:pl-8',
-                      isAboutActive ? 'bg-primary/20 text-primary' : 'text-white'
-                    )}
-                  >
-                    <div className="flex items-center gap-5">
-                      <Info className="h-6 w-6" strokeWidth={2.5} />
-                      <span className="text-xl font-bold tracking-wide">เกี่ยวกับเรา</span>
-                    </div>
-                    <ChevronRight 
-                      className={cn(
-                        'h-5 w-5 transition-transform duration-300',
-                        aboutExpanded && 'rotate-90'
-                      )} 
-                    />
-                  </button>
+                      'h-5 w-5 transition-transform duration-300',
+                      aboutExpanded && 'rotate-90'
+                    )} 
+                  />
+                </button>
 
-                  {/* Submenu */}
-                  <div
-                    className={cn(
-                      'overflow-hidden transition-all duration-400 ease-out',
-                      aboutExpanded ? 'max-h-[400px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                    )}
-                  >
-                    <div className="ml-8 pl-6 border-l-2 border-primary/50 space-y-1">
-                      {aboutSubItems.map((item) => (
-                        <Link
-                          key={item.path}
-                          to={item.path}
-                          className={cn(
-                            'flex items-center gap-4 py-3 px-4 rounded-xl transition-all duration-300',
-                            'hover:bg-white/10 hover:pl-6',
-                            isActive(item.path) 
-                              ? 'text-primary font-bold' 
-                              : 'text-white/80 hover:text-white'
-                          )}
-                        >
-                          <item.icon className="h-5 w-5" strokeWidth={2} />
-                          <span className="font-semibold tracking-wide">{item.label}</span>
-                        </Link>
-                      ))}
-                    </div>
+                {/* Submenu */}
+                <div
+                  className={cn(
+                    'overflow-hidden transition-all duration-300 ease-out',
+                    aboutExpanded ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+                  )}
+                >
+                  <div className="ml-9 border-l border-white/20 space-y-1 py-1">
+                    {aboutSubItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={cn(
+                          'flex items-center gap-3 py-3 px-4 transition-all duration-200',
+                          'hover:bg-white/10 rounded-r-lg',
+                          isActive(item.path) 
+                            ? 'text-primary font-semibold' 
+                            : 'text-white/70 hover:text-white'
+                        )}
+                      >
+                        <item.icon className="h-4 w-4" strokeWidth={2} />
+                        <span className="text-sm">{item.label}</span>
+                      </Link>
+                    ))}
                   </div>
                 </div>
-
-                {/* Other Menu Items */}
-                {menuItems.slice(1).map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={cn(
-                      'flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300 group',
-                      'hover:bg-white/10 hover:pl-8',
-                      isActive(item.path) ? 'bg-primary/20 text-primary' : 'text-white'
-                    )}
-                  >
-                    <div className="flex items-center gap-5">
-                      <item.icon className="h-6 w-6" strokeWidth={2.5} />
-                      <span className="text-xl font-bold tracking-wide">{item.label}</span>
-                    </div>
-                    <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
-                  </Link>
-                ))}
-              </nav>
-
-              {/* Divider */}
-              <div className="my-10 border-t border-white/20" />
-
-              {/* Admin & Auth Section */}
-              <div className="space-y-4">
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    className="flex items-center gap-5 py-4 px-6 rounded-2xl bg-primary/20 text-primary hover:bg-primary/30 transition-all duration-300"
-                  >
-                    <Shield className="h-6 w-6" strokeWidth={2.5} />
-                    <span className="text-lg font-bold tracking-wide">Admin Panel</span>
-                  </Link>
-                )}
-
-                {user ? (
-                  <button
-                    onClick={() => {
-                      signOut();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 hover:border-primary/50 transition-all duration-300"
-                  >
-                    <LogOut className="h-6 w-6" strokeWidth={2.5} />
-                    <span className="text-lg font-bold tracking-wide">ออกจากระบบ</span>
-                  </button>
-                ) : (
-                  <Link
-                    to="/auth"
-                    className="flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 hover:border-primary/50 transition-all duration-300"
-                  >
-                    <LogIn className="h-6 w-6" strokeWidth={2.5} />
-                    <span className="text-lg font-bold tracking-wide">เข้าสู่ระบบ</span>
-                  </Link>
-                )}
               </div>
 
-              {/* Contact Info */}
-              <div className="mt-16 text-center">
-                <p className="text-white/50 text-sm font-semibold tracking-widest uppercase mb-3">ติดต่อเรา</p>
-                <a 
-                  href="tel:+6622345678" 
-                  className="text-3xl font-display font-bold text-primary hover:text-primary/80 transition-colors tracking-wider"
+              {/* Other Menu Items */}
+              {menuItems.slice(1).map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-200',
+                    'hover:bg-white/10',
+                    isActive(item.path) ? 'text-primary' : 'text-white'
+                  )}
                 >
-                  02-234-5678
-                </a>
-              </div>
+                  <div className="flex items-center gap-4">
+                    <item.icon className="h-5 w-5" strokeWidth={2} />
+                    <span className="text-base font-semibold">{item.label}</span>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-white/40" />
+                </Link>
+              ))}
+            </nav>
+
+            {/* Divider */}
+            <div className="my-6 border-t border-white/10" />
+
+            {/* Admin & Auth Section */}
+            <div className="space-y-2">
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-4 py-3 px-4 rounded-xl bg-primary/20 text-primary hover:bg-primary/30 transition-all duration-200"
+                >
+                  <Shield className="h-5 w-5" strokeWidth={2} />
+                  <span className="text-sm font-semibold">Admin Panel</span>
+                </Link>
+              )}
+
+              {user ? (
+                <button
+                  onClick={() => {
+                    signOut();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-4 py-3 px-4 rounded-xl text-white/70 hover:bg-white/10 transition-all duration-200"
+                >
+                  <LogOut className="h-5 w-5" strokeWidth={2} />
+                  <span className="text-sm font-semibold">ออกจากระบบ</span>
+                </button>
+              ) : (
+                <Link
+                  to="/auth"
+                  className="flex items-center gap-4 py-3 px-4 rounded-xl text-white/70 hover:bg-white/10 transition-all duration-200"
+                >
+                  <LogIn className="h-5 w-5" strokeWidth={2} />
+                  <span className="text-sm font-semibold">เข้าสู่ระบบ</span>
+                </Link>
+              )}
+            </div>
+
+            {/* Contact Info */}
+            <div className="mt-10 px-4">
+              <p className="text-white/40 text-xs font-semibold uppercase tracking-wider mb-2">ติดต่อเรา</p>
+              <a 
+                href="tel:+6622345678" 
+                className="text-xl font-bold text-primary hover:text-primary/80 transition-colors"
+              >
+                02-234-5678
+              </a>
             </div>
           </div>
         </div>
