@@ -75,19 +75,21 @@ const InteractiveOrgChart = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+            className={`absolute inset-0 transition-all duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] ${
               index === currentSlide 
-                ? 'opacity-100 scale-100' 
-                : index < currentSlide 
-                  ? 'opacity-0 -translate-x-full scale-95' 
-                  : 'opacity-0 translate-x-full scale-95'
+                ? 'opacity-100 scale-100 z-10' 
+                : 'opacity-0 scale-110 z-0 blur-sm'
             }`}
           >
-            <img
-              src={slide.image}
-              alt={isEnglish ? slide.title : slide.titleTh}
-              className={`w-full h-full object-contain bg-gradient-to-br from-muted/50 to-muted ${slide.rotate ? 'rotate-180' : ''}`}
-            />
+            <div className={`w-full h-full transition-transform duration-1000 ${
+              index === currentSlide ? 'scale-100' : 'scale-105'
+            }`}>
+              <img
+                src={slide.image}
+                alt={isEnglish ? slide.title : slide.titleTh}
+                className={`w-full h-full object-contain bg-gradient-to-br from-muted/50 to-muted transition-all duration-700 ${slide.rotate ? 'rotate-180' : ''}`}
+              />
+            </div>
           </div>
         ))}
       </div>
