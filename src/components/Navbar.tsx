@@ -152,10 +152,10 @@ export const Navbar = () => {
             >
               <button
                 className={cn(
-                  "relative flex items-center gap-1 text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                  "relative flex items-center gap-1 text-base font-bold tracking-wide transition-all duration-200 hover:text-primary",
                   "after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-primary after:transition-all after:duration-300",
                   aboutDropdownOpen || isAboutActive ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  isAboutActive ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  isAboutActive ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
                 เกี่ยวกับเรา
@@ -197,10 +197,10 @@ export const Navbar = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "relative text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                  "relative text-base font-bold tracking-wide transition-all duration-200 hover:text-primary",
                   "after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-primary after:transition-all after:duration-300",
                   isActive(item.path) ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  isActive(item.path) ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  isActive(item.path) ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
                 {item.label}
@@ -210,10 +210,10 @@ export const Navbar = () => {
               <Link
                 to="/admin"
                 className={cn(
-                  "relative text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                  "relative text-base font-bold tracking-wide transition-all duration-200 hover:text-primary",
                   "after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-primary after:transition-all after:duration-300",
                   isActive('/admin') ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  isActive('/admin') ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  isActive('/admin') ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
                 Admin
