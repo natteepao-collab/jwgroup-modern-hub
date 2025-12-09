@@ -126,10 +126,10 @@ export const Navbar = () => {
           isMenuOpen ? 'visible' : 'invisible'
         )}
       >
-        {/* Backdrop */}
+        {/* Solid Dark Backdrop */}
         <div 
           className={cn(
-            'absolute inset-0 bg-secondary/98 backdrop-blur-xl transition-opacity duration-500',
+            'absolute inset-0 bg-[#1a1a2e] transition-opacity duration-500',
             isMenuOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setIsMenuOpen(false)}
@@ -143,15 +143,15 @@ export const Navbar = () => {
           )}
         >
           {/* Header */}
-          <div className="sticky top-0 z-10 bg-secondary/80 backdrop-blur-md border-b border-border/20">
+          <div className="sticky top-0 z-10 bg-[#1a1a2e] border-b border-white/10">
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-2 text-secondary-foreground hover:text-primary transition-colors"
+                  className="flex items-center gap-2.5 text-white/90 hover:text-primary transition-colors"
                 >
                   <X className="h-6 w-6" strokeWidth={2.5} />
-                  <span className="text-sm font-semibold tracking-wide">ปิดเมนู</span>
+                  <span className="text-sm font-bold tracking-wide uppercase">ปิดเมนู</span>
                 </button>
 
                 <img src={jwLogo} alt="JW Group" className="h-8" />
@@ -168,19 +168,19 @@ export const Navbar = () => {
           <div className="container mx-auto px-4 py-10">
             <div className="max-w-xl mx-auto">
               {/* Main Navigation */}
-              <nav className="space-y-2">
+              <nav className="space-y-3">
                 {/* Home */}
                 <Link
                   to="/"
                   className={cn(
                     'flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300 group',
-                    'hover:bg-primary/10 hover:pl-8',
-                    isActive('/') ? 'bg-primary/15 text-primary' : 'text-secondary-foreground'
+                    'hover:bg-white/10 hover:pl-8',
+                    isActive('/') ? 'bg-primary/20 text-primary' : 'text-white'
                   )}
                 >
                   <div className="flex items-center gap-5">
-                    <Home className="h-6 w-6" strokeWidth={2} />
-                    <span className="text-xl font-semibold tracking-wide">หน้าแรก</span>
+                    <Home className="h-6 w-6" strokeWidth={2.5} />
+                    <span className="text-xl font-bold tracking-wide">หน้าแรก</span>
                   </div>
                   <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
                 </Link>
@@ -191,13 +191,13 @@ export const Navbar = () => {
                     onClick={() => setAboutExpanded(!aboutExpanded)}
                     className={cn(
                       'w-full flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300',
-                      'hover:bg-primary/10 hover:pl-8',
-                      isAboutActive ? 'bg-primary/15 text-primary' : 'text-secondary-foreground'
+                      'hover:bg-white/10 hover:pl-8',
+                      isAboutActive ? 'bg-primary/20 text-primary' : 'text-white'
                     )}
                   >
                     <div className="flex items-center gap-5">
-                      <Info className="h-6 w-6" strokeWidth={2} />
-                      <span className="text-xl font-semibold tracking-wide">เกี่ยวกับเรา</span>
+                      <Info className="h-6 w-6" strokeWidth={2.5} />
+                      <span className="text-xl font-bold tracking-wide">เกี่ยวกับเรา</span>
                     </div>
                     <ChevronRight 
                       className={cn(
@@ -214,21 +214,21 @@ export const Navbar = () => {
                       aboutExpanded ? 'max-h-[400px] opacity-100 mt-2' : 'max-h-0 opacity-0'
                     )}
                   >
-                    <div className="ml-8 pl-6 border-l-2 border-primary/30 space-y-1">
+                    <div className="ml-8 pl-6 border-l-2 border-primary/50 space-y-1">
                       {aboutSubItems.map((item) => (
                         <Link
                           key={item.path}
                           to={item.path}
                           className={cn(
                             'flex items-center gap-4 py-3 px-4 rounded-xl transition-all duration-300',
-                            'hover:bg-primary/10 hover:pl-6',
+                            'hover:bg-white/10 hover:pl-6',
                             isActive(item.path) 
-                              ? 'text-primary font-semibold' 
-                              : 'text-secondary-foreground/80 hover:text-secondary-foreground'
+                              ? 'text-primary font-bold' 
+                              : 'text-white/80 hover:text-white'
                           )}
                         >
                           <item.icon className="h-5 w-5" strokeWidth={2} />
-                          <span className="font-medium tracking-wide">{item.label}</span>
+                          <span className="font-semibold tracking-wide">{item.label}</span>
                         </Link>
                       ))}
                     </div>
@@ -242,13 +242,13 @@ export const Navbar = () => {
                     to={item.path}
                     className={cn(
                       'flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300 group',
-                      'hover:bg-primary/10 hover:pl-8',
-                      isActive(item.path) ? 'bg-primary/15 text-primary' : 'text-secondary-foreground'
+                      'hover:bg-white/10 hover:pl-8',
+                      isActive(item.path) ? 'bg-primary/20 text-primary' : 'text-white'
                     )}
                   >
                     <div className="flex items-center gap-5">
-                      <item.icon className="h-6 w-6" strokeWidth={2} />
-                      <span className="text-xl font-semibold tracking-wide">{item.label}</span>
+                      <item.icon className="h-6 w-6" strokeWidth={2.5} />
+                      <span className="text-xl font-bold tracking-wide">{item.label}</span>
                     </div>
                     <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
                   </Link>
@@ -256,17 +256,17 @@ export const Navbar = () => {
               </nav>
 
               {/* Divider */}
-              <div className="my-10 border-t border-border/30" />
+              <div className="my-10 border-t border-white/20" />
 
               {/* Admin & Auth Section */}
               <div className="space-y-4">
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center gap-5 py-4 px-6 rounded-2xl bg-primary/15 text-primary hover:bg-primary/25 transition-all duration-300"
+                    className="flex items-center gap-5 py-4 px-6 rounded-2xl bg-primary/20 text-primary hover:bg-primary/30 transition-all duration-300"
                   >
-                    <Shield className="h-6 w-6" strokeWidth={2} />
-                    <span className="text-lg font-semibold tracking-wide">Admin Panel</span>
+                    <Shield className="h-6 w-6" strokeWidth={2.5} />
+                    <span className="text-lg font-bold tracking-wide">Admin Panel</span>
                   </Link>
                 )}
 
@@ -276,25 +276,25 @@ export const Navbar = () => {
                       signOut();
                       setIsMenuOpen(false);
                     }}
-                    className="w-full flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-border/50 text-secondary-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
+                    className="w-full flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 hover:border-primary/50 transition-all duration-300"
                   >
-                    <LogOut className="h-6 w-6" strokeWidth={2} />
-                    <span className="text-lg font-semibold tracking-wide">ออกจากระบบ</span>
+                    <LogOut className="h-6 w-6" strokeWidth={2.5} />
+                    <span className="text-lg font-bold tracking-wide">ออกจากระบบ</span>
                   </button>
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-border/50 text-secondary-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
+                    className="flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 hover:border-primary/50 transition-all duration-300"
                   >
-                    <LogIn className="h-6 w-6" strokeWidth={2} />
-                    <span className="text-lg font-semibold tracking-wide">เข้าสู่ระบบ</span>
+                    <LogIn className="h-6 w-6" strokeWidth={2.5} />
+                    <span className="text-lg font-bold tracking-wide">เข้าสู่ระบบ</span>
                   </Link>
                 )}
               </div>
 
               {/* Contact Info */}
               <div className="mt-16 text-center">
-                <p className="text-secondary-foreground/60 text-sm font-medium tracking-wider uppercase mb-3">ติดต่อเรา</p>
+                <p className="text-white/50 text-sm font-semibold tracking-widest uppercase mb-3">ติดต่อเรา</p>
                 <a 
                   href="tel:+6622345678" 
                   className="text-3xl font-display font-bold text-primary hover:text-primary/80 transition-colors tracking-wider"
