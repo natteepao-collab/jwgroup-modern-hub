@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Shield, LogIn, LogOut, ChevronRight, Home, Building2, Newspaper, Users, Phone, Info, Eye, Network, UserCircle, Award } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -47,19 +46,19 @@ export const Navbar = () => {
   const isAboutActive = location.pathname.startsWith('/about');
 
   const menuItems = [
-    { path: '/', label: t('nav.home'), icon: Home },
-    { path: '/business', label: t('nav.business'), icon: Building2 },
-    { path: '/news', label: t('nav.news'), icon: Newspaper },
-    { path: '/careers', label: t('nav.careers'), icon: Users },
-    { path: '/contact', label: t('nav.contact'), icon: Phone },
+    { path: '/', label: 'หน้าแรก', icon: Home },
+    { path: '/business', label: 'ธุรกิจของเรา', icon: Building2 },
+    { path: '/news', label: 'ข่าวสาร', icon: Newspaper },
+    { path: '/careers', label: 'ร่วมงานกับเรา', icon: Users },
+    { path: '/contact', label: 'ติดต่อเรา', icon: Phone },
   ];
 
   const aboutSubItems = [
-    { path: '/about/history', label: t('about.history'), icon: Info },
-    { path: '/about/vision', label: t('about.vision'), icon: Eye },
-    { path: '/about/structure', label: t('about.structure'), icon: Network },
-    { path: '/about/team', label: t('about.team'), icon: UserCircle },
-    { path: '/about/awards', label: t('about.awards'), icon: Award },
+    { path: '/about/history', label: 'ประวัติ JW Group', icon: Info },
+    { path: '/about/vision', label: 'วิสัยทัศน์และพันธกิจ', icon: Eye },
+    { path: '/about/structure', label: 'โครงสร้างองค์กร', icon: Network },
+    { path: '/about/team', label: 'ทีมผู้บริหาร', icon: UserCircle },
+    { path: '/about/awards', label: 'รางวัลและความสำเร็จ', icon: Award },
   ];
 
   return (
@@ -80,8 +79,8 @@ export const Navbar = () => {
               onClick={() => setIsMenuOpen(true)}
               className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
             >
-              <Menu className="h-6 w-6" />
-              <span className="text-sm font-medium hidden sm:inline">เมนู</span>
+              <Menu className="h-6 w-6" strokeWidth={2.5} />
+              <span className="text-sm font-semibold tracking-wide hidden sm:inline">เมนู</span>
             </button>
 
             {/* Center - Logo */}
@@ -115,7 +114,7 @@ export const Navbar = () => {
         {/* Backdrop */}
         <div 
           className={cn(
-            'absolute inset-0 bg-background/98 backdrop-blur-lg transition-opacity duration-500',
+            'absolute inset-0 bg-secondary/98 backdrop-blur-xl transition-opacity duration-500',
             isMenuOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setIsMenuOpen(false)}
@@ -129,15 +128,15 @@ export const Navbar = () => {
           )}
         >
           {/* Header */}
-          <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border">
+          <div className="sticky top-0 z-10 bg-secondary/80 backdrop-blur-md border-b border-border/20">
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+                  className="flex items-center gap-2 text-secondary-foreground hover:text-primary transition-colors"
                 >
-                  <X className="h-6 w-6" />
-                  <span className="text-sm font-medium">ปิดเมนู</span>
+                  <X className="h-6 w-6" strokeWidth={2.5} />
+                  <span className="text-sm font-semibold tracking-wide">ปิดเมนู</span>
                 </button>
 
                 <img src={jwLogo} alt="JW Group" className="h-8" />
@@ -151,24 +150,24 @@ export const Navbar = () => {
           </div>
 
           {/* Menu Items */}
-          <div className="container mx-auto px-4 py-8">
-            <div className="max-w-2xl mx-auto">
+          <div className="container mx-auto px-4 py-10">
+            <div className="max-w-xl mx-auto">
               {/* Main Navigation */}
-              <nav className="space-y-1">
+              <nav className="space-y-2">
                 {/* Home */}
                 <Link
                   to="/"
                   className={cn(
-                    'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300 group',
-                    'hover:bg-accent hover:pl-6',
-                    isActive('/') && 'bg-primary/10 text-primary'
+                    'flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300 group',
+                    'hover:bg-primary/10 hover:pl-8',
+                    isActive('/') ? 'bg-primary/15 text-primary' : 'text-secondary-foreground'
                   )}
                 >
-                  <div className="flex items-center gap-4">
-                    <Home className="h-5 w-5" />
-                    <span className="text-lg font-medium">{t('nav.home')}</span>
+                  <div className="flex items-center gap-5">
+                    <Home className="h-6 w-6" strokeWidth={2} />
+                    <span className="text-xl font-semibold tracking-wide">หน้าแรก</span>
                   </div>
-                  <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
                 </Link>
 
                 {/* About Us - Expandable */}
@@ -176,14 +175,14 @@ export const Navbar = () => {
                   <button
                     onClick={() => setAboutExpanded(!aboutExpanded)}
                     className={cn(
-                      'w-full flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300',
-                      'hover:bg-accent hover:pl-6',
-                      isAboutActive && 'bg-primary/10 text-primary'
+                      'w-full flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300',
+                      'hover:bg-primary/10 hover:pl-8',
+                      isAboutActive ? 'bg-primary/15 text-primary' : 'text-secondary-foreground'
                     )}
                   >
-                    <div className="flex items-center gap-4">
-                      <Info className="h-5 w-5" />
-                      <span className="text-lg font-medium">{t('nav.about')}</span>
+                    <div className="flex items-center gap-5">
+                      <Info className="h-6 w-6" strokeWidth={2} />
+                      <span className="text-xl font-semibold tracking-wide">เกี่ยวกับเรา</span>
                     </div>
                     <ChevronRight 
                       className={cn(
@@ -196,23 +195,25 @@ export const Navbar = () => {
                   {/* Submenu */}
                   <div
                     className={cn(
-                      'overflow-hidden transition-all duration-300',
-                      aboutExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                      'overflow-hidden transition-all duration-400 ease-out',
+                      aboutExpanded ? 'max-h-[400px] opacity-100 mt-2' : 'max-h-0 opacity-0'
                     )}
                   >
-                    <div className="pl-8 pr-4 py-2 space-y-1">
+                    <div className="ml-8 pl-6 border-l-2 border-primary/30 space-y-1">
                       {aboutSubItems.map((item) => (
                         <Link
                           key={item.path}
                           to={item.path}
                           className={cn(
-                            'flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-300',
-                            'hover:bg-accent hover:pl-6 text-muted-foreground hover:text-foreground',
-                            isActive(item.path) && 'text-primary font-medium'
+                            'flex items-center gap-4 py-3 px-4 rounded-xl transition-all duration-300',
+                            'hover:bg-primary/10 hover:pl-6',
+                            isActive(item.path) 
+                              ? 'text-primary font-semibold' 
+                              : 'text-secondary-foreground/80 hover:text-secondary-foreground'
                           )}
                         >
-                          <item.icon className="h-4 w-4" />
-                          <span>{item.label}</span>
+                          <item.icon className="h-5 w-5" strokeWidth={2} />
+                          <span className="font-medium tracking-wide">{item.label}</span>
                         </Link>
                       ))}
                     </div>
@@ -225,32 +226,32 @@ export const Navbar = () => {
                     key={item.path}
                     to={item.path}
                     className={cn(
-                      'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300 group',
-                      'hover:bg-accent hover:pl-6',
-                      isActive(item.path) && 'bg-primary/10 text-primary'
+                      'flex items-center justify-between py-5 px-6 rounded-2xl transition-all duration-300 group',
+                      'hover:bg-primary/10 hover:pl-8',
+                      isActive(item.path) ? 'bg-primary/15 text-primary' : 'text-secondary-foreground'
                     )}
                   >
-                    <div className="flex items-center gap-4">
-                      <item.icon className="h-5 w-5" />
-                      <span className="text-lg font-medium">{item.label}</span>
+                    <div className="flex items-center gap-5">
+                      <item.icon className="h-6 w-6" strokeWidth={2} />
+                      <span className="text-xl font-semibold tracking-wide">{item.label}</span>
                     </div>
-                    <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
                   </Link>
                 ))}
               </nav>
 
               {/* Divider */}
-              <div className="my-8 border-t border-border" />
+              <div className="my-10 border-t border-border/30" />
 
               {/* Admin & Auth Section */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center gap-4 py-3 px-4 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                    className="flex items-center gap-5 py-4 px-6 rounded-2xl bg-primary/15 text-primary hover:bg-primary/25 transition-all duration-300"
                   >
-                    <Shield className="h-5 w-5" />
-                    <span className="font-medium">Admin Panel</span>
+                    <Shield className="h-6 w-6" strokeWidth={2} />
+                    <span className="text-lg font-semibold tracking-wide">Admin Panel</span>
                   </Link>
                 )}
 
@@ -260,28 +261,28 @@ export const Navbar = () => {
                       signOut();
                       setIsMenuOpen(false);
                     }}
-                    className="w-full flex items-center gap-4 py-3 px-4 rounded-xl border border-border hover:bg-accent transition-colors"
+                    className="w-full flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-border/50 text-secondary-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
                   >
-                    <LogOut className="h-5 w-5" />
-                    <span className="font-medium">ออกจากระบบ</span>
+                    <LogOut className="h-6 w-6" strokeWidth={2} />
+                    <span className="text-lg font-semibold tracking-wide">ออกจากระบบ</span>
                   </button>
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center gap-4 py-3 px-4 rounded-xl border border-border hover:bg-accent transition-colors"
+                    className="flex items-center gap-5 py-4 px-6 rounded-2xl border-2 border-border/50 text-secondary-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
                   >
-                    <LogIn className="h-5 w-5" />
-                    <span className="font-medium">เข้าสู่ระบบ</span>
+                    <LogIn className="h-6 w-6" strokeWidth={2} />
+                    <span className="text-lg font-semibold tracking-wide">เข้าสู่ระบบ</span>
                   </Link>
                 )}
               </div>
 
               {/* Contact Info */}
-              <div className="mt-12 text-center">
-                <p className="text-muted-foreground text-sm mb-2">ติดต่อเรา</p>
+              <div className="mt-16 text-center">
+                <p className="text-secondary-foreground/60 text-sm font-medium tracking-wider uppercase mb-3">ติดต่อเรา</p>
                 <a 
                   href="tel:+6622345678" 
-                  className="text-2xl font-display font-bold text-primary hover:underline"
+                  className="text-3xl font-display font-bold text-primary hover:text-primary/80 transition-colors tracking-wider"
                 >
                   02-234-5678
                 </a>
