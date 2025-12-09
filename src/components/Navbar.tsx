@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Shield, LogIn, LogOut, ChevronRight, Home, Building2, Newspaper, Users, Phone, Info, Eye, Network, UserCircle, Award } from 'lucide-react';
+import { Menu, X, Shield, LogIn, LogOut, ChevronRight, ChevronDown, Home, Building2, Newspaper, Users, Phone, Info, Eye, Network, UserCircle, Award } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,8 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [aboutExpanded, setAboutExpanded] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const aboutDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -141,15 +143,53 @@ export const Navbar = () => {
             "hidden lg:flex items-center justify-center gap-8 border-t border-foreground/10 transition-all duration-300",
             isScrolled ? "py-2" : "py-3"
           )}>
-            <Link
-              to="/about/history"
-              className={cn(
-                "text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
-                isAboutActive ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-              )}
+            {/* About Us with Dropdown */}
+            <div 
+              ref={aboutDropdownRef}
+              className="relative"
+              onMouseEnter={() => setAboutDropdownOpen(true)}
+              onMouseLeave={() => setAboutDropdownOpen(false)}
             >
-              เกี่ยวกับเรา
-            </Link>
+              <button
+                className={cn(
+                  "flex items-center gap-1 text-sm font-semibold tracking-wide uppercase transition-all duration-200 hover:text-primary",
+                  isAboutActive ? "text-primary" : isScrolled ? "text-foreground/80" : "text-foreground/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                เกี่ยวกับเรา
+                <ChevronDown className={cn(
+                  "h-4 w-4 transition-transform duration-200",
+                  aboutDropdownOpen && "rotate-180"
+                )} />
+              </button>
+
+              {/* Dropdown Menu */}
+              <div 
+                className={cn(
+                  "absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-200",
+                  aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
+                )}
+              >
+                <div className="bg-card border border-border rounded-xl shadow-xl min-w-[220px] py-2 overflow-hidden">
+                  {aboutSubItems.map((item, index) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 transition-all duration-200",
+                        "hover:bg-primary/10 hover:text-primary",
+                        isActive(item.path) 
+                          ? "text-primary bg-primary/5 font-bold" 
+                          : "text-foreground/80"
+                      )}
+                    >
+                      <item.icon className="h-4 w-4" strokeWidth={2} />
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
             {menuItems.slice(1).map((item) => (
               <Link
                 key={item.path}
