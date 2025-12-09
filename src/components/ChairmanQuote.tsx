@@ -435,9 +435,84 @@ export const ChairmanQuote = ({
 
             {/* Managers Interactive Section - Always below directors */}
             {managers.length > 0 && (
-              <div className={`mt-12 transition-all duration-700 overflow-hidden ${
-                showManagers ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0'
+              <div className={`transition-all duration-700 overflow-hidden ${
+                showManagers ? 'opacity-100 max-h-[600px]' : 'opacity-0 max-h-0'
               }`}>
+                {/* Connecting Lines from Directors to Managers */}
+                {showDirectors && directors.length > 0 && (
+                  <div className={`relative h-16 md:h-20 transition-all duration-500 ${
+                    showManagers ? 'opacity-100' : 'opacity-0'
+                  }`}>
+                    <svg 
+                      className="absolute inset-0 w-full h-full" 
+                      viewBox="0 0 400 60" 
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      {/* Left director vertical line down */}
+                      <line 
+                        x1="100" y1="0" x2="100" y2="25" 
+                        className="stroke-primary/30" 
+                        strokeWidth="2"
+                        strokeDasharray="4 2"
+                        style={{
+                          strokeDashoffset: showManagers ? 0 : 25,
+                          transition: 'stroke-dashoffset 0.4s ease-out'
+                        }}
+                      />
+                      
+                      {/* Right director vertical line down */}
+                      <line 
+                        x1="300" y1="0" x2="300" y2="25" 
+                        className="stroke-primary/30" 
+                        strokeWidth="2"
+                        strokeDasharray="4 2"
+                        style={{
+                          strokeDashoffset: showManagers ? 0 : 25,
+                          transition: 'stroke-dashoffset 0.4s ease-out 0.1s'
+                        }}
+                      />
+                      
+                      {/* Horizontal line connecting both */}
+                      <line 
+                        x1="100" y1="25" x2="300" y2="25" 
+                        className="stroke-primary/30" 
+                        strokeWidth="2"
+                        strokeDasharray="4 2"
+                        style={{
+                          strokeDashoffset: showManagers ? 0 : 200,
+                          transition: 'stroke-dashoffset 0.6s ease-out 0.2s'
+                        }}
+                      />
+                      
+                      {/* Center vertical line down to managers */}
+                      <line 
+                        x1="200" y1="25" x2="200" y2="60" 
+                        className="stroke-primary/30" 
+                        strokeWidth="2"
+                        strokeDasharray="4 2"
+                        style={{
+                          strokeDashoffset: showManagers ? 0 : 35,
+                          transition: 'stroke-dashoffset 0.4s ease-out 0.5s'
+                        }}
+                      />
+
+                      {/* Connection points */}
+                      <circle cx="100" cy="25" r="3" className="fill-primary/40" style={{
+                        opacity: showManagers ? 1 : 0,
+                        transition: 'opacity 0.3s ease-out 0.3s'
+                      }} />
+                      <circle cx="300" cy="25" r="3" className="fill-primary/40" style={{
+                        opacity: showManagers ? 1 : 0,
+                        transition: 'opacity 0.3s ease-out 0.3s'
+                      }} />
+                      <circle cx="200" cy="25" r="3" className="fill-primary/40" style={{
+                        opacity: showManagers ? 1 : 0,
+                        transition: 'opacity 0.3s ease-out 0.4s'
+                      }} />
+                    </svg>
+                  </div>
+                )}
+
                 {/* Section Header */}
                 <div className="text-center mb-6">
                   <h3 className="text-xl md:text-2xl font-bold text-foreground">ทีมผู้จัดการแผนก</h3>
