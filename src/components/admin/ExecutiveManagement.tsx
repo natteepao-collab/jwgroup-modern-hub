@@ -24,7 +24,7 @@ interface Executive {
 }
 
 const departmentOptions = [
-  { value: '', label: 'ไม่ระบุ' },
+  { value: 'none', label: 'ไม่ระบุ' },
   { value: 'real_estate', label: 'อสังหาริมทรัพย์' },
   { value: 'hotel', label: 'โรงแรม' },
   { value: 'veterinary', label: 'สัตวแพทย์' },
@@ -353,8 +353,8 @@ export const ExecutiveManagement = () => {
                     <div className="space-y-2">
                       <Label>แผนก</Label>
                       <Select 
-                        value={executive.department || ''} 
-                        onValueChange={(value) => handleChange(executive.id, 'department', value || null)}
+                        value={executive.department || 'none'} 
+                        onValueChange={(value) => handleChange(executive.id, 'department', value === 'none' ? null : value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="เลือกแผนก" />
