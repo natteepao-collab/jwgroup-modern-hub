@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      executives: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_chairman: boolean
+          name: string
+          position_order: number
+          quote: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_chairman?: boolean
+          name: string
+          position_order?: number
+          quote?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_chairman?: boolean
+          name?: string
+          position_order?: number
+          quote?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           category: string

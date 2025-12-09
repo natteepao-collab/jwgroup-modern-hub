@@ -13,7 +13,8 @@ import {
   Home,
   Users,
   Settings,
-  Newspaper
+  Newspaper,
+  UserCircle
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -21,6 +22,7 @@ import { ContentManagement } from '@/components/admin/ContentManagement';
 import { ImageManagement } from '@/components/admin/ImageManagement';
 import { ChairmanImageUpload } from '@/components/admin/ChairmanImageUpload';
 import { NewsManagement } from '@/components/admin/NewsManagement';
+import { ExecutiveManagement } from '@/components/admin/ExecutiveManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -103,10 +105,14 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
+            </TabsTrigger>
+            <TabsTrigger value="executives" className="flex items-center gap-2">
+              <UserCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">ผู้บริหาร</span>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
@@ -128,6 +134,10 @@ const Admin = () => {
 
           <TabsContent value="news">
             <NewsManagement />
+          </TabsContent>
+
+          <TabsContent value="executives">
+            <ExecutiveManagement />
           </TabsContent>
 
           <TabsContent value="content">
