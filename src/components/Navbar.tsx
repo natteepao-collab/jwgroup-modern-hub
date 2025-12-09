@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Shield, LogIn, LogOut, ChevronRight, ChevronDown, Home, Building2, Newspaper, Users, Phone, Info, Eye, Network, UserCircle, Award } from 'lucide-react';
+import { Menu, X, Shield, LogIn, LogOut, ChevronRight, ChevronDown, Home, Building2, Newspaper, Users, Phone, Info, Eye, Network, UserCircle, Award, Leaf } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -50,6 +50,7 @@ export const Navbar = () => {
   const menuItems = [
     { path: '/', label: 'หน้าแรก', icon: Home },
     { path: '/business', label: 'ธุรกิจของเรา', icon: Building2 },
+    { path: '/sustainability', label: 'ความยั่งยืน', icon: Leaf },
     { path: '/news', label: 'ข่าวสาร', icon: Newspaper },
     { path: '/careers', label: 'ร่วมงานกับเรา', icon: Users },
     { path: '/contact', label: 'ติดต่อเรา', icon: Phone },
