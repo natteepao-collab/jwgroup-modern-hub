@@ -20,12 +20,12 @@ const InteractiveOrgChart = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const slides = [
-    { image: slide1, title: 'Cover', titleTh: 'หน้าปก' },
-    { image: slide2, title: 'Chairman of Executive Board', titleTh: 'ประธานกรรมการบริหาร' },
-    { image: slide3, title: 'Executive Directors', titleTh: 'กรรมการบริหาร' },
-    { image: slide4, title: 'Organizational Structure', titleTh: 'โครงสร้างองค์กร' },
-    { image: slide5, title: 'Management Team', titleTh: 'ทีมผู้บริหาร' },
-    { image: slide6, title: 'Q&A', titleTh: 'ถาม-ตอบ' },
+    { image: slide1, title: 'Cover', titleTh: 'หน้าปก', rotate: true },
+    { image: slide2, title: 'Chairman of Executive Board', titleTh: 'ประธานกรรมการบริหาร', rotate: false },
+    { image: slide3, title: 'Executive Directors', titleTh: 'กรรมการบริหาร', rotate: false },
+    { image: slide4, title: 'Organizational Structure', titleTh: 'โครงสร้างองค์กร', rotate: false },
+    { image: slide5, title: 'Management Team', titleTh: 'ทีมผู้บริหาร', rotate: false },
+    { image: slide6, title: 'Q&A', titleTh: 'ถาม-ตอบ', rotate: false },
   ];
 
   const isEnglish = i18n.language === 'en';
@@ -86,7 +86,7 @@ const InteractiveOrgChart = () => {
             <img
               src={slide.image}
               alt={isEnglish ? slide.title : slide.titleTh}
-              className="w-full h-full object-contain bg-gradient-to-br from-muted/50 to-muted"
+              className={`w-full h-full object-contain bg-gradient-to-br from-muted/50 to-muted ${slide.rotate ? 'rotate-180' : ''}`}
             />
           </div>
         ))}
@@ -210,7 +210,7 @@ const InteractiveOrgChart = () => {
                 <img
                   src={slide.image}
                   alt={isEnglish ? slide.title : slide.titleTh}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover ${slide.rotate ? 'rotate-180' : ''}`}
                 />
                 <div className={`absolute inset-0 bg-primary/20 transition-opacity ${index === currentSlide ? 'opacity-0' : 'opacity-0 hover:opacity-100'}`} />
               </button>
