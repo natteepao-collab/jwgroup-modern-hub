@@ -281,15 +281,6 @@ export const ChairmanQuote = ({
               ))}
             </div>
 
-            {/* Family Connection Label */}
-            <div className={`text-center mt-10 transition-all duration-700 delay-800 ${
-              inView ? 'opacity-100' : 'opacity-0'
-            }`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm text-primary font-medium">
-                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                สืบสานธุรกิจครอบครัว
-              </span>
-            </div>
           </div>
         </div>
       </div>
