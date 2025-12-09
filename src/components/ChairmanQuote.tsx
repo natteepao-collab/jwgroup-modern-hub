@@ -271,116 +271,6 @@ export const ChairmanQuote = ({
               </div>
             </div>
 
-            {/* Managers Interactive Section */}
-            {managers.length > 0 && (
-              <div className={`mt-12 transition-all duration-700 overflow-hidden ${
-                showManagers ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0'
-              }`}>
-                {/* Section Header */}
-                <div className="text-center mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold text-foreground">ทีมผู้จัดการแผนก</h3>
-                  <p className="text-muted-foreground text-sm">เลื่อนเพื่อดูทั้งหมด</p>
-                </div>
-
-                {/* Scroll Navigation */}
-                <div className="relative">
-                  {/* Left Arrow */}
-                  <button
-                    onClick={() => scrollManagers('left')}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background/90 backdrop-blur-sm border border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                    aria-label="เลื่อนไปทางซ้าย"
-                  >
-                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-                  </button>
-
-                  {/* Managers Horizontal Scroll */}
-                  <div 
-                    ref={managersScrollRef}
-                    className="flex gap-6 overflow-x-auto scrollbar-hide px-14 py-4 scroll-smooth"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  >
-                    {managers.map((manager, index) => {
-                      const dept = departmentInfo[manager.department || ''] || { 
-                        name: 'แผนกอื่นๆ', 
-                        color: 'from-gray-500 to-slate-500',
-                        icon: '📋'
-                      };
-                      
-                      return (
-                        <div
-                          key={manager.id}
-                          className="flex-shrink-0 w-64 md:w-72 group"
-                          style={{
-                            animationDelay: `${index * 0.1}s`
-                          }}
-                        >
-                          <div className="bg-card border border-border rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 h-full">
-                            {/* Department Badge */}
-                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${dept.color} text-white text-xs font-medium mb-4`}>
-                              <span>{dept.icon}</span>
-                              <span>{dept.name}</span>
-                            </div>
-
-                            {/* Profile Image */}
-                            <div className="relative w-24 h-24 mx-auto mb-4">
-                              <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${dept.color} opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-300`} />
-                              <div className="relative w-full h-full rounded-full overflow-hidden border-3 border-border group-hover:border-primary transition-colors duration-300">
-                                {manager.image_url ? (
-                                  <img 
-                                    src={manager.image_url} 
-                                    alt={manager.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                  />
-                                ) : (
-                                  <div className={`w-full h-full bg-gradient-to-br ${dept.color} flex items-center justify-center text-white text-3xl`}>
-                                    {manager.name.charAt(0)}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Info */}
-                            <div className="text-center">
-                              <h4 className="font-bold text-foreground text-lg group-hover:text-primary transition-colors duration-300">
-                                {manager.name}
-                              </h4>
-                              <p className="text-primary text-sm font-medium mt-1">
-                                {manager.title}
-                              </p>
-                              {manager.description && (
-                                <p className="text-muted-foreground text-xs mt-3 line-clamp-2">
-                                  {manager.description}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Right Arrow */}
-                  <button
-                    onClick={() => scrollManagers('right')}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background/90 backdrop-blur-sm border border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                    aria-label="เลื่อนไปทางขวา"
-                  >
-                    <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-                  </button>
-                </div>
-
-                {/* Scroll Indicator Dots */}
-                <div className="flex justify-center gap-2 mt-4">
-                  {managers.map((_, index) => (
-                    <div 
-                      key={index}
-                      className="w-2 h-2 rounded-full bg-primary/30"
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Only show directors section if there are directors */}
             {directors.length > 0 && (
               <>
@@ -541,6 +431,116 @@ export const ChairmanQuote = ({
                   </div>
                 )}
               </>
+            )}
+
+            {/* Managers Interactive Section - Always below directors */}
+            {managers.length > 0 && (
+              <div className={`mt-12 transition-all duration-700 overflow-hidden ${
+                showManagers ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0'
+              }`}>
+                {/* Section Header */}
+                <div className="text-center mb-6">
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground">ทีมผู้จัดการแผนก</h3>
+                  <p className="text-muted-foreground text-sm">เลื่อนเพื่อดูทั้งหมด</p>
+                </div>
+
+                {/* Scroll Navigation */}
+                <div className="relative">
+                  {/* Left Arrow */}
+                  <button
+                    onClick={() => scrollManagers('left')}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background/90 backdrop-blur-sm border border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
+                    aria-label="เลื่อนไปทางซ้าย"
+                  >
+                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+                  </button>
+
+                  {/* Managers Horizontal Scroll */}
+                  <div 
+                    ref={managersScrollRef}
+                    className="flex gap-6 overflow-x-auto scrollbar-hide px-14 py-4 scroll-smooth"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    {managers.map((manager, index) => {
+                      const dept = departmentInfo[manager.department || ''] || { 
+                        name: 'แผนกอื่นๆ', 
+                        color: 'from-gray-500 to-slate-500',
+                        icon: '📋'
+                      };
+                      
+                      return (
+                        <div
+                          key={manager.id}
+                          className="flex-shrink-0 w-64 md:w-72 group"
+                          style={{
+                            animationDelay: `${index * 0.1}s`
+                          }}
+                        >
+                          <div className="bg-card border border-border rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 h-full">
+                            {/* Department Badge */}
+                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${dept.color} text-white text-xs font-medium mb-4`}>
+                              <span>{dept.icon}</span>
+                              <span>{dept.name}</span>
+                            </div>
+
+                            {/* Profile Image */}
+                            <div className="relative w-24 h-24 mx-auto mb-4">
+                              <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${dept.color} opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-300`} />
+                              <div className="relative w-full h-full rounded-full overflow-hidden border-3 border-border group-hover:border-primary transition-colors duration-300">
+                                {manager.image_url ? (
+                                  <img 
+                                    src={manager.image_url} 
+                                    alt={manager.name}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  />
+                                ) : (
+                                  <div className={`w-full h-full bg-gradient-to-br ${dept.color} flex items-center justify-center text-white text-3xl`}>
+                                    {manager.name.charAt(0)}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Info */}
+                            <div className="text-center">
+                              <h4 className="font-bold text-foreground text-lg group-hover:text-primary transition-colors duration-300">
+                                {manager.name}
+                              </h4>
+                              <p className="text-primary text-sm font-medium mt-1">
+                                {manager.title}
+                              </p>
+                              {manager.description && (
+                                <p className="text-muted-foreground text-xs mt-3 line-clamp-2">
+                                  {manager.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Right Arrow */}
+                  <button
+                    onClick={() => scrollManagers('right')}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background/90 backdrop-blur-sm border border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
+                    aria-label="เลื่อนไปทางขวา"
+                  >
+                    <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+                  </button>
+                </div>
+
+                {/* Scroll Indicator Dots */}
+                <div className="flex justify-center gap-2 mt-4">
+                  {managers.map((_, index) => (
+                    <div 
+                      key={index}
+                      className="w-2 h-2 rounded-full bg-primary/30"
+                    />
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </div>
