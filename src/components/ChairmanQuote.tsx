@@ -142,9 +142,11 @@ export const ChairmanQuote = ({
           <div className="relative">
             {/* Chairman Section with Triangle Button */}
             <div 
-              className={`flex items-center justify-center gap-8 transition-all duration-700 delay-200 ${
+              className={`flex items-center justify-center gap-8 transition-all duration-700 delay-200 group/chairman ${
                 inView ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
               }`}
+              onMouseEnter={() => setHoveredMember('chairman-area')}
+              onMouseLeave={() => setHoveredMember(null)}
             >
               {/* Chairman - Top of Tree */}
               <div className="flex flex-col items-center">
@@ -218,9 +220,13 @@ export const ChairmanQuote = ({
                 </div>
               </div>
 
-              {/* Triangle Button for Managers */}
+              {/* Triangle Button for Managers - Hidden until hover */}
               {managers.length > 0 && (
-                <div className="flex flex-col items-center">
+                <div className={`flex flex-col items-center transition-all duration-300 ${
+                  hoveredMember === 'chairman-area' || hoveredMember === 'chairman' || showManagers
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 -translate-x-2 pointer-events-none'
+                }`}>
                   <button
                     onClick={handleShowManagers}
                     className={`group relative flex items-center justify-center w-9 h-9 md:w-10 md:h-10 transition-all duration-300 ${
