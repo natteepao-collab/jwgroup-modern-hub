@@ -220,40 +220,36 @@ export const ChairmanQuote = ({
                 </div>
               </div>
 
-              {/* Triangle Button for Managers - Hidden until hover */}
+              {/* Triangle Button for Managers - Always visible */}
               {managers.length > 0 && (
-                <div className={`flex flex-col items-center transition-all duration-300 ${
-                  hoveredMember === 'chairman-area' || hoveredMember === 'chairman' || showManagers
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-2 pointer-events-none'
-                }`}>
+                <div className="flex flex-col items-center ml-4 md:ml-8">
                   <button
                     onClick={handleShowManagers}
-                    className={`group relative flex items-center justify-center w-9 h-9 md:w-10 md:h-10 transition-all duration-300 ${
-                      showManagers ? 'scale-105' : 'hover:scale-105'
+                    className={`group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 transition-all duration-300 ${
+                      showManagers ? 'scale-105' : 'hover:scale-110'
                     }`}
                     aria-label="ดูทีมผู้จัดการ"
                   >
-                    {/* Very subtle background */}
-                    <div className={`absolute inset-0 rounded-full border transition-all duration-300 ${
+                    {/* Subtle background */}
+                    <div className={`absolute inset-0 rounded-full border-2 transition-all duration-300 ${
                       showManagers 
-                        ? 'bg-foreground/5 border-foreground/20' 
-                        : 'bg-transparent border-foreground/10 group-hover:bg-foreground/5 group-hover:border-foreground/15'
+                        ? 'bg-primary/10 border-primary/40' 
+                        : 'bg-muted/30 border-muted-foreground/20 group-hover:bg-primary/5 group-hover:border-primary/30'
                     }`} />
                     
-                    {/* Arrow icon - subtle */}
+                    {/* Arrow icon */}
                     <div className={`relative flex items-center justify-center transition-all duration-300 ${
                       showManagers ? 'rotate-90' : ''
                     }`}>
-                      <ChevronRight className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${
+                      <ChevronRight className={`w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${
                         showManagers 
-                          ? 'text-foreground/60' 
-                          : 'text-foreground/30 group-hover:text-foreground/50'
+                          ? 'text-primary' 
+                          : 'text-muted-foreground group-hover:text-primary'
                       }`} />
                     </div>
                   </button>
-                  <p className="text-[10px] text-muted-foreground/50 mt-1 text-center">
-                    {showManagers ? 'ซ่อน' : 'ดูทีม'}
+                  <p className="text-[10px] text-muted-foreground mt-1 text-center whitespace-nowrap">
+                    {showManagers ? 'ซ่อนทีม' : 'ดูทีม'}
                   </p>
                 </div>
               )}
@@ -448,67 +444,108 @@ export const ChairmanQuote = ({
                       viewBox="0 0 400 60" 
                       preserveAspectRatio="xMidYMid meet"
                     >
+                      <defs>
+                        {/* Flowing gradient animation */}
+                        <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
+                            <animate attributeName="offset" values="-1;1" dur="2s" repeatCount="indefinite" />
+                          </stop>
+                          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.6">
+                            <animate attributeName="offset" values="-0.5;1.5" dur="2s" repeatCount="indefinite" />
+                          </stop>
+                          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
+                            <animate attributeName="offset" values="0;2" dur="2s" repeatCount="indefinite" />
+                          </stop>
+                        </linearGradient>
+                        <linearGradient id="flowGradientV" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
+                            <animate attributeName="offset" values="-1;1" dur="1.5s" repeatCount="indefinite" />
+                          </stop>
+                          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.6">
+                            <animate attributeName="offset" values="-0.5;1.5" dur="1.5s" repeatCount="indefinite" />
+                          </stop>
+                          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
+                            <animate attributeName="offset" values="0;2" dur="1.5s" repeatCount="indefinite" />
+                          </stop>
+                        </linearGradient>
+                      </defs>
+
                       {/* Left director vertical line down */}
                       <line 
                         x1="100" y1="0" x2="100" y2="25" 
-                        className="stroke-primary/30" 
+                        stroke="url(#flowGradientV)" 
                         strokeWidth="2"
-                        strokeDasharray="4 2"
                         style={{
-                          strokeDashoffset: showManagers ? 0 : 25,
-                          transition: 'stroke-dashoffset 0.4s ease-out'
+                          opacity: showManagers ? 1 : 0,
+                          transition: 'opacity 0.4s ease-out'
                         }}
                       />
                       
                       {/* Right director vertical line down */}
                       <line 
                         x1="300" y1="0" x2="300" y2="25" 
-                        className="stroke-primary/30" 
+                        stroke="url(#flowGradientV)" 
                         strokeWidth="2"
-                        strokeDasharray="4 2"
                         style={{
-                          strokeDashoffset: showManagers ? 0 : 25,
-                          transition: 'stroke-dashoffset 0.4s ease-out 0.1s'
+                          opacity: showManagers ? 1 : 0,
+                          transition: 'opacity 0.4s ease-out 0.1s'
                         }}
                       />
                       
                       {/* Horizontal line connecting both */}
                       <line 
                         x1="100" y1="25" x2="300" y2="25" 
-                        className="stroke-primary/30" 
+                        stroke="url(#flowGradient)" 
                         strokeWidth="2"
-                        strokeDasharray="4 2"
                         style={{
-                          strokeDashoffset: showManagers ? 0 : 200,
-                          transition: 'stroke-dashoffset 0.6s ease-out 0.2s'
+                          opacity: showManagers ? 1 : 0,
+                          transition: 'opacity 0.5s ease-out 0.2s'
                         }}
                       />
                       
                       {/* Center vertical line down to managers */}
                       <line 
                         x1="200" y1="25" x2="200" y2="60" 
-                        className="stroke-primary/30" 
+                        stroke="url(#flowGradientV)" 
                         strokeWidth="2"
-                        strokeDasharray="4 2"
                         style={{
-                          strokeDashoffset: showManagers ? 0 : 35,
-                          transition: 'stroke-dashoffset 0.4s ease-out 0.5s'
+                          opacity: showManagers ? 1 : 0,
+                          transition: 'opacity 0.4s ease-out 0.4s'
                         }}
                       />
 
-                      {/* Connection points */}
-                      <circle cx="100" cy="25" r="3" className="fill-primary/40" style={{
+                      {/* Connection points with pulse */}
+                      <circle cx="100" cy="25" r="4" className="fill-primary/50" style={{
                         opacity: showManagers ? 1 : 0,
                         transition: 'opacity 0.3s ease-out 0.3s'
-                      }} />
-                      <circle cx="300" cy="25" r="3" className="fill-primary/40" style={{
+                      }}>
+                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="300" cy="25" r="4" className="fill-primary/50" style={{
                         opacity: showManagers ? 1 : 0,
                         transition: 'opacity 0.3s ease-out 0.3s'
-                      }} />
-                      <circle cx="200" cy="25" r="3" className="fill-primary/40" style={{
+                      }}>
+                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" begin="0.3s" />
+                        <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite" begin="0.3s" />
+                      </circle>
+                      <circle cx="200" cy="25" r="4" className="fill-primary/60" style={{
                         opacity: showManagers ? 1 : 0,
                         transition: 'opacity 0.3s ease-out 0.4s'
-                      }} />
+                      }}>
+                        <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="0.5s" />
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.5s" />
+                      </circle>
+                      
+                      {/* Flowing particles */}
+                      <circle r="2" className="fill-primary">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M100,0 L100,25 L200,25 L200,60" />
+                        <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" />
+                      </circle>
+                      <circle r="2" className="fill-primary">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M300,0 L300,25 L200,25 L200,60" begin="1.5s" />
+                        <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1.5s" />
+                      </circle>
                     </svg>
                   </div>
                 )}
