@@ -28,12 +28,16 @@ export const LanguageSwitcher = () => {
           <span className="sm:hidden">{currentLanguage?.code.toUpperCase()}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-card z-50">
+      <DropdownMenuContent align="end" className="bg-card border-primary/20 z-50 min-w-[120px]">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => i18n.changeLanguage(language.code)}
-            className={i18n.language === language.code ? 'bg-accent' : ''}
+            className={`cursor-pointer font-medium ${
+              i18n.language === language.code 
+                ? 'bg-primary text-primary-foreground' 
+                : 'text-foreground hover:bg-primary/10 hover:text-primary'
+            }`}
           >
             {language.label}
           </DropdownMenuItem>
