@@ -223,26 +223,30 @@ export const ChairmanQuote = ({
                 <div className="flex flex-col items-center">
                   <button
                     onClick={handleShowManagers}
-                    className={`group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 transition-all duration-500 ${
+                    className={`group relative flex items-center justify-center w-9 h-9 md:w-10 md:h-10 transition-all duration-300 ${
                       showManagers ? 'scale-105' : 'hover:scale-105'
                     }`}
                     aria-label="ดูทีมผู้จัดการ"
                   >
-                    {/* Subtle background */}
-                    <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
-                      showManagers ? 'bg-primary/15' : 'bg-muted/50 group-hover:bg-primary/10'
+                    {/* Very subtle background */}
+                    <div className={`absolute inset-0 rounded-full border transition-all duration-300 ${
+                      showManagers 
+                        ? 'bg-foreground/5 border-foreground/20' 
+                        : 'bg-transparent border-foreground/10 group-hover:bg-foreground/5 group-hover:border-foreground/15'
                     }`} />
                     
-                    {/* Triangle shape - softer */}
-                    <div className={`relative flex items-center justify-center transition-all duration-500 ${
+                    {/* Arrow icon - subtle */}
+                    <div className={`relative flex items-center justify-center transition-all duration-300 ${
                       showManagers ? 'rotate-90' : ''
                     }`}>
-                      <ChevronRight className={`w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${
-                        showManagers ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'
+                      <ChevronRight className={`w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${
+                        showManagers 
+                          ? 'text-foreground/60' 
+                          : 'text-foreground/30 group-hover:text-foreground/50'
                       }`} />
                     </div>
                   </button>
-                  <p className="text-xs text-muted-foreground/70 mt-1 text-center">
+                  <p className="text-[10px] text-muted-foreground/50 mt-1 text-center">
                     {showManagers ? 'ซ่อน' : 'ดูทีม'}
                   </p>
                 </div>
