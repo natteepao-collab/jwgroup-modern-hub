@@ -48,18 +48,18 @@ const Hero3DBackground = () => {
           }`}
           style={{
             objectPosition: 'center center',
-            filter: 'saturate(1.15) contrast(1.08) brightness(1.02)',
+            filter: 'saturate(1.2) contrast(1.1) brightness(1.15)',
           }}
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
       </div>
 
-      {/* Minimal gradient overlay - only at very bottom for text */}
+      {/* Subtle gradient overlay - only at very bottom for text readability */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(to top, hsl(var(--background)) 0%, hsl(var(--background) / 0.6) 15%, transparent 40%)',
+          background: 'linear-gradient(to top, hsl(var(--background) / 0.8) 0%, hsl(var(--background) / 0.3) 10%, transparent 30%)',
         }}
       />
     </div>

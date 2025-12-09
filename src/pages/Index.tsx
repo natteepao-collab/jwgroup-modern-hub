@@ -96,10 +96,9 @@ const Index = () => {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-primary/20"
+        className="relative h-screen flex items-center justify-center overflow-hidden"
       >
         <Hero3DBackground />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
         <div
           className={`container mx-auto px-4 relative z-10 text-center transition-all duration-1000 ${
             heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
