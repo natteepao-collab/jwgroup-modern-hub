@@ -138,12 +138,12 @@ export const Navbar = () => {
         {/* Drawer Panel - Slide from Left */}
         <div
           className={cn(
-            'absolute top-0 left-0 h-full w-[85%] max-w-[400px] bg-[#1a1a2e] shadow-2xl transition-transform duration-300 ease-out overflow-y-auto',
+            'absolute top-0 left-0 h-full w-[85%] max-w-[400px] bg-white/90 backdrop-blur-md shadow-2xl transition-transform duration-300 ease-out overflow-y-auto font-[\'Noto_Sans_Thai\']',
             isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
           {/* Header */}
-          <div className="sticky top-0 z-10 bg-[#1a1a2e] border-b border-white/10">
+          <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-foreground/10">
             <div className="px-5 py-4 flex items-center justify-between">
               <img src={jwLogo} alt="JW Group" className="h-8" />
               
@@ -151,7 +151,7 @@ export const Navbar = () => {
                 <LanguageSwitcher />
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2 text-white/80 hover:text-white transition-colors"
+                  className="p-2 text-foreground/70 hover:text-foreground transition-colors"
                 >
                   <X className="h-6 w-6" strokeWidth={2.5} />
                 </button>
@@ -168,12 +168,12 @@ export const Navbar = () => {
                 to="/"
                 className={cn(
                   'flex items-center gap-4 py-4 px-4 rounded-xl transition-all duration-200',
-                  'hover:bg-white/10',
-                  isActive('/') ? 'text-primary' : 'text-white'
+                  'hover:bg-foreground/5',
+                  isActive('/') ? 'text-primary' : 'text-foreground'
                 )}
               >
                 <Home className="h-5 w-5" strokeWidth={2} />
-                <span className="text-base font-semibold">หน้าแรก</span>
+                <span className="text-base font-bold">หน้าแรก</span>
               </Link>
 
               {/* About Us - Expandable */}
@@ -182,13 +182,13 @@ export const Navbar = () => {
                   onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
                     'w-full flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-200',
-                    'hover:bg-white/10',
-                    isAboutActive ? 'text-primary' : 'text-white'
+                    'hover:bg-foreground/5',
+                    isAboutActive ? 'text-primary' : 'text-foreground'
                   )}
                 >
                   <div className="flex items-center gap-4">
                     <Info className="h-5 w-5" strokeWidth={2} />
-                    <span className="text-base font-semibold">เกี่ยวกับเรา</span>
+                    <span className="text-base font-bold">เกี่ยวกับเรา</span>
                   </div>
                   <ChevronRight 
                     className={cn(
@@ -205,17 +205,17 @@ export const Navbar = () => {
                     aboutExpanded ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
                   )}
                 >
-                  <div className="ml-9 border-l border-white/20 space-y-1 py-1">
+                  <div className="ml-9 border-l border-foreground/20 space-y-1 py-1">
                     {aboutSubItems.map((item) => (
                       <Link
                         key={item.path}
                         to={item.path}
                         className={cn(
                           'flex items-center gap-3 py-3 px-4 transition-all duration-200',
-                          'hover:bg-white/10 rounded-r-lg',
+                          'hover:bg-foreground/5 rounded-r-lg',
                           isActive(item.path) 
-                            ? 'text-primary font-semibold' 
-                            : 'text-white/70 hover:text-white'
+                            ? 'text-primary font-bold' 
+                            : 'text-foreground/70 hover:text-foreground font-semibold'
                         )}
                       >
                         <item.icon className="h-4 w-4" strokeWidth={2} />
@@ -233,31 +233,31 @@ export const Navbar = () => {
                   to={item.path}
                   className={cn(
                     'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-200',
-                    'hover:bg-white/10',
-                    isActive(item.path) ? 'text-primary' : 'text-white'
+                    'hover:bg-foreground/5',
+                    isActive(item.path) ? 'text-primary' : 'text-foreground'
                   )}
                 >
                   <div className="flex items-center gap-4">
                     <item.icon className="h-5 w-5" strokeWidth={2} />
-                    <span className="text-base font-semibold">{item.label}</span>
+                    <span className="text-base font-bold">{item.label}</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-white/40" />
+                  <ChevronRight className="h-4 w-4 text-foreground/40" />
                 </Link>
               ))}
             </nav>
 
             {/* Divider */}
-            <div className="my-6 border-t border-white/10" />
+            <div className="my-6 border-t border-foreground/10" />
 
             {/* Admin & Auth Section */}
             <div className="space-y-2">
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="flex items-center gap-4 py-3 px-4 rounded-xl bg-primary/20 text-primary hover:bg-primary/30 transition-all duration-200"
+                  className="flex items-center gap-4 py-3 px-4 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all duration-200"
                 >
                   <Shield className="h-5 w-5" strokeWidth={2} />
-                  <span className="text-sm font-semibold">Admin Panel</span>
+                  <span className="text-sm font-bold">Admin Panel</span>
                 </Link>
               )}
 
@@ -267,25 +267,25 @@ export const Navbar = () => {
                     signOut();
                     setIsMenuOpen(false);
                   }}
-                  className="w-full flex items-center gap-4 py-3 px-4 rounded-xl text-white/70 hover:bg-white/10 transition-all duration-200"
+                  className="w-full flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-foreground/5 transition-all duration-200"
                 >
                   <LogOut className="h-5 w-5" strokeWidth={2} />
-                  <span className="text-sm font-semibold">ออกจากระบบ</span>
+                  <span className="text-sm font-bold">ออกจากระบบ</span>
                 </button>
               ) : (
                 <Link
                   to="/auth"
-                  className="flex items-center gap-4 py-3 px-4 rounded-xl text-white/70 hover:bg-white/10 transition-all duration-200"
+                  className="flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-foreground/5 transition-all duration-200"
                 >
                   <LogIn className="h-5 w-5" strokeWidth={2} />
-                  <span className="text-sm font-semibold">เข้าสู่ระบบ</span>
+                  <span className="text-sm font-bold">เข้าสู่ระบบ</span>
                 </Link>
               )}
             </div>
 
             {/* Contact Info */}
             <div className="mt-10 px-4">
-              <p className="text-white/40 text-xs font-semibold uppercase tracking-wider mb-2">ติดต่อเรา</p>
+              <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">ติดต่อเรา</p>
               <a 
                 href="tel:+6622345678" 
                 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors"
