@@ -48,20 +48,20 @@ export const Navbar = () => {
   const isAboutActive = location.pathname.startsWith('/about');
 
   const menuItems = [
-    { path: '/', label: 'หน้าแรก', icon: Home },
-    { path: '/business', label: 'ธุรกิจของเรา', icon: Building2 },
-    { path: '/sustainability', label: 'ความยั่งยืน', icon: Leaf },
-    { path: '/news', label: 'ข่าวสาร', icon: Newspaper },
-    { path: '/careers', label: 'ร่วมงานกับเรา', icon: Users },
-    { path: '/contact', label: 'ติดต่อเรา', icon: Phone },
+    { path: '/', labelKey: 'nav.home', icon: Home },
+    { path: '/business', labelKey: 'nav.business', icon: Building2 },
+    { path: '/sustainability', labelKey: 'nav.sustainability', icon: Leaf },
+    { path: '/news', labelKey: 'nav.news', icon: Newspaper },
+    { path: '/careers', labelKey: 'nav.careers', icon: Users },
+    { path: '/contact', labelKey: 'nav.contact', icon: Phone },
   ];
 
   const aboutSubItems = [
-    { path: '/about/history', label: 'ประวัติ JW Group', icon: Info },
-    { path: '/about/vision', label: 'วิสัยทัศน์และพันธกิจ', icon: Eye },
-    { path: '/about/structure', label: 'โครงสร้างองค์กร', icon: Network },
-    { path: '/about/team', label: 'ทีมผู้บริหาร', icon: UserCircle },
-    { path: '/about/awards', label: 'รางวัลและความสำเร็จ', icon: Award },
+    { path: '/about/history', labelKey: 'about.history', icon: Info },
+    { path: '/about/vision', labelKey: 'about.vision', icon: Eye },
+    { path: '/about/structure', labelKey: 'about.structure', icon: Network },
+    { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
+    { path: '/about/awards', labelKey: 'about.awards', icon: Award },
   ];
 
   // Determine if we need dark text (for light backgrounds when scrolled)
@@ -159,7 +159,7 @@ export const Navbar = () => {
                   isAboutActive ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
-                เกี่ยวกับเรา
+                {t('nav.about')}
                 <ChevronDown className={cn(
                   "h-4 w-4 transition-transform duration-200",
                   aboutDropdownOpen && "rotate-180"
@@ -187,7 +187,7 @@ export const Navbar = () => {
                       )}
                     >
                       <item.icon className="h-4 w-4" strokeWidth={2} />
-                      <span className="text-sm font-medium">{item.label}</span>
+                      <span className="text-sm font-medium">{t(item.labelKey)}</span>
                     </Link>
                   ))}
                 </div>
@@ -204,7 +204,7 @@ export const Navbar = () => {
                   isActive(item.path) ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             ))}
             {isAdmin && (
@@ -278,7 +278,7 @@ export const Navbar = () => {
                 )}
               >
                 <Home className="h-5 w-5" strokeWidth={2} />
-                <span className="text-base font-bold">หน้าแรก</span>
+                <span className="text-base font-bold">{t('nav.home')}</span>
               </Link>
 
               {/* About Us - Expandable */}
@@ -293,7 +293,7 @@ export const Navbar = () => {
                 >
                   <div className="flex items-center gap-4">
                     <Info className="h-5 w-5" strokeWidth={2} />
-                    <span className="text-base font-bold">เกี่ยวกับเรา</span>
+                    <span className="text-base font-bold">{t('nav.about')}</span>
                   </div>
                   <ChevronRight 
                     className={cn(
@@ -324,7 +324,7 @@ export const Navbar = () => {
                         )}
                       >
                         <item.icon className="h-4 w-4" strokeWidth={2} />
-                        <span className="text-sm">{item.label}</span>
+                        <span className="text-sm">{t(item.labelKey)}</span>
                       </Link>
                     ))}
                   </div>
@@ -344,7 +344,7 @@ export const Navbar = () => {
                 >
                   <div className="flex items-center gap-4">
                     <item.icon className="h-5 w-5" strokeWidth={2} />
-                    <span className="text-base font-bold">{item.label}</span>
+                    <span className="text-base font-bold">{t(item.labelKey)}</span>
                   </div>
                   <ChevronRight className="h-4 w-4 text-foreground/40" />
                 </Link>
@@ -375,7 +375,7 @@ export const Navbar = () => {
                   className="w-full flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-foreground/5 transition-all duration-200"
                 >
                   <LogOut className="h-5 w-5" strokeWidth={2} />
-                  <span className="text-sm font-bold">ออกจากระบบ</span>
+                  <span className="text-sm font-bold">{t('nav.logout')}</span>
                 </button>
               ) : (
                 <Link
@@ -383,14 +383,14 @@ export const Navbar = () => {
                   className="flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-foreground/5 transition-all duration-200"
                 >
                   <LogIn className="h-5 w-5" strokeWidth={2} />
-                  <span className="text-sm font-bold">เข้าสู่ระบบ</span>
+                  <span className="text-sm font-bold">{t('nav.login')}</span>
                 </Link>
               )}
             </div>
 
             {/* Contact Info */}
             <div className="mt-10 px-4">
-              <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">ติดต่อเรา</p>
+              <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">{t('nav.contactUs')}</p>
               <a 
                 href="tel:+6622345678" 
                 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors"

@@ -5,12 +5,17 @@ const resources = {
   th: {
     translation: {
       nav: {
+        home: 'หน้าแรก',
         about: 'เกี่ยวกับเรา',
         business: 'ธุรกิจของเรา',
+        sustainability: 'ความยั่งยืน',
         news: 'ข่าวสาร',
         careers: 'ร่วมงานกับเรา',
         contact: 'ติดต่อเรา',
         privacy: 'นโยบายความเป็นส่วนตัว',
+        login: 'เข้าสู่ระบบ',
+        logout: 'ออกจากระบบ',
+        contactUs: 'ติดต่อเรา',
       },
       about: {
         history: 'ประวัติ JW Group',
@@ -123,12 +128,17 @@ const resources = {
   en: {
     translation: {
       nav: {
+        home: 'Home',
         about: 'About Us',
         business: 'Our Business',
+        sustainability: 'Sustainability',
         news: 'News',
         careers: 'Careers',
         contact: 'Contact',
         privacy: 'Privacy Policy',
+        login: 'Login',
+        logout: 'Logout',
+        contactUs: 'Contact Us',
       },
       about: {
         history: 'JW Group History',
@@ -241,12 +251,17 @@ const resources = {
   cn: {
     translation: {
       nav: {
+        home: '首页',
         about: '关于我们',
         business: '我们的业务',
+        sustainability: '可持续发展',
         news: '新闻',
         careers: '加入我们',
         contact: '联系我们',
         privacy: '隐私政策',
+        login: '登录',
+        logout: '退出登录',
+        contactUs: '联系我们',
       },
       about: {
         history: 'JW集团历史',
