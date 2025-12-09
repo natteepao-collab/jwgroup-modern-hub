@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Quote, ChevronDown, Users, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { Quote, ChevronDown, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import chairmanDefault from '@/assets/chairman-portrait.jpg';
 import chalisaImg from '@/assets/executives/chalisa-koworakul.jpg';
@@ -223,40 +223,27 @@ export const ChairmanQuote = ({
                 <div className="flex flex-col items-center">
                   <button
                     onClick={handleShowManagers}
-                    className={`group relative flex items-center justify-center w-16 h-16 md:w-20 md:h-20 transition-all duration-500 ${
-                      showManagers ? 'scale-110' : 'hover:scale-110'
+                    className={`group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 transition-all duration-500 ${
+                      showManagers ? 'scale-105' : 'hover:scale-105'
                     }`}
                     aria-label="ดูทีมผู้จัดการ"
                   >
-                    {/* Glow effect */}
-                    <div className={`absolute inset-0 rounded-xl blur-xl transition-all duration-300 ${
-                      showManagers ? 'bg-primary/40 opacity-100' : 'bg-primary/20 opacity-0 group-hover:opacity-100'
+                    {/* Subtle background */}
+                    <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
+                      showManagers ? 'bg-primary/15' : 'bg-muted/50 group-hover:bg-primary/10'
                     }`} />
                     
-                    {/* Triangle shape */}
-                    <div className={`relative flex items-center justify-center w-full h-full transition-all duration-500 ${
-                      showManagers ? 'rotate-180' : ''
+                    {/* Triangle shape - softer */}
+                    <div className={`relative flex items-center justify-center transition-all duration-500 ${
+                      showManagers ? 'rotate-90' : ''
                     }`}>
-                      <svg 
-                        viewBox="0 0 100 100" 
-                        className={`w-12 h-12 md:w-16 md:h-16 transition-all duration-300 ${
-                          showManagers ? 'fill-primary' : 'fill-primary/60 group-hover:fill-primary'
-                        }`}
-                      >
-                        <polygon points="50,15 90,85 10,85" />
-                      </svg>
-                      <Play className={`absolute w-5 h-5 md:w-6 md:h-6 text-background transition-opacity duration-300 ${
-                        showManagers ? 'opacity-0' : 'opacity-100'
+                      <ChevronRight className={`w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${
+                        showManagers ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'
                       }`} />
                     </div>
-
-                    {/* Pulse ring */}
-                    {!showManagers && (
-                      <div className="absolute inset-0 rounded-xl border-2 border-primary/40 animate-ping" style={{ animationDuration: '2s' }} />
-                    )}
                   </button>
-                  <p className="text-sm text-muted-foreground mt-2 text-center">
-                    {showManagers ? 'ซ่อนทีมผู้จัดการ' : 'ดูทีมผู้จัดการ'}
+                  <p className="text-xs text-muted-foreground/70 mt-1 text-center">
+                    {showManagers ? 'ซ่อน' : 'ดูทีม'}
                   </p>
                 </div>
               )}
