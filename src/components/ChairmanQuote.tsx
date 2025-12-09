@@ -3,6 +3,8 @@ import { useInView } from 'react-intersection-observer';
 import { Quote } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import chairmanDefault from '@/assets/chairman-portrait.jpg';
+import chalisaImg from '@/assets/executives/chalisa-koworakul.jpg';
+import pornnatchaImg from '@/assets/executives/pornnatcha-koworakul.jpg';
 
 interface ChairmanQuoteProps {
   quote: string;
@@ -38,6 +40,19 @@ export const ChairmanQuote = ({
     fetchImage();
   }, []);
 
+  const directors = [
+    {
+      name: 'คุณชาลิสา กอวรกุล',
+      title: 'กรรมการผู้จัดการ',
+      image: chalisaImg
+    },
+    {
+      name: 'คุณพรณัชชา กอวรกุล',
+      title: 'กรรมการผู้จัดการ',
+      image: pornnatchaImg
+    }
+  ];
+
   return (
     <section
       ref={ref}
@@ -47,6 +62,7 @@ export const ChairmanQuote = ({
     >
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
+          {/* Chairman Section */}
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Chairman Image */}
             <div 
@@ -87,6 +103,36 @@ export const ChairmanQuote = ({
                   <div className="text-muted-foreground">{title}</div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Managing Directors - Daughters */}
+          <div 
+            className={`mt-12 transition-all duration-700 delay-600 ${
+              inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="flex justify-center gap-8 md:gap-16">
+              {directors.map((director, index) => (
+                <div 
+                  key={index}
+                  className="text-center group"
+                >
+                  <div className="relative mb-4">
+                    <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-3 border-primary/15 shadow-lg mx-auto group-hover:border-primary/30 transition-all duration-300">
+                      <img 
+                        src={director.image} 
+                        alt={director.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    {/* Subtle decorative ring */}
+                    <div className="absolute inset-0 rounded-full border border-primary/15 scale-110 mx-auto w-28 h-28 md:w-36 md:h-36 left-1/2 -translate-x-1/2" />
+                  </div>
+                  <div className="text-base font-semibold text-foreground">{director.name}</div>
+                  <div className="text-sm text-muted-foreground">{director.title}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
