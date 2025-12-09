@@ -6,8 +6,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Plus, Trash2, Upload, Save, GripVertical, User } from 'lucide-react';
+import { Plus, Trash2, Upload, Save, User, Building2, Users } from 'lucide-react';
 
 interface Executive {
   id: string;
@@ -18,13 +19,33 @@ interface Executive {
   position_order: number;
   is_chairman: boolean;
   quote: string | null;
+  department: string | null;
+  level: string | null;
 }
+
+const departmentOptions = [
+  { value: '', label: 'ไม่ระบุ' },
+  { value: 'real_estate', label: 'อสังหาริมทรัพย์' },
+  { value: 'hotel', label: 'โรงแรม' },
+  { value: 'veterinary', label: 'สัตวแพทย์' },
+  { value: 'wellness', label: 'สุขภาพ' },
+  { value: 'finance', label: 'การเงิน' },
+  { value: 'hr', label: 'ทรัพยากรบุคคล' },
+  { value: 'marketing', label: 'การตลาด' },
+  { value: 'it', label: 'เทคโนโลยี' },
+];
+
+const levelOptions = [
+  { value: 'executive', label: 'ผู้บริหารระดับสูง' },
+  { value: 'manager', label: 'ผู้จัดการแผนก' },
+];
 
 export const ExecutiveManagement = () => {
   const [executives, setExecutives] = useState<Executive[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [filterLevel, setFilterLevel] = useState<string>('all');
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   useEffect(() => {
@@ -40,7 +61,7 @@ export const ExecutiveManagement = () => {
         .order('position_order', { ascending: true });
 
       if (error) throw error;
-      setExecutives(data || []);
+      setExecutives((data as Executive[]) || []);
     } catch (error) {
       console.error('Error fetching executives:', error);
       toast.error('เกิดข้อผิดพลาดในการโหลดข้อมูล');
@@ -49,7 +70,7 @@ export const ExecutiveManagement = () => {
     }
   };
 
-  const handleChange = (id: string, field: keyof Executive, value: string | boolean | number) => {
+  const handleChange = (id: string, field: keyof Executive, value: string | boolean | number | null) => {
     setExecutives(prev =>
       prev.map(exec =>
         exec.id === id ? { ...exec, [field]: value } : exec
@@ -120,6 +141,8 @@ export const ExecutiveManagement = () => {
           quote: executive.quote,
           is_chairman: executive.is_chairman,
           position_order: executive.position_order,
+          department: executive.department,
+          level: executive.level,
         })
         .eq('id', executive.id);
 
@@ -133,32 +156,34 @@ export const ExecutiveManagement = () => {
     }
   };
 
-  const addExecutive = async () => {
+  const addExecutive = async (level: string = 'executive') => {
     try {
       const maxOrder = Math.max(...executives.map(e => e.position_order), 0);
       const { data, error } = await supabase
         .from('executives')
         .insert({
-          name: 'ผู้บริหารใหม่',
+          name: level === 'manager' ? 'ผู้จัดการใหม่' : 'ผู้บริหารใหม่',
           title: 'ตำแหน่ง',
           description: '',
           position_order: maxOrder + 1,
           is_chairman: false,
+          level: level,
+          department: level === 'manager' ? 'real_estate' : null,
         })
         .select()
         .single();
 
       if (error) throw error;
-      setExecutives(prev => [...prev, data]);
-      toast.success('เพิ่มผู้บริหารใหม่สำเร็จ');
+      setExecutives(prev => [...prev, data as Executive]);
+      toast.success(level === 'manager' ? 'เพิ่มผู้จัดการใหม่สำเร็จ' : 'เพิ่มผู้บริหารใหม่สำเร็จ');
     } catch (error) {
       console.error('Error adding executive:', error);
-      toast.error('เกิดข้อผิดพลาดในการเพิ่มผู้บริหาร');
+      toast.error('เกิดข้อผิดพลาดในการเพิ่ม');
     }
   };
 
   const deleteExecutive = async (id: string) => {
-    if (!confirm('คุณต้องการลบผู้บริหารนี้หรือไม่?')) return;
+    if (!confirm('คุณต้องการลบรายการนี้หรือไม่?')) return;
 
     try {
       const { error } = await supabase
@@ -168,12 +193,20 @@ export const ExecutiveManagement = () => {
 
       if (error) throw error;
       setExecutives(prev => prev.filter(exec => exec.id !== id));
-      toast.success('ลบผู้บริหารสำเร็จ');
+      toast.success('ลบสำเร็จ');
     } catch (error) {
       console.error('Error deleting executive:', error);
-      toast.error('เกิดข้อผิดพลาดในการลบผู้บริหาร');
+      toast.error('เกิดข้อผิดพลาดในการลบ');
     }
   };
+
+  const filteredExecutives = executives.filter(exec => {
+    if (filterLevel === 'all') return true;
+    if (filterLevel === 'chairman') return exec.is_chairman;
+    if (filterLevel === 'executive') return !exec.is_chairman && exec.level !== 'manager';
+    if (filterLevel === 'manager') return exec.level === 'manager';
+    return true;
+  });
 
   if (isLoading) {
     return (
@@ -185,24 +218,44 @@ export const ExecutiveManagement = () => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
-          <User className="w-5 h-5" />
-          จัดการทีมผู้บริหาร
-        </CardTitle>
-        <Button onClick={addExecutive} size="sm">
-          <Plus className="w-4 h-4 mr-2" />
-          เพิ่มผู้บริหาร
-        </Button>
+      <CardHeader>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <CardTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5" />
+            จัดการทีมผู้บริหาร
+          </CardTitle>
+          <div className="flex flex-wrap gap-2">
+            {/* Filter */}
+            <Select value={filterLevel} onValueChange={setFilterLevel}>
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="กรองตามระดับ" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">ทั้งหมด</SelectItem>
+                <SelectItem value="chairman">ประธาน</SelectItem>
+                <SelectItem value="executive">ผู้บริหาร</SelectItem>
+                <SelectItem value="manager">ผู้จัดการแผนก</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button onClick={() => addExecutive('executive')} size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              เพิ่มผู้บริหาร
+            </Button>
+            <Button onClick={() => addExecutive('manager')} size="sm" variant="secondary">
+              <Building2 className="w-4 h-4 mr-2" />
+              เพิ่มผู้จัดการแผนก
+            </Button>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {executives.length === 0 ? (
+        {filteredExecutives.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">
-            ยังไม่มีข้อมูลผู้บริหาร
+            ยังไม่มีข้อมูล
           </p>
         ) : (
-          executives.map((executive) => (
-            <Card key={executive.id} className="border-2">
+          filteredExecutives.map((executive) => (
+            <Card key={executive.id} className={`border-2 ${executive.is_chairman ? 'border-primary/50 bg-primary/5' : executive.level === 'manager' ? 'border-blue-500/30 bg-blue-50/30 dark:bg-blue-950/20' : ''}`}>
               <CardContent className="pt-6">
                 <div className="flex flex-col lg:flex-row gap-6">
                   {/* Image Upload Section */}
@@ -246,6 +299,18 @@ export const ExecutiveManagement = () => {
                         )}
                       </Button>
                     </div>
+                    {/* Level Badge */}
+                    <div className="text-center mt-3">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        executive.is_chairman 
+                          ? 'bg-primary/20 text-primary' 
+                          : executive.level === 'manager'
+                            ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400'
+                            : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {executive.is_chairman ? 'ประธาน' : executive.level === 'manager' ? 'ผู้จัดการแผนก' : 'ผู้บริหาร'}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Form Fields */}
@@ -255,7 +320,7 @@ export const ExecutiveManagement = () => {
                       <Input
                         value={executive.name}
                         onChange={(e) => handleChange(executive.id, 'name', e.target.value)}
-                        placeholder="ชื่อผู้บริหาร"
+                        placeholder="ชื่อ"
                       />
                     </div>
 
@@ -266,6 +331,40 @@ export const ExecutiveManagement = () => {
                         onChange={(e) => handleChange(executive.id, 'title', e.target.value)}
                         placeholder="ตำแหน่ง"
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>ระดับ</Label>
+                      <Select 
+                        value={executive.level || 'executive'} 
+                        onValueChange={(value) => handleChange(executive.id, 'level', value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {levelOptions.map(opt => (
+                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>แผนก</Label>
+                      <Select 
+                        value={executive.department || ''} 
+                        onValueChange={(value) => handleChange(executive.id, 'department', value || null)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="เลือกแผนก" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {departmentOptions.map(opt => (
+                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="space-y-2">

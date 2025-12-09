@@ -17,10 +17,12 @@ export type Database = {
       executives: {
         Row: {
           created_at: string
+          department: string | null
           description: string | null
           id: string
           image_url: string | null
           is_chairman: boolean
+          level: string | null
           name: string
           position_order: number
           quote: string | null
@@ -29,10 +31,12 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          department?: string | null
           description?: string | null
           id?: string
           image_url?: string | null
           is_chairman?: boolean
+          level?: string | null
           name: string
           position_order?: number
           quote?: string | null
@@ -41,10 +45,12 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          department?: string | null
           description?: string | null
           id?: string
           image_url?: string | null
           is_chairman?: boolean
+          level?: string | null
           name?: string
           position_order?: number
           quote?: string | null
