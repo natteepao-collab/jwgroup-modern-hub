@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
+import InteractiveOrgChart from '@/components/InteractiveOrgChart';
 
 const AboutHistory = () => {
   const { t } = useTranslation();
@@ -57,39 +58,7 @@ const AboutVision = () => {
 };
 
 const AboutStructure = () => {
-  const { t } = useTranslation();
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-
-  const businesses = [
-    { icon: Building2, name: 'JW Real Estates', description: 'อสังหาริมทรัพย์' },
-    { icon: Hotel, name: '12 The Residence Hotel', description: 'โรงแรมและการบริการ' },
-    { icon: Stethoscope, name: '3DPet Hospital & Hotel', description: 'สัตวแพทย์และดูแลสัตว์เลี้ยง' },
-    { icon: Leaf, name: 'JW Herbal & Wellness', description: 'สมุนไพรและสุขภาพ' },
-  ];
-
-  return (
-    <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">{t('about.structure')}</h1>
-      <p className="text-lg text-muted-foreground mb-8">โครงสร้างองค์กรของ JW Group ประกอบด้วยธุรกิจหลัก 4 สายงาน</p>
-      <div className="grid md:grid-cols-2 gap-6">
-        {businesses.map((business, index) => (
-          <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <CardHeader>
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-accent/10">
-                  <business.icon className="h-8 w-8 text-accent" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl">{business.name}</CardTitle>
-                  <CardDescription className="mt-1">{business.description}</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
+  return <InteractiveOrgChart />;
 };
 
 const AboutTeam = () => {
