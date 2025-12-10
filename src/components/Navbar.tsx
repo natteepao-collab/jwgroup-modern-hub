@@ -213,19 +213,6 @@ export const Navbar = () => {
                 {t(item.labelKey)}
               </Link>
             ))}
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className={cn(
-                  "relative text-base font-bold tracking-wide transition-all duration-200 hover:text-primary",
-                  "after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-primary after:transition-all after:duration-300",
-                  isActive('/admin') ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  isActive('/admin') ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-                )}
-              >
-                Admin
-              </Link>
-            )}
           </div>
         </div>
       </nav>
