@@ -50,7 +50,7 @@ const sectionLabels: Record<string, string> = {
   'business_realestate': 'JW Real Estate',
   'business_hotel': '12 The Residence Hotel',
   'business_pet': '3D Pet Hospital',
-  'business_wellness': 'JW Herbal & Wellness',
+  'business_wellness': 'JW Herbal',
   'news_section': 'หมวดข่าวสาร',
   'careers_section': 'หมวดร่วมงานกับเรา',
   'contact_address': 'ที่อยู่สำนักงาน',

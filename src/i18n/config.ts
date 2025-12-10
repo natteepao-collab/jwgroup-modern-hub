@@ -58,7 +58,7 @@ const resources = {
           description: 'โรงพยาบาลสัตว์และโรงแรมสัตว์เลี้ยงที่ทันสมัยที่สุด ดูแลสัตว์เลี้ยงของคุณด้วยมาตรฐานสูงสุด',
         },
         wellness: {
-          name: 'JW Herbal & Wellness',
+          name: 'JW Herbal',
           description: 'ผลิตภัณฑ์สมุนไพรและสุขภาพคุณภาพสูง เพื่อสุขภาพและความงามที่ยั่งยืน',
         },
       },
@@ -181,7 +181,7 @@ const resources = {
           description: 'State-of-the-art veterinary hospital and pet hotel providing the highest standard of pet care',
         },
         wellness: {
-          name: 'JW Herbal & Wellness',
+          name: 'JW Herbal',
           description: 'Premium herbal and health products for sustainable health and beauty',
         },
       },
