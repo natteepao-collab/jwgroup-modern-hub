@@ -87,9 +87,8 @@ export default {
   		},
 		fontFamily: {
 			sans: [
-				'Sarabun',
 				'Noto Sans Thai',
-				'Roboto',
+				'Noto Sans',
 				'ui-sans-serif',
 				'system-ui',
 				'-apple-system',
@@ -97,21 +96,18 @@ export default {
 				'Segoe UI',
 				'Helvetica Neue',
 				'Arial',
-				'Noto Sans',
 				'sans-serif'
 			],
 			serif: [
-				'Playfair Display',
-				'Libre Caslon Text',
+				'Noto Sans Thai',
+				'Noto Sans',
 				'ui-serif',
 				'Georgia',
-				'Cambria',
-				'Times New Roman',
-				'Times',
 				'serif'
 			],
 			display: [
-				'Playfair Display',
+				'Noto Sans Thai',
+				'Noto Sans',
 				'ui-serif',
 				'Georgia',
 				'serif'
