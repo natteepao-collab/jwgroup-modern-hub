@@ -120,7 +120,8 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
     "relative overflow-hidden rounded-2xl cursor-pointer group",
     isLarge && "md:col-span-2 md:row-span-2",
     isMedium && "md:col-span-1 md:row-span-2",
-    isTextOnly && "md:col-span-1 md:row-span-1"
+    isTextOnly && "md:col-span-1 md:row-span-1",
+    !isLarge && !isMedium && !isTextOnly && "md:col-span-1 md:row-span-1"
   );
 
   if (isTextOnly) {
@@ -165,13 +166,20 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
     );
   }
 
+  // Fixed height for small cards
+  const cardHeight = isLarge 
+    ? "min-h-[400px] md:min-h-[500px]" 
+    : isMedium 
+      ? "min-h-[300px] md:min-h-[400px]" 
+      : "h-[280px] md:h-[320px]";
+
   return (
     <Link
       to={`/news/${news.id}`}
       className={cn(
         gridClasses,
         "block",
-        isLarge ? "min-h-[400px] md:min-h-[500px]" : isMedium ? "min-h-[300px] md:min-h-[400px]" : "min-h-[280px]",
+        cardHeight,
         inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       )}
       style={{
@@ -336,17 +344,13 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
       if (index === 0) {
         size = 'large';
       } 
-      // Second and third items are medium (side column)
+      // Second item is medium (side column top)
       else if (index === 1) {
         size = 'medium';
       }
-      // Fourth item spans full width on some layouts
-      else if (index === 3) {
-        size = 'medium';
-      }
-      // Some items are text-only for variety
-      else if (index === 5 || index === 7) {
-        size = 'text-only';
+      // Items 2, 3, 4 are small cards - all same size
+      else {
+        size = 'small';
       }
       
       return { ...item, size };
