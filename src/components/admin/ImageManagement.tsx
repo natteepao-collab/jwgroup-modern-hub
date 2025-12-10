@@ -21,7 +21,7 @@ const sectionLabels: Record<string, string> = {
   'business_realestate_image': 'รูปภาพ JW Real Estate',
   'business_hotel_image': 'รูปภาพ 12 The Residence Hotel',
   'business_pet_image': 'รูปภาพ 3D Pet Hospital',
-  'business_wellness_image': 'รูปภาพ JW Herbal & Wellness',
+  'business_wellness_image': 'รูปภาพ JW Herbal',
   'chairman_portrait': 'รูปภาพประธานกรรมการ',
 };
 
