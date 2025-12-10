@@ -304,7 +304,7 @@ const resources = {
           description: '最先进的兽医医院和宠物酒店，提供最高标准的宠物护理',
         },
         wellness: {
-          name: 'JW草药与健康',
+          name: 'JW草药',
           description: '优质草药和健康产品，促进可持续健康和美容',
         },
       },
