@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import jwLogo from "@/assets/jw-group-logo.png";
 import modalImage from "@/assets/modal-realestate.jpg";
 
@@ -23,6 +24,17 @@ export const AnnouncementModal = ({
 }: AnnouncementModalProps) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const { t } = useTranslation();
+  const { getContent, getImage } = useSiteContent();
+
+  // Get content from database with fallback to i18n
+  const modalContent = getContent('modal_welcome');
+  const modalImageData = getImage('modal_welcome');
+  
+  const title = modalContent.title || t('welcomeModal.title');
+  const subtitle = modalContent.content?.split('\n')[0] || t('welcomeModal.subtitle');
+  const description = modalContent.content?.split('\n').slice(1).join('\n') || t('welcomeModal.description');
+  const ctaText = t('welcomeModal.cta');
+  const displayImage = modalImageData?.url || modalImage;
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -71,17 +83,17 @@ export const AnnouncementModal = ({
 
             {/* Main Headline */}
             <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight" style={{ color: '#2D2D2D' }}>
-              {t('welcomeModal.title')}
+              {title}
             </h2>
 
             {/* Subheadline in quotes */}
             <p className="text-xl md:text-2xl mb-6 font-medium" style={{ color: '#D4812A' }}>
-              "{t('welcomeModal.subtitle')}"
+              "{subtitle}"
             </p>
 
             {/* Description */}
             <p className="text-base md:text-lg mb-10 leading-relaxed" style={{ color: '#4A4A4A' }}>
-              {t('welcomeModal.description')}
+              {description}
             </p>
 
             {/* CTA Button - Orange */}
@@ -99,7 +111,7 @@ export const AnnouncementModal = ({
                 e.currentTarget.style.backgroundColor = '#D4812A';
               }}
             >
-              {t('welcomeModal.cta')}
+              {ctaText}
             </button>
           </div>
 
@@ -115,8 +127,8 @@ export const AnnouncementModal = ({
             </button>
 
             <img
-              src={modalImage}
-              alt="JW Group Real Estate"
+              src={displayImage}
+              alt={modalImageData?.alt || "JW Group Real Estate"}
               className="w-full h-full object-cover"
             />
             
