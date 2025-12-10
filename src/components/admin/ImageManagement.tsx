@@ -18,6 +18,7 @@ interface SiteImage {
 
 const sectionLabels: Record<string, string> = {
   'hero_video': 'วิดีโอ Hero Section',
+  'modal_welcome': 'รูปภาพ Popup Modal',
   'business_realestate_image': 'รูปภาพ JW Real Estate',
   'business_hotel_image': 'รูปภาพ 12 The Residence Hotel',
   'business_pet_image': 'รูปภาพ 3D Pet Hospital',
