@@ -4,11 +4,27 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { MapPin, Phone, Mail, Facebook, Linkedin } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Linkedin } from 'lucide-react';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
 const Contact = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { getContent, isLoading } = useSiteContent();
+
+  // Get contact data from database
+  const addressContent = getContent('contact_address');
+  const phoneContent = getContent('contact_phone');
+  const emailContent = getContent('contact_email');
+  const hoursContent = getContent('contact_hours');
+  const mapContent = getContent('contact_map');
+
+  // Fallback values
+  const address = addressContent.content || '123 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110';
+  const phone = phoneContent.content || '+66 2 XXX XXXX';
+  const email = emailContent.content || 'info@jwgroup.com';
+  const hours = hoursContent.content || 'จันทร์ - ศุกร์: 08:30 - 17:30';
+  const mapSrc = mapContent.content || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5!3d13.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ1JzAwLjAiTiAxMDDCsDMwJzAwLjAiRQ!5e0!3m2!1sen!2sth!4v1234567890';
 
   return (
     <div className="pt-24 min-h-screen bg-background">
@@ -36,8 +52,7 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p>123 ถนนสุขุมวิท แขวงคลองเตย</p>
-                <p>เขตคลองเตย กรุงเทพมหานคร 10110</p>
+                <p className="whitespace-pre-line">{address}</p>
               </CardContent>
             </Card>
 
@@ -49,7 +64,12 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p>+66 2 XXX XXXX</p>
+                <a 
+                  href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
+                  className="hover:text-primary transition-colors"
+                >
+                  {phone}
+                </a>
                 <p>LINE: @jwgroup</p>
               </CardContent>
             </Card>
@@ -62,8 +82,24 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p>info@jwgroup.com</p>
-                <p>support@jwgroup.com</p>
+                <a 
+                  href={`mailto:${email}`}
+                  className="hover:text-primary transition-colors"
+                >
+                  {email}
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" />
+                  เวลาทำการ
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{hours}</p>
               </CardContent>
             </Card>
 
@@ -129,9 +165,16 @@ const Contact = () => {
         <div className="mt-12 max-w-6xl mx-auto">
           <Card>
             <CardContent className="p-0">
-              <div className="w-full h-96 bg-muted rounded-lg flex items-center justify-center">
-                <p className="text-muted-foreground">Google Maps Integration</p>
-              </div>
+              <iframe
+                src={mapSrc}
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="rounded-lg"
+              />
             </CardContent>
           </Card>
         </div>
