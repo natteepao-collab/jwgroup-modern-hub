@@ -7,16 +7,22 @@ import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
 export const Navbar = () => {
   const { t } = useTranslation();
   const { user, isAdmin, signOut } = useAuth();
+  const { getContent } = useSiteContent();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [aboutExpanded, setAboutExpanded] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const aboutDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Get contact phone from database
+  const phoneContent = getContent('contact_phone');
+  const phoneNumber = phoneContent.content || '02-234-5678';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -392,10 +398,10 @@ export const Navbar = () => {
             <div className="mt-10 px-4">
               <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">{t('nav.contactUs')}</p>
               <a 
-                href="tel:+6622345678" 
+                href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`} 
                 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors"
               >
-                02-234-5678
+                {phoneNumber}
               </a>
             </div>
           </div>
