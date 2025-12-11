@@ -14,7 +14,9 @@ import {
   Users,
   Settings,
   Newspaper,
-  UserCircle
+  UserCircle,
+  Star,
+  Trophy
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -23,6 +25,8 @@ import { ImageManagement } from '@/components/admin/ImageManagement';
 import { ChairmanImageUpload } from '@/components/admin/ChairmanImageUpload';
 import { NewsManagement } from '@/components/admin/NewsManagement';
 import { ExecutiveManagement } from '@/components/admin/ExecutiveManagement';
+import TestimonialsManagement from '@/components/admin/TestimonialsManagement';
+import AwardsManagement from '@/components/admin/AwardsManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -105,7 +109,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
@@ -114,17 +118,25 @@ const Admin = () => {
               <UserCircle className="h-4 w-4" />
               <span className="hidden sm:inline">ผู้บริหาร</span>
             </TabsTrigger>
+            <TabsTrigger value="testimonials" className="flex items-center gap-2">
+              <Star className="h-4 w-4" />
+              <span className="hidden sm:inline">รีวิว</span>
+            </TabsTrigger>
+            <TabsTrigger value="awards" className="flex items-center gap-2">
+              <Trophy className="h-4 w-4" />
+              <span className="hidden sm:inline">รางวัล</span>
+            </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">เนื้อหา</span>
             </TabsTrigger>
             <TabsTrigger value="images" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">รูปภาพ/วิดีโอ</span>
+              <span className="hidden sm:inline">รูปภาพ</span>
             </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">ผู้ใช้งาน</span>
+              <span className="hidden sm:inline">ผู้ใช้</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -138,6 +150,14 @@ const Admin = () => {
 
           <TabsContent value="executives">
             <ExecutiveManagement />
+          </TabsContent>
+
+          <TabsContent value="testimonials">
+            <TestimonialsManagement />
+          </TabsContent>
+
+          <TabsContent value="awards">
+            <AwardsManagement />
           </TabsContent>
 
           <TabsContent value="content">
