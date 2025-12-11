@@ -189,7 +189,7 @@ const TimelineItem = ({
           </h3>
 
           {/* Expanded Content */}
-          <div className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
             {/* Description */}
             <p className="text-muted-foreground mb-4">
               {getDescription()}
@@ -197,12 +197,23 @@ const TimelineItem = ({
             
             {/* Image */}
             {event.image_url && (
-              <div className={`mt-4 ${isLeft ? 'md:ml-auto' : ''}`}>
-                <img 
-                  src={event.image_url} 
-                  alt={getTitle()}
-                  className="rounded-xl w-full max-w-[300px] h-auto object-cover shadow-md"
-                />
+              <div className={`mt-4 ${isLeft ? 'md:ml-auto' : ''} group/image`}>
+                <div className="relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 max-w-[350px]">
+                  {/* Image with zoom effect */}
+                  <img 
+                    src={event.image_url} 
+                    alt={getTitle()}
+                    className="w-full h-[200px] object-cover transform group-hover/image:scale-110 transition-transform duration-700 ease-out"
+                  />
+                  {/* Premium gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity duration-500" />
+                  {/* Year badge on image */}
+                  <div className="absolute bottom-3 left-3 px-3 py-1 bg-primary/90 backdrop-blur-sm text-primary-foreground text-sm font-bold rounded-full shadow-lg">
+                    {event.year}
+                  </div>
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/image:translate-x-full transition-transform duration-1000 ease-out" />
+                </div>
               </div>
             )}
           </div>
