@@ -16,7 +16,8 @@ import {
   Newspaper,
   UserCircle,
   Star,
-  Trophy
+  Trophy,
+  Calendar
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -27,6 +28,7 @@ import { NewsManagement } from '@/components/admin/NewsManagement';
 import { ExecutiveManagement } from '@/components/admin/ExecutiveManagement';
 import TestimonialsManagement from '@/components/admin/TestimonialsManagement';
 import AwardsManagement from '@/components/admin/AwardsManagement';
+import TimelineManagement from '@/components/admin/TimelineManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -109,7 +111,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-1">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
@@ -117,6 +119,10 @@ const Admin = () => {
             <TabsTrigger value="executives" className="flex items-center gap-2">
               <UserCircle className="h-4 w-4" />
               <span className="hidden sm:inline">ผู้บริหาร</span>
+            </TabsTrigger>
+            <TabsTrigger value="timeline" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <span className="hidden sm:inline">Timeline</span>
             </TabsTrigger>
             <TabsTrigger value="testimonials" className="flex items-center gap-2">
               <Star className="h-4 w-4" />
@@ -150,6 +156,10 @@ const Admin = () => {
 
           <TabsContent value="executives">
             <ExecutiveManagement />
+          </TabsContent>
+
+          <TabsContent value="timeline">
+            <TimelineManagement />
           </TabsContent>
 
           <TabsContent value="testimonials">
