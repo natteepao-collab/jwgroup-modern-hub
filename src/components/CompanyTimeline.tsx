@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Building, Hotel, Heart, Leaf, Star, Rocket, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
+import { Building, Hotel, Heart, Leaf, Star, Rocket, ChevronDown, ChevronUp, Calendar, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface TimelineEvent {
   id: string;
@@ -255,10 +256,18 @@ const CompanyTimeline = () => {
   const [events, setEvents] = useState<TimelineEvent[]>(mockTimelineEvents);
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
+  const eventRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const { ref: headerRef, inView: headerInView } = useInView({
     threshold: 0.3,
     triggerOnce: true,
   });
+
+  // Get unique years from events
+  const uniqueYears = useMemo(() => {
+    const years = [...new Set(events.map(e => e.year))];
+    return years;
+  }, [events]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -297,6 +306,36 @@ const CompanyTimeline = () => {
       }
     } else {
       setExpandedItems(new Set());
+      setSelectedYear(null);
+    }
+  };
+
+  const jumpToYear = (year: string) => {
+    // Open timeline if not already open
+    if (!isOpen) {
+      setIsOpen(true);
+    }
+    
+    setSelectedYear(year);
+    
+    // Find first event of that year and expand it
+    const eventOfYear = events.find(e => e.year === year);
+    if (eventOfYear) {
+      setExpandedItems(new Set([eventOfYear.id]));
+      
+      // Scroll to the event after a short delay to allow timeline to expand
+      setTimeout(() => {
+        const element = eventRefs.current.get(eventOfYear.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 400);
+    }
+  };
+
+  const setEventRef = (id: string, el: HTMLDivElement | null) => {
+    if (el) {
+      eventRefs.current.set(id, el);
     }
   };
 
@@ -325,6 +364,34 @@ const CompanyTimeline = () => {
           </p>
         </div>
 
+        {/* Jump to Year - Only show when timeline is open */}
+        {isOpen && (
+          <div className="mb-8">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <MapPin className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-muted-foreground">ข้ามไปยังปี</span>
+            </div>
+            <ScrollArea className="w-full whitespace-nowrap">
+              <div className="flex justify-center gap-2 pb-3">
+                {uniqueYears.map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => jumpToYear(year)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                      selectedYear === year
+                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+                        : 'bg-card border border-border/50 text-foreground hover:bg-primary/10 hover:border-primary/50'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
+        )}
+
         {/* Timeline Content - Collapsible */}
         <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[8000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           {/* Timeline */}
@@ -335,14 +402,15 @@ const CompanyTimeline = () => {
             {/* Timeline Events */}
             <div className="space-y-8 md:space-y-12">
               {events.map((event, index) => (
-                <TimelineItem
-                  key={event.id}
-                  event={event}
-                  index={index}
-                  isLeft={index % 2 === 0}
-                  isExpanded={expandedItems.has(event.id)}
-                  onToggle={() => toggleItem(event.id)}
-                />
+                <div key={event.id} ref={(el) => setEventRef(event.id, el)}>
+                  <TimelineItem
+                    event={event}
+                    index={index}
+                    isLeft={index % 2 === 0}
+                    isExpanded={expandedItems.has(event.id)}
+                    onToggle={() => toggleItem(event.id)}
+                  />
+                </div>
               ))}
             </div>
           </div>
