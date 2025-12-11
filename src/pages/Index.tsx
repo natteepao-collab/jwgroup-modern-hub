@@ -135,7 +135,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section with Stats */}
       <section
         ref={aboutRef}
         className={`py-20 bg-background transition-all duration-1000 ${
@@ -151,37 +151,11 @@ const Index = () => {
               {getContent('about_section').content || t('aboutSection.description')}
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div className="text-center p-6 bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                <TrendingUp className="h-8 w-8 text-primary" />
-              </div>
-              <div className="text-4xl font-bold text-primary mb-2">15+</div>
-              <div className="text-muted-foreground">{t('aboutSection.yearsLabel')}</div>
-            </div>
-
-            <div className="text-center p-6 bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                <Building2 className="h-8 w-8 text-primary" />
-              </div>
-              <div className="text-4xl font-bold text-primary mb-2">4</div>
-              <div className="text-muted-foreground">{t('aboutSection.businessLabel')}</div>
-            </div>
-
-            <div className="text-center p-6 bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                <Users className="h-8 w-8 text-primary" />
-              </div>
-              <div className="text-4xl font-bold text-primary mb-2">1000+</div>
-              <div className="text-muted-foreground">{t('aboutSection.visionLabel')}</div>
-            </div>
-          </div>
         </div>
-      </section>
 
-      {/* Animated Stats Section */}
-      <AnimatedStats />
+        {/* Animated Stats integrated into About */}
+        <AnimatedStats />
+      </section>
 
       {/* Chairman Quote Section */}
       {(() => {
