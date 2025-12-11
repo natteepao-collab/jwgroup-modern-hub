@@ -117,12 +117,14 @@ const TimelineItem = ({
   isLeft,
   isExpanded,
   onToggle,
+  isHighlighted,
 }: { 
   event: TimelineEvent; 
   index: number; 
   isLeft: boolean;
   isExpanded: boolean;
   onToggle: () => void;
+  isHighlighted?: boolean;
 }) => {
   const { i18n } = useTranslation();
   const { ref, inView } = useInView({
@@ -160,12 +162,18 @@ const TimelineItem = ({
       >
         <div
           onClick={onToggle}
-          className={`cursor-pointer p-6 rounded-2xl bg-card border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
+          className={`relative cursor-pointer p-6 rounded-2xl bg-card border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
             event.is_highlight 
               ? 'border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10' 
               : 'border-border/50'
-          } ${isExpanded ? 'ring-2 ring-primary/30' : ''}`}
+          } ${isExpanded ? 'ring-2 ring-primary/30' : ''} ${
+            isHighlighted ? 'animate-highlight-pulse ring-4 ring-primary/50' : ''
+          }`}
         >
+          {/* Highlight glow effect */}
+          {isHighlighted && (
+            <div className="absolute inset-0 rounded-2xl bg-primary/20 animate-ping pointer-events-none" style={{ animationDuration: '1s', animationIterationCount: '2' }} />
+          )}
           {/* Year Badge */}
           <div className={`flex items-center gap-2 mb-3 ${isLeft ? 'md:justify-end' : 'md:justify-start'}`}>
             <span 
@@ -257,6 +265,7 @@ const CompanyTimeline = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
+  const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const eventRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const { ref: headerRef, inView: headerInView } = useInView({
     threshold: 0.3,
@@ -307,6 +316,7 @@ const CompanyTimeline = () => {
     } else {
       setExpandedItems(new Set());
       setSelectedYear(null);
+      setHighlightedEventId(null);
     }
   };
 
@@ -322,6 +332,7 @@ const CompanyTimeline = () => {
     const eventOfYear = events.find(e => e.year === year);
     if (eventOfYear) {
       setExpandedItems(new Set([eventOfYear.id]));
+      setHighlightedEventId(eventOfYear.id);
       
       // Scroll to the event after a short delay to allow timeline to expand
       setTimeout(() => {
@@ -330,6 +341,11 @@ const CompanyTimeline = () => {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 400);
+      
+      // Clear highlight after animation completes
+      setTimeout(() => {
+        setHighlightedEventId(null);
+      }, 2500);
     }
   };
 
@@ -409,6 +425,7 @@ const CompanyTimeline = () => {
                     isLeft={index % 2 === 0}
                     isExpanded={expandedItems.has(event.id)}
                     onToggle={() => toggleItem(event.id)}
+                    isHighlighted={highlightedEventId === event.id}
                   />
                 </div>
               ))}
