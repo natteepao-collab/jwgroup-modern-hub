@@ -11,6 +11,8 @@ import { useSiteContent } from '@/hooks/useSiteContent';
 import { useNews } from '@/hooks/useNews';
 import { ChairmanQuote } from '@/components/ChairmanQuote';
 import { GoogleMapSection } from '@/components/GoogleMapSection';
+import AnimatedStats from '@/components/AnimatedStats';
+import CompanyTimeline from '@/components/CompanyTimeline';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -176,6 +178,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Animated Stats Section */}
+      <AnimatedStats />
+
       {/* Chairman Quote Section */}
       {(() => {
         const quoteContent = getContent('chairman_quote');
@@ -188,6 +193,9 @@ const Index = () => {
           />
         );
       })()}
+
+      {/* Company Timeline Section */}
+      <CompanyTimeline />
 
       {/* Business Section */}
       <section
