@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import ProjectGallery from '@/components/ProjectGallery';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Building, Hotel, Heart, Leaf, Images } from 'lucide-react';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -15,10 +19,19 @@ const defaultBusinessImages: Record<string, string> = {
   business_wellness_image: wellness,
 };
 
+const businessTabs = [
+  { id: 'realestate', label: 'อสังหาริมทรัพย์', icon: Building },
+  { id: 'hotel', label: 'โรงแรม', icon: Hotel },
+  { id: 'pet', label: 'สัตว์เลี้ยง', icon: Heart },
+  { id: 'wellness', label: 'สุขภาพ', icon: Leaf },
+];
+
 const Business = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const { getImage } = useSiteContent();
+  const [activeTab, setActiveTab] = useState('realestate');
 
   // Get business images from database or fallback to defaults
   const getBusinessImage = (sectionKey: string) => {
@@ -99,6 +112,46 @@ const Business = () => {
           style={{ transitionDelay: '200ms' }}
         >
           <InteractiveSplitBusiness businesses={businesses} />
+        </div>
+
+        {/* Project Gallery Section */}
+        <div
+          ref={galleryRef}
+          className={`mt-20 transition-all duration-1000 ${
+            galleryInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+              <Images className="w-4 h-4" />
+              แกลเลอรี่โครงการ
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              ผลงานโครงการของเรา
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              รวมผลงานโครงการที่ประสบความสำเร็จจากทุกสายธุรกิจของ JW Group
+            </p>
+          </div>
+
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
+              {businessTabs.map((tab) => (
+                <TabsTrigger key={tab.id} value={tab.id} className="gap-2">
+                  <tab.icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {businessTabs.map((tab) => (
+              <TabsContent key={tab.id} value={tab.id} className="mt-0">
+                <ProjectGallery 
+                  businessType={tab.id as 'realestate' | 'hotel' | 'pet' | 'wellness'} 
+                />
+              </TabsContent>
+            ))}
+          </Tabs>
         </div>
       </div>
     </div>

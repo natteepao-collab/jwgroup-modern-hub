@@ -17,7 +17,9 @@ import {
   UserCircle,
   Star,
   Trophy,
-  Calendar
+  Calendar,
+  Building,
+  Mail
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -29,6 +31,8 @@ import { ExecutiveManagement } from '@/components/admin/ExecutiveManagement';
 import TestimonialsManagement from '@/components/admin/TestimonialsManagement';
 import AwardsManagement from '@/components/admin/AwardsManagement';
 import TimelineManagement from '@/components/admin/TimelineManagement';
+import ProjectsManagement from '@/components/admin/ProjectsManagement';
+import NewsletterManagement from '@/components/admin/NewsletterManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -111,10 +115,14 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-1">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-6 lg:grid-cols-11 gap-1">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
+            </TabsTrigger>
+            <TabsTrigger value="projects" className="flex items-center gap-2">
+              <Building className="h-4 w-4" />
+              <span className="hidden sm:inline">โครงการ</span>
             </TabsTrigger>
             <TabsTrigger value="executives" className="flex items-center gap-2">
               <UserCircle className="h-4 w-4" />
@@ -131,6 +139,10 @@ const Admin = () => {
             <TabsTrigger value="awards" className="flex items-center gap-2">
               <Trophy className="h-4 w-4" />
               <span className="hidden sm:inline">รางวัล</span>
+            </TabsTrigger>
+            <TabsTrigger value="newsletter" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              <span className="hidden sm:inline">Newsletter</span>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
@@ -154,6 +166,10 @@ const Admin = () => {
             <NewsManagement />
           </TabsContent>
 
+          <TabsContent value="projects">
+            <ProjectsManagement />
+          </TabsContent>
+
           <TabsContent value="executives">
             <ExecutiveManagement />
           </TabsContent>
@@ -168,6 +184,10 @@ const Admin = () => {
 
           <TabsContent value="awards">
             <AwardsManagement />
+          </TabsContent>
+
+          <TabsContent value="newsletter">
+            <NewsletterManagement />
           </TabsContent>
 
           <TabsContent value="content">
