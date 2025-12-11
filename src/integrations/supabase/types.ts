@@ -179,6 +179,33 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          email: string
+          id: string
+          is_active: boolean | null
+          name: string | null
+          source: string | null
+          subscribed_at: string
+        }
+        Insert: {
+          email: string
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+        }
+        Update: {
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -206,6 +233,69 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          business_type: string
+          created_at: string
+          description_cn: string | null
+          description_en: string | null
+          description_th: string | null
+          gallery_images: string[] | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          location_en: string | null
+          location_th: string | null
+          name_cn: string | null
+          name_en: string | null
+          name_th: string
+          position_order: number | null
+          updated_at: string
+          year_completed: string | null
+        }
+        Insert: {
+          business_type: string
+          created_at?: string
+          description_cn?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          gallery_images?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          location_en?: string | null
+          location_th?: string | null
+          name_cn?: string | null
+          name_en?: string | null
+          name_th: string
+          position_order?: number | null
+          updated_at?: string
+          year_completed?: string | null
+        }
+        Update: {
+          business_type?: string
+          created_at?: string
+          description_cn?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          gallery_images?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          location_en?: string | null
+          location_th?: string | null
+          name_cn?: string | null
+          name_en?: string | null
+          name_th?: string
+          position_order?: number | null
+          updated_at?: string
+          year_completed?: string | null
         }
         Relationships: []
       }

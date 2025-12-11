@@ -15,6 +15,7 @@ import AnimatedStats from '@/components/AnimatedStats';
 import CompanyTimeline from '@/components/CompanyTimeline';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import AwardsSection from '@/components/AwardsSection';
+import NewsletterForm from '@/components/NewsletterForm';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -305,6 +306,13 @@ const Index = () => {
           >
             <Link to="/careers">{t('careers.viewPositions')}</Link>
           </Button>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <NewsletterForm />
         </div>
       </section>
 
