@@ -329,6 +329,60 @@ export type Database = {
         }
         Relationships: []
       }
+      timeline_events: {
+        Row: {
+          created_at: string
+          description_cn: string | null
+          description_en: string | null
+          description_th: string | null
+          icon_name: string | null
+          id: string
+          image_url: string | null
+          is_highlight: boolean | null
+          is_published: boolean | null
+          position_order: number | null
+          title_cn: string | null
+          title_en: string | null
+          title_th: string
+          updated_at: string
+          year: string
+        }
+        Insert: {
+          created_at?: string
+          description_cn?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          icon_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_highlight?: boolean | null
+          is_published?: boolean | null
+          position_order?: number | null
+          title_cn?: string | null
+          title_en?: string | null
+          title_th: string
+          updated_at?: string
+          year: string
+        }
+        Update: {
+          created_at?: string
+          description_cn?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          icon_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_highlight?: boolean | null
+          is_published?: boolean | null
+          position_order?: number | null
+          title_cn?: string | null
+          title_en?: string | null
+          title_th?: string
+          updated_at?: string
+          year?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
