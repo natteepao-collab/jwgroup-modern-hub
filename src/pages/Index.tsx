@@ -13,6 +13,8 @@ import { ChairmanQuote } from '@/components/ChairmanQuote';
 import { GoogleMapSection } from '@/components/GoogleMapSection';
 import AnimatedStats from '@/components/AnimatedStats';
 import CompanyTimeline from '@/components/CompanyTimeline';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import AwardsSection from '@/components/AwardsSection';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -258,6 +260,12 @@ const Index = () => {
           />
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
+
+      {/* Awards Section */}
+      <AwardsSection />
 
       {/* Careers Teaser Section */}
       <section

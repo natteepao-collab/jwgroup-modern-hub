@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      awards: {
+        Row: {
+          award_year: number | null
+          awarding_organization: string | null
+          category: string | null
+          created_at: string
+          description_cn: string | null
+          description_en: string | null
+          description_th: string | null
+          id: string
+          image_url: string | null
+          is_published: boolean | null
+          position_order: number | null
+          title_cn: string | null
+          title_en: string | null
+          title_th: string
+          updated_at: string
+        }
+        Insert: {
+          award_year?: number | null
+          awarding_organization?: string | null
+          category?: string | null
+          created_at?: string
+          description_cn?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          position_order?: number | null
+          title_cn?: string | null
+          title_en?: string | null
+          title_th: string
+          updated_at?: string
+        }
+        Update: {
+          award_year?: number | null
+          awarding_organization?: string | null
+          category?: string | null
+          created_at?: string
+          description_cn?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          position_order?: number | null
+          title_cn?: string | null
+          title_en?: string | null
+          title_th?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       executives: {
         Row: {
           created_at: string
@@ -221,6 +275,57 @@ export type Database = {
           section_key?: string
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          client_company: string | null
+          client_image_url: string | null
+          client_name: string
+          client_title: string | null
+          content_cn: string | null
+          content_en: string | null
+          content_th: string
+          created_at: string
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          position_order: number | null
+          rating: number | null
+          updated_at: string
+        }
+        Insert: {
+          client_company?: string | null
+          client_image_url?: string | null
+          client_name: string
+          client_title?: string | null
+          content_cn?: string | null
+          content_en?: string | null
+          content_th: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          position_order?: number | null
+          rating?: number | null
+          updated_at?: string
+        }
+        Update: {
+          client_company?: string | null
+          client_image_url?: string | null
+          client_name?: string
+          client_title?: string | null
+          content_cn?: string | null
+          content_en?: string | null
+          content_th?: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          position_order?: number | null
+          rating?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
