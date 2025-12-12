@@ -276,40 +276,60 @@ export const Navbar = () => {
           </div>
 
           {/* Menu Items */}
-          <div className="px-5 py-6">
+          <div className="px-4 py-6">
+            {/* Gradient accent line */}
+            <div className="h-1 w-16 bg-gradient-to-r from-primary to-primary/50 rounded-full mb-6" />
+            
             {/* Main Navigation */}
-            <nav className="space-y-1">
+            <nav className="space-y-1.5">
               {/* Home */}
               <Link
                 to="/"
                 className={cn(
-                  'flex items-center gap-4 py-4 px-4 rounded-xl transition-all duration-200',
-                  'hover:bg-foreground/5',
-                  isActive('/') ? 'text-primary' : 'text-foreground'
+                  'group flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-200',
+                  'hover:bg-primary/10',
+                  isActive('/') ? 'text-primary bg-primary/10' : 'text-foreground'
                 )}
               >
-                <Home className="h-5 w-5" strokeWidth={2} />
-                <span className="text-base font-bold">{t('nav.home')}</span>
+                <div className={cn(
+                  "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200",
+                  isActive('/') 
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
+                    : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                )}>
+                  <Home className="h-5 w-5" strokeWidth={2} />
+                </div>
+                <span className="text-base font-bold flex-1">{t('nav.home')}</span>
+                <ChevronRight className={cn(
+                  "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
+                  "group-hover:opacity-70 group-hover:translate-x-0",
+                  isActive('/') && "opacity-70 translate-x-0"
+                )} />
               </Link>
 
               {/* About Us - Expandable */}
-              <div>
+              <div className="overflow-hidden rounded-xl">
                 <button
                   onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
-                    'w-full flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-200',
-                    'hover:bg-foreground/5',
-                    isAboutActive ? 'text-primary' : 'text-foreground'
+                    'group w-full flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-200',
+                    'hover:bg-primary/10',
+                    isAboutActive ? 'text-primary bg-primary/10' : 'text-foreground'
                   )}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className={cn(
+                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200",
+                    isAboutActive 
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
+                      : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                  )}>
                     <Info className="h-5 w-5" strokeWidth={2} />
-                    <span className="text-base font-bold">{t('nav.about')}</span>
                   </div>
-                  <ChevronRight 
+                  <span className="text-base font-bold flex-1 text-left">{t('nav.about')}</span>
+                  <ChevronDown 
                     className={cn(
                       'h-5 w-5 transition-transform duration-300',
-                      aboutExpanded && 'rotate-90'
+                      aboutExpanded && 'rotate-180'
                     )} 
                   />
                 </button>
@@ -318,24 +338,36 @@ export const Navbar = () => {
                 <div
                   className={cn(
                     'overflow-hidden transition-all duration-300 ease-out',
-                    aboutExpanded ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+                    aboutExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                   )}
                 >
-                  <div className="ml-9 border-l border-foreground/20 space-y-1 py-1">
+                  <div className="ml-4 mt-1 mb-2 space-y-1 bg-muted/50 rounded-xl p-2">
                     {aboutSubItems.map((item) => (
                       <Link
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          'flex items-center gap-3 py-3 px-4 transition-all duration-200',
-                          'hover:bg-foreground/5 rounded-r-lg',
+                          'group flex items-center gap-3 py-3 px-3 rounded-lg transition-all duration-200',
+                          'hover:bg-primary/10',
                           isActive(item.path) 
-                            ? 'text-primary font-bold' 
-                            : 'text-foreground/70 hover:text-foreground font-semibold'
+                            ? 'text-primary bg-primary/10 font-bold' 
+                            : 'text-foreground/70 hover:text-primary'
                         )}
                       >
-                        <item.icon className="h-4 w-4" strokeWidth={2} />
-                        <span className="text-sm">{t(item.labelKey)}</span>
+                        <div className={cn(
+                          "flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200",
+                          isActive(item.path) 
+                            ? "bg-primary text-primary-foreground" 
+                            : "bg-background group-hover:bg-primary/20 group-hover:text-primary"
+                        )}>
+                          <item.icon className="h-4 w-4" strokeWidth={2} />
+                        </div>
+                        <span className="text-sm font-semibold">{t(item.labelKey)}</span>
+                        <ChevronRight className={cn(
+                          "h-4 w-4 ml-auto opacity-0 -translate-x-2 transition-all duration-200",
+                          "group-hover:opacity-70 group-hover:translate-x-0",
+                          isActive(item.path) && "opacity-70 translate-x-0"
+                        )} />
                       </Link>
                     ))}
                   </div>
@@ -348,32 +380,44 @@ export const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    'flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-200',
-                    'hover:bg-foreground/5',
-                    isActive(item.path) ? 'text-primary' : 'text-foreground'
+                    'group flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-200',
+                    'hover:bg-primary/10',
+                    isActive(item.path) ? 'text-primary bg-primary/10' : 'text-foreground'
                   )}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className={cn(
+                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200",
+                    isActive(item.path) 
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
+                      : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                  )}>
                     <item.icon className="h-5 w-5" strokeWidth={2} />
-                    <span className="text-base font-bold">{t(item.labelKey)}</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-foreground/40" />
+                  <span className="text-base font-bold flex-1">{t(item.labelKey)}</span>
+                  <ChevronRight className={cn(
+                    "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
+                    "group-hover:opacity-70 group-hover:translate-x-0",
+                    isActive(item.path) && "opacity-70 translate-x-0"
+                  )} />
                 </Link>
               ))}
             </nav>
 
             {/* Divider */}
-            <div className="my-6 border-t border-foreground/10" />
+            <div className="my-6 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
 
             {/* Admin & Auth Section */}
             <div className="space-y-2">
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="flex items-center gap-4 py-3 px-4 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all duration-200"
+                  className="group flex items-center gap-4 py-3 px-4 rounded-xl bg-gradient-to-r from-primary/20 to-primary/10 text-primary hover:from-primary/30 hover:to-primary/20 transition-all duration-200 border border-primary/20"
                 >
-                  <Shield className="h-5 w-5" strokeWidth={2} />
+                  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/30">
+                    <Shield className="h-4 w-4" strokeWidth={2} />
+                  </div>
                   <span className="text-sm font-bold">Admin Panel</span>
+                  <ChevronRight className="h-4 w-4 ml-auto opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
                 </Link>
               )}
 
@@ -383,29 +427,36 @@ export const Navbar = () => {
                     signOut();
                     setIsMenuOpen(false);
                   }}
-                  className="w-full flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-foreground/5 transition-all duration-200"
+                  className="group w-full flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-destructive/10 hover:text-destructive transition-all duration-200"
                 >
-                  <LogOut className="h-5 w-5" strokeWidth={2} />
+                  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted group-hover:bg-destructive/20 transition-all duration-200">
+                    <LogOut className="h-4 w-4" strokeWidth={2} />
+                  </div>
                   <span className="text-sm font-bold">{t('nav.logout')}</span>
                 </button>
               ) : (
                 <Link
                   to="/auth"
-                  className="flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-foreground/5 transition-all duration-200"
+                  className="group flex items-center gap-4 py-3 px-4 rounded-xl text-foreground/70 hover:bg-primary/10 hover:text-primary transition-all duration-200"
                 >
-                  <LogIn className="h-5 w-5" strokeWidth={2} />
+                  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted group-hover:bg-primary/20 transition-all duration-200">
+                    <LogIn className="h-4 w-4" strokeWidth={2} />
+                  </div>
                   <span className="text-sm font-bold">{t('nav.login')}</span>
                 </Link>
               )}
             </div>
 
             {/* Contact Info */}
-            <div className="mt-10 px-4">
+            <div className="mt-8 p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10">
               <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">{t('nav.contactUs')}</p>
               <a 
                 href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`} 
-                className="text-xl font-bold text-primary hover:text-primary/80 transition-colors"
+                className="flex items-center gap-3 text-xl font-bold text-primary hover:text-primary/80 transition-colors"
               >
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/30">
+                  <Phone className="h-5 w-5" strokeWidth={2} />
+                </div>
                 {phoneNumber}
               </a>
             </div>
