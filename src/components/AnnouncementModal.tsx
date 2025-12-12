@@ -26,15 +26,18 @@ export const AnnouncementModal = ({
   const { t } = useTranslation();
   const { getContent, getImage } = useSiteContent();
 
-  // Get content from database with fallback to i18n
+  // Get content from database only - no fallback
   const modalContent = getContent('modal_welcome');
   const modalImageData = getImage('modal_welcome');
   
-  const title = modalContent.title || t('welcomeModal.title');
-  const subtitle = modalContent.content?.split('\n')[0] || t('welcomeModal.subtitle');
-  const description = modalContent.content?.split('\n').slice(1).join('\n') || t('welcomeModal.description');
+  const title = modalContent.title || '';
+  const subtitle = modalContent.content?.split('\n')[0] || '';
+  const description = modalContent.content?.split('\n').slice(1).join('\n') || '';
   const ctaText = t('welcomeModal.cta');
-  const displayImage = modalImageData?.url || modalImage;
+  const displayImage = modalImageData?.url || '';
+  
+  // Don't show modal if no database content
+  const hasContent = title || subtitle || description || displayImage;
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -64,6 +67,11 @@ export const AnnouncementModal = ({
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, setIsOpen]);
+
+  // Don't render if no database content available
+  if (!hasContent) {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
