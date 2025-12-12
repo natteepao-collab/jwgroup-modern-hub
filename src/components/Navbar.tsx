@@ -175,25 +175,43 @@ export const Navbar = () => {
               {/* Dropdown Menu */}
               <div 
                 className={cn(
-                  "absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-200",
-                  aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
+                  "absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ease-out",
+                  aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-3"
                 )}
               >
-                <div className="bg-card border border-border rounded-xl shadow-xl min-w-[220px] py-2 overflow-hidden">
+                {/* Arrow indicator */}
+                <div className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-3 h-3 bg-card border-l border-t border-border rotate-45 z-10" />
+                
+                <div className="relative bg-card border border-border rounded-2xl shadow-2xl min-w-[260px] py-3 overflow-hidden">
+                  {/* Subtle gradient header */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+                  
                   {aboutSubItems.map((item, index) => (
                     <Link
                       key={item.path}
                       to={item.path}
                       className={cn(
-                        "flex items-center gap-3 px-4 py-3 transition-all duration-200",
-                        "hover:bg-primary/10 hover:text-primary",
+                        "group flex items-center gap-4 px-5 py-3.5 mx-2 rounded-xl transition-all duration-200",
+                        "hover:bg-primary/10",
                         isActive(item.path) 
-                          ? "text-primary bg-primary/5 font-bold" 
-                          : "text-foreground/80"
+                          ? "text-primary bg-primary/10 font-bold" 
+                          : "text-foreground/70 hover:text-primary"
                       )}
                     >
-                      <item.icon className="h-4 w-4" strokeWidth={2} />
-                      <span className="text-sm font-medium">{t(item.labelKey)}</span>
+                      <div className={cn(
+                        "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
+                        isActive(item.path) 
+                          ? "bg-primary text-primary-foreground" 
+                          : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                      )}>
+                        <item.icon className="h-4 w-4" strokeWidth={2} />
+                      </div>
+                      <span className="text-sm font-semibold">{t(item.labelKey)}</span>
+                      <ChevronRight className={cn(
+                        "h-4 w-4 ml-auto opacity-0 -translate-x-2 transition-all duration-200",
+                        "group-hover:opacity-100 group-hover:translate-x-0",
+                        isActive(item.path) && "opacity-100 translate-x-0"
+                      )} />
                     </Link>
                   ))}
                 </div>
