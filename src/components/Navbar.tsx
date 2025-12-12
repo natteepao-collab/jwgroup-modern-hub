@@ -206,7 +206,7 @@ export const Navbar = () => {
                       )}>
                         <item.icon className="h-4 w-4" strokeWidth={2} />
                       </div>
-                      <span className="text-[15px] font-bold tracking-wide">{t(item.labelKey)}</span>
+                      <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t(item.labelKey)}</span>
                       <ChevronRight className={cn(
                         "h-4 w-4 ml-auto opacity-0 -translate-x-2 transition-all duration-200",
                         "group-hover:opacity-100 group-hover:translate-x-0",
@@ -299,7 +299,7 @@ export const Navbar = () => {
                 )}>
                   <Home className="h-5 w-5" strokeWidth={2} />
                 </div>
-                <span className="text-[17px] font-bold tracking-wide flex-1">{t('nav.home')}</span>
+                <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1">{t('nav.home')}</span>
                 <ChevronRight className={cn(
                   "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
                   "group-hover:opacity-70 group-hover:translate-x-0",
@@ -325,7 +325,7 @@ export const Navbar = () => {
                   )}>
                     <Info className="h-5 w-5" strokeWidth={2} />
                   </div>
-                  <span className="text-[17px] font-bold tracking-wide flex-1 text-left">{t('nav.about')}</span>
+                  <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1 text-left">{t('nav.about')}</span>
                   <ChevronDown 
                     className={cn(
                       'h-5 w-5 transition-transform duration-300',
@@ -362,7 +362,7 @@ export const Navbar = () => {
                         )}>
                           <item.icon className="h-4 w-4" strokeWidth={2} />
                         </div>
-                        <span className="text-[15px] font-bold tracking-wide">{t(item.labelKey)}</span>
+                        <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t(item.labelKey)}</span>
                         <ChevronRight className={cn(
                           "h-4 w-4 ml-auto opacity-0 -translate-x-2 transition-all duration-200",
                           "group-hover:opacity-70 group-hover:translate-x-0",
@@ -393,7 +393,7 @@ export const Navbar = () => {
                   )}>
                     <item.icon className="h-5 w-5" strokeWidth={2} />
                   </div>
-                  <span className="text-[17px] font-bold tracking-wide flex-1">{t(item.labelKey)}</span>
+                  <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1">{t(item.labelKey)}</span>
                   <ChevronRight className={cn(
                     "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
                     "group-hover:opacity-70 group-hover:translate-x-0",
@@ -416,7 +416,7 @@ export const Navbar = () => {
                   <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/30">
                     <Shield className="h-4 w-4" strokeWidth={2} />
                   </div>
-                  <span className="text-[15px] font-bold tracking-wide">Admin Panel</span>
+                  <span className="text-[15px] font-bold tracking-widest leading-relaxed">Admin Panel</span>
                   <ChevronRight className="h-4 w-4 ml-auto opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
                 </Link>
               )}
@@ -432,7 +432,7 @@ export const Navbar = () => {
                   <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted group-hover:bg-destructive/20 transition-all duration-200">
                     <LogOut className="h-4 w-4" strokeWidth={2} />
                   </div>
-                  <span className="text-[15px] font-bold tracking-wide">{t('nav.logout')}</span>
+                  <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t('nav.logout')}</span>
                 </button>
               ) : (
                 <Link
@@ -442,7 +442,7 @@ export const Navbar = () => {
                   <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted group-hover:bg-primary/20 transition-all duration-200">
                     <LogIn className="h-4 w-4" strokeWidth={2} />
                   </div>
-                  <span className="text-[15px] font-bold tracking-wide">{t('nav.login')}</span>
+                  <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t('nav.login')}</span>
                 </Link>
               )}
             </div>
