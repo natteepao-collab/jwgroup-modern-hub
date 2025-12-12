@@ -182,7 +182,7 @@ export const Navbar = () => {
                 {/* Arrow indicator */}
                 <div className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-3 h-3 bg-card border-l border-t border-border rotate-45 z-10" />
                 
-                <div className="relative bg-card border border-border rounded-2xl shadow-2xl min-w-[260px] py-3 overflow-hidden">
+                <div className="relative bg-card border border-border rounded-2xl shadow-2xl min-w-[280px] py-4 overflow-hidden">
                   {/* Subtle gradient header */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
                   
@@ -191,7 +191,7 @@ export const Navbar = () => {
                       key={item.path}
                       to={item.path}
                       className={cn(
-                        "group flex items-center gap-4 px-5 py-3.5 mx-2 rounded-xl transition-all duration-200",
+                        "group flex items-center gap-5 px-6 py-4 mx-3 rounded-xl transition-all duration-200",
                         "hover:bg-primary/10",
                         isActive(item.path) 
                           ? "text-primary bg-primary/10 font-bold" 
@@ -199,7 +199,7 @@ export const Navbar = () => {
                       )}
                     >
                       <div className={cn(
-                        "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
+                        "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
                         isActive(item.path) 
                           ? "bg-primary text-primary-foreground" 
                           : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
@@ -286,13 +286,13 @@ export const Navbar = () => {
               <Link
                 to="/"
                 className={cn(
-                  'group flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-200',
+                  'group flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
                   'hover:bg-primary/10',
                   isActive('/') ? 'text-primary bg-primary/10' : 'text-foreground'
                 )}
               >
                 <div className={cn(
-                  "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200",
+                  "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
                   isActive('/') 
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
                     : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
@@ -312,13 +312,13 @@ export const Navbar = () => {
                 <button
                   onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
-                    'group w-full flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-200',
+                    'group w-full flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
                     'hover:bg-primary/10',
                     isAboutActive ? 'text-primary bg-primary/10' : 'text-foreground'
                   )}
                 >
                   <div className={cn(
-                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200",
+                    "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
                     isAboutActive 
                       ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
                       : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
@@ -341,13 +341,13 @@ export const Navbar = () => {
                     aboutExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                   )}
                 >
-                  <div className="ml-4 mt-1 mb-2 space-y-1 bg-muted/50 rounded-xl p-2">
+                  <div className="ml-4 mt-2 mb-2 space-y-1.5 bg-muted/50 rounded-xl p-3">
                     {aboutSubItems.map((item) => (
                       <Link
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          'group flex items-center gap-3 py-3 px-3 rounded-lg transition-all duration-200',
+                          'group flex items-center gap-4 py-3.5 px-4 rounded-lg transition-all duration-200',
                           'hover:bg-primary/10',
                           isActive(item.path) 
                             ? 'text-primary bg-primary/10 font-bold' 
@@ -355,7 +355,7 @@ export const Navbar = () => {
                         )}
                       >
                         <div className={cn(
-                          "flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200",
+                          "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
                           isActive(item.path) 
                             ? "bg-primary text-primary-foreground" 
                             : "bg-background group-hover:bg-primary/20 group-hover:text-primary"
@@ -380,13 +380,13 @@ export const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    'group flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-200',
+                    'group flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
                     'hover:bg-primary/10',
                     isActive(item.path) ? 'text-primary bg-primary/10' : 'text-foreground'
                   )}
                 >
                   <div className={cn(
-                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200",
+                    "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
                     isActive(item.path) 
                       ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
                       : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
