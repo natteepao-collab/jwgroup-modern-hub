@@ -20,7 +20,8 @@ import {
   Calendar,
   Building,
   Mail,
-  Snowflake
+  Snowflake,
+  TreePine
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -35,6 +36,7 @@ import TimelineManagement from '@/components/admin/TimelineManagement';
 import ProjectsManagement from '@/components/admin/ProjectsManagement';
 import NewsletterManagement from '@/components/admin/NewsletterManagement';
 import { SnowfallControl } from '@/components/admin/SnowfallControl';
+import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -206,7 +208,10 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
-            <SnowfallControl />
+            <div className="grid gap-6 md:grid-cols-2">
+              <SnowfallControl />
+              <ChristmasThemeControl />
+            </div>
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
                 <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
