@@ -19,7 +19,8 @@ import {
   Trophy,
   Calendar,
   Building,
-  Mail
+  Mail,
+  Snowflake
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -33,6 +34,7 @@ import AwardsManagement from '@/components/admin/AwardsManagement';
 import TimelineManagement from '@/components/admin/TimelineManagement';
 import ProjectsManagement from '@/components/admin/ProjectsManagement';
 import NewsletterManagement from '@/components/admin/NewsletterManagement';
+import { SnowfallControl } from '@/components/admin/SnowfallControl';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -203,11 +205,12 @@ const Admin = () => {
             <UserManagement />
           </TabsContent>
 
-          <TabsContent value="settings">
+          <TabsContent value="settings" className="space-y-6">
+            <SnowfallControl />
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
                 <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>ฟีเจอร์ตั้งค่าระบบกำลังพัฒนา...</p>
+                <p>ฟีเจอร์ตั้งค่าเพิ่มเติมกำลังพัฒนา...</p>
               </CardContent>
             </Card>
           </TabsContent>

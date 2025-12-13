@@ -9,6 +9,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import FloatingActions from './components/FloatingActions';
+import Snowfall from './components/Snowfall';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Business from "./pages/Business";
@@ -33,6 +34,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   
   return (
     <div className="flex flex-col min-h-screen">
+      <Snowfall />
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
         {children}
