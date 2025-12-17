@@ -21,7 +21,8 @@ import {
   Building,
   Mail,
   Snowflake,
-  TreePine
+  TreePine,
+  GitBranch
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -37,6 +38,7 @@ import ProjectsManagement from '@/components/admin/ProjectsManagement';
 import NewsletterManagement from '@/components/admin/NewsletterManagement';
 import { SnowfallControl } from '@/components/admin/SnowfallControl';
 import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
+import OrgDepartmentManagement from '@/components/admin/OrgDepartmentManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -119,7 +121,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-6 lg:grid-cols-11 gap-1">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-1">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
@@ -131,6 +133,10 @@ const Admin = () => {
             <TabsTrigger value="executives" className="flex items-center gap-2">
               <UserCircle className="h-4 w-4" />
               <span className="hidden sm:inline">ผู้บริหาร</span>
+            </TabsTrigger>
+            <TabsTrigger value="orgchart" className="flex items-center gap-2">
+              <GitBranch className="h-4 w-4" />
+              <span className="hidden sm:inline">โครงสร้าง</span>
             </TabsTrigger>
             <TabsTrigger value="timeline" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -176,6 +182,10 @@ const Admin = () => {
 
           <TabsContent value="executives">
             <ExecutiveManagement />
+          </TabsContent>
+
+          <TabsContent value="orgchart">
+            <OrgDepartmentManagement />
           </TabsContent>
 
           <TabsContent value="timeline">
