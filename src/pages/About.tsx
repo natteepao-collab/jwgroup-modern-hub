@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
-import InteractiveOrgChart from '@/components/InteractiveOrgChart';
+import OrganizationChart from '@/components/OrganizationChart';
 
 const AboutHistory = () => {
   const { t } = useTranslation();
@@ -58,7 +58,7 @@ const AboutVision = () => {
 };
 
 const AboutStructure = () => {
-  return <InteractiveOrgChart />;
+  return <OrganizationChart />;
 };
 
 const AboutTeam = () => {
