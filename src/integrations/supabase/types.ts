@@ -206,6 +206,54 @@ export type Database = {
         }
         Relationships: []
       }
+      org_departments: {
+        Row: {
+          color: string | null
+          created_at: string
+          description_en: string | null
+          description_th: string | null
+          id: string
+          is_published: boolean | null
+          level: string
+          name_en: string | null
+          name_th: string
+          parent_level: string | null
+          position_order: number | null
+          sub_items: Json | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_published?: boolean | null
+          level?: string
+          name_en?: string | null
+          name_th: string
+          parent_level?: string | null
+          position_order?: number | null
+          sub_items?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_published?: boolean | null
+          level?: string
+          name_en?: string | null
+          name_th?: string
+          parent_level?: string | null
+          position_order?: number | null
+          sub_items?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
