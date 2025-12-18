@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import ProjectGallery from '@/components/ProjectGallery';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Building, Hotel, Heart, Leaf, Images } from 'lucide-react';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
@@ -32,6 +33,18 @@ const Business = () => {
   const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const { getImage } = useSiteContent();
   const [activeTab, setActiveTab] = useState('realestate');
+  const isMobile = useIsMobile();
+  const galleryContainerRef = useRef<HTMLDivElement>(null);
+
+  // Handle tab change with scroll on mobile
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (isMobile && galleryContainerRef.current) {
+      setTimeout(() => {
+        galleryContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  };
 
   // Get business images from database or fallback to defaults
   const getBusinessImage = (sectionKey: string) => {
@@ -134,7 +147,8 @@ const Business = () => {
             </p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div ref={galleryContainerRef}>
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
               {businessTabs.map((tab) => (
                 <TabsTrigger key={tab.id} value={tab.id} className="gap-2">
@@ -152,6 +166,7 @@ const Business = () => {
               </TabsContent>
             ))}
           </Tabs>
+          </div>
         </div>
       </div>
     </div>
