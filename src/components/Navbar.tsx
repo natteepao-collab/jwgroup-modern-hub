@@ -134,50 +134,51 @@ export const Navbar = () => {
 
             {/* Right - Actions */}
             <div className="flex items-center gap-1 sm:gap-2">
-              {/* Social Media Icons */}
+              {/* Social Media Icons - Compact on mobile */}
               <div className={cn(
-                "flex items-center gap-1",
+                "flex items-center",
+                "gap-0 sm:gap-1",
                 isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
               )}>
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 hover:text-primary transition-colors"
+                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
                   aria-label="Facebook"
                 >
-                  <Facebook className="h-4 w-4" />
+                  <Facebook className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </a>
                 <a
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 hover:text-primary transition-colors"
+                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
                   aria-label="Instagram"
                 >
-                  <Instagram className="h-4 w-4" />
+                  <Instagram className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </a>
                 <a
                   href="https://tiktok.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 hover:text-primary transition-colors"
+                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
                   aria-label="TikTok"
                 >
-                  <TikTokIcon className="h-4 w-4" />
+                  <TikTokIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </a>
                 <a
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 hover:text-primary transition-colors"
+                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
                   aria-label="YouTube"
                 >
-                  <Youtube className="h-4 w-4" />
+                  <Youtube className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </a>
               </div>
               
-              <div className="w-px h-5 bg-foreground/20 mx-1 hidden sm:block" />
+              <div className="w-px h-4 sm:h-5 bg-foreground/20 mx-0.5 sm:mx-1" />
               
               <ThemeToggle />
               <LanguageSwitcher />
