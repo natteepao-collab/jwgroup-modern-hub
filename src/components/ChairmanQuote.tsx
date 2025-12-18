@@ -199,10 +199,10 @@ export const ChairmanQuote = ({
                   showDirectors || hoveredMember === 'chairman' ? 'border-primary/30 scale-[1.3]' : 'border-primary/10 scale-125'
                 }`} />
                 
-                {/* Pulse animation when not expanded */}
-                {!showDirectors && directors.length > 0 && (
+                {/* Pulse animation when not expanded - TEMPORARILY DISABLED */}
+                {/* {!showDirectors && directors.length > 0 && (
                   <div className="absolute inset-0 rounded-full border-2 border-primary/40 animate-ping" style={{ animationDuration: '2s' }} />
-                )}
+                )} */}
               </div>
               
               {/* Chairman Info */}
@@ -211,13 +211,14 @@ export const ChairmanQuote = ({
               }`}>
                 <div className="text-xl font-bold text-foreground">{chairmanName}</div>
                 <div className="text-primary font-medium">{chairmanTitle}</div>
-                {!showDirectors && directors.length > 0 && (
+                {/* TEMPORARILY DISABLED - Executive team button */}
+                {/* {!showDirectors && directors.length > 0 && (
                   <p className="text-sm text-muted-foreground mt-2 animate-pulse">คลิกเพื่อดูทีมผู้บริหาร</p>
-                )}
+                )} */}
               </div>
 
-              {/* Triangle Button for Managers - Below Chairman */}
-              {managers.length > 0 && (
+              {/* Triangle Button for Managers - Below Chairman - TEMPORARILY DISABLED */}
+              {/* {managers.length > 0 && (
                 <div className="flex items-center gap-3 mt-4">
                   <button
                     onClick={handleShowManagers}
@@ -228,7 +229,6 @@ export const ChairmanQuote = ({
                     }`}
                     aria-label="ดูทีมผู้จัดการ"
                   >
-                    {/* Arrow icon */}
                     <div className={`flex items-center justify-center transition-all duration-300 ${
                       showManagers ? 'rotate-90' : ''
                     }`}>
@@ -247,7 +247,7 @@ export const ChairmanQuote = ({
                     </span>
                   </button>
                 </div>
-              )}
+              )} */}
             </div>
 
             {/* Quote */}
