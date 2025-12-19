@@ -22,7 +22,8 @@ import {
   Mail,
   Snowflake,
   TreePine,
-  GitBranch
+  GitBranch,
+  Share2
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -39,6 +40,7 @@ import NewsletterManagement from '@/components/admin/NewsletterManagement';
 import { SnowfallControl } from '@/components/admin/SnowfallControl';
 import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
 import OrgDepartmentManagement from '@/components/admin/OrgDepartmentManagement';
+import SocialMediaManagement from '@/components/admin/SocialMediaManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -218,6 +220,7 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
+            <SocialMediaManagement />
             <div className="grid gap-6 md:grid-cols-2">
               <SnowfallControl />
               <ChristmasThemeControl />

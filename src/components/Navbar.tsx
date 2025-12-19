@@ -15,11 +15,13 @@ import { cn } from '@/lib/utils';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { useSocialLinks } from '@/hooks/useSocialLinks';
 
 export const Navbar = () => {
   const { t } = useTranslation();
   const { user, isAdmin, signOut } = useAuth();
   const { getContent } = useSiteContent();
+  const { links: socialLinks } = useSocialLinks();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -139,7 +141,7 @@ export const Navbar = () => {
             {/* Mobile: Social Media Icons Row */}
             <div className="flex sm:hidden w-full items-center justify-center gap-3 pb-1">
               <a
-                href="https://facebook.com"
+                href={socialLinks.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
@@ -151,7 +153,7 @@ export const Navbar = () => {
                 <Facebook className="h-4 w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
               </a>
               <a
-                href="https://instagram.com"
+                href={socialLinks.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
@@ -163,7 +165,7 @@ export const Navbar = () => {
                 <Instagram className="h-4 w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
               </a>
               <a
-                href="https://tiktok.com"
+                href={socialLinks.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
@@ -175,7 +177,7 @@ export const Navbar = () => {
                 <TikTokIcon className="h-4 w-4 text-foreground group-hover:text-background transition-colors duration-300" />
               </a>
               <a
-                href="https://youtube.com"
+                href={socialLinks.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
@@ -230,7 +232,7 @@ export const Navbar = () => {
                 {/* Social Media Icons - Professional style with soft backgrounds */}
                 <div className="flex items-center gap-2">
                   <a
-                    href="https://facebook.com"
+                    href={socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
@@ -242,7 +244,7 @@ export const Navbar = () => {
                     <Facebook className="h-4 w-4 lg:h-5 lg:w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                   </a>
                   <a
-                    href="https://instagram.com"
+                    href={socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
@@ -254,7 +256,7 @@ export const Navbar = () => {
                     <Instagram className="h-4 w-4 lg:h-5 lg:w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                   </a>
                   <a
-                    href="https://tiktok.com"
+                    href={socialLinks.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
@@ -266,7 +268,7 @@ export const Navbar = () => {
                     <TikTokIcon className="h-4 w-4 lg:h-5 lg:w-5 text-foreground group-hover:text-background transition-colors duration-300" />
                   </a>
                   <a
-                    href="https://youtube.com"
+                    href={socialLinks.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
