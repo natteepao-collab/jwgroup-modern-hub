@@ -133,36 +133,50 @@ export const Navbar = () => {
             </Link>
 
             {/* Right - Actions */}
-            <div className="flex items-center gap-1 sm:gap-2">
-              {/* Social Media Icons - Compact on mobile */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* Social Media Icons - Professional minimal style */}
               <div className={cn(
-                "flex items-center",
-                "gap-0 sm:gap-1",
+                "flex items-center gap-1",
                 isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
               )}>
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
+                  className={cn(
+                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
+                    isScrolled 
+                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
+                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
+                  )}
                   aria-label="Facebook"
                 >
-                  <Facebook className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <Facebook className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.5} />
                 </a>
                 <a
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
+                  className={cn(
+                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
+                    isScrolled 
+                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
+                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
+                  )}
                   aria-label="Instagram"
                 >
-                  <Instagram className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <Instagram className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.5} />
                 </a>
                 <a
                   href="https://tiktok.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
+                  className={cn(
+                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
+                    isScrolled 
+                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
+                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
+                  )}
                   aria-label="TikTok"
                 >
                   <TikTokIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -171,14 +185,19 @@ export const Navbar = () => {
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 sm:p-1.5 hover:text-primary transition-colors"
+                  className={cn(
+                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
+                    isScrolled 
+                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
+                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
+                  )}
                   aria-label="YouTube"
                 >
-                  <Youtube className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <Youtube className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.5} />
                 </a>
               </div>
               
-              <div className="w-px h-4 sm:h-5 bg-foreground/20 mx-0.5 sm:mx-1" />
+              <div className="w-px h-5 sm:h-6 bg-foreground/20 mx-0.5 sm:mx-1" />
               
               <ThemeToggle />
               <LanguageSwitcher />
