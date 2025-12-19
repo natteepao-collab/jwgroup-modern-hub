@@ -91,129 +91,212 @@ export const Navbar = () => {
             : 'bg-background/30 backdrop-blur-sm'
         )}
       >
-        <div className="container mx-auto px-4">
-          {/* Top Row - Logo, Language, Menu */}
+        <div className="container mx-auto px-4 sm:px-6">
+          {/* Top Row - Responsive Layout */}
           <div className={cn(
-            "flex items-center justify-between transition-all duration-300",
-            isScrolled ? "py-2" : "py-3"
+            "flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 transition-all duration-300",
+            isScrolled ? "py-2 sm:py-2" : "py-3 sm:py-3"
           )}>
-            {/* Left - Empty for balance on desktop, Hamburger on mobile */}
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className={cn(
-                "flex lg:hidden items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-300",
-                "hover:bg-foreground/10",
-                isScrolled 
-                  ? "text-foreground" 
-                  : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-              )}
-            >
-              <Menu className="h-6 w-6" strokeWidth={2.5} />
-            </button>
-            
-            {/* Hidden spacer for desktop */}
-            <div className="hidden lg:block w-24" />
-
-            {/* Center - Logo */}
-            <Link 
-              to="/" 
-              className={cn(
-                "absolute left-1/2 -translate-x-1/2 lg:relative lg:left-auto lg:translate-x-0",
-                !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
-              )}
-            >
-              <img 
-                src={jwLogo} 
-                alt="JW Group" 
-                className={cn(
-                  "transition-all duration-300",
-                  isScrolled ? "h-8 sm:h-10" : "h-10 sm:h-12"
-                )}
-              />
-            </Link>
-
-            {/* Right - Actions */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              {/* Social Media Icons - Professional minimal style */}
-              <div className={cn(
-                "flex items-center gap-1",
-                isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-              )}>
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
-                    isScrolled 
-                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
-                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
-                  )}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.5} />
-                </a>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
-                    isScrolled 
-                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
-                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
-                  )}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.5} />
-                </a>
-                <a
-                  href="https://tiktok.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
-                    isScrolled 
-                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
-                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
-                  )}
-                  aria-label="TikTok"
-                >
-                  <TikTokIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                </a>
-                <a
-                  href="https://youtube.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border transition-all duration-200",
-                    isScrolled 
-                      ? "border-foreground/20 hover:border-primary hover:text-primary hover:bg-primary/5" 
-                      : "border-foreground/30 hover:border-primary hover:text-primary hover:bg-primary/10"
-                  )}
-                  aria-label="YouTube"
-                >
-                  <Youtube className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.5} />
-                </a>
-              </div>
-              
-              <div className="w-px h-5 sm:h-6 bg-foreground/20 mx-0.5 sm:mx-1" />
-              
-              <ThemeToggle />
-              <LanguageSwitcher />
-              {/* Desktop Hamburger */}
+            {/* Mobile: Logo + Hamburger Row */}
+            <div className="flex sm:hidden w-full items-center justify-between">
               <button
                 onClick={() => setIsMenuOpen(true)}
                 className={cn(
-                  "hidden lg:flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300",
+                  "flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300",
                   "hover:bg-foreground/10",
                   isScrolled 
                     ? "text-foreground" 
                     : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
-                <Menu className="h-5 w-5" strokeWidth={2.5} />
+                <Menu className="h-6 w-6" strokeWidth={2.5} />
               </button>
+              
+              {/* Center - Logo */}
+              <Link 
+                to="/" 
+                className={cn(
+                  !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                <img 
+                  src={jwLogo} 
+                  alt="JW Group" 
+                  className={cn(
+                    "transition-all duration-300",
+                    isScrolled ? "h-8" : "h-10"
+                  )}
+                />
+              </Link>
+              
+              {/* Right - Theme & Language */}
+              <div className="flex items-center gap-1">
+                <ThemeToggle />
+                <LanguageSwitcher />
+              </div>
+            </div>
+
+            {/* Mobile: Social Media Icons Row */}
+            <div className="flex sm:hidden w-full items-center justify-center gap-3 pb-1">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-[#1877F2]/10 hover:bg-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
+                )}
+                aria-label="Facebook"
+              >
+                <Facebook className="h-4 w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-[#E4405F]/10 hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
+                )}
+                aria-label="Instagram"
+              >
+                <Instagram className="h-4 w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+              </a>
+              <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-foreground/10 hover:bg-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
+                )}
+                aria-label="TikTok"
+              >
+                <TikTokIcon className="h-4 w-4 text-foreground group-hover:text-background transition-colors duration-300" />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-[#FF0000]/10 hover:bg-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
+                )}
+                aria-label="YouTube"
+              >
+                <Youtube className="h-4 w-4 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+              </a>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex w-full items-center justify-between">
+              {/* Left - Hamburger (Mobile) */}
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className={cn(
+                  "flex lg:hidden items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300",
+                  "hover:bg-foreground/10",
+                  isScrolled 
+                    ? "text-foreground" 
+                    : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                <Menu className="h-6 w-6" strokeWidth={2.5} />
+              </button>
+              
+              {/* Hidden spacer for desktop */}
+              <div className="hidden lg:block w-24" />
+
+              {/* Center - Logo */}
+              <Link 
+                to="/" 
+                className={cn(
+                  "absolute left-1/2 -translate-x-1/2 lg:relative lg:left-auto lg:translate-x-0",
+                  !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                )}
+              >
+                <img 
+                  src={jwLogo} 
+                  alt="JW Group" 
+                  className={cn(
+                    "transition-all duration-300",
+                    isScrolled ? "h-10" : "h-12"
+                  )}
+                />
+              </Link>
+
+              {/* Right - Actions */}
+              <div className="flex items-center gap-2 lg:gap-3">
+                {/* Social Media Icons - Professional style with soft backgrounds */}
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "bg-[#1877F2]/10 hover:bg-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
+                    )}
+                    aria-label="Facebook"
+                  >
+                    <Facebook className="h-4 w-4 lg:h-5 lg:w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  </a>
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "bg-[#E4405F]/10 hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
+                    )}
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="h-4 w-4 lg:h-5 lg:w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  </a>
+                  <a
+                    href="https://tiktok.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "bg-foreground/10 hover:bg-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
+                    )}
+                    aria-label="TikTok"
+                  >
+                    <TikTokIcon className="h-4 w-4 lg:h-5 lg:w-5 text-foreground group-hover:text-background transition-colors duration-300" />
+                  </a>
+                  <a
+                    href="https://youtube.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "bg-[#FF0000]/10 hover:bg-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
+                    )}
+                    aria-label="YouTube"
+                  >
+                    <Youtube className="h-4 w-4 lg:h-5 lg:w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  </a>
+                </div>
+                
+                <div className="w-px h-6 lg:h-7 bg-foreground/20 mx-1" />
+                
+                <ThemeToggle />
+                <LanguageSwitcher />
+                {/* Desktop Hamburger */}
+                <button
+                  onClick={() => setIsMenuOpen(true)}
+                  className={cn(
+                    "hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300",
+                    "hover:bg-foreground/10",
+                    isScrolled 
+                      ? "text-foreground" 
+                      : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  )}
+                >
+                  <Menu className="h-5 w-5" strokeWidth={2.5} />
+                </button>
+              </div>
             </div>
           </div>
 
