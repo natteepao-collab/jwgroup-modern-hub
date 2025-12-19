@@ -105,10 +105,8 @@ export const Navbar = () => {
                 onClick={() => setIsMenuOpen(true)}
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300",
-                  "hover:bg-foreground/10",
-                  isScrolled
-                    ? "text-foreground"
-                    : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  "bg-primary text-primary-foreground shadow-lg shadow-primary/30",
+                  "hover:bg-primary/90 hover:scale-105 active:scale-95"
                 )}
               >
                 <Menu className="h-6 w-6" strokeWidth={2.5} />
@@ -294,10 +292,8 @@ export const Navbar = () => {
                   onClick={() => setIsMenuOpen(true)}
                   className={cn(
                     "hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300",
-                    "hover:bg-foreground/10",
-                    isScrolled
-                      ? "text-foreground"
-                      : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                    "bg-primary text-primary-foreground shadow-lg shadow-primary/30",
+                    "hover:bg-primary/90 hover:scale-105 active:scale-95"
                   )}
                 >
                   <Menu className="h-5 w-5" strokeWidth={2.5} />
