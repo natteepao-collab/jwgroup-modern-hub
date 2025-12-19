@@ -6,7 +6,7 @@ import { Menu, X, Shield, LogIn, LogOut, ChevronRight, ChevronDown, Home, Buildi
 // TikTok icon component (not in lucide-react)
 const TikTokIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
   </svg>
 );
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -89,8 +89,8 @@ export const Navbar = () => {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           isScrolled
-            ? 'bg-card/95 backdrop-blur-md shadow-md'
-            : 'bg-background/30 backdrop-blur-sm'
+            ? 'bg-card/80 backdrop-blur-xl shadow-sm border-b border-white/20'
+            : 'bg-background/20 backdrop-blur-lg border-b border-white/10'
         )}
       >
         <div className="container mx-auto px-4 sm:px-6">
@@ -106,31 +106,31 @@ export const Navbar = () => {
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300",
                   "hover:bg-foreground/10",
-                  isScrolled 
-                    ? "text-foreground" 
+                  isScrolled
+                    ? "text-foreground"
                     : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
                 <Menu className="h-6 w-6" strokeWidth={2.5} />
               </button>
-              
+
               {/* Center - Logo */}
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className={cn(
                   !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                 )}
               >
-                <img 
-                  src={jwLogo} 
-                  alt="JW Group" 
+                <img
+                  src={jwLogo}
+                  alt="JW Group"
                   className={cn(
                     "transition-all duration-300",
                     isScrolled ? "h-8" : "h-10"
                   )}
                 />
               </Link>
-              
+
               {/* Right - Theme & Language */}
               <div className="flex items-center gap-1">
                 <ThemeToggle />
@@ -198,28 +198,28 @@ export const Navbar = () => {
                 className={cn(
                   "flex lg:hidden items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300",
                   "hover:bg-foreground/10",
-                  isScrolled 
-                    ? "text-foreground" 
+                  isScrolled
+                    ? "text-foreground"
                     : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                 )}
               >
                 <Menu className="h-6 w-6" strokeWidth={2.5} />
               </button>
-              
+
               {/* Hidden spacer for desktop */}
               <div className="hidden lg:block w-24" />
 
               {/* Center - Logo */}
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className={cn(
                   "absolute left-1/2 -translate-x-1/2 lg:relative lg:left-auto lg:translate-x-0",
                   !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                 )}
               >
-                <img 
-                  src={jwLogo} 
-                  alt="JW Group" 
+                <img
+                  src={jwLogo}
+                  alt="JW Group"
                   className={cn(
                     "transition-all duration-300",
                     isScrolled ? "h-10" : "h-12"
@@ -236,53 +236,53 @@ export const Navbar = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
-                      "bg-[#1877F2]/10 hover:bg-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
+                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                      "bg-[#1877F2]/10 hover:bg-[#1877F2]/20 hover:scale-110"
                     )}
                     aria-label="Facebook"
                   >
-                    <Facebook className="h-4 w-4 lg:h-5 lg:w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                    <Facebook className="h-5 w-5 text-[#1877F2] transition-colors duration-300" strokeWidth={2} />
                   </a>
                   <a
                     href={socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
-                      "bg-[#E4405F]/10 hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
+                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                      "bg-[#E4405F]/10 hover:bg-[#E4405F]/20 hover:scale-110"
                     )}
                     aria-label="Instagram"
                   >
-                    <Instagram className="h-4 w-4 lg:h-5 lg:w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                    <Instagram className="h-5 w-5 text-[#E4405F] transition-colors duration-300" strokeWidth={2} />
                   </a>
                   <a
                     href={socialLinks.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
-                      "bg-foreground/10 hover:bg-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
+                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                      "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 hover:scale-110"
                     )}
                     aria-label="TikTok"
                   >
-                    <TikTokIcon className="h-4 w-4 lg:h-5 lg:w-5 text-foreground group-hover:text-background transition-colors duration-300" />
+                    <TikTokIcon className="h-5 w-5 text-black dark:text-white transition-colors duration-300" />
                   </a>
                   <a
                     href={socialLinks.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
-                      "bg-[#FF0000]/10 hover:bg-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
+                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                      "bg-[#FF0000]/10 hover:bg-[#FF0000]/20 hover:scale-110"
                     )}
                     aria-label="YouTube"
                   >
-                    <Youtube className="h-4 w-4 lg:h-5 lg:w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                    <Youtube className="h-5 w-5 text-[#FF0000] transition-colors duration-300" strokeWidth={2} />
                   </a>
                 </div>
-                
-                <div className="w-px h-6 lg:h-7 bg-foreground/20 mx-1" />
-                
+
+                <div className="w-px h-5 bg-foreground/10 mx-2" />
+
                 <ThemeToggle />
                 <LanguageSwitcher />
                 {/* Desktop Hamburger */}
@@ -291,8 +291,8 @@ export const Navbar = () => {
                   className={cn(
                     "hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300",
                     "hover:bg-foreground/10",
-                    isScrolled 
-                      ? "text-foreground" 
+                    isScrolled
+                      ? "text-foreground"
                       : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                   )}
                 >
@@ -308,7 +308,7 @@ export const Navbar = () => {
             isScrolled ? "py-2" : "py-3"
           )}>
             {/* About Us with Dropdown */}
-            <div 
+            <div
               ref={aboutDropdownRef}
               className="relative"
               onMouseEnter={() => setAboutDropdownOpen(true)}
@@ -316,10 +316,8 @@ export const Navbar = () => {
             >
               <button
                 className={cn(
-                  "relative flex items-center gap-1 text-base font-bold tracking-wide transition-all duration-200 hover:text-primary",
-                  "after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-primary after:transition-all after:duration-300",
-                  aboutDropdownOpen || isAboutActive ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  isAboutActive ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  "relative flex items-center gap-1.5 text-[15px] font-semibold tracking-wide transition-all duration-300",
+                  aboutDropdownOpen || isAboutActive ? "text-primary" : "text-foreground/80 hover:text-primary"
                 )}
               >
                 {t('nav.about')}
@@ -330,7 +328,7 @@ export const Navbar = () => {
               </button>
 
               {/* Dropdown Menu */}
-              <div 
+              <div
                 className={cn(
                   "absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ease-out",
                   aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-3"
@@ -338,11 +336,11 @@ export const Navbar = () => {
               >
                 {/* Arrow indicator */}
                 <div className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-3 h-3 bg-card border-l border-t border-border rotate-45 z-10" />
-                
+
                 <div className="relative bg-card border border-border rounded-2xl shadow-2xl min-w-[280px] py-4 overflow-hidden">
                   {/* Subtle gradient header */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
-                  
+
                   {aboutSubItems.map((item, index) => (
                     <Link
                       key={item.path}
@@ -350,15 +348,15 @@ export const Navbar = () => {
                       className={cn(
                         "group flex items-center gap-5 px-6 py-4 mx-3 rounded-xl transition-all duration-200",
                         "hover:bg-primary/10",
-                        isActive(item.path) 
-                          ? "text-primary bg-primary/10 font-bold" 
+                        isActive(item.path)
+                          ? "text-primary bg-primary/10 font-bold"
                           : "text-foreground/70 hover:text-primary"
                       )}
                     >
                       <div className={cn(
                         "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
-                        isActive(item.path) 
-                          ? "bg-primary text-primary-foreground" 
+                        isActive(item.path)
+                          ? "bg-primary text-primary-foreground"
                           : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
                       )}>
                         <item.icon className="h-4 w-4" strokeWidth={2} />
@@ -379,10 +377,10 @@ export const Navbar = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "relative text-base font-bold tracking-wide transition-all duration-200 hover:text-primary",
-                  "after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-primary after:transition-all after:duration-300",
-                  isActive(item.path) ? "after:w-full" : "after:w-0 hover:after:w-full",
-                  isActive(item.path) ? "text-primary" : isScrolled ? "text-foreground" : "text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                  "relative text-[15px] font-semibold tracking-wide transition-all duration-300",
+                  isActive(item.path)
+                    ? "text-primary after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full"
+                    : "text-foreground/80 hover:text-primary hover:after:content-[''] hover:after:absolute hover:after:-bottom-1 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-primary/50 hover:after:rounded-full"
                 )}
               >
                 {t(item.labelKey)}
@@ -400,7 +398,7 @@ export const Navbar = () => {
         )}
       >
         {/* Dark Backdrop */}
-        <div 
+        <div
           className={cn(
             'absolute inset-0 bg-black/60 transition-opacity duration-300',
             isMenuOpen ? 'opacity-100' : 'opacity-0'
@@ -419,7 +417,7 @@ export const Navbar = () => {
           <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-foreground/10">
             <div className="px-5 py-4 flex items-center justify-between">
               <img src={jwLogo} alt="JW Group" className="h-8" />
-              
+
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 <button
@@ -436,7 +434,7 @@ export const Navbar = () => {
           <div className="px-4 py-6">
             {/* Gradient accent line */}
             <div className="h-1 w-16 bg-gradient-to-r from-primary to-primary/50 rounded-full mb-6" />
-            
+
             {/* Main Navigation */}
             <nav className="space-y-1.5">
               {/* Home */}
@@ -450,8 +448,8 @@ export const Navbar = () => {
               >
                 <div className={cn(
                   "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
-                  isActive('/') 
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
+                  isActive('/')
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
                     : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
                 )}>
                   <Home className="h-5 w-5" strokeWidth={2} />
@@ -476,18 +474,18 @@ export const Navbar = () => {
                 >
                   <div className={cn(
                     "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
-                    isAboutActive 
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
+                    isAboutActive
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
                       : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
                   )}>
                     <Info className="h-5 w-5" strokeWidth={2} />
                   </div>
                   <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1 text-left">{t('nav.about')}</span>
-                  <ChevronDown 
+                  <ChevronDown
                     className={cn(
                       'h-5 w-5 transition-transform duration-300',
                       aboutExpanded && 'rotate-180'
-                    )} 
+                    )}
                   />
                 </button>
 
@@ -506,15 +504,15 @@ export const Navbar = () => {
                         className={cn(
                           'group flex items-center gap-4 py-3.5 px-4 rounded-lg transition-all duration-200',
                           'hover:bg-primary/10',
-                          isActive(item.path) 
-                            ? 'text-primary bg-primary/10 font-bold' 
+                          isActive(item.path)
+                            ? 'text-primary bg-primary/10 font-bold'
                             : 'text-foreground/70 hover:text-primary'
                         )}
                       >
                         <div className={cn(
                           "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
-                          isActive(item.path) 
-                            ? "bg-primary text-primary-foreground" 
+                          isActive(item.path)
+                            ? "bg-primary text-primary-foreground"
                             : "bg-background group-hover:bg-primary/20 group-hover:text-primary"
                         )}>
                           <item.icon className="h-4 w-4" strokeWidth={2} />
@@ -544,8 +542,8 @@ export const Navbar = () => {
                 >
                   <div className={cn(
                     "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
-                    isActive(item.path) 
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30" 
+                    isActive(item.path)
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
                       : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
                   )}>
                     <item.icon className="h-5 w-5" strokeWidth={2} />
@@ -607,8 +605,8 @@ export const Navbar = () => {
             {/* Contact Info */}
             <div className="mt-8 p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10">
               <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">{t('nav.contactUs')}</p>
-              <a 
-                href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`} 
+              <a
+                href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`}
                 className="flex items-center gap-3 text-xl font-bold text-primary hover:text-primary/80 transition-colors"
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/30">
