@@ -124,8 +124,10 @@ export const Navbar = () => {
                 <img
                   src={jwLogo}
                   alt="JW Group"
+                  width="1754"
+                  height="1241"
                   className={cn(
-                    "transition-all duration-300",
+                    "transition-all duration-300 w-auto",
                     isScrolled ? "h-8" : "h-10"
                   )}
                 />
@@ -220,8 +222,10 @@ export const Navbar = () => {
                 <img
                   src={jwLogo}
                   alt="JW Group"
+                  width="1754"
+                  height="1241"
                   className={cn(
-                    "transition-all duration-300",
+                    "transition-all duration-300 w-auto",
                     isScrolled ? "h-10" : "h-12"
                   )}
                 />
@@ -416,7 +420,7 @@ export const Navbar = () => {
           {/* Header */}
           <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-foreground/10">
             <div className="px-5 py-4 flex items-center justify-between">
-              <img src={jwLogo} alt="JW Group" className="h-8" />
+              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-8 w-auto" />
 
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
