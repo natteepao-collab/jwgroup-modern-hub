@@ -28,7 +28,7 @@ export const Footer = () => {
           {/* Company Info */}
           <div>
             <Link to="/" className="inline-block mb-4">
-              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-12 w-auto" />
+              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-12 w-auto brightness-0 invert" />
             </Link>
             <p className="text-sm opacity-90 mb-4 leading-relaxed">
               {t('footer.companyDescription')}
