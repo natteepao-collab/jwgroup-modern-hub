@@ -447,16 +447,19 @@ export const Navbar = () => {
                 )}
               >
                 <div className={cn(
-                  "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
+                  "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
                   isActive('/')
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                    : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                    ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/40"
+                    : "bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary group-hover:shadow-lg group-hover:shadow-primary/20"
                 )}>
-                  <Home className="h-5 w-5" strokeWidth={2} />
+                  <Home className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                  {isActive('/') && (
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/20 to-transparent" />
+                  )}
                 </div>
                 <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1">{t('nav.home')}</span>
                 <ChevronRight className={cn(
-                  "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
+                  "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-300",
                   "group-hover:opacity-70 group-hover:translate-x-0",
                   isActive('/') && "opacity-70 translate-x-0"
                 )} />
@@ -473,12 +476,15 @@ export const Navbar = () => {
                   )}
                 >
                   <div className={cn(
-                    "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
+                    "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
                     isAboutActive
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                      : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                      ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/40"
+                      : "bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary group-hover:shadow-lg group-hover:shadow-primary/20"
                   )}>
-                    <Info className="h-5 w-5" strokeWidth={2} />
+                    <Info className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                    {isAboutActive && (
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/20 to-transparent" />
+                    )}
                   </div>
                   <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1 text-left">{t('nav.about')}</span>
                   <ChevronDown
@@ -510,12 +516,15 @@ export const Navbar = () => {
                         )}
                       >
                         <div className={cn(
-                          "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
+                          "relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-105",
                           isActive(item.path)
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-background group-hover:bg-primary/20 group-hover:text-primary"
+                            ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30"
+                            : "bg-gradient-to-br from-background via-background to-muted/50 border border-border/40 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary"
                         )}>
-                          <item.icon className="h-4 w-4" strokeWidth={2} />
+                          <item.icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                          {isActive(item.path) && (
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/20 to-transparent" />
+                          )}
                         </div>
                         <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t(item.labelKey)}</span>
                         <ChevronRight className={cn(
@@ -541,12 +550,15 @@ export const Navbar = () => {
                   )}
                 >
                   <div className={cn(
-                    "flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200",
+                    "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
                     isActive(item.path)
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                      : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                      ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/40"
+                      : "bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary group-hover:shadow-lg group-hover:shadow-primary/20"
                   )}>
-                    <item.icon className="h-5 w-5" strokeWidth={2} />
+                    <item.icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                    {isActive(item.path) && (
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/20 to-transparent" />
+                    )}
                   </div>
                   <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1">{t(item.labelKey)}</span>
                   <ChevronRight className={cn(
