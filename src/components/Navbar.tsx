@@ -443,8 +443,10 @@ export const Navbar = () => {
                 className={cn(
                   'group flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
                   'hover:bg-primary/10',
-                  isActive('/') ? 'text-primary bg-primary/10' : 'text-foreground'
+                  isActive('/') ? 'text-primary bg-primary/10' : 'text-foreground',
+                  isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
                 )}
+                style={{ animationDelay: '100ms', animationFillMode: 'both' }}
               >
                 <div className={cn(
                   "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
@@ -466,7 +468,13 @@ export const Navbar = () => {
               </Link>
 
               {/* About Us - Expandable */}
-              <div className="overflow-hidden rounded-xl">
+              <div 
+                className={cn(
+                  "overflow-hidden rounded-xl",
+                  isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
+                )}
+                style={{ animationDelay: '150ms', animationFillMode: 'both' }}
+              >
                 <button
                   onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
@@ -503,7 +511,7 @@ export const Navbar = () => {
                   )}
                 >
                   <div className="ml-4 mt-2 mb-2 space-y-1.5 bg-muted/50 rounded-xl p-3">
-                    {aboutSubItems.map((item) => (
+                    {aboutSubItems.map((item, subIndex) => (
                       <Link
                         key={item.path}
                         to={item.path}
@@ -512,8 +520,10 @@ export const Navbar = () => {
                           'hover:bg-primary/10',
                           isActive(item.path)
                             ? 'text-primary bg-primary/10 font-bold'
-                            : 'text-foreground/70 hover:text-primary'
+                            : 'text-foreground/70 hover:text-primary',
+                          aboutExpanded ? 'animate-fade-in opacity-100' : 'opacity-0'
                         )}
+                        style={{ animationDelay: `${subIndex * 50}ms`, animationFillMode: 'both' }}
                       >
                         <div className={cn(
                           "relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-105",
@@ -539,15 +549,17 @@ export const Navbar = () => {
               </div>
 
               {/* Other Menu Items */}
-              {menuItems.slice(1).map((item) => (
+              {menuItems.slice(1).map((item, index) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   className={cn(
                     'group flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
                     'hover:bg-primary/10',
-                    isActive(item.path) ? 'text-primary bg-primary/10' : 'text-foreground'
+                    isActive(item.path) ? 'text-primary bg-primary/10' : 'text-foreground',
+                    isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
                   )}
+                  style={{ animationDelay: `${200 + (index * 50)}ms`, animationFillMode: 'both' }}
                 >
                   <div className={cn(
                     "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
@@ -574,7 +586,13 @@ export const Navbar = () => {
             <div className="my-6 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
 
             {/* Admin & Auth Section */}
-            <div className="space-y-3">
+            <div 
+              className={cn(
+                "space-y-3",
+                isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
+              )}
+              style={{ animationDelay: '450ms', animationFillMode: 'both' }}
+            >
               {isAdmin && (
                 <Link
                   to="/admin"
@@ -620,7 +638,13 @@ export const Navbar = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="mt-8 p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10">
+            <div 
+              className={cn(
+                "mt-8 p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10",
+                isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
+              )}
+              style={{ animationDelay: '500ms', animationFillMode: 'both' }}
+            >
               <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">{t('nav.contactUs')}</p>
               <a
                 href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`}
