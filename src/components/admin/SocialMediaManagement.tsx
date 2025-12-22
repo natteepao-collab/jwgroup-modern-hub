@@ -99,7 +99,7 @@ export const SocialMediaManagement = () => {
           .from('site_content')
           .select('id')
           .eq('section_key', social.key)
-          .single();
+          .maybeSingle();
 
         if (existing) {
           // Update existing record
