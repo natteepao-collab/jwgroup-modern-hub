@@ -163,24 +163,34 @@ const ProjectsManagement = () => {
       return;
     }
 
+    // Check if user is authenticated
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast.error('กรุณาเข้าสู่ระบบก่อนอัปโหลดรูปภาพ');
+      return;
+    }
+
     setUploading(true);
     const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `${fileName}`;
+    const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
       .from('project-images')
-      .upload(filePath, file);
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
     if (uploadError) {
-      toast.error('อัปโหลดรูปภาพไม่สำเร็จ');
+      console.error('Upload error:', uploadError);
+      toast.error(`อัปโหลดรูปภาพไม่สำเร็จ: ${uploadError.message}`);
       setUploading(false);
       return;
     }
 
     const { data: urlData } = supabase.storage
       .from('project-images')
-      .getPublicUrl(filePath);
+      .getPublicUrl(fileName);
 
     if (isGallery) {
       setFormData(prev => ({
