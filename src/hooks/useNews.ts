@@ -35,6 +35,7 @@ export interface FormattedNewsItem {
   date: string;
   image: string;
   isVideo: boolean;
+  galleryImages: string[];
   isFeatured: boolean;
 }
 
@@ -47,7 +48,7 @@ export const useNews = () => {
     const thField = `${field}_th` as keyof NewsItem;
     const enField = `${field}_en` as keyof NewsItem;
     const cnField = `${field}_cn` as keyof NewsItem;
-    
+
     if (lang === 'en' && item[enField]) return item[enField] as string;
     if (lang === 'cn' && item[cnField]) return item[cnField] as string;
     return item[thField] as string || '';
@@ -100,7 +101,7 @@ export const useNews = () => {
           // Invalidate and refetch news data
           queryClient.invalidateQueries({ queryKey: ['news'] });
           queryClient.invalidateQueries({ queryKey: ['news-admin'] });
-          
+
           // Show toast notification for new news
           if (payload.eventType === 'INSERT') {
             const newNews = payload.new as NewsItem;
@@ -119,18 +120,44 @@ export const useNews = () => {
     };
   }, [queryClient]);
 
-  const formattedNews: FormattedNewsItem[] = (newsItems || []).map((item) => ({
-    id: item.id,
-    title: getLocalizedField(item, 'title'),
-    excerpt: getLocalizedField(item, 'excerpt'),
-    content: getLocalizedField(item, 'content'),
-    category: getCategoryLabel(item.category),
-    categoryType: item.category as FormattedNewsItem['categoryType'],
-    date: formatDate(item.published_at),
-    image: item.image_url || '',
-    isVideo: !!item.video_url,
-    isFeatured: item.is_featured,
-  }));
+  const parseGalleryOrVideo = (url: string | null) => {
+    if (!url) return { isVideo: false, gallery: [] };
+
+    // Check if it's a JSON array (Gallery)
+    if (url.trim().startsWith('[') && url.trim().endsWith(']')) {
+      try {
+        const parsed = JSON.parse(url);
+        if (Array.isArray(parsed)) {
+          return { isVideo: false, gallery: parsed as string[] };
+        }
+      } catch (e) {
+        // Fallback to video if parse failed but it looks like array? 
+        // Or strictly treat as string if parse fails.
+        console.error('Failed to parse gallery JSON', e);
+      }
+    }
+
+    // Otherwise treat as Video URL
+    return { isVideo: true, gallery: [] };
+  };
+
+  const formattedNews: FormattedNewsItem[] = (newsItems || []).map((item) => {
+    const { isVideo, gallery } = parseGalleryOrVideo(item.video_url);
+
+    return {
+      id: item.id,
+      title: getLocalizedField(item, 'title'),
+      excerpt: getLocalizedField(item, 'excerpt'),
+      content: getLocalizedField(item, 'content'),
+      category: getCategoryLabel(item.category),
+      categoryType: item.category as FormattedNewsItem['categoryType'],
+      date: formatDate(item.published_at),
+      image: item.image_url || '',
+      isVideo: isVideo,
+      galleryImages: gallery,
+      isFeatured: item.is_featured,
+    };
+  });
 
   return {
     news: formattedNews,
@@ -184,7 +211,7 @@ export const useNewsAdmin = () => {
         .from('news')
         .insert(newsData)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -206,7 +233,7 @@ export const useNewsAdmin = () => {
         .update(newsData)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

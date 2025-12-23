@@ -28,7 +28,7 @@ interface NewsFormData {
   content_cn: string;
   category: string;
   image_url: string;
-  video_url: string;
+  gallery_images: string[];
   is_featured: boolean;
   is_published: boolean;
 }
@@ -45,7 +45,7 @@ const initialFormData: NewsFormData = {
   content_cn: '',
   category: 'company',
   image_url: '',
-  video_url: '',
+  gallery_images: [],
   is_featured: false,
   is_published: true,
 };
@@ -107,7 +107,7 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
@@ -130,25 +130,25 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
     return (
       <div className="relative group">
         <div className="w-full h-48 rounded-lg overflow-hidden border bg-muted">
-          <img 
-            src={currentImage} 
-            alt="Preview" 
+          <img
+            src={currentImage}
+            alt="Preview"
             className="w-full h-full object-cover"
           />
         </div>
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
-          <Button 
-            type="button" 
-            variant="secondary" 
+          <Button
+            type="button"
+            variant="secondary"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
           >
             <Upload className="h-4 w-4 mr-2" />
             เปลี่ยนรูป
           </Button>
-          <Button 
-            type="button" 
-            variant="destructive" 
+          <Button
+            type="button"
+            variant="destructive"
             size="sm"
             onClick={onRemove}
           >
@@ -176,8 +176,8 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
       className={cn(
         "w-full h-48 rounded-lg border-2 border-dashed transition-all cursor-pointer",
         "flex flex-col items-center justify-center gap-3",
-        isDragging 
-          ? "border-primary bg-primary/10 scale-[1.02]" 
+        isDragging
+          ? "border-primary bg-primary/10 scale-[1.02]"
           : "border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/50",
         isUploading && "pointer-events-none opacity-70"
       )}
@@ -189,7 +189,7 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
         onChange={handleFileChange}
         className="hidden"
       />
-      
+
       {isUploading ? (
         <>
           <Loader2 className="h-10 w-10 text-primary animate-spin" />
@@ -219,6 +219,8 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
     </div>
   );
 };
+
+import { MultiDragDropUpload } from './MultiDragDropUpload';
 
 export const NewsManagement = () => {
   const { news, isLoading, createNews, updateNews, deleteNews } = useNewsAdmin();
@@ -288,29 +290,110 @@ export const NewsManagement = () => {
         }
       }
     }
-    
+
     setFormData({ ...formData, image_url: '' });
     setImagePreview(null);
     toast.success('ลบรูปภาพสำเร็จ');
   };
 
+  const handleGalleryUpload = async (files: File[]) => {
+    setIsUploading(true);
+    const newImages: string[] = [];
+
+    try {
+      for (const file of files) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `gallery/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('news-images')
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('news-images')
+          .getPublicUrl(fileName);
+
+        newImages.push(publicUrl);
+      }
+
+      setFormData(prev => ({
+        ...prev,
+        gallery_images: [...prev.gallery_images, ...newImages]
+      }));
+      toast.success(`อัพโหลดเพิ่ม ${newImages.length} รูปสำเร็จ`);
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast.error('อัพโหลดไม่สำเร็จ: ' + error.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleRemoveGalleryImage = async (index: number) => {
+    const imageUrl = formData.gallery_images[index];
+    if (imageUrl) {
+      const urlParts = imageUrl.split('/news-images/');
+      if (urlParts.length > 1) {
+        try {
+          await supabase.storage
+            .from('news-images')
+            .remove([urlParts[1]]);
+        } catch (error) {
+          console.error('Delete error:', error);
+        }
+      }
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      gallery_images: prev.gallery_images.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (editingId) {
-      await updateNews.mutateAsync({ id: editingId, ...formData });
-    } else {
-      await createNews.mutateAsync(formData);
+
+    // Convert gallery_images to JSON string for video_url field
+    const submitData = {
+      ...formData,
+      video_url: formData.gallery_images.length > 0 ? JSON.stringify(formData.gallery_images) : null
+    };
+
+    // Remove gallery_images from the object passed to Supabase
+    // We cast to any to bypass the mismatch between NewsFormData (local) and NewsItem (remote)
+    const { gallery_images, ...rest } = submitData;
+    const finalData = rest as any; // Cast to any to satisfy mutation type which expects Partial<NewsItem>
+
+    try {
+      if (editingId) {
+        await updateNews.mutateAsync({ id: editingId, ...finalData });
+      } else {
+        await createNews.mutateAsync(finalData);
+      }
+
+      setIsDialogOpen(false);
+      setEditingId(null);
+      setFormData(initialFormData);
+      setImagePreview(null);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Toast is handled by mutation onError
     }
-    
-    setIsDialogOpen(false);
-    setEditingId(null);
-    setFormData(initialFormData);
-    setImagePreview(null);
   };
 
   const handleEdit = (newsItem: any) => {
     setEditingId(newsItem.id);
+
+    let gallery: string[] = [];
+    if (newsItem.video_url && newsItem.video_url.trim().startsWith('[')) {
+      try {
+        const parsed = JSON.parse(newsItem.video_url);
+        if (Array.isArray(parsed)) gallery = parsed;
+      } catch (e) { console.error('Error parsing gallery', e); }
+    }
+
     setFormData({
       title_th: newsItem.title_th || '',
       title_en: newsItem.title_en || '',
@@ -323,7 +406,7 @@ export const NewsManagement = () => {
       content_cn: newsItem.content_cn || '',
       category: newsItem.category || 'company',
       image_url: newsItem.image_url || '',
-      video_url: newsItem.video_url || '',
+      gallery_images: gallery,
       is_featured: newsItem.is_featured || false,
       is_published: newsItem.is_published ?? true,
     });
@@ -421,11 +504,10 @@ export const NewsManagement = () => {
                     key={lang}
                     type="button"
                     onClick={() => setActiveTab(lang)}
-                    className={`px-4 py-2 font-medium transition-colors ${
-                      activeTab === lang 
-                        ? 'border-b-2 border-primary text-primary' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
+                    className={`px-4 py-2 font-medium transition-colors ${activeTab === lang
+                      ? 'border-b-2 border-primary text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                      }`}
                   >
                     {lang === 'th' ? 'ภาษาไทย' : lang === 'en' ? 'English' : '中文'}
                   </button>
@@ -534,8 +616,8 @@ export const NewsManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="category">หมวดหมู่</Label>
-                    <Select 
-                      value={formData.category} 
+                    <Select
+                      value={formData.category}
                       onValueChange={(value) => setFormData({ ...formData, category: value })}
                     >
                       <SelectTrigger>
@@ -548,13 +630,14 @@ export const NewsManagement = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div>
-                    <Label htmlFor="video_url">URL วิดีโอ (ถ้ามี)</Label>
-                    <Input
-                      id="video_url"
-                      value={formData.video_url}
-                      onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                      placeholder="https://..."
+                  <div className="col-span-2">
+                    <Label className="mb-2 block">รูปภาพเพิ่มเติม (สูงสุด 3 รูป)</Label>
+                    <MultiDragDropUpload
+                      onUpload={handleGalleryUpload}
+                      isUploading={isUploading}
+                      currentImages={formData.gallery_images}
+                      onRemove={handleRemoveGalleryImage}
+                      maxFiles={3}
                     />
                   </div>
                 </div>
@@ -609,9 +692,9 @@ export const NewsManagement = () => {
                 <TableCell>
                   <div className="w-16 h-12 rounded overflow-hidden">
                     {item.image_url ? (
-                      <img 
-                        src={item.image_url} 
-                        alt={item.title_th} 
+                      <img
+                        src={item.image_url}
+                        alt={item.title_th}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -629,13 +712,13 @@ export const NewsManagement = () => {
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline">
-                    {item.category === 'company' ? 'ข่าวบริษัท' : 
-                     item.category === 'press' ? 'ข่าวประชาสัมพันธ์' : 'CSR'}
+                    {item.category === 'company' ? 'ข่าวบริษัท' :
+                      item.category === 'press' ? 'ข่าวประชาสัมพันธ์' : 'CSR'}
                   </Badge>
                 </TableCell>
                 <TableCell>{formatDate(item.published_at)}</TableCell>
                 <TableCell>
-                  <Badge 
+                  <Badge
                     variant={item.is_published ? 'default' : 'secondary'}
                     className="cursor-pointer"
                     onClick={() => togglePublished(item.id, item.is_published)}
@@ -660,9 +743,9 @@ export const NewsManagement = () => {
                     <Button variant="ghost" size="icon" onClick={() => handleEdit(item)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => handleDelete(item.id)}
                       className="text-destructive hover:text-destructive"
                     >
