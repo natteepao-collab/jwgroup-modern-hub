@@ -27,8 +27,8 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <Link to="/" className="inline-block mb-4">
-              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-12 w-auto" />
+            <Link to="/" className="inline-block mb-4 bg-background/95 p-3 rounded-xl shadow-sm">
+              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-10 w-auto" />
             </Link>
             <p className="text-sm opacity-90 mb-4 leading-relaxed">
               {t('footer.companyDescription')}

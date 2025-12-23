@@ -5,6 +5,24 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Rate limiting configuration
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 10; // requests per window
+const WINDOW_MS = 60000; // 1 minute
+
+// Clean up old entries periodically to prevent memory leaks
+const cleanupRateLimitMap = () => {
+  const now = Date.now();
+  for (const [key, value] of rateLimitMap.entries()) {
+    if (now >= value.resetTime) {
+      rateLimitMap.delete(key);
+    }
+  }
+};
+
+// Run cleanup every 5 minutes
+setInterval(cleanupRateLimitMap, 5 * 60 * 1000);
+
 const SYSTEM_PROMPT = `คุณคือผู้ช่วย FAQ ของ JW Group บริษัทชั้นนำในประเทศไทยที่มีธุรกิจหลากหลาย ตอบคำถามเป็นภาษาไทยอย่างสุภาพ กระชับ และเป็นมิตร
 
 ═══════════════════════════════════════
@@ -88,6 +106,37 @@ serve(async (req) => {
   }
 
   try {
+    // Get client IP for rate limiting
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                     req.headers.get('x-real-ip') || 
+                     'unknown';
+    
+    // Rate limiting check
+    const now = Date.now();
+    const userLimit = rateLimitMap.get(clientIP);
+    
+    if (userLimit) {
+      if (now < userLimit.resetTime) {
+        if (userLimit.count >= RATE_LIMIT) {
+          console.log(`Rate limit exceeded for IP: ${clientIP}`);
+          return new Response(
+            JSON.stringify({ error: "คุณส่งข้อความบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่" }),
+            { 
+              status: 429, 
+              headers: { ...corsHeaders, "Content-Type": "application/json" } 
+            }
+          );
+        }
+        userLimit.count++;
+      } else {
+        // Reset window
+        userLimit.count = 1;
+        userLimit.resetTime = now + WINDOW_MS;
+      }
+    } else {
+      rateLimitMap.set(clientIP, { count: 1, resetTime: now + WINDOW_MS });
+    }
+
     const { messages } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     

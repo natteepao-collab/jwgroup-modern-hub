@@ -26,13 +26,34 @@ export const SnowfallControl = () => {
         .from('site_content')
         .select('*')
         .eq('section_key', 'snowfall_animation')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       
       if (data) {
         setContentId(data.id);
         setIsEnabled(data.content_th === 'true');
+      } else {
+        // Create the record if it doesn't exist
+        const { data: newData, error: insertError } = await supabase
+          .from('site_content')
+          .insert({
+            section_key: 'snowfall_animation',
+            content_th: 'false',
+            content_en: 'false',
+            content_cn: 'false',
+            title_th: 'Animation หิมะตก',
+            title_en: 'Snowfall Animation',
+          })
+          .select('id')
+          .single();
+
+        if (insertError) {
+          console.error('Error creating snowfall setting:', insertError);
+        } else if (newData) {
+          setContentId(newData.id);
+          setIsEnabled(false);
+        }
       }
     } catch (error) {
       console.error('Error fetching snowfall setting:', error);

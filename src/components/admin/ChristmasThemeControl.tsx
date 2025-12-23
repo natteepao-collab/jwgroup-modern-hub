@@ -22,13 +22,34 @@ const ChristmasThemeControl = () => {
         .from('site_content')
         .select('id, content_th')
         .eq('section_key', 'christmas_theme')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 
       if (data) {
         setContentId(data.id);
         setIsEnabled(data.content_th === 'true');
+      } else {
+        // Create the record if it doesn't exist
+        const { data: newData, error: insertError } = await supabase
+          .from('site_content')
+          .insert({
+            section_key: 'christmas_theme',
+            content_th: 'false',
+            content_en: 'false',
+            content_cn: 'false',
+            title_th: 'ธีมคริสต์มาส',
+            title_en: 'Christmas Theme',
+          })
+          .select('id')
+          .single();
+
+        if (insertError) {
+          console.error('Error creating christmas theme setting:', insertError);
+        } else if (newData) {
+          setContentId(newData.id);
+          setIsEnabled(false);
+        }
       }
     } catch (error) {
       console.error('Error fetching christmas theme setting:', error);

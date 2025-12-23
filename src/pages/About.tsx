@@ -1,6 +1,8 @@
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { Info, Eye, Network, UserCircle, Award } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
 import OrganizationChart from '@/components/OrganizationChart';
@@ -113,21 +115,47 @@ const AboutAwards = () => {
 
 const About = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  const navItems = [
+    { path: '/about/history', labelKey: 'about.history', icon: Info },
+    { path: '/about/vision', labelKey: 'about.vision', icon: Eye },
+    { path: '/about/structure', labelKey: 'about.structure', icon: Network },
+    { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
+    { path: '/about/awards', labelKey: 'about.awards', icon: Award },
+  ];
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="pt-24 min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        {/* Breadcrumb Navigation */}
-        <div className="mb-8 flex flex-wrap gap-2 text-sm">
-          <Link to="/about/history" className="text-primary hover:underline">{t('about.history')}</Link>
-          <span>•</span>
-          <Link to="/about/vision" className="text-primary hover:underline">{t('about.vision')}</Link>
-          <span>•</span>
-          <Link to="/about/structure" className="text-primary hover:underline">{t('about.structure')}</Link>
-          <span>•</span>
-          <Link to="/about/team" className="text-primary hover:underline">{t('about.team')}</Link>
-          <span>•</span>
-          <Link to="/about/awards" className="text-primary hover:underline">{t('about.awards')}</Link>
+        {/* Breadcrumb Navigation - Responsive & Scrollable */}
+        <div className="mb-8 -mx-4 px-4 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 min-w-max pb-2">
+            {navItems.map((item, index) => (
+              <div key={item.path} className="flex items-center gap-2">
+                {index > 0 && (
+                  <span className="text-muted-foreground/50 hidden sm:block">•</span>
+                )}
+                <Link
+                  to={item.path}
+                  className={cn(
+                    "group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-medium transition-all duration-300",
+                    isActive(item.path)
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                      : "bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                  )}
+                >
+                  <item.icon className={cn(
+                    "h-4 w-4 transition-transform duration-300",
+                    isActive(item.path) ? "scale-110" : "group-hover:scale-110"
+                  )} />
+                  <span className="whitespace-nowrap">{t(item.labelKey)}</span>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
 
         <Routes>
