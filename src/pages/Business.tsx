@@ -108,9 +108,8 @@ const Business = () => {
       <div className="container mx-auto px-4 py-12">
         <div
           ref={ref}
-          className={`text-center mb-12 transition-all duration-1000 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('business.title')}</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -119,9 +118,8 @@ const Business = () => {
         </div>
 
         <div
-          className={`transition-all duration-700 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
           style={{ transitionDelay: '200ms' }}
         >
           <InteractiveSplitBusiness businesses={businesses} />
@@ -130,9 +128,8 @@ const Business = () => {
         {/* Project Gallery Section */}
         <div
           ref={galleryRef}
-          className={`mt-20 transition-all duration-1000 ${
-            galleryInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`mt-20 transition-all duration-1000 ${galleryInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -148,24 +145,28 @@ const Business = () => {
           </div>
 
           <div ref={galleryContainerRef}>
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
-              {businessTabs.map((tab) => (
-                <TabsTrigger key={tab.id} value={tab.id} className="gap-2">
-                  <tab.icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+              <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-10 h-auto p-1.5 bg-background/50 backdrop-blur-md border border-border/50 rounded-full shadow-lg">
+                {businessTabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="gap-2 py-3 rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300"
+                  >
+                    <tab.icon className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="hidden sm:inline font-medium">{tab.label}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-            {businessTabs.map((tab) => (
-              <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                <ProjectGallery 
-                  businessType={tab.id as 'realestate' | 'hotel' | 'pet' | 'wellness'} 
-                />
-              </TabsContent>
-            ))}
-          </Tabs>
+              {businessTabs.map((tab) => (
+                <TabsContent key={tab.id} value={tab.id} className="mt-0">
+                  <ProjectGallery
+                    businessType={tab.id as 'realestate' | 'hotel' | 'pet' | 'wellness'}
+                  />
+                </TabsContent>
+              ))}
+            </Tabs>
           </div>
         </div>
       </div>
