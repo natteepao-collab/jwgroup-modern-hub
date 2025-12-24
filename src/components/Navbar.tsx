@@ -191,7 +191,7 @@ export const Navbar = () => {
             </div>
 
             {/* Desktop Layout */}
-            <div className="hidden sm:flex w-full items-center justify-between">
+            <div className="hidden sm:flex w-full items-center justify-between relative">
               {/* Left - Hamburger (Mobile) */}
               <button
                 onClick={() => setIsMenuOpen(true)}
@@ -206,14 +206,14 @@ export const Navbar = () => {
                 <Menu className="h-6 w-6" strokeWidth={2.5} />
               </button>
 
-              {/* Hidden spacer for desktop */}
+              {/* Hidden spacer for desktop distribution - kept for left side balance if needed, though absolute centering ignores it */}
               <div className="hidden lg:block w-24" />
 
               {/* Center - Logo */}
               <Link
                 to="/"
                 className={cn(
-                  "absolute left-1/2 -translate-x-1/2 lg:relative lg:left-auto lg:translate-x-0",
+                  "absolute left-1/2 -translate-x-1/2",
                   !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                 )}
               >
@@ -468,7 +468,7 @@ export const Navbar = () => {
               </Link>
 
               {/* About Us - Expandable */}
-              <div 
+              <div
                 className={cn(
                   "overflow-hidden rounded-xl",
                   isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
@@ -586,7 +586,7 @@ export const Navbar = () => {
             <div className="my-6 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
 
             {/* Admin & Auth Section */}
-            <div 
+            <div
               className={cn(
                 "space-y-3",
                 isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
@@ -638,7 +638,7 @@ export const Navbar = () => {
             </div>
 
             {/* Contact Info */}
-            <div 
+            <div
               className={cn(
                 "mt-8 p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10",
                 isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
