@@ -52,6 +52,14 @@ const Admin = () => {
     }
   }, [user, loading, navigate]);
 
+  // Redirect non-admin users away from admin panel
+  useEffect(() => {
+    if (!loading && user && !isAdmin) {
+      toast.error('คุณไม่มีสิทธิ์เข้าถึงหน้า Admin');
+      navigate('/');
+    }
+  }, [user, isAdmin, loading, navigate]);
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
@@ -64,6 +72,18 @@ const Admin = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">กำลังโหลด...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Block rendering for non-admin users
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">กำลังตรวจสอบสิทธิ์...</p>
         </div>
       </div>
     );
@@ -106,16 +126,7 @@ const Admin = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        {!isAdmin && (
-          <Card className="mb-6 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20">
-            <CardContent className="py-4">
-              <p className="text-yellow-700 dark:text-yellow-300 flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                คุณยังไม่ได้รับสิทธิ์ Admin กรุณาติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์การแก้ไขเนื้อหา
-              </p>
-            </CardContent>
-          </Card>
-        )}
+        {/* Admin panel - only accessible by admin users */}
 
         <div className="mb-6">
           <h1 className="text-3xl font-bold">จัดการเนื้อหาเว็บไซต์</h1>
