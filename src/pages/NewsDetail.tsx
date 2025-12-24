@@ -392,13 +392,10 @@ const NewsDetail = () => {
 
           <div className="prose prose-lg dark:prose-invert max-w-none">
             {content ? (
-              content.split('\n').map((paragraph, index) => (
-                paragraph.trim() && (
-                  <p key={index} className="text-lg mb-4 leading-relaxed text-foreground/90">
-                    {paragraph}
-                  </p>
-                )
-              ))
+              <div
+                className="[&>p]:text-lg [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-foreground/90"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
             ) : (
               <p className="text-muted-foreground text-center py-8">
                 เนื้อหาข่าวจะถูกเพิ่มเร็วๆ นี้
@@ -417,8 +414,8 @@ const NewsDetail = () => {
             </div>
           </div>
         </article>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -200,7 +201,7 @@ const ProjectsManagement = () => {
     } else {
       setFormData(prev => ({ ...prev, image_url: urlData.publicUrl }));
     }
-    
+
     setUploading(false);
     toast.success('อัปโหลดรูปภาพสำเร็จ');
   };
@@ -284,8 +285,8 @@ const ProjectsManagement = () => {
     }));
   };
 
-  const filteredProjects = filterType === 'all' 
-    ? projects 
+  const filteredProjects = filterType === 'all'
+    ? projects
     : projects.filter(p => p.business_type === filterType);
 
   return (
@@ -368,10 +369,28 @@ const ProjectsManagement = () => {
 
                 <div>
                   <Label>รายละเอียด (TH)</Label>
-                  <Textarea
+                  <RichTextEditor
                     value={formData.description_th || ''}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description_th: e.target.value }))}
-                    rows={3}
+                    onChange={(value) => setFormData(prev => ({ ...prev, description_th: value }))}
+                    placeholder="รายละเอียดโครงการภาษาไทย"
+                  />
+                </div>
+
+                <div>
+                  <Label>รายละเอียด (EN)</Label>
+                  <RichTextEditor
+                    value={formData.description_en || ''}
+                    onChange={(value) => setFormData(prev => ({ ...prev, description_en: value }))}
+                    placeholder="Project description in English"
+                  />
+                </div>
+
+                <div>
+                  <Label>รายละเอียด (CN)</Label>
+                  <RichTextEditor
+                    value={formData.description_cn || ''}
+                    onChange={(value) => setFormData(prev => ({ ...prev, description_cn: value }))}
+                    placeholder="Project description in Chinese"
                   />
                 </div>
 

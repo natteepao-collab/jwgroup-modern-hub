@@ -147,10 +147,10 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              
+
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
+
               {/* Expand Icon */}
               <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-75">
                 <Maximize2 className="w-5 h-5 text-white" />
@@ -245,9 +245,10 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   {getName(selectedProject)}
                 </h3>
                 {getDescription(selectedProject) && (
-                  <p className="text-muted-foreground mb-4">
-                    {getDescription(selectedProject)}
-                  </p>
+                  <div
+                    className="text-muted-foreground mb-4 prose prose-sm dark:prose-invert max-w-none [&>p]:mb-2 [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5"
+                    dangerouslySetInnerHTML={{ __html: getDescription(selectedProject) || '' }}
+                  />
                 )}
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   {getLocation(selectedProject) && (
@@ -271,11 +272,10 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                       <button
                         key={idx}
                         onClick={() => setCurrentImageIndex(idx)}
-                        className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                          currentImageIndex === idx
+                        className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === idx
                             ? 'border-primary'
                             : 'border-transparent opacity-60 hover:opacity-100'
-                        }`}
+                          }`}
                       >
                         <img src={img} alt="" className="w-full h-full object-cover" />
                       </button>

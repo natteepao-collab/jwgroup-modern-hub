@@ -15,6 +15,7 @@ import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Upload, X, Image as ImageIcon,
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface NewsFormData {
   title_th: string;
@@ -553,11 +554,10 @@ export const NewsManagement = () => {
                   </div>
                   <div>
                     <Label htmlFor="content_th">เนื้อหาเต็ม (ไทย)</Label>
-                    <Textarea
-                      id="content_th"
+                    <RichTextEditor
                       value={formData.content_th}
-                      onChange={(e) => setFormData({ ...formData, content_th: e.target.value })}
-                      rows={6}
+                      onChange={(value) => setFormData({ ...formData, content_th: value })}
+                      placeholder="เขียนเนื้อหาข่าวที่นี่..."
                     />
                   </div>
                 </div>
@@ -585,11 +585,10 @@ export const NewsManagement = () => {
                   </div>
                   <div>
                     <Label htmlFor="content_en">Content (English)</Label>
-                    <Textarea
-                      id="content_en"
+                    <RichTextEditor
                       value={formData.content_en}
-                      onChange={(e) => setFormData({ ...formData, content_en: e.target.value })}
-                      rows={6}
+                      onChange={(value) => setFormData({ ...formData, content_en: value })}
+                      placeholder="Write news content here..."
                     />
                   </div>
                 </div>
@@ -617,11 +616,10 @@ export const NewsManagement = () => {
                   </div>
                   <div>
                     <Label htmlFor="content_cn">内容 (中文)</Label>
-                    <Textarea
-                      id="content_cn"
+                    <RichTextEditor
                       value={formData.content_cn}
-                      onChange={(e) => setFormData({ ...formData, content_cn: e.target.value })}
-                      rows={6}
+                      onChange={(value) => setFormData({ ...formData, content_cn: value })}
+                      placeholder="在此处撰写新闻内容..."
                     />
                   </div>
                 </div>
@@ -689,7 +687,7 @@ export const NewsManagement = () => {
             </form>
           </DialogContent>
         </Dialog>
-      </CardHeader>
+      </CardHeader >
       <CardContent>
         <Table>
           <TableHeader>
@@ -781,6 +779,6 @@ export const NewsManagement = () => {
           </TableBody>
         </Table>
       </CardContent>
-    </Card>
+    </Card >
   );
 };
