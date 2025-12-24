@@ -12,6 +12,15 @@ import slide4 from '@/assets/org-slides/slide-4.jpg';
 import slide5 from '@/assets/org-slides/slide-5.jpg';
 import slide6 from '@/assets/org-slides/slide-6.jpg';
 
+const slides = [
+  { image: slide1, title: 'Cover', titleTh: 'หน้าปก', rotate: true },
+  { image: slide2, title: 'Chairman of Executive Board', titleTh: 'ประธานกรรมการบริหาร', rotate: false },
+  { image: slide3, title: 'Executive Directors', titleTh: 'กรรมการบริหาร', rotate: false },
+  { image: slide4, title: 'Organizational Structure', titleTh: 'โครงสร้างองค์กร', rotate: false },
+  { image: slide5, title: 'Management Team', titleTh: 'ทีมผู้บริหาร', rotate: false },
+  { image: slide6, title: 'Q&A', titleTh: 'ถาม-ตอบ', rotate: false },
+];
+
 const InteractiveOrgChart = () => {
   const { i18n } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -19,24 +28,15 @@ const InteractiveOrgChart = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const slides = [
-    { image: slide1, title: 'Cover', titleTh: 'หน้าปก', rotate: true },
-    { image: slide2, title: 'Chairman of Executive Board', titleTh: 'ประธานกรรมการบริหาร', rotate: false },
-    { image: slide3, title: 'Executive Directors', titleTh: 'กรรมการบริหาร', rotate: false },
-    { image: slide4, title: 'Organizational Structure', titleTh: 'โครงสร้างองค์กร', rotate: false },
-    { image: slide5, title: 'Management Team', titleTh: 'ทีมผู้บริหาร', rotate: false },
-    { image: slide6, title: 'Q&A', titleTh: 'ถาม-ตอบ', rotate: false },
-  ];
-
   const isEnglish = i18n.language === 'en';
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
+  }, []);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  }, []);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -68,7 +68,7 @@ const InteractiveOrgChart = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextSlide]);
+  }, [nextSlide, prevSlide]);
 
   const SlideViewer = ({ fullscreen = false }: { fullscreen?: boolean }) => (
     <div className={`relative ${fullscreen ? 'h-screen w-screen' : 'aspect-video'} bg-background rounded-2xl overflow-hidden shadow-2xl`}>
@@ -78,10 +78,10 @@ const InteractiveOrgChart = () => {
           <div
             key={index}
             className={`absolute inset-0 transition-all duration-700 ease-in-out ${index === currentSlide
-                ? 'opacity-100 scale-100'
-                : index < currentSlide
-                  ? 'opacity-0 -translate-x-full scale-95'
-                  : 'opacity-0 translate-x-full scale-95'
+              ? 'opacity-100 scale-100'
+              : index < currentSlide
+                ? 'opacity-0 -translate-x-full scale-95'
+                : 'opacity-0 translate-x-full scale-95'
               }`}
           >
             <img
@@ -164,8 +164,8 @@ const InteractiveOrgChart = () => {
               key={index}
               onClick={() => goToSlide(index)}
               className={`transition-all duration-300 rounded-full ${index === currentSlide
-                  ? 'w-8 h-2 bg-primary'
-                  : 'w-2 h-2 bg-muted-foreground/40 hover:bg-muted-foreground/60'
+                ? 'w-8 h-2 bg-primary'
+                : 'w-2 h-2 bg-muted-foreground/40 hover:bg-muted-foreground/60'
                 }`}
             />
           ))}
@@ -202,8 +202,8 @@ const InteractiveOrgChart = () => {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`relative aspect-video rounded-lg overflow-hidden transition-all duration-300 ${index === currentSlide
-                    ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-105 shadow-lg'
-                    : 'opacity-60 hover:opacity-100 hover:scale-102'
+                  ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-105 shadow-lg'
+                  : 'opacity-60 hover:opacity-100 hover:scale-102'
                   }`}
               >
                 <img

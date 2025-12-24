@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,7 +34,7 @@ export const ImageManagement = () => {
   const [uploadingId, setUploadingId] = useState<string | null>(null);
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase
@@ -49,7 +49,7 @@ export const ImageManagement = () => {
       toast.error('เกิดข้อผิดพลาดในการโหลดรูปภาพ');
     }
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     fetchImages();
@@ -81,14 +81,14 @@ export const ImageManagement = () => {
     // Validate file size (10MB for images, 50MB for videos)
     const maxSize = isVideoFile ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
     if (file.size > maxSize) {
-      toast.error(`ขนาดไฟล์ต้องไม่เกิน ${isVideoFile ? '50MB' : '10MB'}`);
+      toast.error(`ขนาดไฟล์ต้องไม่เกิน ${isVideoFile ? '50MB' : '10MB'} `);
       return;
     }
 
     setUploadingId(imageId);
     try {
       const fileExt = file.name.split('.').pop();
-      const fileName = `${sectionKey}-${Date.now()}.${fileExt}`;
+      const fileName = `${sectionKey} -${Date.now()}.${fileExt} `;
 
       const { error: uploadError } = await supabase.storage
         .from('site-images')

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -98,7 +98,7 @@ const TestimonialsManagement = () => {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const fetchTestimonials = async () => {
+  const fetchTestimonials = useCallback(async () => {
     const { data, error } = await supabase
       .from('testimonials')
       .select('*')
@@ -109,7 +109,7 @@ const TestimonialsManagement = () => {
     } else {
       setTestimonials(data || []);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     fetchTestimonials();
@@ -283,9 +283,9 @@ const TestimonialsManagement = () => {
                       key={num}
                       type="button"
                       onClick={() => setFormData({ ...formData, rating: num })}
-                      className={`p-2 rounded ${formData.rating >= num ? 'text-yellow-400' : 'text-muted-foreground'}`}
+                      className={`p - 2 rounded ${formData.rating >= num ? 'text-yellow-400' : 'text-muted-foreground'} `}
                     >
-                      <Star className={`w-6 h-6 ${formData.rating >= num ? 'fill-yellow-400' : ''}`} />
+                      <Star className={`w - 6 h - 6 ${formData.rating >= num ? 'fill-yellow-400' : ''} `} />
                     </button>
                   ))}
                 </div>

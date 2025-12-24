@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -15,7 +15,7 @@ export const SnowfallControl = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [contentId, setContentId] = useState<string | null>(null);
 
-  const fetchSnowfallSetting = async () => {
+  const fetchSnowfallSetting = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase
@@ -55,7 +55,7 @@ export const SnowfallControl = () => {
       console.error('Error fetching snowfall setting:', error);
     }
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     fetchSnowfallSetting();

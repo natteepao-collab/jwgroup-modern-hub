@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -122,7 +122,7 @@ const ProjectsManagement = () => {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     const { data, error } = await supabase
       .from('projects')
       .select('*')
@@ -131,7 +131,7 @@ const ProjectsManagement = () => {
     if (!error && data) {
       setProjects(data);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchProjects();

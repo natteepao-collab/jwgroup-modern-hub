@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -119,7 +119,7 @@ const TimelineManagement = () => {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     const { data, error } = await supabase
       .from('timeline_events')
       .select('*')
@@ -130,7 +130,7 @@ const TimelineManagement = () => {
     } else {
       setEvents(data || []);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     fetchEvents();
