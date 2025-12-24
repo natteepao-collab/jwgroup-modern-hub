@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [adminCheckComplete, setAdminCheckComplete] = useState(false);
 
-  const checkAdminRole = async (userId: string, retries = 3, delay = 1000): Promise<boolean> => {
+  const checkAdminRole = useCallback(async (userId: string, retries = 3, delay = 1000): Promise<boolean> => {
     try {
       const { data, error } = await supabase
         .from('user_roles')
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       return false;
     }
-  };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       clearTimeout(timeoutTimer);
       subscription.unsubscribe();
     };
-  }, []);
+  }, [checkAdminRole, loading]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });

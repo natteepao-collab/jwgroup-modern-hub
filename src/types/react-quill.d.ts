@@ -3,14 +3,14 @@ declare module 'react-quill' {
 
     export interface ReactQuillProps {
         theme?: string;
-        modules?: any;
+        modules?: unknown;
         formats?: string[];
         value?: string;
         defaultValue?: string;
         placeholder?: string;
         readOnly?: boolean;
-        onChange?: (content: string, delta: any, source: string, editor: any) => void;
-        onChangeSelection?: (range: any, source: string, editor: any) => void;
+        onChange?: (value: string, delta: unknown, source: unknown, editor: unknown) => void;
+        onChangeSelection?: (selection: unknown, source: unknown, editor: unknown) => void;
         className?: string;
         style?: React.CSSProperties;
         children?: React.ReactNode;
