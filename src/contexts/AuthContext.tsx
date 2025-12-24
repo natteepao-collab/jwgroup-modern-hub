@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [adminCheckComplete, setAdminCheckComplete] = useState(false);
 
-  const checkAdminRole = async (userId: string): Promise<boolean> => {
+  const checkAdminRole = async (userId: string, retries = 3, delay = 1000): Promise<boolean> => {
     try {
       const { data, error } = await supabase
         .from('user_roles')
@@ -40,11 +40,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error('Error checking admin role:', error);
+        if (retries > 0) {
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return checkAdminRole(userId, retries - 1, delay * 1.5);
+        }
         return false;
       }
       return !!data;
     } catch (error) {
       console.error('Error checking admin role:', error);
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return checkAdminRole(userId, retries - 1, delay * 1.5);
+      }
       return false;
     }
   };
@@ -52,14 +60,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let mounted = true;
 
-    // Timeout safeguard: Force loading to false after 5 seconds to prevent infinite hang
+    // Timeout safeguard: Force loading to false after 10 seconds to prevent infinite hang
     const timeoutTimer = setTimeout(() => {
       if (mounted && loading) {
         console.warn('Auth check timed out, forcing loading false');
         setLoading(false);
         setAdminCheckComplete(true);
       }
-    }, 5000);
+    }, 10000);
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -72,11 +80,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (session?.user) {
           // Wait for admin check to complete before setting loading to false
           setAdminCheckComplete(false);
-          // Race condition protection: Check admin role with a timeout
-          const checkPromise = checkAdminRole(session.user.id);
-          const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000));
 
-          const isUserAdmin = await Promise.race([checkPromise, timeoutPromise]);
+          // Robust check with retries, no arbitrary race timeout
+          const isUserAdmin = await checkAdminRole(session.user.id);
 
           if (mounted) {
             setIsAdmin(isUserAdmin);

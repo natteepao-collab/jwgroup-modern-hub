@@ -199,21 +199,20 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
         ))}
       </div>
 
-      {/* Lightbox */}
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] p-0 bg-black/95 border-none">
+        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] h-[90vh] md:h-[80vh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0">
           {selectedProject && (
-            <div className="relative">
-              {/* Close Button */}
+            <>
+              {/* Close Button Mobile */}
               <button
                 onClick={closeLightbox}
-                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                className="absolute top-4 right-4 z-50 w-8 h-8 rounded-full bg-black/50 text-white md:hidden flex items-center justify-center transition-colors hover:bg-black/70"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-4 h-4" />
               </button>
 
-              {/* Main Image */}
-              <div className="relative aspect-[16/10] overflow-hidden">
+              {/* Image Section */}
+              <div className="relative w-full md:w-[65%] h-[35vh] md:h-full bg-black flex items-center justify-center shrink-0">
                 <img
                   src={getAllImages(selectedProject)[currentImageIndex] || '/placeholder.svg'}
                   alt={getName(selectedProject)}
@@ -225,56 +224,29 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   <>
                     <button
                       onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors text-white"
                     >
-                      <ChevronLeft className="w-6 h-6 text-white" />
+                      <ChevronLeft className="w-6 h-6" />
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors text-white"
                     >
-                      <ChevronRight className="w-6 h-6 text-white" />
+                      <ChevronRight className="w-6 h-6" />
                     </button>
                   </>
                 )}
-              </div>
 
-              {/* Project Info */}
-              <div className="p-6 bg-card">
-                <h3 className="text-xl font-bold text-foreground mb-2">
-                  {getName(selectedProject)}
-                </h3>
-                {getDescription(selectedProject) && (
-                  <div
-                    className="text-muted-foreground mb-4 prose prose-sm dark:prose-invert max-w-none [&>p]:mb-2 [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5"
-                    dangerouslySetInnerHTML={{ __html: getDescription(selectedProject) || '' }}
-                  />
-                )}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  {getLocation(selectedProject) && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{getLocation(selectedProject)}</span>
-                    </div>
-                  )}
-                  {selectedProject.year_completed && (
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>{selectedProject.year_completed}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Thumbnail Navigation */}
+                {/* Thumbnails (Desktop Overlay) */}
                 {getAllImages(selectedProject).length > 1 && (
-                  <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                  <div className="hidden md:flex absolute bottom-4 left-1/2 -translate-x-1/2 gap-2 overflow-x-auto max-w-[90%] p-2 bg-black/30 backdrop-blur-sm rounded-xl hide-scrollbar">
                     {getAllImages(selectedProject).map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentImageIndex(idx)}
-                        className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === idx
-                            ? 'border-primary'
-                            : 'border-transparent opacity-60 hover:opacity-100'
+                        className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === idx
+                          ? 'border-primary'
+                          : 'border-white/50 opacity-70 hover:opacity-100'
                           }`}
                       >
                         <img src={img} alt="" className="w-full h-full object-cover" />
@@ -283,7 +255,66 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   </div>
                 )}
               </div>
-            </div>
+
+              {/* Info Section */}
+              <div className="flex-1 w-full md:w-[35%] h-full flex flex-col bg-card relative">
+                {/* Desktop Close Button */}
+                <div className="hidden md:flex justify-end p-4 absolute top-0 right-0 z-10">
+                  <button
+                    onClick={closeLightbox}
+                    className="w-8 h-8 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
+                  >
+                    <X className="w-4 h-4 text-foreground" />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-6 md:pt-12 custom-scrollbar">
+                  <h3 className="text-2xl font-bold text-foreground mb-4 pr-8">
+                    {getName(selectedProject)}
+                  </h3>
+
+                  <div className="flex flex-col gap-3 mb-6 text-sm text-muted-foreground">
+                    {getLocation(selectedProject) && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-primary" />
+                        <span>{getLocation(selectedProject)}</span>
+                      </div>
+                    )}
+                    {selectedProject.year_completed && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-primary" />
+                        <span>{selectedProject.year_completed}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {getDescription(selectedProject) && (
+                    <div
+                      className="text-foreground/90 prose prose-sm dark:prose-invert max-w-none [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol]:mb-3 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: getDescription(selectedProject) || '' }}
+                    />
+                  )}
+
+                  {/* Mobile Thumbnails */}
+                  {getAllImages(selectedProject).length > 1 && (
+                    <div className="md:hidden flex gap-2 mt-6 overflow-x-auto pb-2">
+                      {getAllImages(selectedProject).map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentImageIndex(idx)}
+                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === idx
+                            ? 'border-primary'
+                            : 'border-transparent opacity-60 hover:opacity-100'
+                            }`}
+                        >
+                          <img src={img} alt="" className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
           )}
         </DialogContent>
       </Dialog>
