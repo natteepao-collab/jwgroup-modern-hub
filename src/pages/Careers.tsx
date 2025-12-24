@@ -102,16 +102,16 @@ const Careers = () => {
                     <CardTitle className="text-xl">{job.title}</CardTitle>
                     <Badge>{job.department}</Badge>
                   </div>
-                  <CardDescription className="space-y-2">
-                    <div className="flex items-center gap-2">
+                  <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
                       <span>{job.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
+                    </span>
+                    <span className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
                       <span>{job.type}</span>
-                    </div>
-                  </CardDescription>
+                    </span>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">{job.description}</p>
