@@ -45,8 +45,8 @@ const emptyAward: Omit<Award, 'id'> = {
   position_order: 0,
 };
 
-const SortableItem = ({ award, onEdit, onDelete }: { 
-  award: Award; 
+const SortableItem = ({ award, onEdit, onDelete }: {
+  award: Award;
   onEdit: (a: Award) => void;
   onDelete: (id: string) => void;
 }) => {
@@ -121,7 +121,7 @@ const AwardsManagement = () => {
 
   useEffect(() => {
     fetchAwards();
-  }, []);
+  }, [fetchAwards]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -165,8 +165,9 @@ const AwardsManagement = () => {
       setEditingAward(null);
       setFormData(emptyAward);
       fetchAwards();
-    } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      fetchAwards();
+    } catch (error: unknown) {
+      toast({ title: 'Error', description: (error as Error).message, variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }

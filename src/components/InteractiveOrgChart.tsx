@@ -44,13 +44,15 @@ const InteractiveOrgChart = () => {
 
   // Auto-play functionality
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: NodeJS.Timeout | undefined;
     if (isAutoPlay) {
-      interval = setInterval(() => {
-        nextSlide();
-      }, 4000);
+      interval = setInterval(nextSlide, 5000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, [isAutoPlay, nextSlide]);
 
   // Keyboard navigation
@@ -75,13 +77,12 @@ const InteractiveOrgChart = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-              index === currentSlide 
-                ? 'opacity-100 scale-100' 
-                : index < currentSlide 
-                  ? 'opacity-0 -translate-x-full scale-95' 
+            className={`absolute inset-0 transition-all duration-700 ease-in-out ${index === currentSlide
+                ? 'opacity-100 scale-100'
+                : index < currentSlide
+                  ? 'opacity-0 -translate-x-full scale-95'
                   : 'opacity-0 translate-x-full scale-95'
-            }`}
+              }`}
           >
             <img
               src={slide.image}
@@ -162,11 +163,10 @@ const InteractiveOrgChart = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentSlide 
-                  ? 'w-8 h-2 bg-primary' 
+              className={`transition-all duration-300 rounded-full ${index === currentSlide
+                  ? 'w-8 h-2 bg-primary'
                   : 'w-2 h-2 bg-muted-foreground/40 hover:bg-muted-foreground/60'
-              }`}
+                }`}
             />
           ))}
         </div>
@@ -183,7 +183,7 @@ const InteractiveOrgChart = () => {
             {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {isEnglish 
+            {isEnglish
               ? 'JW GROUP Executive Committee - Organization Chart & Management'
               : 'คณะกรรมการบริหาร JW GROUP - แผนภูมิองค์กรและการบริหาร'}
           </p>
@@ -201,11 +201,10 @@ const InteractiveOrgChart = () => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`relative aspect-video rounded-lg overflow-hidden transition-all duration-300 ${
-                  index === currentSlide 
-                    ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-105 shadow-lg' 
+                className={`relative aspect-video rounded-lg overflow-hidden transition-all duration-300 ${index === currentSlide
+                    ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-105 shadow-lg'
                     : 'opacity-60 hover:opacity-100 hover:scale-102'
-                }`}
+                  }`}
               >
                 <img
                   src={slide.image}
@@ -221,7 +220,7 @@ const InteractiveOrgChart = () => {
         {/* Keyboard Hints */}
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            {isEnglish 
+            {isEnglish
               ? '💡 Use arrow keys to navigate, Space to play/pause, F for fullscreen'
               : '💡 ใช้ลูกศรซ้าย-ขวาเพื่อเปลี่ยนสไลด์ | Space เพื่อเล่น/หยุดอัตโนมัติ | คลิกขยายเต็มจอ'}
           </p>

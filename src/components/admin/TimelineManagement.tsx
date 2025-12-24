@@ -55,8 +55,8 @@ const iconOptions = [
   { value: 'calendar', label: 'ปฏิทิน', icon: Calendar },
 ];
 
-const SortableItem = ({ event, onEdit, onDelete }: { 
-  event: TimelineEvent; 
+const SortableItem = ({ event, onEdit, onDelete }: {
+  event: TimelineEvent;
   onEdit: (e: TimelineEvent) => void;
   onDelete: (id: string) => void;
 }) => {
@@ -134,7 +134,7 @@ const TimelineManagement = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [fetchEvents]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -184,8 +184,8 @@ const TimelineManagement = () => {
 
       setFormData({ ...formData, image_url: publicUrl });
       toast({ title: 'สำเร็จ', description: 'อัปโหลดรูปภาพเรียบร้อยแล้ว' });
-    } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } catch (error: unknown) {
+      toast({ title: 'Error', description: (error as Error).message, variant: 'destructive' });
     } finally {
       setUploadingImage(false);
     }
@@ -215,8 +215,8 @@ const TimelineManagement = () => {
       setEditingEvent(null);
       setFormData(emptyEvent);
       fetchEvents();
-    } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } catch (error: unknown) {
+      toast({ title: 'Error', description: (error as Error).message, variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -348,9 +348,9 @@ const TimelineManagement = () => {
                 <div className="mt-2">
                   {formData.image_url ? (
                     <div className="relative inline-block">
-                      <img 
-                        src={formData.image_url} 
-                        alt="Preview" 
+                      <img
+                        src={formData.image_url}
+                        alt="Preview"
                         className="w-40 h-40 object-cover rounded-lg"
                       />
                       <button

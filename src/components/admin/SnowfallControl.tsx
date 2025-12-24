@@ -15,10 +15,6 @@ export const SnowfallControl = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [contentId, setContentId] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchSnowfallSetting();
-  }, []);
-
   const fetchSnowfallSetting = async () => {
     setIsLoading(true);
     try {
@@ -29,7 +25,7 @@ export const SnowfallControl = () => {
         .maybeSingle();
 
       if (error) throw error;
-      
+
       if (data) {
         setContentId(data.id);
         setIsEnabled(data.content_th === 'true');
@@ -61,6 +57,10 @@ export const SnowfallControl = () => {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    fetchSnowfallSetting();
+  }, [fetchSnowfallSetting]);
+
   const handleToggle = async (checked: boolean) => {
     if (!isAdmin || !contentId) {
       toast.error('คุณไม่มีสิทธิ์เปลี่ยนการตั้งค่านี้');
@@ -80,12 +80,12 @@ export const SnowfallControl = () => {
         .eq('id', contentId);
 
       if (error) throw error;
-      
+
       setIsEnabled(checked);
       toast.success(checked ? 'เปิด Animation หิมะตกแล้ว' : 'ปิด Animation หิมะตกแล้ว');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving snowfall setting:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการบันทึก');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการบันทึก');
     }
     setIsSaving(false);
   };
@@ -135,7 +135,7 @@ export const SnowfallControl = () => {
             />
           </div>
         )}
-        
+
         <div className="mt-4 p-4 bg-muted/50 rounded-lg">
           <h4 className="font-medium text-sm mb-2">รายละเอียด Animation:</h4>
           <ul className="text-sm text-muted-foreground space-y-1">

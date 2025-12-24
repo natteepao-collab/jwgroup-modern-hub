@@ -17,6 +17,25 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
+interface NewsItem {
+  id: string;
+  title_th: string;
+  title_en: string | null;
+  title_cn: string | null;
+  excerpt_th: string | null;
+  excerpt_en: string | null;
+  excerpt_cn: string | null;
+  content_th: string | null;
+  content_en: string | null;
+  content_cn: string | null;
+  category: string;
+  image_url: string | null;
+  video_url: string | null;
+  is_featured: boolean;
+  is_published: boolean;
+  published_at: string;
+}
+
 interface NewsFormData {
   title_th: string;
   title_en: string;
@@ -270,9 +289,9 @@ export const NewsManagement = () => {
       setFormData({ ...formData, image_url: publicUrl });
       setImagePreview(publicUrl);
       toast.success('อัพโหลดรูปภาพสำเร็จ');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Upload error:', error);
-      toast.error('อัพโหลดไม่สำเร็จ: ' + error.message);
+      toast.error('อัพโหลดไม่สำเร็จ: ' + (error as Error).message);
     } finally {
       setIsUploading(false);
     }
@@ -326,9 +345,9 @@ export const NewsManagement = () => {
         gallery_images: [...prev.gallery_images, ...newImages]
       }));
       toast.success(`อัพโหลดเพิ่ม ${newImages.length} รูปสำเร็จ`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Upload error:', error);
-      toast.error('อัพโหลดไม่สำเร็จ: ' + error.message);
+      toast.error('อัพโหลดไม่สำเร็จ: ' + (error as Error).message);
     } finally {
       setIsUploading(false);
     }
@@ -367,6 +386,7 @@ export const NewsManagement = () => {
     // Remove gallery_images from the object passed to Supabase
     // We cast to any to bypass the mismatch between NewsFormData (local) and NewsItem (remote)
     const { gallery_images, ...rest } = submitData;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const finalData = rest as any; // Cast to any to satisfy mutation type which expects Partial<NewsItem>
 
     try {
@@ -386,7 +406,7 @@ export const NewsManagement = () => {
     }
   };
 
-  const handleEdit = (newsItem: any) => {
+  const handleEdit = (newsItem: NewsItem) => {
     setEditingId(newsItem.id);
 
     let gallery: string[] = [];
@@ -419,7 +439,7 @@ export const NewsManagement = () => {
 
   const handleDelete = async (id: string) => {
     if (confirm('คุณต้องการลบข่าวนี้หรือไม่?')) {
-      const newsItem = news.find((n: any) => n.id === id);
+      const newsItem = (news as NewsItem[]).find((n) => n.id === id);
       if (newsItem?.image_url) {
         const urlParts = newsItem.image_url.split('/news-images/');
         if (urlParts.length > 1) {
@@ -701,7 +721,7 @@ export const NewsManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {news.map((item: any) => (
+            {(news as NewsItem[]).map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
                   <div className="w-16 h-12 rounded overflow-hidden">

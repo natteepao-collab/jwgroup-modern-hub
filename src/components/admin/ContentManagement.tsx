@@ -120,9 +120,9 @@ export const ContentManagement = () => {
 
       if (error) throw error;
       toast.success('บันทึกเนื้อหาสำเร็จ');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving content:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการบันทึก');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการบันทึก');
     }
     setIsSaving(null);
   };

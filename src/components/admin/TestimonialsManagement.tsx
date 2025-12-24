@@ -42,8 +42,8 @@ const emptyTestimonial: Omit<Testimonial, 'id'> = {
   position_order: 0,
 };
 
-const SortableItem = ({ testimonial, onEdit, onDelete }: { 
-  testimonial: Testimonial; 
+const SortableItem = ({ testimonial, onEdit, onDelete }: {
+  testimonial: Testimonial;
   onEdit: (t: Testimonial) => void;
   onDelete: (id: string) => void;
 }) => {
@@ -113,7 +113,7 @@ const TestimonialsManagement = () => {
 
   useEffect(() => {
     fetchTestimonials();
-  }, []);
+  }, [fetchTestimonials]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -157,8 +157,9 @@ const TestimonialsManagement = () => {
       setEditingTestimonial(null);
       setFormData(emptyTestimonial);
       fetchTestimonials();
-    } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      fetchTestimonials();
+    } catch (error: unknown) {
+      toast({ title: 'Error', description: (error as Error).message, variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }

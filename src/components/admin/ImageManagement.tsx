@@ -34,10 +34,6 @@ export const ImageManagement = () => {
   const [uploadingId, setUploadingId] = useState<string | null>(null);
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
-
   const fetchImages = async () => {
     setIsLoading(true);
     try {
@@ -54,6 +50,10 @@ export const ImageManagement = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    fetchImages();
+  }, [fetchImages]);
 
   const handleChange = (id: string, field: string, value: string) => {
     setImages(prev =>
@@ -72,7 +72,7 @@ export const ImageManagement = () => {
     // Validate file type
     const isVideoFile = file.type.startsWith('video/');
     const isImageFile = file.type.startsWith('image/');
-    
+
     if (!isVideoFile && !isImageFile) {
       toast.error('กรุณาเลือกไฟล์รูปภาพหรือวิดีโอเท่านั้น');
       return;
@@ -103,9 +103,9 @@ export const ImageManagement = () => {
       // Update site_images table
       const { error: updateError } = await supabase
         .from('site_images')
-        .update({ 
+        .update({
           image_url: publicUrl,
-          updated_by: user?.id 
+          updated_by: user?.id
         })
         .eq('id', imageId);
 
@@ -119,9 +119,9 @@ export const ImageManagement = () => {
       );
 
       toast.success('อัปโหลดสำเร็จ');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error uploading file:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการอัปโหลด');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการอัปโหลด');
     }
     setUploadingId(null);
   };
@@ -145,9 +145,9 @@ export const ImageManagement = () => {
 
       if (error) throw error;
       toast.success('บันทึกรูปภาพสำเร็จ');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving image:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการบันทึก');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการบันทึก');
     }
     setIsSaving(null);
   };

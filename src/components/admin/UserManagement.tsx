@@ -110,9 +110,9 @@ export const UserManagement = () => {
         toast.success(`เพิ่ม Role ${role} สำเร็จ`);
         fetchUsers();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error adding role:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการเพิ่ม Role');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการเพิ่ม Role');
     }
     setIsSaving(null);
   };
@@ -138,12 +138,12 @@ export const UserManagement = () => {
         .eq('role', role);
 
       if (error) throw error;
-      
+
       toast.success(`ลบ Role ${role} สำเร็จ`);
       fetchUsers();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error removing role:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการลบ Role');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการลบ Role');
     }
     setIsSaving(null);
   };
@@ -182,9 +182,9 @@ export const UserManagement = () => {
 
       toast.success(`ลบผู้ใช้ ${userEmail || userId} สำเร็จ`);
       fetchUsers();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting user:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการลบผู้ใช้');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการลบผู้ใช้');
     }
     setIsSaving(null);
   };
@@ -311,9 +311,9 @@ export const UserManagement = () => {
                       <div className="flex flex-wrap gap-1">
                         {user.roles.length > 0 ? (
                           user.roles.map((role) => (
-                            <Badge 
-                              key={role} 
-                              variant="outline" 
+                            <Badge
+                              key={role}
+                              variant="outline"
                               className={`${getRoleBadgeColor(role)} flex items-center gap-1`}
                             >
                               {role}

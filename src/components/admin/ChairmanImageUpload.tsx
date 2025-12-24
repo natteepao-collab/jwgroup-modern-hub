@@ -69,9 +69,9 @@ export const ChairmanImageUpload = () => {
       // Update site_images table
       const { error: updateError } = await supabase
         .from('site_images')
-        .update({ 
+        .update({
           image_url: publicUrl,
-          updated_by: user?.id 
+          updated_by: user?.id
         })
         .eq('section_key', 'chairman_portrait');
 
@@ -79,9 +79,9 @@ export const ChairmanImageUpload = () => {
 
       setImageUrl(publicUrl);
       toast.success('อัปโหลดรูปภาพสำเร็จ');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error uploading image:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการอัปโหลด');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการอัปโหลด');
     }
     setIsUploading(false);
   };
@@ -92,9 +92,9 @@ export const ChairmanImageUpload = () => {
     try {
       const { error } = await supabase
         .from('site_images')
-        .update({ 
+        .update({
           image_url: '',
-          updated_by: user?.id 
+          updated_by: user?.id
         })
         .eq('section_key', 'chairman_portrait');
 
@@ -102,9 +102,9 @@ export const ChairmanImageUpload = () => {
 
       setImageUrl('');
       toast.success('ลบรูปภาพสำเร็จ');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error removing image:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการลบ');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการลบ');
     }
   };
 
@@ -137,8 +137,8 @@ export const ChairmanImageUpload = () => {
         {/* Current Image Preview */}
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
-            <img 
-              src={displayImage} 
+            <img
+              src={displayImage}
               alt="Chairman Portrait"
               className="w-full h-full object-cover"
             />
@@ -190,7 +190,7 @@ export const ChairmanImageUpload = () => {
                 </>
               )}
             </Button>
-            
+
             {imageUrl && (
               <Button
                 variant="destructive"
