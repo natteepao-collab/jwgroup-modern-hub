@@ -88,9 +88,10 @@ interface DragDropUploadProps {
   isUploading: boolean;
   currentImage: string | null;
   onRemove: () => void;
+  className?: string;
 }
 
-const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragDropUploadProps) => {
+const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove, className }: DragDropUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -128,15 +129,15 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
 
   if (currentImage) {
     return (
-      <div className="relative group">
-        <div className="w-full h-48 rounded-lg overflow-hidden border bg-muted">
+      <div className={cn("relative group", className)}>
+        <div className={cn("w-full h-48 rounded-lg overflow-hidden border bg-muted", className ? "h-full rounded-none border-none" : "")}>
           <img
             src={currentImage}
             alt="Preview"
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
           <Button
             type="button"
             variant="secondary"
@@ -179,7 +180,8 @@ const DragDropUpload = ({ onUpload, isUploading, currentImage, onRemove }: DragD
         isDragging
           ? "border-primary bg-primary/10 scale-[1.02]"
           : "border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/50",
-        isUploading && "pointer-events-none opacity-70"
+        isUploading && "pointer-events-none opacity-70",
+        className
       )}
     >
       <input
@@ -485,17 +487,31 @@ export const NewsManagement = () => {
             <DialogHeader>
               <DialogTitle>{editingId ? 'แก้ไขข่าว' : 'เพิ่มข่าวใหม่'}</DialogTitle>
             </DialogHeader>
+
+            {/* Header Image - Shown if image exists */}
+            {(imagePreview || formData.image_url) && (
+              <DragDropUpload
+                onUpload={handleImageUpload}
+                isUploading={isUploading}
+                currentImage={imagePreview || formData.image_url || null}
+                onRemove={handleRemoveImage}
+                className="w-[calc(100%+3rem)] -ml-6 -mr-6 -mt-6 mb-6 h-64 border-b rounded-t-lg overflow-hidden"
+              />
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Drag & Drop Image Upload Section */}
-              <div className="space-y-3">
-                <Label>รูปภาพข่าว</Label>
-                <DragDropUpload
-                  onUpload={handleImageUpload}
-                  isUploading={isUploading}
-                  currentImage={imagePreview || formData.image_url || null}
-                  onRemove={handleRemoveImage}
-                />
-              </div>
+              {/* Drag & Drop Image Upload Section - Only shown if NO image */}
+              {!(imagePreview || formData.image_url) && (
+                <div className="space-y-3">
+                  <Label>รูปภาพข่าว</Label>
+                  <DragDropUpload
+                    onUpload={handleImageUpload}
+                    isUploading={isUploading}
+                    currentImage={null}
+                    onRemove={handleRemoveImage}
+                  />
+                </div>
+              )}
 
               {/* Language Tabs */}
               <div className="flex gap-2 border-b">

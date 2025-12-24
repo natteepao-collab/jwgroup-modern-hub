@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Calendar, Facebook, Share2, MessageCircle, Link2, ImageIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, Facebook, Share2, MessageCircle, Link2, ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -9,6 +9,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import i18n from 'i18next';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { X } from 'lucide-react';
+import { useState } from 'react';
 
 // Placeholder component for news without images
 const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
@@ -19,7 +22,7 @@ const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
     'from-purple-500/30 via-violet-400/20 to-pink-500/30',
     'from-rose-500/30 via-red-400/20 to-orange-500/30',
   ];
-  
+
   const gradientIndex = title ? title.charCodeAt(0) % gradients.length : 0;
   const gradient = gradients[gradientIndex];
 
@@ -32,7 +35,7 @@ const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
         <div className="absolute top-4 left-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
         <div className="absolute bottom-8 right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
       </div>
-      
+
       <div className="relative z-10 text-center p-6">
         <div className="mx-auto mb-4 w-20 h-20 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
           <ImageIcon className="h-10 w-10 text-white/70" />
@@ -44,7 +47,108 @@ const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
   );
 };
 
-// Social Share Buttons Component
+const GallerySection = ({ images }: { images: string[] }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (!images || images.length === 0) return null;
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleOpen = (index: number) => {
+    setCurrentIndex(index);
+    setIsOpen(true);
+  };
+
+  return (
+    <div className="mt-8 mb-8">
+      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+        <ImageIcon className="h-5 w-5 text-primary" />
+        แกลเลอรีรูปภาพ
+      </h3>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {images.map((img, index) => (
+          <div
+            key={index}
+            onClick={() => handleOpen(index)}
+            className="relative group aspect-video cursor-pointer overflow-hidden rounded-lg bg-muted"
+          >
+            <img
+              src={img}
+              alt={`Gallery ${index + 1}`}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+              <ImageIcon className="text-white h-8 w-8 drop-shadow-md" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-5xl w-full p-0 bg-transparent border-none shadow-none focus:outline-none overflow-hidden">
+          <div className="relative w-full h-[80vh] flex items-center justify-center focus:outline-none">
+
+            {/* Previous Button */}
+            {images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrev();
+                }}
+                className="absolute left-2 md:left-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-8 w-8" />
+              </button>
+            )}
+
+            <img
+              src={images[currentIndex]}
+              alt={`Fullview ${currentIndex + 1}`}
+              className="max-w-full max-h-full object-contain rounded-md shadow-2xl"
+            />
+
+            {/* Next Button */}
+            {images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleNext();
+                }}
+                className="absolute right-2 md:right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-8 w-8" />
+              </button>
+            )}
+
+            {/* Counter */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-black/50 text-white text-sm">
+              {currentIndex + 1} / {images.length}
+            </div>
+
+            {/* Close Button (Custom for better visibility) */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-2 right-2 md:top-4 md:right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
 const SocialShareButtons = ({ title, url }: { title: string; url: string }) => {
   const { toast } = useToast();
   const encodedUrl = encodeURIComponent(url);
@@ -133,7 +237,7 @@ const NewsDetail = () => {
     queryKey: ['news-detail', id],
     queryFn: async () => {
       if (!id) throw new Error('No news ID provided');
-      
+
       const { data, error } = await supabase
         .from('news')
         .select('*')
@@ -150,7 +254,7 @@ const NewsDetail = () => {
   // Get localized content
   const getLocalizedContent = () => {
     if (!newsItem) return { title: '', excerpt: '', content: '' };
-    
+
     let title = newsItem.title_th;
     let excerpt = newsItem.excerpt_th || '';
     let content = newsItem.content_th || '';
@@ -236,6 +340,19 @@ const NewsDetail = () => {
   const { title, content } = getLocalizedContent();
   const currentUrl = window.location.href;
 
+  const getGalleryImages = () => {
+    if (!newsItem?.video_url) return [];
+    try {
+      if (newsItem.video_url.trim().startsWith('[')) {
+        const parsed = JSON.parse(newsItem.video_url);
+        return Array.isArray(parsed) ? parsed : [];
+      }
+    } catch (e) { return []; }
+    return [];
+  };
+
+  const galleryImages = getGalleryImages();
+
   return (
     <div className="pt-24 min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -288,6 +405,9 @@ const NewsDetail = () => {
               </p>
             )}
           </div>
+
+          {/* Gallery Section */}
+          <GallerySection images={galleryImages} />
 
           {/* Bottom Share Section */}
           <div className="mt-12 pt-8 border-t border-border">

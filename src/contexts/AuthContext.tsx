@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .eq('user_id', userId)
         .eq('role', 'admin')
         .maybeSingle();
-      
+
       if (error) {
         console.error('Error checking admin role:', error);
         return false;
@@ -52,18 +52,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let mounted = true;
 
+    // Timeout safeguard: Force loading to false after 5 seconds to prevent infinite hang
+    const timeoutTimer = setTimeout(() => {
+      if (mounted && loading) {
+        console.warn('Auth check timed out, forcing loading false');
+        setLoading(false);
+        setAdminCheckComplete(true);
+      }
+    }, 5000);
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
-        
+
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         if (session?.user) {
           // Wait for admin check to complete before setting loading to false
           setAdminCheckComplete(false);
-          const isUserAdmin = await checkAdminRole(session.user.id);
+          // Race condition protection: Check admin role with a timeout
+          const checkPromise = checkAdminRole(session.user.id);
+          const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000));
+
+          const isUserAdmin = await Promise.race([checkPromise, timeoutPromise]);
+
           if (mounted) {
             setIsAdmin(isUserAdmin);
             setAdminCheckComplete(true);
@@ -79,22 +93,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // THEN check for existing session
     const initSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!mounted) return;
-      
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        const isUserAdmin = await checkAdminRole(session.user.id);
-        if (mounted) {
-          setIsAdmin(isUserAdmin);
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (!mounted) return;
+        if (error) throw error;
+
+        setSession(session);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          const isUserAdmin = await checkAdminRole(session.user.id);
+          if (mounted) {
+            setIsAdmin(isUserAdmin);
+            setAdminCheckComplete(true);
+            setLoading(false);
+          }
+        } else {
           setAdminCheckComplete(true);
           setLoading(false);
         }
-      } else {
-        setAdminCheckComplete(true);
-        setLoading(false);
+      } catch (error) {
+        console.error('Session init error:', error);
+        if (mounted) {
+          setAdminCheckComplete(true);
+          setLoading(false);
+        }
       }
     };
 
@@ -102,6 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       mounted = false;
+      clearTimeout(timeoutTimer);
       subscription.unsubscribe();
     };
   }, []);
