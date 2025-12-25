@@ -29,7 +29,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
   return (
     <>
       {/* Desktop: Vertical Accordion Layout */}
-      <div className="hidden lg:flex h-[520px] gap-1.5 overflow-hidden rounded-2xl shadow-2xl bg-stone-200 dark:bg-stone-800 p-1.5">
+      <div className="hidden xl:flex h-[520px] gap-1.5 overflow-hidden rounded-2xl shadow-2xl bg-stone-200 dark:bg-stone-800 p-1.5">
         {businesses.map((business, index) => {
           const isActive = activeIndex === index;
           const bgImage = business.backgroundImage || business.image;
@@ -157,8 +157,69 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
         })}
       </div>
 
+      {/* Tablet: Grid 2x2 Layout */}
+      <div className="hidden md:grid xl:hidden grid-cols-2 gap-4 bg-stone-100 dark:bg-stone-800 p-4 rounded-2xl">
+        {businesses.map((business, index) => {
+          const bgImage = business.backgroundImage || business.image;
+          
+          return (
+            <a
+              key={index}
+              href={business.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative overflow-hidden rounded-xl h-[280px] transition-all duration-500 hover:shadow-xl hover:scale-[1.02]"
+            >
+              {/* Background Image */}
+              <div className="absolute inset-0 overflow-hidden">
+                <img
+                  src={bgImage}
+                  alt=""
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                  style={{ filter: 'brightness(0.85)' }}
+                />
+              </div>
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-all duration-500 group-hover:from-black/70" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-5 z-10">
+                {/* Logo */}
+                <div className="absolute top-4 left-4 w-16 h-16 bg-white rounded-xl p-2.5 shadow-lg flex items-center justify-center border border-stone-200/50 transition-all duration-300 group-hover:scale-110">
+                  <img
+                    src={business.image}
+                    alt={business.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                
+                {/* Title & Description */}
+                <div className="transform transition-all duration-300 group-hover:translate-y-[-4px]">
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    {business.name}
+                  </h3>
+                  <p className="text-stone-200 text-sm line-clamp-2 mb-3 opacity-90">
+                    {business.description}
+                  </p>
+                  
+                  {/* CTA */}
+                  <div className="flex items-center gap-2 text-primary font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <span>{t('business.viewWebsite')}</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Hover Accent Border */}
+              <div className="absolute inset-0 border-2 border-primary/0 rounded-xl transition-all duration-300 group-hover:border-primary/50" />
+            </a>
+          );
+        })}
+      </div>
+
       {/* Mobile: Accordion Stack */}
-      <div className="lg:hidden flex flex-col gap-2 bg-stone-100 dark:bg-stone-800 p-2 rounded-2xl">
+      <div className="md:hidden flex flex-col gap-2 bg-stone-100 dark:bg-stone-800 p-2 rounded-2xl">
         {businesses.map((business, index) => {
           const isActive = mobileActiveIndex === index;
           const bgImage = business.backgroundImage || business.image;
