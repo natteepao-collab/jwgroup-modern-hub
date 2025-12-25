@@ -282,12 +282,12 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               {/* Expandable Content */}
               <div
                 className={cn(
-                  "overflow-hidden transition-all duration-500 ease-out relative z-10",
-                  isActive ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                  "transition-all duration-500 ease-out relative z-10",
+                  isActive ? "max-h-[800px] overflow-y-auto opacity-100" : "max-h-0 overflow-hidden opacity-0"
                 )}
               >
-                <div className="px-4 pb-4">
-                  <p className="text-stone-600 dark:text-stone-400 text-sm mb-4 leading-relaxed">
+                <div className="px-4 pb-6">
+                  <p className="text-stone-600 dark:text-stone-400 text-sm mb-5 leading-relaxed whitespace-pre-line">
                     {business.description}
                   </p>
                   
