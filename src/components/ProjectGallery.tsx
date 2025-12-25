@@ -41,7 +41,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
         .select('*')
         .eq('business_type', businessType)
         .eq('is_published', true)
-        .order('position_order', { ascending: true });
+        .order('created_at', { ascending: false });
 
       if (!error && data) {
         setProjects(data);

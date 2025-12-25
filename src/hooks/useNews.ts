@@ -78,7 +78,7 @@ export const useNews = () => {
         .from('news')
         .select('*')
         .eq('is_published', true)
-        .order('published_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data as NewsItem[];
@@ -176,7 +176,7 @@ export const useNewsAdmin = () => {
       const { data, error } = await supabase
         .from('news')
         .select('*')
-        .order('published_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data;
