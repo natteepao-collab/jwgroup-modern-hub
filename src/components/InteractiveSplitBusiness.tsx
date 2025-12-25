@@ -222,7 +222,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               <div
                 className={cn(
                   "overflow-hidden transition-all duration-500 ease-out relative z-10",
-                  isActive ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+                  isActive ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                 )}
               >
                 <div className="px-4 pb-4">
