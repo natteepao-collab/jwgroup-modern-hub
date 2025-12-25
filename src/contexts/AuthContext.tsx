@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let mounted = true;
+    let isInitialized = false;
 
     // Timeout safeguard: Force loading to false after 10 seconds to prevent infinite hang
     const timeoutTimer = setTimeout(() => {
@@ -71,24 +72,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         if (!mounted) return;
+
+        // Skip initial session handling as it's handled by initSession
+        // Only process actual auth changes after initialization
+        if (!isInitialized && event === 'INITIAL_SESSION') {
+          return;
+        }
 
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          // Wait for admin check to complete before setting loading to false
-          setAdminCheckComplete(false);
-
-          // Robust check with retries, no arbitrary race timeout
-          const isUserAdmin = await checkAdminRole(session.user.id);
-
-          if (mounted) {
-            setIsAdmin(isUserAdmin);
-            setAdminCheckComplete(true);
-            setLoading(false);
-          }
+          // Defer admin check to avoid Supabase client deadlock
+          setTimeout(async () => {
+            if (!mounted) return;
+            setAdminCheckComplete(false);
+            const isUserAdmin = await checkAdminRole(session.user.id);
+            if (mounted) {
+              setIsAdmin(isUserAdmin);
+              setAdminCheckComplete(true);
+              setLoading(false);
+            }
+          }, 0);
         } else {
           setIsAdmin(false);
           setAdminCheckComplete(true);
@@ -104,6 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!mounted) return;
         if (error) throw error;
 
+        isInitialized = true;
         setSession(session);
         setUser(session?.user ?? null);
 
@@ -121,6 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (error) {
         console.error('Session init error:', error);
         if (mounted) {
+          isInitialized = true;
           setAdminCheckComplete(true);
           setLoading(false);
         }
@@ -134,7 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       clearTimeout(timeoutTimer);
       subscription.unsubscribe();
     };
-  }, [checkAdminRole, loading]);
+  }, [checkAdminRole]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
