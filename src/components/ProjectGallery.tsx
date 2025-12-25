@@ -200,7 +200,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
       </div>
 
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] h-[90vh] md:h-[80vh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0">
+        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] max-h-[95dvh] md:max-h-[85vh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0 rounded-xl">
           {selectedProject && (
             <>
               {/* Close Button Mobile */}
@@ -257,7 +257,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
               </div>
 
               {/* Info Section */}
-              <div className="flex-1 w-full md:w-[35%] h-full flex flex-col bg-card relative">
+              <div className="flex-1 w-full md:w-[35%] min-h-0 flex flex-col bg-card relative">
                 {/* Desktop Close Button */}
                 <div className="hidden md:flex justify-end p-4 absolute top-0 right-0 z-10">
                   <button
@@ -268,7 +268,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-6 md:pt-12 custom-scrollbar">
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 md:pt-12 custom-scrollbar">
                   <h3 className="text-2xl font-bold text-foreground mb-4 pr-8">
                     {getName(selectedProject)}
                   </h3>
