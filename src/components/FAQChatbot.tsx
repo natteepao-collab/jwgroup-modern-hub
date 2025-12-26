@@ -236,10 +236,10 @@ const FAQChatbot = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300",
+          "w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300",
           isOpen
-            ? "rotate-0 bg-muted-foreground hover:bg-muted-foreground/80"
-            : "hover:scale-110 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-1"
+            ? "rotate-0 bg-muted-foreground text-background hover:bg-muted-foreground/80"
+            : "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white hover:scale-110 hover:shadow-xl hover:shadow-teal-500/40 hover:-translate-y-1"
         )}
         aria-label={isOpen ? 'ปิดแชท' : 'เปิดแชท FAQ'}
       >
