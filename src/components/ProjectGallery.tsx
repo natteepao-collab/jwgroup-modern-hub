@@ -131,15 +131,16 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
         <h3 className="text-2xl font-bold text-foreground mb-6">{title}</h3>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project, index) => (
           <div
             key={project.id}
             className="group cursor-pointer"
             onClick={() => openLightbox(project)}
+            style={{ animationDelay: `${index * 100}ms` }}
           >
             {/* Image Card */}
-            <div className="relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
+            <div className="relative overflow-hidden rounded-3xl bg-card border border-border/30 shadow-md hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
                   src={project.image_url || '/placeholder.svg'}
@@ -148,27 +149,27 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                 />
               </div>
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               {/* Expand Icon */}
-              <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-75">
-                <Maximize2 className="w-5 h-5 text-white" />
+              <div className="absolute top-4 right-4 w-11 h-11 rounded-full bg-card/90 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-75 shadow-lg border border-border/50">
+                <Maximize2 className="w-5 h-5 text-foreground" />
               </div>
 
               {/* Featured Badge */}
               {project.is_featured && (
-                <div className="absolute top-4 left-4 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
-                  Featured
+                <div className="absolute top-4 left-4 px-4 py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-full shadow-lg">
+                  ✨ แนะนำ
                 </div>
               )}
 
               {/* Info on hover */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                <h4 className="text-white font-bold text-lg mb-1">{getName(project)}</h4>
+              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                <h4 className="text-primary-foreground font-bold text-xl mb-2 line-clamp-1">{getName(project)}</h4>
                 {getLocation(project) && (
-                  <div className="flex items-center gap-1 text-white/80 text-sm">
-                    <MapPin className="w-3 h-3" />
+                  <div className="flex items-center gap-2 text-primary-foreground/80 text-sm">
+                    <MapPin className="w-4 h-4" />
                     <span>{getLocation(project)}</span>
                   </div>
                 )}
@@ -176,20 +177,20 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
             </div>
 
             {/* Info below card */}
-            <div className="mt-3">
-              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors">
+            <div className="mt-4 px-1">
+              <h4 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
                 {getName(project)}
               </h4>
-              <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+              <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                 {getLocation(project) && (
-                  <div className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4 text-primary/70" />
                     <span>{getLocation(project)}</span>
                   </div>
                 )}
                 {project.year_completed && (
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4 text-primary/70" />
                     <span>{project.year_completed}</span>
                   </div>
                 )}

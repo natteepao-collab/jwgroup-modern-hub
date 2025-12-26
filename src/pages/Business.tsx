@@ -128,39 +128,44 @@ const Business = () => {
         {/* Project Gallery Section */}
         <div
           ref={galleryRef}
-          className={`mt-20 transition-all duration-1000 ${galleryInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          className={`mt-24 transition-all duration-1000 ${galleryInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
         >
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/15 to-primary/5 text-primary text-sm font-semibold mb-6 border border-primary/20 shadow-sm">
               <Images className="w-4 h-4" />
-              แกลเลอรี่โครงการ
+              <span>แกลเลอรี่โครงการ</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
               ผลงานโครงการของเรา
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
               รวมผลงานโครงการที่ประสบความสำเร็จจากทุกสายธุรกิจของ JW Group
             </p>
           </div>
 
+          {/* Tabs Container */}
           <div ref={galleryContainerRef}>
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-10 h-auto p-1.5 bg-background/50 backdrop-blur-md border border-border/50 rounded-full shadow-lg">
+              {/* Enhanced Tab List */}
+              <TabsList className="flex w-full max-w-4xl mx-auto mb-12 h-auto p-2 bg-card/80 backdrop-blur-lg border border-border/40 rounded-2xl shadow-xl">
                 {businessTabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="gap-2 py-3 rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300"
+                    className="flex-1 gap-2.5 py-3.5 px-4 rounded-xl font-medium text-muted-foreground transition-all duration-300
+                      data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/25
+                      hover:bg-muted/50 hover:text-foreground"
                   >
-                    <tab.icon className="w-4 h-4 md:w-5 md:h-5" />
-                    <span className="hidden sm:inline font-medium">{tab.label}</span>
+                    <tab.icon className="w-5 h-5" />
+                    <span className="hidden sm:inline">{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
 
               {businessTabs.map((tab) => (
-                <TabsContent key={tab.id} value={tab.id} className="mt-0">
+                <TabsContent key={tab.id} value={tab.id} className="mt-0 animate-fade-in">
                   <ProjectGallery
                     businessType={tab.id as 'realestate' | 'hotel' | 'pet' | 'wellness'}
                   />
