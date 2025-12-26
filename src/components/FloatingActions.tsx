@@ -26,7 +26,7 @@ const FloatingActions = () => {
       {/* Back to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-1 ${
+        className={`w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-violet-600 text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-indigo-500/40 hover:-translate-y-1 ${
           showBackToTop 
             ? 'opacity-100 translate-y-0' 
             : 'opacity-0 translate-y-4 pointer-events-none'
