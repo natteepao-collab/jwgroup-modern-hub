@@ -88,30 +88,7 @@ const AboutTeam = () => {
   );
 };
 
-const AboutAwards = () => {
-  const { t } = useTranslation();
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  return (
-    <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 font-display">{t('about.awards')}</h1>
-      <div className="space-y-6">
-        {[
-          { year: '2024', award: 'รางวัลบริษัทดีเด่นแห่งปี' },
-          { year: '2023', award: 'รางวัลนวัตกรรมธุรกิจอสังหาริมทรัพย์' },
-          { year: '2022', award: 'รางวัลโรงแรมบูติกยอดเยี่ยม' },
-        ].map((item, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle className="text-2xl text-primary">{item.year}</CardTitle>
-              <CardDescription className="text-lg">{item.award}</CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const About = () => {
   const { t } = useTranslation();
@@ -122,7 +99,7 @@ const About = () => {
     { path: '/about/vision', labelKey: 'about.vision', icon: Eye },
     { path: '/about/structure', labelKey: 'about.structure', icon: Network },
     { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
-    { path: '/about/awards', labelKey: 'about.awards', icon: Award },
+    { path: '/awards', labelKey: 'about.awards', icon: Award },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -163,7 +140,7 @@ const About = () => {
           <Route path="vision" element={<AboutVision />} />
           <Route path="structure" element={<AboutStructure />} />
           <Route path="team" element={<AboutTeam />} />
-          <Route path="awards" element={<AboutAwards />} />
+          {/* Awards moved to detailed page */}
           <Route path="*" element={<AboutHistory />} />
         </Routes>
       </div>

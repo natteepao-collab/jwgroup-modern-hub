@@ -25,6 +25,7 @@ import Sustainability from "./pages/Sustainability";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Awards from "./pages/Awards";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +33,7 @@ const queryClient = new QueryClient();
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname === '/admin' || location.pathname === '/auth';
-  
+
   return (
     <div className="flex flex-col min-h-screen">
       <Snowfall />
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/about/*" element={<About />} />
                 <Route path="/business" element={<Business />} />
+                <Route path="/awards" element={<Awards />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/news/:id" element={<NewsDetail />} />
                 <Route path="/careers" element={<Careers />} />

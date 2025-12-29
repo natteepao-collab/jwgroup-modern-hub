@@ -13,6 +13,7 @@ import { Plus, Pencil, Trash2, Trophy, Medal, GripVertical, Upload, X } from 'lu
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface Award {
   id: string;
@@ -75,16 +76,16 @@ const SortableItem = ({ award, onEdit, onDelete }: {
       <div {...attributes} {...listeners} className="cursor-grab">
         <GripVertical className="h-5 w-5 text-muted-foreground" />
       </div>
-      
+
       {/* Image Preview */}
       <div className="flex items-center gap-2">
         {images.length > 0 ? (
           <div className="flex -space-x-2">
             {images.slice(0, 3).map((img, idx) => (
-              <img 
-                key={idx} 
-                src={img} 
-                alt={`Award ${idx + 1}`} 
+              <img
+                key={idx}
+                src={img}
+                alt={`Award ${idx + 1}`}
                 className="w-12 h-12 object-cover rounded-lg border-2 border-background shadow-sm"
               />
             ))}
@@ -99,7 +100,7 @@ const SortableItem = ({ award, onEdit, onDelete }: {
           </div>
         )}
       </div>
-      
+
       <div className="flex-1">
         <div className="flex items-center gap-2">
           <span className="font-medium">{award.title_th}</span>
@@ -222,7 +223,7 @@ const AwardsManagement = () => {
     setFormData(prev => ({ ...prev, image_url: JSON.stringify(newImages) }));
     setIsUploading(false);
     toast({ title: 'สำเร็จ', description: `อัปโหลดรูปภาพสำเร็จ (${newImages.length}/3)` });
-    
+
     // Reset input
     e.target.value = '';
   };
@@ -374,20 +375,18 @@ const AwardsManagement = () => {
 
               <div>
                 <Label>คำอธิบาย (ไทย)</Label>
-                <Textarea
+                <RichTextEditor
                   value={formData.description_th || ''}
-                  onChange={(e) => setFormData({ ...formData, description_th: e.target.value })}
-                  rows={3}
+                  onChange={(value) => setFormData({ ...formData, description_th: value })}
                   placeholder="รายละเอียดรางวัล"
                 />
               </div>
 
               <div>
                 <Label>คำอธิบาย (English)</Label>
-                <Textarea
+                <RichTextEditor
                   value={formData.description_en || ''}
-                  onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
-                  rows={3}
+                  onChange={(value) => setFormData({ ...formData, description_en: value })}
                   placeholder="Award description"
                 />
               </div>
@@ -399,9 +398,9 @@ const AwardsManagement = () => {
                     <div className="flex flex-wrap gap-3">
                       {currentImages.map((img, index) => (
                         <div key={index} className="relative inline-block">
-                          <img 
-                            src={img} 
-                            alt={`Preview ${index + 1}`} 
+                          <img
+                            src={img}
+                            alt={`Preview ${index + 1}`}
                             className="w-32 h-24 object-cover rounded-lg border"
                           />
                           <button
@@ -421,12 +420,12 @@ const AwardsManagement = () => {
                         <Upload className="w-4 h-4" />
                         <span>{isUploading ? 'กำลังอัปโหลด...' : `อัปโหลดรูปภาพ (${currentImages.length}/3)`}</span>
                       </div>
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageUpload} 
-                        className="hidden" 
-                        disabled={isUploading} 
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        disabled={isUploading}
                       />
                     </label>
                   )}

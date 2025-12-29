@@ -14,7 +14,6 @@ import { GoogleMapSection } from '@/components/GoogleMapSection';
 import AnimatedStats from '@/components/AnimatedStats';
 import CompanyTimeline from '@/components/CompanyTimeline';
 import TestimonialsSection from '@/components/TestimonialsSection';
-import AwardsSection from '@/components/AwardsSection';
 import NewsletterForm from '@/components/NewsletterForm';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
@@ -97,7 +96,7 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <AnnouncementModal autoShow delay={1500} />
-      
+
       {/* Hero Section */}
       <section
         ref={heroRef}
@@ -105,14 +104,13 @@ const Index = () => {
       >
         <Hero3DBackground />
         <div
-          className={`container mx-auto px-4 relative z-10 text-center transition-all duration-1000 ${
-            heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`container mx-auto px-4 relative z-10 text-center transition-all duration-1000 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           <div className="mb-6">
-            <img 
-              src={jwLogo} 
-              alt="JW Group" 
+            <img
+              src={jwLogo}
+              alt="JW Group"
               className="h-32 md:h-40 lg:h-52 mx-auto"
               style={{
                 filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2))'
@@ -139,9 +137,8 @@ const Index = () => {
       {/* About Section with Stats */}
       <section
         ref={aboutRef}
-        className={`py-20 bg-background transition-all duration-1000 ${
-          aboutInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
+        className={`py-20 bg-background transition-all duration-1000 ${aboutInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -163,7 +160,7 @@ const Index = () => {
         const quoteContent = getContent('chairman_quote');
         const metadata = quoteContent.metadata as Record<string, string> | null;
         return (
-          <ChairmanQuote 
+          <ChairmanQuote
             quote={quoteContent.content || 'เราเชื่อมั่นว่าคุณภาพและความใส่ใจในทุกรายละเอียด คือหัวใจสำคัญที่จะสร้างความไว้วางใจจากลูกค้า และนำพาองค์กรไปสู่ความสำเร็จอย่างยั่งยืน'}
             name={quoteContent.title || 'คุณสมชาย วิสุทธิ์ธรรม'}
             title={metadata?.position_th || metadata?.position_en || 'ประธานกรรมการบริหาร JW GROUP'}
@@ -177,9 +174,8 @@ const Index = () => {
       {/* Business Section */}
       <section
         ref={businessRef}
-        className={`py-20 bg-accent/20 transition-all duration-1000 ${
-          businessInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
+        className={`py-20 bg-accent/20 transition-all duration-1000 ${businessInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -203,9 +199,8 @@ const Index = () => {
       {/* News Section */}
       <section
         ref={newsRef}
-        className={`py-20 bg-background transition-all duration-1000 ${
-          newsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
+        className={`py-20 bg-background transition-all duration-1000 ${newsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -228,8 +223,8 @@ const Index = () => {
             </Button>
           </div>
 
-          <BentoNewsSection 
-            news={displayNews} 
+          <BentoNewsSection
+            news={displayNews}
             showFilters={false}
             maxItems={5}
           />
@@ -239,22 +234,20 @@ const Index = () => {
       {/* Testimonials Section */}
       <TestimonialsSection />
 
-      {/* Awards Section */}
-      <AwardsSection />
+
 
       {/* Careers Teaser Section */}
       <section
         ref={careersRef}
-        className={`py-20 relative overflow-hidden transition-all duration-1000 ${
-          careersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
+        className={`py-20 relative overflow-hidden transition-all duration-1000 ${careersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
       >
         {/* Orange Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-accent" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/50 via-transparent to-primary/30" />
         <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-        
+
         {/* Animated Particles */}
         {[...Array(20)].map((_, i) => (
           <div
@@ -270,7 +263,7 @@ const Index = () => {
             }}
           />
         ))}
-        
+
         {/* Sparkle Effects */}
         {[...Array(12)].map((_, i) => (
           <div
@@ -290,7 +283,7 @@ const Index = () => {
             </svg>
           </div>
         ))}
-        
+
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">
             {getContent('careers_section').title || t('careers.title')}
