@@ -45,12 +45,25 @@ const emptyAward: Omit<Award, 'id'> = {
   position_order: 0,
 };
 
+// Helper to parse image_url (can be JSON array or single URL string)
+const parseImages = (imageUrl: string | null): string[] => {
+  if (!imageUrl) return [];
+  try {
+    const parsed = JSON.parse(imageUrl);
+    if (Array.isArray(parsed)) return parsed;
+    return [imageUrl];
+  } catch {
+    return imageUrl ? [imageUrl] : [];
+  }
+};
+
 const SortableItem = ({ award, onEdit, onDelete }: {
   award: Award;
   onEdit: (a: Award) => void;
   onDelete: (id: string) => void;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: award.id });
+  const images = parseImages(award.image_url);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -62,13 +75,31 @@ const SortableItem = ({ award, onEdit, onDelete }: {
       <div {...attributes} {...listeners} className="cursor-grab">
         <GripVertical className="h-5 w-5 text-muted-foreground" />
       </div>
-      <div className="flex items-center gap-3">
-        {award.category === 'certification' ? (
-          <Medal className="h-8 w-8 text-primary" />
+      
+      {/* Image Preview */}
+      <div className="flex items-center gap-2">
+        {images.length > 0 ? (
+          <div className="flex -space-x-2">
+            {images.slice(0, 3).map((img, idx) => (
+              <img 
+                key={idx} 
+                src={img} 
+                alt={`Award ${idx + 1}`} 
+                className="w-12 h-12 object-cover rounded-lg border-2 border-background shadow-sm"
+              />
+            ))}
+          </div>
         ) : (
-          <Trophy className="h-8 w-8 text-primary" />
+          <div className="flex items-center gap-3">
+            {award.category === 'certification' ? (
+              <Medal className="h-8 w-8 text-primary" />
+            ) : (
+              <Trophy className="h-8 w-8 text-primary" />
+            )}
+          </div>
         )}
       </div>
+      
       <div className="flex-1">
         <div className="flex items-center gap-2">
           <span className="font-medium">{award.title_th}</span>
@@ -100,6 +131,7 @@ const AwardsManagement = () => {
   const [formData, setFormData] = useState<Omit<Award, 'id'>>(emptyAward);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [currentImages, setCurrentImages] = useState<string[]>([]);
   const { toast } = useToast();
 
   const sensors = useSensors(
@@ -143,9 +175,15 @@ const AwardsManagement = () => {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
+    if (currentImages.length >= 3) {
+      toast({ title: 'ข้อผิดพลาด', description: 'สามารถอัปโหลดได้สูงสุด 3 รูปภาพ', variant: 'destructive' });
+      return;
+    }
+
+    const file = files[0];
     if (file.size > 10 * 1024 * 1024) {
       toast({ title: 'ข้อผิดพลาด', description: 'ไฟล์ต้องมีขนาดไม่เกิน 10MB', variant: 'destructive' });
       return;
@@ -179,13 +217,20 @@ const AwardsManagement = () => {
       .from('award-images')
       .getPublicUrl(fileName);
 
-    setFormData(prev => ({ ...prev, image_url: urlData.publicUrl }));
+    const newImages = [...currentImages, urlData.publicUrl];
+    setCurrentImages(newImages);
+    setFormData(prev => ({ ...prev, image_url: JSON.stringify(newImages) }));
     setIsUploading(false);
-    toast({ title: 'สำเร็จ', description: 'อัปโหลดรูปภาพสำเร็จ' });
+    toast({ title: 'สำเร็จ', description: `อัปโหลดรูปภาพสำเร็จ (${newImages.length}/3)` });
+    
+    // Reset input
+    e.target.value = '';
   };
 
-  const removeImage = () => {
-    setFormData(prev => ({ ...prev, image_url: '' }));
+  const removeImage = (index: number) => {
+    const newImages = currentImages.filter((_, i) => i !== index);
+    setCurrentImages(newImages);
+    setFormData(prev => ({ ...prev, image_url: newImages.length > 0 ? JSON.stringify(newImages) : '' }));
   };
 
   const handleSubmit = async () => {
@@ -221,6 +266,8 @@ const AwardsManagement = () => {
 
   const handleEdit = (award: Award) => {
     setEditingAward(award);
+    const images = parseImages(award.image_url);
+    setCurrentImages(images);
     setFormData({
       title_th: award.title_th,
       title_en: award.title_en || '',
@@ -254,6 +301,7 @@ const AwardsManagement = () => {
   const openNewDialog = () => {
     setEditingAward(null);
     setFormData(emptyAward);
+    setCurrentImages([]);
     setIsDialogOpen(true);
   };
 
@@ -345,37 +393,43 @@ const AwardsManagement = () => {
               </div>
 
               <div>
-                <Label>รูปภาพรางวัล</Label>
+                <Label>รูปภาพรางวัล (สูงสุด 3 รูป)</Label>
                 <div className="mt-2 space-y-3">
-                  {formData.image_url && (
-                    <div className="relative inline-block">
-                      <img 
-                        src={formData.image_url} 
-                        alt="Preview" 
-                        className="w-32 h-24 object-cover rounded-lg border"
-                      />
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center hover:bg-destructive/90"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                  {currentImages.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {currentImages.map((img, index) => (
+                        <div key={index} className="relative inline-block">
+                          <img 
+                            src={img} 
+                            alt={`Preview ${index + 1}`} 
+                            className="w-32 h-24 object-cover rounded-lg border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center hover:bg-destructive/90"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   )}
-                  <label className="cursor-pointer inline-block">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg hover:bg-muted/80 transition-colors">
-                      <Upload className="w-4 h-4" />
-                      <span>{isUploading ? 'กำลังอัปโหลด...' : 'อัปโหลดรูปภาพ'}</span>
-                    </div>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handleImageUpload} 
-                      className="hidden" 
-                      disabled={isUploading} 
-                    />
-                  </label>
+                  {currentImages.length < 3 && (
+                    <label className="cursor-pointer inline-block">
+                      <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg hover:bg-muted/80 transition-colors">
+                        <Upload className="w-4 h-4" />
+                        <span>{isUploading ? 'กำลังอัปโหลด...' : `อัปโหลดรูปภาพ (${currentImages.length}/3)`}</span>
+                      </div>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageUpload} 
+                        className="hidden" 
+                        disabled={isUploading} 
+                      />
+                    </label>
+                  )}
                 </div>
               </div>
 
