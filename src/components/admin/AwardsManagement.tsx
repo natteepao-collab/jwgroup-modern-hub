@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Pencil, Trash2, Trophy, Medal, GripVertical } from 'lucide-react';
+import { Plus, Pencil, Trash2, Trophy, Medal, GripVertical, Upload, X } from 'lucide-react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -99,6 +99,7 @@ const AwardsManagement = () => {
   const [editingAward, setEditingAward] = useState<Award | null>(null);
   const [formData, setFormData] = useState<Omit<Award, 'id'>>(emptyAward);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
 
   const sensors = useSensors(
@@ -141,6 +142,52 @@ const AwardsManagement = () => {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: 'ข้อผิดพลาด', description: 'ไฟล์ต้องมีขนาดไม่เกิน 10MB', variant: 'destructive' });
+      return;
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast({ title: 'ข้อผิดพลาด', description: 'กรุณาเข้าสู่ระบบก่อนอัปโหลดรูปภาพ', variant: 'destructive' });
+      return;
+    }
+
+    setIsUploading(true);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('award-images')
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      toast({ title: 'ข้อผิดพลาด', description: `อัปโหลดรูปภาพไม่สำเร็จ: ${uploadError.message}`, variant: 'destructive' });
+      setIsUploading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('award-images')
+      .getPublicUrl(fileName);
+
+    setFormData(prev => ({ ...prev, image_url: urlData.publicUrl }));
+    setIsUploading(false);
+    toast({ title: 'สำเร็จ', description: 'อัปโหลดรูปภาพสำเร็จ' });
+  };
+
+  const removeImage = () => {
+    setFormData(prev => ({ ...prev, image_url: '' }));
+  };
+
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
@@ -164,7 +211,6 @@ const AwardsManagement = () => {
       setIsDialogOpen(false);
       setEditingAward(null);
       setFormData(emptyAward);
-      fetchAwards();
       fetchAwards();
     } catch (error: unknown) {
       toast({ title: 'Error', description: (error as Error).message, variant: 'destructive' });
@@ -299,12 +345,38 @@ const AwardsManagement = () => {
               </div>
 
               <div>
-                <Label>URL รูปภาพรางวัล</Label>
-                <Input
-                  value={formData.image_url || ''}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://..."
-                />
+                <Label>รูปภาพรางวัล</Label>
+                <div className="mt-2 space-y-3">
+                  {formData.image_url && (
+                    <div className="relative inline-block">
+                      <img 
+                        src={formData.image_url} 
+                        alt="Preview" 
+                        className="w-32 h-24 object-cover rounded-lg border"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center hover:bg-destructive/90"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                  <label className="cursor-pointer inline-block">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg hover:bg-muted/80 transition-colors">
+                      <Upload className="w-4 h-4" />
+                      <span>{isUploading ? 'กำลังอัปโหลด...' : 'อัปโหลดรูปภาพ'}</span>
+                    </div>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={handleImageUpload} 
+                      className="hidden" 
+                      disabled={isUploading} 
+                    />
+                  </label>
+                </div>
               </div>
 
               <div className="flex items-center gap-2">
