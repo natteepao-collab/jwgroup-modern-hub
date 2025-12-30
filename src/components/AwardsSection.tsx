@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { Trophy, Award as AwardIcon, Medal, Star, ChevronLeft, ChevronRight, X, Image as ImageIcon, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -120,12 +120,130 @@ const ImageLightbox = ({
   );
 };
 
+const AwardDetailModal = ({
+  award,
+  isOpen,
+  onClose,
+  onImageClick
+}: {
+  award: Award | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onImageClick: (images: string[], startIndex: number, title: string) => void;
+}) => {
+  const { i18n } = useTranslation();
+
+  if (!award) return null;
+
+  const getTitle = () => {
+    const lang = i18n.language;
+    if (lang === 'en' && award.title_en) return award.title_en;
+    if (lang === 'cn' && award.title_cn) return award.title_cn;
+    return award.title_th;
+  };
+
+  const getDescription = () => {
+    const lang = i18n.language;
+    if (lang === 'en' && award.description_en) return award.description_en;
+    if (lang === 'cn' && award.description_cn) return award.description_cn;
+    return award.description_th;
+  };
+
+  const images = parseImages(award.image_url);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Badge
+              variant="secondary"
+              className={`${award.category === 'certification'
+                ? 'bg-emerald-500/10 text-emerald-600'
+                : 'bg-amber-500/10 text-amber-600'
+                }`}
+            >
+              {award.category === 'certification' ? 'Certification' : 'Award'}
+            </Badge>
+            {award.award_year && (
+              <Badge variant="outline" className="text-muted-foreground">
+                {award.award_year}
+              </Badge>
+            )}
+          </div>
+          <DialogTitle className="text-2xl md:text-3xl font-bold leading-tight">
+            {getTitle()}
+          </DialogTitle>
+          {award.awarding_organization && (
+            <DialogDescription className="text-lg font-medium text-primary flex items-center gap-2 mt-2">
+              <Star className="w-4 h-4" />
+              {award.awarding_organization}
+            </DialogDescription>
+          )}
+        </DialogHeader>
+
+        <div className="space-y-6">
+          {/* Main Image Banner */}
+          {images.length > 0 && (
+            <div className="relative rounded-xl overflow-hidden aspect-video bg-muted group cursor-pointer" onClick={() => onImageClick(images, 0, getTitle())}>
+              <img
+                src={images[0]}
+                alt={getTitle()}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity gap-2"
+                >
+                  <ImageIcon className="w-4 h-4" />
+                  View All Images ({images.length})
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Additional Images Grid (if more than 1) */}
+          {images.length > 1 && (
+            <div className="grid grid-cols-4 gap-2">
+              {images.slice(1, 5).map((img, idx) => (
+                <div
+                  key={idx}
+                  className="relative aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 active:scale-95 transition-all"
+                  onClick={() => onImageClick(images, idx + 1, getTitle())}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  {idx === 3 && images.length > 5 && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-lg">
+                      +{images.length - 5}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Full Description */}
+          {getDescription() && (
+            <div className="prose max-w-none dark:prose-invert">
+              <div dangerouslySetInnerHTML={{ __html: getDescription() || '' }} />
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const AwardItem = ({
   award,
-  onImageClick
+  onImageClick,
+  onClick
 }: {
   award: Award;
   onImageClick: (images: string[], startIndex: number, title: string) => void;
+  onClick: () => void;
 }) => {
   const { i18n } = useTranslation();
   const images = parseImages(award.image_url);
@@ -145,7 +263,10 @@ const AwardItem = ({
   };
 
   return (
-    <div className="group bg-card hover:bg-accent/5 rounded-3xl overflow-hidden border border-border/40 shadow-sm hover:shadow-xl transition-all duration-500">
+    <div
+      className="group bg-card hover:bg-accent/5 rounded-3xl overflow-hidden border border-border/40 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex flex-col lg:flex-row">
         {/* Cover Image Section */}
         <div className="lg:w-2/5 relative min-h-[250px] lg:min-h-[300px] overflow-hidden">
@@ -164,7 +285,10 @@ const AwardItem = ({
                   size="sm"
                   variant="secondary"
                   className="bg-zinc-900/90 hover:bg-zinc-800 text-white backdrop-blur-md shadow-lg gap-2 border border-white/10"
-                  onClick={() => onImageClick(images, 0, getTitle())}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onImageClick(images, 0, getTitle());
+                  }}
                 >
                   <ImageIcon className="w-4 h-4" />
                   <span>ดูรูปภาพ ({images.length})</span>
@@ -236,6 +360,9 @@ const AwardItem = ({
                 {award.category === 'certification' ? 'การรับรองมาตรฐานคุณภาพ' : 'รางวัลแห่งความภาคภูมิใจ'}
               </span>
             </div>
+            <div className="text-primary font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300">
+              อ่านเพิ่มเติม <ChevronRight className="w-4 h-4" />
+            </div>
           </div>
         </div>
       </div>
@@ -246,11 +373,13 @@ const AwardItem = ({
 const YearSection = ({
   year,
   awards,
-  onImageClick
+  onImageClick,
+  onAwardClick
 }: {
   year: string;
   awards: Award[];
   onImageClick: (images: string[], startIndex: number, title: string) => void;
+  onAwardClick: (award: Award) => void;
 }) => {
   if (awards.length === 0) return null;
 
@@ -273,6 +402,7 @@ const YearSection = ({
             <AwardItem
               award={award}
               onImageClick={onImageClick}
+              onClick={() => onAwardClick(award)}
             />
           </div>
         ))}
@@ -291,6 +421,9 @@ const AwardsSection = () => {
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxTitle, setLightboxTitle] = useState('');
+
+  // Selected Award for Detail Modal
+  const [selectedAward, setSelectedAward] = useState<Award | null>(null);
 
   useEffect(() => {
     const fetchAwards = async () => {
@@ -332,6 +465,10 @@ const AwardsSection = () => {
     setLightboxOpen(true);
   };
 
+  const handleAwardClick = (award: Award) => {
+    setSelectedAward(award);
+  };
+
   if (isLoading) {
     return <div className="py-20 text-center text-muted-foreground animate-pulse">Loading Awards...</div>;
   }
@@ -369,6 +506,7 @@ const AwardsSection = () => {
               year={year}
               awards={groupAwards}
               onImageClick={handleImageClick}
+              onAwardClick={handleAwardClick}
             />
           ))}
 
@@ -389,6 +527,14 @@ const AwardsSection = () => {
         currentIndex={lightboxIndex}
         title={lightboxTitle}
         onIndexChange={setLightboxIndex}
+      />
+
+      {/* Award Detail Modal */}
+      <AwardDetailModal
+        award={selectedAward}
+        isOpen={!!selectedAward}
+        onClose={() => setSelectedAward(null)}
+        onImageClick={handleImageClick}
       />
     </div>
   );
