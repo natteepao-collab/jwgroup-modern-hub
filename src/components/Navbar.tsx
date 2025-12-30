@@ -231,55 +231,43 @@ export const Navbar = () => {
 
               {/* Right - Actions */}
               <div className="flex items-center gap-2 lg:gap-3">
-                {/* Social Media Icons - Professional style with soft backgrounds */}
-                <div className="flex items-center gap-2">
+                {/* Social Media Icons - Premium Soft Style */}
+                <div className="flex items-center gap-3">
                   <a
                     href={socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn(
-                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
-                      "bg-[#1877F2]/10 hover:bg-[#1877F2]/20 hover:scale-110"
-                    )}
+                    className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#1877F2]/10 hover:bg-[#1877F2]/20 hover:scale-110 transition-all duration-300"
                     aria-label="Facebook"
                   >
-                    <Facebook className="h-5 w-5 text-[#1877F2] transition-colors duration-300" strokeWidth={2} />
+                    <Facebook className="h-5 w-5 text-[#1877F2] transition-transform duration-300" strokeWidth={2.5} />
                   </a>
                   <a
                     href={socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn(
-                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
-                      "bg-[#E4405F]/10 hover:bg-[#E4405F]/20 hover:scale-110"
-                    )}
+                    className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#E4405F]/10 hover:bg-[#E4405F]/20 hover:scale-110 transition-all duration-300"
                     aria-label="Instagram"
                   >
-                    <Instagram className="h-5 w-5 text-[#E4405F] transition-colors duration-300" strokeWidth={2} />
+                    <Instagram className="h-5 w-5 text-[#E4405F] transition-transform duration-300" strokeWidth={2.5} />
                   </a>
                   <a
                     href={socialLinks.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn(
-                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
-                      "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 hover:scale-110"
-                    )}
+                    className="group flex items-center justify-center w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:scale-110 transition-all duration-300"
                     aria-label="TikTok"
                   >
-                    <TikTokIcon className="h-5 w-5 text-black dark:text-white transition-colors duration-300" />
+                    <TikTokIcon className="h-5 w-5 text-black dark:text-white transition-transform duration-300" />
                   </a>
                   <a
                     href={socialLinks.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn(
-                      "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
-                      "bg-[#FF0000]/10 hover:bg-[#FF0000]/20 hover:scale-110"
-                    )}
+                    className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#FF0000]/10 hover:bg-[#FF0000]/20 hover:scale-110 transition-all duration-300"
                     aria-label="YouTube"
                   >
-                    <Youtube className="h-5 w-5 text-[#FF0000] transition-colors duration-300" strokeWidth={2} />
+                    <Youtube className="h-5 w-5 text-[#FF0000] transition-transform duration-300" strokeWidth={2.5} />
                   </a>
                 </div>
 
@@ -287,16 +275,16 @@ export const Navbar = () => {
 
                 <ThemeToggle />
                 <LanguageSwitcher />
-                {/* Desktop Hamburger */}
+                {/* Desktop Hamburger - Solid Gold/Brown */}
                 <button
                   onClick={() => setIsMenuOpen(true)}
                   className={cn(
-                    "hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300",
-                    "bg-primary text-primary-foreground shadow-lg shadow-primary/30",
-                    "hover:bg-primary/90 hover:scale-105 active:scale-95"
+                    "hidden lg:flex items-center justify-center w-12 h-10 rounded-xl transition-all duration-300",
+                    "bg-[#B45309] text-white shadow-lg shadow-amber-600/30", // Solid Brown/Gold
+                    "hover:bg-[#D97706] hover:scale-105 active:scale-95"
                   )}
                 >
-                  <Menu className="h-5 w-5" strokeWidth={2.5} />
+                  <Menu className="h-6 w-6" strokeWidth={2.5} />
                 </button>
               </div>
             </div>

@@ -6,7 +6,7 @@ const ThemeToggle = () => {
 
   useEffect(() => {
     const theme = localStorage.getItem('theme');
-    
+
     // Default to light mode if no theme is stored
     if (theme === 'dark') {
       setIsDark(true);
@@ -35,14 +35,14 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="group relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/10 via-purple-500/10 to-indigo-500/10 border border-violet-500/30 hover:from-violet-500/25 hover:via-purple-500/25 hover:to-indigo-500/25 hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 hover:scale-105 active:scale-95"
+      className="group relative flex items-center justify-center w-12 h-10 rounded-xl bg-purple-100 hover:bg-purple-200 transition-all duration-300 hover:scale-105 active:scale-95"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <div className="relative">
         {isDark ? (
-          <Sun className="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110" />
+          <Sun className="h-5 w-5 text-purple-700 transition-transform duration-300 group-hover:rotate-45" />
         ) : (
-          <Moon className="h-5 w-5 text-violet-500 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
+          <Moon className="h-5 w-5 text-purple-600 transition-transform duration-300 group-hover:-rotate-12" />
         )}
       </div>
     </button>
