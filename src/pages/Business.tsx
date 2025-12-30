@@ -21,10 +21,34 @@ const defaultBusinessImages: Record<string, string> = {
 };
 
 const businessTabs = [
-  { id: 'realestate', label: 'อสังหาริมทรัพย์', icon: Building },
-  { id: 'hotel', label: 'โรงแรม', icon: Hotel },
-  { id: 'pet', label: 'สัตว์เลี้ยง', icon: Heart },
-  { id: 'wellness', label: 'สุขภาพ', icon: Leaf },
+  {
+    id: 'realestate',
+    label: 'อสังหาริมทรัพย์',
+    icon: Building,
+    activeColor: 'data-[state=active]:bg-[#D97706] data-[state=active]:text-white', // Amber/Orange
+    hoverColor: 'hover:bg-[#D97706]/10 hover:text-[#D97706]'
+  },
+  {
+    id: 'hotel',
+    label: 'โรงแรม',
+    icon: Hotel,
+    activeColor: 'data-[state=active]:bg-[#1A1A1A] data-[state=active]:text-white', // Dark/Neutral
+    hoverColor: 'hover:bg-[#1A1A1A]/10 hover:text-[#1A1A1A]'
+  },
+  {
+    id: 'pet',
+    label: 'สัตว์เลี้ยง',
+    icon: Heart,
+    activeColor: 'data-[state=active]:bg-[#14B8A6] data-[state=active]:text-white', // Teal
+    hoverColor: 'hover:bg-[#14B8A6]/10 hover:text-[#14B8A6]'
+  },
+  {
+    id: 'wellness',
+    label: 'สุขภาพ',
+    icon: Leaf,
+    activeColor: 'data-[state=active]:bg-[#22C55E] data-[state=active]:text-white', // Green
+    hoverColor: 'hover:bg-[#22C55E]/10 hover:text-[#22C55E]'
+  },
 ];
 
 const Business = () => {
@@ -154,11 +178,12 @@ const Business = () => {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="flex-1 gap-2.5 py-3.5 px-4 rounded-xl font-medium text-muted-foreground transition-all duration-300
-                      data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/25
-                      hover:bg-muted/50 hover:text-foreground"
+                    className={`flex-1 gap-2.5 py-4 px-4 rounded-xl font-bold text-base transition-all duration-300
+                      ${tab.activeColor} ${tab.hoverColor}
+                      data-[state=active]:shadow-lg data-[state=active]:scale-105
+                      text-muted-foreground`}
                   >
-                    <tab.icon className="w-5 h-5" />
+                    <tab.icon className="w-5 h-5 mb-0.5" />
                     <span className="hidden sm:inline">{tab.label}</span>
                   </TabsTrigger>
                 ))}

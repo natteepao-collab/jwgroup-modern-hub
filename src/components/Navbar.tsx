@@ -354,12 +354,15 @@ export const Navbar = () => {
                       )}
                     >
                       <div className={cn(
-                        "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
+                        "relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 overflow-hidden",
                         isActive(item.path)
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted group-hover:bg-primary/20 group-hover:text-primary"
+                          ? "bg-[#FCD34D] text-black shadow-lg shadow-yellow-400/30" // Active: Yellow-300/400
+                          : "bg-[#FCD34D] text-black/80 group-hover:text-black group-hover:scale-110 group-hover:shadow-md" // Inactive: Yellow-300
                       )}>
-                        <item.icon className="h-4 w-4" strokeWidth={2} />
+                        {/* Decorative translucent shape for depth */}
+                        <div className="absolute -right-2 -bottom-2 w-6 h-6 bg-white/30 rounded-full blur-[2px]" />
+
+                        <item.icon className="relative h-4 w-4 z-10" strokeWidth={2} />
                       </div>
                       <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t(item.labelKey)}</span>
                       <ChevronRight className={cn(

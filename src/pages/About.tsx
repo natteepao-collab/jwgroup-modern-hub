@@ -130,53 +130,53 @@ const About = () => {
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          "group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0",
+                          "group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0 border-2",
                           active
-                            ? "bg-primary/10 border-2 border-primary/30 shadow-lg shadow-primary/10"
-                            : "bg-card hover:bg-muted/80 border-2 border-transparent hover:border-primary/20"
+                            ? "bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-lg shadow-primary/10 translate-x-2"
+                            : "bg-orange-50/50 hover:bg-orange-50 border-transparent hover:border-primary/20 hover:shadow-md hover:translate-x-1"
                         )}
                       >
-                        {/* Icon Container */}
+                        {/* Icon Container with Gradient */}
                         <div className={cn(
-                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300",
+                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 shadow-sm",
                           active
-                            ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
-                            : "bg-muted text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary"
+                            ? "bg-gradient-to-br from-primary to-amber-600 text-white shadow-md shadow-primary/30 rotate-3"
+                            : "bg-white text-amber-600/80 group-hover:text-amber-600 group-hover:scale-110 group-hover:shadow-md"
                         )}>
                           <item.icon className={cn(
                             "h-5 w-5 transition-transform duration-300",
-                            active ? "scale-110" : "group-hover:scale-110"
+                            active ? "scale-100" : "group-hover:scale-110"
                           )} />
-                          
-                          {/* Active Indicator Dot */}
+
+                          {/* Active Indicator Dot - now a ring effect */}
                           {active && (
-                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background animate-pulse" />
+                            <span className="absolute inset-0 rounded-xl border-2 border-white/20 animate-pulse" />
                           )}
                         </div>
 
                         {/* Label */}
                         <span className={cn(
-                          "text-sm font-medium transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
+                          "text-sm font-bold transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
                           active
                             ? "text-primary"
-                            : "text-foreground group-hover:text-primary"
+                            : "text-amber-900/70 group-hover:text-amber-700"
                         )}>
                           {t(item.labelKey)}
                         </span>
 
                         {/* Arrow Indicator */}
-                        <svg 
+                        <svg
                           className={cn(
                             "hidden lg:block w-4 h-4 ml-auto transition-all duration-300",
                             active
                               ? "opacity-100 text-primary translate-x-0"
-                              : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0"
+                              : "opacity-0 text-amber-400 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
                           )}
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>
                     );

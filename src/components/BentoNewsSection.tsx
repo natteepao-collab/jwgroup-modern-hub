@@ -17,7 +17,7 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
     'from-purple-500/30 via-violet-400/20 to-pink-500/30',
     'from-rose-500/30 via-red-400/20 to-orange-500/30',
   ];
-  
+
   const gradientIndex = title ? title.charCodeAt(0) % gradients.length : 0;
   const gradient = gradients[gradientIndex];
 
@@ -32,7 +32,7 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
         <div className="absolute bottom-8 right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
       </div>
-      
+
       {/* Content */}
       <div className="relative z-10 text-center p-6">
         <div className={cn(
@@ -57,9 +57,9 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
           รอการอัพโหลดรูปภาพ
         </p>
       </div>
-      
+
       {/* Pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-10"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -154,7 +154,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
             <Calendar className="h-3 w-3" />
             {news.date}
           </span>
-          <Link 
+          <Link
             to={`/news/${news.id}`}
             className="text-primary text-sm font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
@@ -167,10 +167,10 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   }
 
   // Fixed height for small cards
-  const cardHeight = isLarge 
-    ? "min-h-[400px] md:min-h-[500px]" 
-    : isMedium 
-      ? "min-h-[300px] md:min-h-[400px]" 
+  const cardHeight = isLarge
+    ? "min-h-[400px] md:min-h-[500px]"
+    : isMedium
+      ? "min-h-[300px] md:min-h-[400px]"
       : "h-[280px] md:h-[320px]";
 
   return (
@@ -226,7 +226,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         </div>
 
         {/* Gradient Overlay */}
-        <div 
+        <div
           className={cn(
             "absolute inset-0 rounded-2xl transition-all duration-500",
             isHovered
@@ -237,7 +237,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
 
         {/* Category Badge - Top */}
         <div className="absolute top-4 left-4 z-10">
-          <Badge 
+          <Badge
             className={cn(
               "bg-primary text-primary-foreground shadow-lg transition-all duration-300",
               isHovered ? "scale-105" : ""
@@ -248,7 +248,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         </div>
 
         {/* Content - Bottom with Slide Up Animation */}
-        <div 
+        <div
           className={cn(
             "absolute bottom-0 left-0 right-0 p-6 transition-all duration-500",
             isHovered ? "translate-y-0" : "translate-y-4"
@@ -261,7 +261,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </div>
 
           {/* Title - Large Typography */}
-          <h3 
+          <h3
             className={cn(
               "font-bold text-white mb-3 transition-all duration-300 line-clamp-2",
               isLarge ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
@@ -271,7 +271,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </h3>
 
           {/* Excerpt - Revealed on Hover */}
-          <p 
+          <p
             className={cn(
               "text-white/80 text-sm mb-4 line-clamp-2 transition-all duration-500",
               isHovered ? "opacity-100 max-h-20" : "opacity-0 max-h-0"
@@ -281,14 +281,14 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </p>
 
           {/* Read More Button - Revealed on Hover */}
-          <div 
+          <div
             className={cn(
               "transition-all duration-500",
               isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               size={isLarge ? "default" : "sm"}
               className="group/btn"
             >
@@ -299,7 +299,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         </div>
 
         {/* Shine Effect on Hover */}
-        <div 
+        <div
           className={cn(
             "absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500",
             isHovered ? "opacity-100" : "opacity-0"
@@ -339,11 +339,11 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
   const assignSizes = (items: Omit<NewsItem, 'size'>[]): NewsItem[] => {
     return items.map((item, index) => {
       let size: NewsItem['size'] = 'small';
-      
+
       // First item is always large (hero)
       if (index === 0) {
         size = 'large';
-      } 
+      }
       // Second item is medium (side column top)
       else if (index === 1) {
         size = 'medium';
@@ -352,13 +352,13 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
       else {
         size = 'small';
       }
-      
+
       return { ...item, size };
     });
   };
 
-  const filteredNews = activeFilter === 'all' 
-    ? news 
+  const filteredNews = activeFilter === 'all'
+    ? news
     : news.filter(item => item.categoryType === activeFilter);
 
   const displayNews = assignSizes(maxItems ? filteredNews.slice(0, maxItems) : filteredNews);
@@ -371,17 +371,16 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
           {filters.map((filter) => (
             <Button
               key={filter.key}
-              variant={activeFilter === filter.key ? 'default' : 'outline'}
+              variant="ghost"
               onClick={() => setActiveFilter(filter.key)}
               className={cn(
-                "transition-all duration-300 relative overflow-hidden",
-                activeFilter === filter.key && "shadow-lg shadow-primary/25"
+                "transition-all duration-300 relative overflow-hidden h-10 px-6 rounded-xl border",
+                activeFilter === filter.key
+                  ? "bg-[#C27803] text-white border-[#C27803] shadow-md shadow-[#C27803]/20"
+                  : "bg-transparent text-[#C27803] border-[#C27803] hover:bg-[#C27803]/10"
               )}
             >
-              <span className="relative z-10">{filter.label}</span>
-              {activeFilter === filter.key && (
-                <span className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80" />
-              )}
+              <span className="relative z-10 font-medium">{filter.label}</span>
             </Button>
           ))}
         </div>
@@ -390,9 +389,9 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-auto">
         {displayNews.map((newsItem, index) => (
-          <BentoNewsCard 
-            key={newsItem.id} 
-            news={newsItem} 
+          <BentoNewsCard
+            key={newsItem.id}
+            news={newsItem}
             index={index}
             inView={inView}
           />
