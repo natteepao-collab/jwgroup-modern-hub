@@ -107,42 +107,113 @@ const About = () => {
   return (
     <div className="pt-24 min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        {/* Breadcrumb Navigation - Responsive & Scrollable */}
-        <div className="mb-8 -mx-4 px-4 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-2 min-w-max pb-2">
-            {navItems.map((item, index) => (
-              <div key={item.path} className="flex items-center gap-2">
-                {index > 0 && (
-                  <span className="text-muted-foreground/50 hidden sm:block">•</span>
-                )}
-                <Link
-                  to={item.path}
-                  className={cn(
-                    "group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-medium transition-all duration-300",
-                    isActive(item.path)
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                      : "bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                  )}
-                >
-                  <item.icon className={cn(
-                    "h-4 w-4 transition-transform duration-300",
-                    isActive(item.path) ? "scale-110" : "group-hover:scale-110"
-                  )} />
-                  <span className="whitespace-nowrap">{t(item.labelKey)}</span>
-                </Link>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar Navigation */}
+          <aside className="w-full lg:w-72 shrink-0">
+            <div className="sticky top-28">
+              {/* Header */}
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold text-foreground mb-1">เกี่ยวกับเรา</h2>
+                <p className="text-sm text-muted-foreground">ข้อมูลองค์กร JW Group</p>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <Routes>
-          <Route path="history" element={<AboutHistory />} />
-          <Route path="vision" element={<AboutVision />} />
-          <Route path="structure" element={<AboutStructure />} />
-          <Route path="team" element={<AboutTeam />} />
-          {/* Awards moved to detailed page */}
-          <Route path="*" element={<AboutHistory />} />
-        </Routes>
+              {/* Navigation Items */}
+              <nav className="relative">
+                {/* Decorative Line */}
+                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/20 via-primary/10 to-transparent hidden lg:block" />
+
+                <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
+                  {navItems.map((item, index) => {
+                    const active = isActive(item.path);
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={cn(
+                          "group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0",
+                          active
+                            ? "bg-primary/10 border-2 border-primary/30 shadow-lg shadow-primary/10"
+                            : "bg-card hover:bg-muted/80 border-2 border-transparent hover:border-primary/20"
+                        )}
+                      >
+                        {/* Icon Container */}
+                        <div className={cn(
+                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300",
+                          active
+                            ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
+                            : "bg-muted text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary"
+                        )}>
+                          <item.icon className={cn(
+                            "h-5 w-5 transition-transform duration-300",
+                            active ? "scale-110" : "group-hover:scale-110"
+                          )} />
+                          
+                          {/* Active Indicator Dot */}
+                          {active && (
+                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background animate-pulse" />
+                          )}
+                        </div>
+
+                        {/* Label */}
+                        <span className={cn(
+                          "text-sm font-medium transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
+                          active
+                            ? "text-primary"
+                            : "text-foreground group-hover:text-primary"
+                        )}>
+                          {t(item.labelKey)}
+                        </span>
+
+                        {/* Arrow Indicator */}
+                        <svg 
+                          className={cn(
+                            "hidden lg:block w-4 h-4 ml-auto transition-all duration-300",
+                            active
+                              ? "opacity-100 text-primary translate-x-0"
+                              : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0"
+                          )}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </nav>
+
+              {/* Quick Stats */}
+              <div className="hidden lg:block mt-8 p-4 bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl border border-primary/10">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-primary">17+</p>
+                    <p className="text-xs text-muted-foreground">ปีแห่งประสบการณ์</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-primary">4</p>
+                    <p className="text-xs text-muted-foreground">กลุ่มธุรกิจหลัก</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <main className="flex-1 min-w-0">
+            <div className="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border/50">
+              <Routes>
+                <Route path="history" element={<AboutHistory />} />
+                <Route path="vision" element={<AboutVision />} />
+                <Route path="structure" element={<AboutStructure />} />
+                <Route path="team" element={<AboutTeam />} />
+                {/* Awards moved to detailed page */}
+                <Route path="*" element={<AboutHistory />} />
+              </Routes>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );
