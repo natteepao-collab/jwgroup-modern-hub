@@ -185,17 +185,17 @@ const AwardDetailModal = ({
         <div className="space-y-6">
           {/* Main Image Banner */}
           {images.length > 0 && (
-            <div className="relative rounded-xl overflow-hidden aspect-video bg-muted group cursor-pointer" onClick={() => onImageClick(images, 0, getTitle())}>
+            <div className="relative rounded-xl overflow-hidden bg-black/5 dark:bg-black/20 group cursor-pointer flex justify-center min-h-[50vh] xl:min-h-[40vh]" onClick={() => onImageClick(images, 0, getTitle())}>
               <img
                 src={images[0]}
                 alt={getTitle()}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-auto max-h-[60vh] object-contain transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity gap-2"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity gap-2 shadow-lg"
                 >
                   <ImageIcon className="w-4 h-4" />
                   View All Images ({images.length})
