@@ -99,7 +99,7 @@ const About = () => {
     { path: '/about/vision', labelKey: 'about.vision', icon: Eye },
     { path: '/about/structure', labelKey: 'about.structure', icon: Network },
     { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
-    { path: '/awards', labelKey: 'about.awards', icon: Award },
+    { path: '/about/awards', labelKey: 'about.awards', icon: Award },
   ];
 
   const isActive = (path: string) => location.pathname === path;
