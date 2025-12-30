@@ -298,7 +298,7 @@ const AwardsSection = () => {
         .from('awards')
         .select('*')
         .eq('is_published', true)
-        .order('position_order', { ascending: true });
+        .order('created_at', { ascending: false });
 
       if (!error && data) {
         setAwards(data);
