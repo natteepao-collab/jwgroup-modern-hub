@@ -2,25 +2,92 @@ import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Info, Eye, Network, UserCircle, Award } from 'lucide-react';
+import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
 import OrganizationChart from '@/components/OrganizationChart';
+import { Button } from '@/components/ui/button';
+
+// Import headquarters images
+import jwHq1 from '@/assets/jw-headquarters-1.webp';
+import jwHq2 from '@/assets/jw-headquarters-2.webp';
+import jwHq3 from '@/assets/jw-headquarters-3.webp';
 
 const AboutHistory = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  const streetViewUrl = "https://www.google.com/local/place/fid/0x30e2826bc528edb1:0x1a95b4253779ef2c/photosphere?iu=https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid%3DKCRm7M3QP13vFoNxDC3Tcw%26cb_client%3Dlu.gallery.gps%26w%3D160%26h%3D106%26yaw%3D40.44574%26pitch%3D0%26thumbfov%3D100&ik=CAISFktDUm03TTNRUDEzdkZvTnhEQzNUY3c%3D";
+
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-      <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-primary">JW GROUP: จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร</h2>
-      <div className="prose max-w-none dark:prose-invert">
-        <p className="text-lg mb-6 leading-relaxed text-muted-foreground">
-          ก่อตั้งขึ้นเมื่อปี 2550 โดยเริ่มต้นจากความเชี่ยวชาญในธุรกิจอสังหาริมทรัพย์ ด้วยปณิธานแน่วแน่ของผู้บริหารที่ต้องการสร้างสรรค์ที่อยู่อาศัยซึ่งไม่เพียงแค่สวยงาม แต่ต้องตอบโจทย์การใช้งานจริง และใช้สอยพื้นที่ให้เกิดประโยชน์สูงสุด เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับผู้อยู่อาศัย
-        </p>
-        <p className="text-lg leading-relaxed text-muted-foreground">
+      {/* Hero Section with Main Image */}
+      <div className="relative mb-10 rounded-2xl overflow-hidden">
+        <img 
+          src={jwHq1} 
+          alt="JW GROUP Headquarters" 
+          className="w-full h-64 md:h-80 object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-secondary/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-secondary-foreground mb-2">
+            JW GROUP
+          </h2>
+          <p className="text-secondary-foreground/80 text-sm md:text-base">
+            จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร
+          </p>
+        </div>
+      </div>
+
+      {/* Story Content */}
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-1 h-8 bg-primary rounded-full" />
+            <span className="text-sm font-medium text-primary tracking-wide uppercase">ก่อตั้งปี 2550</span>
+          </div>
+          <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
+            ก่อตั้งขึ้นเมื่อปี 2550 โดยเริ่มต้นจากความเชี่ยวชาญในธุรกิจอสังหาริมทรัพย์ ด้วยปณิธานแน่วแน่ของผู้บริหารที่ต้องการสร้างสรรค์ที่อยู่อาศัยซึ่งไม่เพียงแค่สวยงาม แต่ต้องตอบโจทย์การใช้งานจริง และใช้สอยพื้นที่ให้เกิดประโยชน์สูงสุด เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับผู้อยู่อาศัย
+          </p>
+        </div>
+
+        <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
           จากความสำเร็จในทุกโครงการที่ผ่านมา นำไปสู่การเติบโตและขยายขอบเขตธุรกิจอย่างต่อเนื่อง ปัจจุบัน JW GROUP คือกลุ่มธุรกิจชั้นนำที่ครอบคลุมทั้งด้านอสังหาริมทรัพย์ โรงแรม ธุรกิจโรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ โดยยังคงยึดมั่นในภารกิจสำคัญ คือการสร้างสรรค์นวัตกรรมเพื่อยกระดับคุณภาพชีวิตที่ดีกว่าให้กับทุกคน
         </p>
+
+        {/* Image Gallery */}
+        <div className="grid grid-cols-2 gap-3 md:gap-4 mt-8">
+          <div className="aspect-[4/3] rounded-xl overflow-hidden">
+            <img 
+              src={jwHq2} 
+              alt="JW GROUP Building" 
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div className="aspect-[4/3] rounded-xl overflow-hidden">
+            <img 
+              src={jwHq3} 
+              alt="JW GROUP Office" 
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Street View Button */}
+        <div className="flex justify-center pt-4">
+          <Button 
+            variant="outline" 
+            size="lg"
+            className="gap-2 group"
+            asChild
+          >
+            <a href={streetViewUrl} target="_blank" rel="noopener noreferrer">
+              <MapPin className="w-4 h-4" />
+              <span>ดูสำนักงานใหญ่ 360°</span>
+              <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </a>
+          </Button>
+        </div>
       </div>
     </div>
   );
