@@ -76,6 +76,7 @@ export const useNews = () => {
         .from('news')
         .select('*')
         .eq('is_published', true)
+        .eq('is_featured', true)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
