@@ -115,6 +115,7 @@ export type Database = {
       }
       news: {
         Row: {
+          business_type: string | null
           category: string
           content_cn: string | null
           content_en: string | null
@@ -136,6 +137,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          business_type?: string | null
           category?: string
           content_cn?: string | null
           content_en?: string | null
@@ -157,6 +159,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          business_type?: string | null
           category?: string
           content_cn?: string | null
           content_en?: string | null

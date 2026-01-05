@@ -358,20 +358,6 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
   const [activeBusinessType, setActiveBusinessType] = useState<BusinessType>('real_estate');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  // Map category to business type - ข่าวที่ไม่มี businessType จะถูกจัดเป็น real_estate (ข่าวประชาสัมพันธ์)
-  const getCategoryBusinessType = (category: string): string => {
-    const categoryMap: Record<string, string> = {
-      'real_estate': 'real_estate',
-      'hotel': 'hotel',
-      'pet': 'pet',
-      'wellness': 'wellness',
-      'company': 'real_estate',
-      'press': 'real_estate',
-      'csr': 'real_estate',
-    };
-    return categoryMap[category] || 'real_estate';
-  };
-
   const assignSizes = (items: Omit<NewsItem, 'size'>[]): NewsItem[] => {
     return items.map((item, index) => {
       let size: NewsItem['size'] = 'small';
@@ -388,7 +374,7 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
 
   // กรองข่าวตามธุรกิจที่เลือก
   const businessFilteredNews = news.filter(item => {
-    const itemBusinessType = item.businessType || getCategoryBusinessType(item.categoryType);
+    const itemBusinessType = item.businessType || 'real_estate';
     return itemBusinessType === activeBusinessType;
   });
 
