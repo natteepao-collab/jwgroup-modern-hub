@@ -2,13 +2,14 @@ import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink, User } from 'lucide-react';
+import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink, User, Quote } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
 import OrganizationChart from '@/components/OrganizationChart';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useState } from 'react';
 
 // Import headquarters images
 import jwHq1 from '@/assets/jw-headquarters-1.webp';
@@ -204,15 +205,17 @@ const AboutStructure = () => {
 const AboutTeam = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [selectedExecutive, setSelectedExecutive] = useState<string | null>(null);
 
-  // Only fetch executives with level 'chairman' or 'director' (ประธาน และ กรรมการผู้จัดการ)
+  // Fetch only top 3 executives (Chairman + 2 Managing Directors)
   const { data: executives, isLoading } = useQuery({
-    queryKey: ['executives-leadership'],
+    queryKey: ['executives-top-leadership'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('executives')
         .select('*')
-        .in('level', ['chairman', 'director'])
+        .lte('position_order', 3)
         .order('position_order', { ascending: true });
       
       if (error) throw error;
@@ -220,23 +223,22 @@ const AboutTeam = () => {
     }
   });
 
-  // Separate chairman from managing director
-  const chairman = executives?.find(e => e.is_chairman || e.level === 'chairman');
-  const managingDirector = executives?.find(e => e.level === 'director' && !e.is_chairman);
+  const chairman = executives?.find(e => e.is_chairman);
+  const managingDirectors = executives?.filter(e => !e.is_chairman) || [];
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-1 h-8 bg-primary rounded-full" />
-        <span className="text-sm font-medium text-primary tracking-wide uppercase">Our Team</span>
+        <span className="text-sm font-medium text-primary tracking-wide uppercase">Leadership</span>
       </div>
 
       <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
-        {t('about.team')}
+        ทีมผู้บริหาร
       </h2>
       <p className="text-muted-foreground mb-10">
-        ทีมผู้บริหารของเราประกอบด้วยผู้เชี่ยวชาญที่มีประสบการณ์กว่า 20 ปีในแต่ละอุตสาหกรรม
+        ผู้นำองค์กรที่ขับเคลื่อน JW GROUP สู่ความสำเร็จ
       </p>
 
       {isLoading ? (
@@ -244,79 +246,186 @@ const AboutTeam = () => {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       ) : (
-        <div className="space-y-10">
-          {/* Chairman Section */}
+        <div className="space-y-8">
+          {/* Chairman - Hero Card */}
           {chairman && (
-            <div className="relative">
-              <div className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/20">
-                <div className="flex-shrink-0">
+            <div 
+              className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-background border border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
+              onMouseEnter={() => setHoveredId(chairman.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              onClick={() => setSelectedExecutive(selectedExecutive === chairman.id ? null : chairman.id)}
+            >
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
+              </div>
+
+              <div className="relative flex flex-col md:flex-row gap-6 p-6 md:p-8">
+                {/* Image with Glow Effect */}
+                <div className="relative flex-shrink-0 mx-auto md:mx-0">
+                  <div className={cn(
+                    "absolute inset-0 rounded-2xl bg-primary/30 blur-xl transition-opacity duration-500",
+                    hoveredId === chairman.id ? "opacity-100" : "opacity-0"
+                  )} />
                   {chairman.image_url ? (
                     <img 
                       src={chairman.image_url} 
                       alt={chairman.name}
-                      className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg"
+                      className={cn(
+                        "relative w-36 h-36 md:w-48 md:h-48 rounded-2xl object-cover shadow-xl transition-transform duration-500",
+                        hoveredId === chairman.id ? "scale-105" : "scale-100"
+                      )}
                     />
                   ) : (
-                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-muted flex items-center justify-center">
-                      <User className="w-12 h-12 text-muted-foreground" />
+                    <div className="relative w-36 h-36 md:w-48 md:h-48 rounded-2xl bg-muted flex items-center justify-center">
+                      <User className="w-16 h-16 text-muted-foreground" />
                     </div>
                   )}
+                  {/* Position Badge */}
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold shadow-lg whitespace-nowrap">
+                    ประธานกรรมการบริษัท
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <span className="inline-block px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-medium mb-3">
-                    ประธานกรรมการ
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-1">
+
+                {/* Content */}
+                <div className="flex-1 min-w-0 text-center md:text-left mt-6 md:mt-0">
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                     {chairman.name}
                   </h3>
-                  <p className="text-primary font-medium mb-3">{chairman.title}</p>
+                  <p className="text-primary font-medium text-lg mb-4">{chairman.title}</p>
+                  
                   {chairman.quote && (
-                    <blockquote className="text-muted-foreground italic border-l-2 border-primary/30 pl-4">
-                      "{chairman.quote}"
-                    </blockquote>
+                    <div className={cn(
+                      "relative transition-all duration-500 overflow-hidden",
+                      selectedExecutive === chairman.id ? "max-h-96 opacity-100" : "max-h-20 md:max-h-24"
+                    )}>
+                      <Quote className="absolute -left-2 -top-2 w-8 h-8 text-primary/20" />
+                      <blockquote className="text-muted-foreground italic pl-6 text-base md:text-lg leading-relaxed">
+                        "{chairman.quote}"
+                      </blockquote>
+                    </div>
                   )}
+                  
                   {chairman.description && (
-                    <p className="text-sm text-muted-foreground mt-3">{chairman.description}</p>
+                    <p className={cn(
+                      "text-sm text-muted-foreground mt-4 transition-all duration-500",
+                      selectedExecutive === chairman.id ? "opacity-100" : "opacity-70"
+                    )}>
+                      {chairman.description}
+                    </p>
                   )}
+
+                  {/* Click hint */}
+                  <p className="text-xs text-muted-foreground/50 mt-4 md:hidden">
+                    แตะเพื่อดูเพิ่มเติม
+                  </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Managing Director Section */}
-          {managingDirector && (
-            <div className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-muted/30 border border-border/50">
-              <div className="flex-shrink-0">
-                {managingDirector.image_url ? (
-                  <img 
-                    src={managingDirector.image_url} 
-                    alt={managingDirector.name}
-                    className="w-28 h-28 md:w-32 md:h-32 rounded-2xl object-cover shadow-md"
-                  />
-                ) : (
-                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl bg-muted flex items-center justify-center">
-                    <User className="w-10 h-10 text-muted-foreground" />
+          {/* Managing Directors - Twin Cards */}
+          {managingDirectors.length > 0 && (
+            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+              {managingDirectors.map((director, index) => (
+                <div 
+                  key={director.id}
+                  className={cn(
+                    "group relative overflow-hidden rounded-2xl border transition-all duration-500 cursor-pointer",
+                    hoveredId === director.id 
+                      ? "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 shadow-xl shadow-primary/5 scale-[1.02]" 
+                      : "bg-muted/30 border-border/50 hover:border-primary/20"
+                  )}
+                  style={{ animationDelay: `${index * 150}ms` }}
+                  onMouseEnter={() => setHoveredId(director.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onClick={() => setSelectedExecutive(selectedExecutive === director.id ? null : director.id)}
+                >
+                  {/* Animated gradient background */}
+                  <div className={cn(
+                    "absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary/10 opacity-0 transition-opacity duration-500",
+                    hoveredId === director.id && "opacity-100"
+                  )} />
+
+                  <div className="relative p-5 md:p-6">
+                    <div className="flex gap-4 items-start">
+                      {/* Image */}
+                      <div className="relative flex-shrink-0">
+                        {director.image_url ? (
+                          <img 
+                            src={director.image_url} 
+                            alt={director.name}
+                            className={cn(
+                              "w-20 h-20 md:w-28 md:h-28 rounded-xl object-cover shadow-lg transition-all duration-500",
+                              hoveredId === director.id ? "shadow-xl shadow-primary/20" : ""
+                            )}
+                          />
+                        ) : (
+                          <div className="w-20 h-20 md:w-28 md:h-28 rounded-xl bg-muted flex items-center justify-center">
+                            <User className="w-8 h-8 text-muted-foreground" />
+                          </div>
+                        )}
+                        {/* Decorative ring */}
+                        <div className={cn(
+                          "absolute inset-0 rounded-xl border-2 border-primary/50 transition-all duration-500",
+                          hoveredId === director.id ? "scale-110 opacity-100" : "scale-100 opacity-0"
+                        )} />
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <span className={cn(
+                          "inline-block px-3 py-1 rounded-full text-xs font-medium mb-2 transition-colors duration-300",
+                          hoveredId === director.id 
+                            ? "bg-primary text-primary-foreground" 
+                            : "bg-primary/10 text-primary"
+                        )}>
+                          กรรมการผู้จัดการ
+                        </span>
+                        <h3 className={cn(
+                          "text-lg md:text-xl font-semibold mb-1 transition-colors duration-300 line-clamp-1",
+                          hoveredId === director.id ? "text-primary" : "text-foreground"
+                        )}>
+                          {director.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {director.description || director.title}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Expanded content */}
+                    <div className={cn(
+                      "overflow-hidden transition-all duration-500",
+                      selectedExecutive === director.id ? "max-h-40 mt-4 pt-4 border-t border-border/50" : "max-h-0"
+                    )}>
+                      {director.quote && (
+                        <blockquote className="text-sm text-muted-foreground italic">
+                          "{director.quote}"
+                        </blockquote>
+                      )}
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {director.description}
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <span className="inline-block px-3 py-1 rounded-full bg-muted text-foreground text-xs font-medium mb-3">
-                  กรรมการผู้จัดการ
-                </span>
-                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-1">
-                  {managingDirector.name}
-                </h3>
-                <p className="text-primary font-medium mb-3">{managingDirector.title}</p>
-                {managingDirector.description && (
-                  <p className="text-sm text-muted-foreground">{managingDirector.description}</p>
-                )}
-              </div>
+
+                  {/* Corner accent */}
+                  <div className={cn(
+                    "absolute top-0 right-0 w-16 h-16 transition-transform duration-500",
+                    hoveredId === director.id ? "translate-x-0 translate-y-0" : "translate-x-8 -translate-y-8"
+                  )}>
+                    <div className="absolute top-0 right-0 w-full h-full bg-primary/10 rounded-bl-3xl" />
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
           {/* Empty State */}
           {(!executives || executives.length === 0) && !isLoading && (
-            <div className="text-center py-12">
+            <div className="text-center py-12 rounded-2xl bg-muted/30 border border-dashed border-border">
               <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <p className="text-muted-foreground">ยังไม่มีข้อมูลทีมผู้บริหาร</p>
             </div>
