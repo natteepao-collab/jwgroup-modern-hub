@@ -2,11 +2,13 @@ import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink } from 'lucide-react';
+import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink, User } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
 import OrganizationChart from '@/components/OrganizationChart';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 // Import headquarters images
 import jwHq1 from '@/assets/jw-headquarters-1.webp';
@@ -203,23 +205,129 @@ const AboutTeam = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  const { data: executives, isLoading } = useQuery({
+    queryKey: ['executives'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('executives')
+        .select('*')
+        .order('position_order', { ascending: true });
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  // Separate chairman from other executives
+  const chairman = executives?.find(e => e.is_chairman);
+  const otherExecutives = executives?.filter(e => !e.is_chairman) || [];
+
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 font-display">{t('about.team')}</h1>
-      <p className="text-lg mb-8">ทีมผู้บริหารของเราประกอบด้วยผู้เชี่ยวชาญที่มีประสบการณ์กว่า 20 ปีในแต่ละอุตสาหกรรม</p>
-      <div className="grid md:grid-cols-3 gap-6">
-        {[1, 2, 3].map((i) => (
-          <Card key={i}>
-            <CardHeader>
-              <CardTitle>ผู้บริหาร {i}</CardTitle>
-              <CardDescription>ตำแหน่ง</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">ประสบการณ์และความเชี่ยวชาญในอุตสาหกรรม</p>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-1 h-8 bg-primary rounded-full" />
+        <span className="text-sm font-medium text-primary tracking-wide uppercase">Our Team</span>
       </div>
+
+      <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
+        {t('about.team')}
+      </h2>
+      <p className="text-muted-foreground mb-10">
+        ทีมผู้บริหารของเราประกอบด้วยผู้เชี่ยวชาญที่มีประสบการณ์กว่า 20 ปีในแต่ละอุตสาหกรรม
+      </p>
+
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      ) : (
+        <div className="space-y-10">
+          {/* Chairman Section */}
+          {chairman && (
+            <div className="relative">
+              <div className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/20">
+                <div className="flex-shrink-0">
+                  {chairman.image_url ? (
+                    <img 
+                      src={chairman.image_url} 
+                      alt={chairman.name}
+                      className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-muted flex items-center justify-center">
+                      <User className="w-12 h-12 text-muted-foreground" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="inline-block px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-medium mb-3">
+                    ประธานกรรมการ
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-1">
+                    {chairman.name}
+                  </h3>
+                  <p className="text-primary font-medium mb-3">{chairman.title}</p>
+                  {chairman.quote && (
+                    <blockquote className="text-muted-foreground italic border-l-2 border-primary/30 pl-4">
+                      "{chairman.quote}"
+                    </blockquote>
+                  )}
+                  {chairman.description && (
+                    <p className="text-sm text-muted-foreground mt-3">{chairman.description}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Other Executives Grid */}
+          {otherExecutives.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {otherExecutives.map((executive, index) => (
+                <div 
+                  key={executive.id}
+                  className="group p-4 rounded-xl bg-muted/30 hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="relative mb-3">
+                    {executive.image_url ? (
+                      <img 
+                        src={executive.image_url} 
+                        alt={executive.name}
+                        className="w-full aspect-square rounded-xl object-cover group-hover:shadow-lg transition-shadow duration-300"
+                      />
+                    ) : (
+                      <div className="w-full aspect-square rounded-xl bg-muted flex items-center justify-center">
+                        <User className="w-10 h-10 text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                  <h4 className="font-medium text-foreground text-sm md:text-base group-hover:text-primary transition-colors line-clamp-1">
+                    {executive.name}
+                  </h4>
+                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
+                    {executive.title}
+                  </p>
+                  {executive.department && (
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">
+                      {executive.department}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {(!executives || executives.length === 0) && !isLoading && (
+            <div className="text-center py-12">
+              <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">ยังไม่มีข้อมูลทีมผู้บริหาร</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
