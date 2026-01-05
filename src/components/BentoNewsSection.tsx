@@ -2,14 +2,13 @@ import { useState, useRef, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { Calendar, ArrowRight, Play, ImageIcon } from 'lucide-react';
+import { Calendar, ArrowRight, Play, ImageIcon, Building2, Hotel, Heart, Stethoscope } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 // Enhanced Mockup placeholder for news without images
 const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: boolean; title?: string }) => {
-  // Generate a gradient based on title for variety
   const gradients = [
     'from-blue-500/30 via-blue-400/20 to-indigo-500/30',
     'from-orange-500/30 via-amber-400/20 to-yellow-500/30',
@@ -26,14 +25,12 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
       "w-full h-full flex flex-col items-center justify-center relative overflow-hidden",
       `bg-gradient-to-br ${gradient}`
     )}>
-      {/* Decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-4 left-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
         <div className="absolute bottom-8 right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 text-center p-6">
         <div className={cn(
           "mx-auto mb-4 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center",
@@ -58,7 +55,6 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
         </p>
       </div>
 
-      {/* Pattern overlay */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -70,6 +66,7 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
 };
 
 type FilterType = 'all' | 'company' | 'press' | 'csr';
+type BusinessType = 'all' | 'real_estate' | 'hotel' | 'pet' | 'wellness';
 
 interface NewsItem {
   id: string;
@@ -81,6 +78,7 @@ interface NewsItem {
   image: string;
   isVideo?: boolean;
   size?: 'large' | 'medium' | 'small' | 'text-only';
+  businessType?: string;
 }
 
 interface BentoNewsCardProps {
@@ -115,7 +113,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   const isMedium = news.size === 'medium';
   const isTextOnly = news.size === 'text-only';
 
-  // Grid span classes based on size
   const gridClasses = cn(
     "relative overflow-hidden rounded-2xl cursor-pointer group",
     isLarge && "md:col-span-2 md:row-span-2",
@@ -166,7 +163,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
     );
   }
 
-  // Fixed height for small cards
   const cardHeight = isLarge
     ? "min-h-[400px] md:min-h-[500px]"
     : isMedium
@@ -197,7 +193,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         onMouseLeave={handleMouseLeave}
         onMouseEnter={() => setIsHovered(true)}
       >
-        {/* Background Image with Zoom Effect */}
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
           {news.image && news.image !== '/placeholder.svg' && news.image !== '' ? (
             <img
@@ -212,7 +207,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           ) : (
             <NewsMockupPlaceholder isLarge={isLarge} title={news.title} />
           )}
-          {/* Video Play Icon */}
           {news.isVideo && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className={cn(
@@ -225,7 +219,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           )}
         </div>
 
-        {/* Gradient Overlay */}
         <div
           className={cn(
             "absolute inset-0 rounded-2xl transition-all duration-500",
@@ -235,7 +228,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           )}
         />
 
-        {/* Category Badge - Top */}
         <div className="absolute top-4 left-4 z-10">
           <Badge
             className={cn(
@@ -247,20 +239,17 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </Badge>
         </div>
 
-        {/* Content - Bottom with Slide Up Animation */}
         <div
           className={cn(
             "absolute bottom-0 left-0 right-0 p-6 transition-all duration-500",
             isHovered ? "translate-y-0" : "translate-y-4"
           )}
         >
-          {/* Date */}
           <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
             <Calendar className="h-4 w-4" />
             <span>{news.date}</span>
           </div>
 
-          {/* Title - Large Typography */}
           <h3
             className={cn(
               "font-bold text-white mb-3 transition-all duration-300 line-clamp-2",
@@ -270,7 +259,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
             {news.title}
           </h3>
 
-          {/* Excerpt - Revealed on Hover */}
           <p
             className={cn(
               "text-white/80 text-sm mb-4 line-clamp-2 transition-all duration-500",
@@ -280,7 +268,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
             {news.excerpt}
           </p>
 
-          {/* Read More Button - Revealed on Hover */}
           <div
             className={cn(
               "transition-all duration-500",
@@ -298,7 +285,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </div>
         </div>
 
-        {/* Shine Effect on Hover */}
         <div
           className={cn(
             "absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500",
@@ -318,6 +304,51 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   );
 };
 
+// Business Type Tab Component
+const BusinessTypeTabs = ({ 
+  activeType, 
+  onTypeChange 
+}: { 
+  activeType: BusinessType; 
+  onTypeChange: (type: BusinessType) => void;
+}) => {
+  const businessTypes: { key: BusinessType; label: string; icon: React.ReactNode }[] = [
+    { key: 'real_estate', label: 'อสังหาริมทรัพย์', icon: <Building2 className="h-5 w-5" /> },
+    { key: 'hotel', label: 'โรงแรม', icon: <Hotel className="h-5 w-5" /> },
+    { key: 'pet', label: 'สัตว์เลี้ยง', icon: <Heart className="h-5 w-5" /> },
+    { key: 'wellness', label: 'สุขภาพ', icon: <Stethoscope className="h-5 w-5" /> },
+  ];
+
+  return (
+    <div className="relative mb-10">
+      <div className="bg-muted/30 dark:bg-muted/20 rounded-2xl p-2 border border-border/50 inline-flex w-full md:w-auto md:mx-auto md:flex justify-center">
+        <div className="flex flex-wrap md:flex-nowrap gap-2 w-full md:w-auto justify-center">
+          {businessTypes.map((type) => (
+            <button
+              key={type.key}
+              onClick={() => onTypeChange(type.key)}
+              className={cn(
+                "relative flex items-center gap-2.5 px-5 py-3 rounded-xl font-medium transition-all duration-300 flex-1 md:flex-initial justify-center min-w-[140px]",
+                activeType === type.key
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+            >
+              <span className={cn(
+                "transition-transform duration-300",
+                activeType === type.key && "scale-110"
+              )}>
+                {type.icon}
+              </span>
+              <span className="whitespace-nowrap">{type.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface BentoNewsSectionProps {
   news: Omit<NewsItem, 'size'>[];
   showFilters?: boolean;
@@ -327,6 +358,7 @@ interface BentoNewsSectionProps {
 export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNewsSectionProps) => {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [activeBusinessType, setActiveBusinessType] = useState<BusinessType>('real_estate');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const filters: { key: FilterType; label: string }[] = [
@@ -335,37 +367,53 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
     { key: 'press', label: t('news.pressRelease') },
   ];
 
-  // Assign sizes to news items for Bento Grid layout
+  const getCategoryBusinessType = (category: string): string => {
+    const categoryMap: Record<string, string> = {
+      'real_estate': 'real_estate',
+      'hotel': 'hotel',
+      'pet': 'pet',
+      'wellness': 'wellness',
+      'company': 'real_estate',
+      'press': 'real_estate',
+      'csr': 'real_estate',
+    };
+    return categoryMap[category] || 'real_estate';
+  };
+
   const assignSizes = (items: Omit<NewsItem, 'size'>[]): NewsItem[] => {
     return items.map((item, index) => {
       let size: NewsItem['size'] = 'small';
-
-      // First item is always large (hero)
       if (index === 0) {
         size = 'large';
-      }
-      // Second item is medium (side column top)
-      else if (index === 1) {
+      } else if (index === 1) {
         size = 'medium';
-      }
-      // Items 2, 3, 4 are small cards - all same size
-      else {
+      } else {
         size = 'small';
       }
-
       return { ...item, size };
     });
   };
 
-  const filteredNews = activeFilter === 'all'
+  const categoryFilteredNews = activeFilter === 'all'
     ? news
     : news.filter(item => item.categoryType === activeFilter);
 
-  const displayNews = assignSizes(maxItems ? filteredNews.slice(0, maxItems) : filteredNews);
+  const businessFilteredNews = categoryFilteredNews.filter(item => {
+    const itemBusinessType = item.businessType || getCategoryBusinessType(item.categoryType);
+    return itemBusinessType === activeBusinessType;
+  });
+
+  const displayNews = assignSizes(maxItems ? businessFilteredNews.slice(0, maxItems) : businessFilteredNews);
 
   return (
     <div ref={ref}>
-      {/* Animated Filter Bar */}
+      {showFilters && (
+        <BusinessTypeTabs 
+          activeType={activeBusinessType} 
+          onTypeChange={setActiveBusinessType} 
+        />
+      )}
+
       {showFilters && (
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {filters.map((filter) => (
@@ -386,7 +434,6 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
         </div>
       )}
 
-      {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-auto">
         {displayNews.map((newsItem, index) => (
           <BentoNewsCard
@@ -398,10 +445,13 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
         ))}
       </div>
 
-      {/* Empty State */}
       {displayNews.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground">
-          ไม่พบข่าวสารในหมวดหมู่นี้
+        <div className="text-center py-16">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-muted/50 flex items-center justify-center">
+            <ImageIcon className="h-10 w-10 text-muted-foreground/50" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">ไม่พบข่าวสาร</h3>
+          <p className="text-muted-foreground">ยังไม่มีข่าวสารในหมวดหมู่นี้</p>
         </div>
       )}
     </div>
