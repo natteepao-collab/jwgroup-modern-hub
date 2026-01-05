@@ -17,7 +17,7 @@ const AboutHistory = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const streetViewUrl = "https://www.google.com/local/place/fid/0x30e2826bc528edb1:0x1a95b4253779ef2c/photosphere?iu=https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid%3DKCRm7M3QP13vFoNxDC3Tcw%26cb_client%3Dlu.gallery.gps%26w%3D160%26h%3D106%26yaw%3D40.44574%26pitch%3D0%26thumbfov%3D100&ik=CAISFktDUm03TTNRUDEzdkZvTnhEQzNUY3c%3D";
+  const streetViewUrl = "https://www.google.com/maps/place/JW+Group+Head+Office/@13.9272703,100.5999695,3a,75y,40.45h,90t/data=!3m7!1e1!3m5!1sKCRm7M3QP13vFoNxDC3Tcw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DKCRm7M3QP13vFoNxDC3Tcw%26yaw%3D40.44574!7i16384!8i8192!4m6!3m5!1s0x30e2826bc528edb1:0x1a95b4253779ef2c!8m2!3d13.9273592!4d100.600054!16s%2Fg%2F1vhkgzvf?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D";
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
