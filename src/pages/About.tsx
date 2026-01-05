@@ -95,30 +95,101 @@ const AboutVision = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  const missions = [
+    {
+      icon: Building2,
+      title: "นำเสนอผลิตภัณฑ์และบริการคุณภาพสูง",
+      description: "มุ่งมั่นสร้างสรรค์ผลิตภัณฑ์และบริการที่เหนือความคาดหมาย"
+    },
+    {
+      icon: Leaf,
+      title: "พัฒนานวัตกรรมอย่างต่อเนื่อง",
+      description: "ไม่หยุดพัฒนาเพื่อตอบโจทย์ความต้องการที่เปลี่ยนแปลง"
+    },
+    {
+      icon: Award,
+      title: "สร้างคุณค่าให้กับลูกค้าและสังคม",
+      description: "ดำเนินธุรกิจอย่างมีความรับผิดชอบต่อสังคมและสิ่งแวดล้อม"
+    }
+  ];
+
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-      <h1 className="text-4xl md:text-5xl font-bold mb-8 font-display">{t('about.vision')}</h1>
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>วิสัยทัศน์</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>เป็นกลุ่มธุรกิจชั้นนำที่สร้างสรรค์นวัตกรรมและคุณค่าที่ยั่งยืนให้กับสังคม</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>พันธกิจ</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc list-inside space-y-2">
-              <li>นำเสนอผลิตภัณฑ์และบริการคุณภาพสูง</li>
-              <li>พัฒนานวัตกรรมอย่างต่อเนื่อง</li>
-              <li>สร้างคุณค่าให้กับลูกค้าและสังคม</li>
-            </ul>
-          </CardContent>
-        </Card>
+      {/* Vision Section */}
+      <div className="mb-16">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-1 h-8 bg-primary rounded-full" />
+          <span className="text-sm font-medium text-primary tracking-wide uppercase">Vision</span>
+        </div>
+        
+        <div className="relative">
+          <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary/30 to-transparent rounded-full hidden md:block" />
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+            วิสัยทัศน์
+          </h2>
+          <p className="text-xl md:text-2xl leading-relaxed text-muted-foreground font-light">
+            เป็นกลุ่มธุรกิจชั้นนำที่สร้างสรรค์<span className="text-primary font-medium">นวัตกรรม</span>และ<span className="text-primary font-medium">คุณค่าที่ยั่งยืน</span>ให้กับสังคม
+          </p>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center gap-4 mb-12">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="w-2 h-2 rounded-full bg-primary/50" />
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+      </div>
+
+      {/* Mission Section */}
+      <div>
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-1 h-8 bg-primary rounded-full" />
+          <span className="text-sm font-medium text-primary tracking-wide uppercase">Mission</span>
+        </div>
+
+        <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">
+          พันธกิจ
+        </h2>
+
+        <div className="space-y-4">
+          {missions.map((mission, index) => (
+            <div 
+              key={index}
+              className="group flex gap-5 p-5 rounded-2xl bg-gradient-to-r from-muted/50 to-transparent hover:from-primary/5 hover:to-primary/10 transition-all duration-300 border border-transparent hover:border-primary/20"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                <mission.icon className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base md:text-lg font-medium text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
+                  {mission.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {mission.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Core Values */}
+      <div className="mt-16 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/10">
+        <h3 className="text-lg font-semibold text-foreground mb-6 text-center">ค่านิยมองค์กร</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {[
+            { label: "ซื่อสัตย์", value: "Integrity" },
+            { label: "นวัตกรรม", value: "Innovation" },
+            { label: "คุณภาพ", value: "Quality" },
+            { label: "ยั่งยืน", value: "Sustainability" }
+          ].map((item, index) => (
+            <div key={index} className="text-center">
+              <p className="text-lg md:text-xl font-semibold text-primary">{item.label}</p>
+              <p className="text-xs text-muted-foreground mt-1">{item.value}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
