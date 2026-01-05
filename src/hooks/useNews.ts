@@ -41,7 +41,7 @@ export interface FormattedNewsItem {
   isFeatured: boolean;
 }
 
-export const useNews = () => {
+export const useNews = (featuredOnly: boolean = true) => {
   const { i18n, t } = useTranslation();
   const queryClient = useQueryClient();
 
@@ -70,14 +70,19 @@ export const useNews = () => {
   };
 
   const { data: newsItems, isLoading, error } = useQuery({
-    queryKey: ['news'],
+    queryKey: ['news', featuredOnly],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('news')
         .select('*')
-        .eq('is_published', true)
-        .eq('is_featured', true)
-        .order('created_at', { ascending: false });
+        .eq('is_published', true);
+      
+      // Filter by featured only for homepage
+      if (featuredOnly) {
+        query = query.eq('is_featured', true);
+      }
+      
+      const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
       return data as NewsItem[];
