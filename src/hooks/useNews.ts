@@ -16,6 +16,7 @@ interface NewsItem {
   content_en: string | null;
   content_cn: string | null;
   category: string;
+  business_type: string;
   image_url: string | null;
   video_url: string | null;
   is_featured: boolean;
@@ -32,6 +33,7 @@ export interface FormattedNewsItem {
   content: string;
   category: string;
   categoryType: 'company' | 'press' | 'csr' | 'all';
+  businessType: string;
   date: string;
   image: string;
   isVideo: boolean;
@@ -151,6 +153,7 @@ export const useNews = () => {
       content: getLocalizedField(item, 'content'),
       category: getCategoryLabel(item.category),
       categoryType: item.category as FormattedNewsItem['categoryType'],
+      businessType: item.business_type || 'real_estate',
       date: formatDate(item.published_at),
       image: item.image_url || '',
       isVideo: isVideo,

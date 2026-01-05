@@ -29,6 +29,7 @@ interface NewsItem {
   content_en: string | null;
   content_cn: string | null;
   category: string;
+  business_type: string;
   image_url: string | null;
   video_url: string | null;
   is_featured: boolean;
@@ -47,6 +48,7 @@ interface NewsFormData {
   content_en: string;
   content_cn: string;
   category: string;
+  business_type: string;
   image_url: string;
   gallery_images: string[];
   is_featured: boolean;
@@ -64,6 +66,7 @@ const initialFormData: NewsFormData = {
   content_en: '',
   content_cn: '',
   category: 'company',
+  business_type: 'real_estate',
   image_url: '',
   gallery_images: [],
   is_featured: false,
@@ -428,6 +431,7 @@ export const NewsManagement = () => {
       content_en: newsItem.content_en || '',
       content_cn: newsItem.content_cn || '',
       category: newsItem.category || 'company',
+      business_type: newsItem.business_type || 'real_estate',
       image_url: newsItem.image_url || '',
       gallery_images: gallery,
       is_featured: newsItem.is_featured || false,
@@ -649,6 +653,23 @@ export const NewsManagement = () => {
               <div className="space-y-4 border-t pt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
+                    <Label htmlFor="business_type">ธุรกิจ</Label>
+                    <Select
+                      value={formData.business_type}
+                      onValueChange={(value) => setFormData({ ...formData, business_type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="real_estate">อสังหาริมทรัพย์</SelectItem>
+                        <SelectItem value="hotel">โรงแรม</SelectItem>
+                        <SelectItem value="pet">สัตว์เลี้ยง</SelectItem>
+                        <SelectItem value="wellness">สุขภาพ</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
                     <Label htmlFor="category">หมวดหมู่</Label>
                     <Select
                       value={formData.category}
@@ -713,7 +734,8 @@ export const NewsManagement = () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[80px]">รูปภาพ</TableHead>
-              <TableHead className="w-[280px]">หัวข้อ</TableHead>
+              <TableHead className="w-[240px]">หัวข้อ</TableHead>
+              <TableHead>ธุรกิจ</TableHead>
               <TableHead>หมวดหมู่</TableHead>
               <TableHead>วันที่</TableHead>
               <TableHead>สถานะ</TableHead>
@@ -743,6 +765,13 @@ export const NewsManagement = () => {
                     )}
                     <span className="line-clamp-1">{item.title_th}</span>
                   </div>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="secondary" className="text-xs">
+                    {item.business_type === 'real_estate' ? 'อสังหาฯ' :
+                      item.business_type === 'hotel' ? 'โรงแรม' :
+                      item.business_type === 'pet' ? 'สัตว์เลี้ยง' : 'สุขภาพ'}
+                  </Badge>
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline">
