@@ -65,7 +65,7 @@ const initialFormData: NewsFormData = {
   content_th: '',
   content_en: '',
   content_cn: '',
-  category: 'company',
+  category: 'press_release',
   business_type: 'real_estate',
   image_url: '',
   gallery_images: [],
@@ -432,7 +432,7 @@ export const NewsManagement = () => {
       content_th: newsItem.content_th || '',
       content_en: newsItem.content_en || '',
       content_cn: newsItem.content_cn || '',
-      category: newsItem.category || 'company',
+      category: 'press_release',
       business_type: newsItem.business_type || 'real_estate',
       image_url: newsItem.image_url || '',
       gallery_images: gallery,
@@ -673,19 +673,11 @@ export const NewsManagement = () => {
                   </div>
                   <div>
                     <Label htmlFor="category">หมวดหมู่</Label>
-                    <Select
-                      value={formData.category}
-                      onValueChange={(value) => setFormData({ ...formData, category: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="company">ข่าวบริษัท</SelectItem>
-                        <SelectItem value="press">ข่าวประชาสัมพันธ์</SelectItem>
-                        <SelectItem value="csr">CSR</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input
+                      value="ข่าวประชาสัมพันธ์"
+                      disabled
+                      className="bg-muted"
+                    />
                   </div>
                   <div className="col-span-2">
                     <Label className="mb-2 block">รูปภาพเพิ่มเติม (สูงสุด 3 รูป)</Label>
@@ -810,10 +802,7 @@ export const NewsManagement = () => {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline">
-                    {item.category === 'company' ? 'ข่าวบริษัท' :
-                      item.category === 'press' ? 'ข่าวประชาสัมพันธ์' : 'CSR'}
-                  </Badge>
+                  <Badge variant="outline">ข่าวประชาสัมพันธ์</Badge>
                 </TableCell>
                 <TableCell>{formatDate(item.published_at)}</TableCell>
                 <TableCell>
