@@ -57,12 +57,11 @@ export const useNews = () => {
   };
 
   const getCategoryLabel = (category: string) => {
-    switch (category) {
-      case 'company': return t('news.companyNews');
-      case 'press': return t('news.pressRelease');
-      case 'csr': return 'CSR';
-      default: return t('news.companyNews');
+    // All news now uses press_release category
+    if (category === 'press_release' || category === 'press') {
+      return 'ข่าวประชาสัมพันธ์';
     }
+    return 'ข่าวประชาสัมพันธ์'; // Default to press release
   };
 
   const formatDate = (dateString: string) => {
