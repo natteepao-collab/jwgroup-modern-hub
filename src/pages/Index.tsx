@@ -226,7 +226,7 @@ const Index = () => {
           <BentoNewsSection
             news={displayNews}
             showFilters={false}
-            maxItems={5}
+            maxItems={6}
           />
         </div>
       </section>
