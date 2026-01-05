@@ -56,12 +56,9 @@ export const useNews = () => {
     return item[thField] as string || '';
   };
 
-  const getCategoryLabel = (category: string) => {
-    // All news now uses press_release category
-    if (category === 'press_release' || category === 'press') {
-      return 'ข่าวประชาสัมพันธ์';
-    }
-    return 'ข่าวประชาสัมพันธ์'; // Default to press release
+  const getCategoryLabel = () => {
+    // All news now uses single category - Press Release
+    return 'ข่าวประชาสัมพันธ์';
   };
 
   const formatDate = (dateString: string) => {
@@ -150,7 +147,7 @@ export const useNews = () => {
       title: getLocalizedField(item, 'title'),
       excerpt: getLocalizedField(item, 'excerpt'),
       content: getLocalizedField(item, 'content'),
-      category: getCategoryLabel(item.category),
+      category: getCategoryLabel(),
       categoryType: item.category as FormattedNewsItem['categoryType'],
       businessType: item.business_type || 'real_estate',
       date: formatDate(item.published_at),
