@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Building2, Users, Briefcase, Award, ChevronDown, ChevronUp, Calendar, Trophy } from 'lucide-react';
+import { Building2, Users, Briefcase, Award, ChevronDown, ChevronUp, Calendar, Trophy, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 interface TimelineEvent {
   id: string;
@@ -302,9 +303,10 @@ const AnimatedStats = () => {
                   {awards.map((award) => {
                     const awardImageUrl = parseAwardImage(award.image_url);
                     return (
-                    <div 
+                    <Link 
+                      to="/awards"
                       key={award.id}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                      className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-primary/10 transition-colors group cursor-pointer"
                     >
                       {awardImageUrl ? (
                         <img 
@@ -318,7 +320,7 @@ const AnimatedStats = () => {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-foreground truncate">
+                        <p className="font-medium text-foreground truncate group-hover:text-primary transition-colors">
                           {getTitle(award)}
                         </p>
                         <p className="text-sm text-muted-foreground">
@@ -326,7 +328,8 @@ const AnimatedStats = () => {
                           {award.awarding_organization && ` • ${award.awarding_organization}`}
                         </p>
                       </div>
-                    </div>
+                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
                     );
                   })}
                 {awards.length === 0 && (
