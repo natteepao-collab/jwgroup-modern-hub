@@ -65,15 +65,14 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
   );
 };
 
-type FilterType = 'all' | 'company' | 'press' | 'csr';
-type BusinessType = 'all' | 'real_estate' | 'hotel' | 'pet' | 'wellness';
+type BusinessType = 'real_estate' | 'hotel' | 'pet' | 'wellness';
 
 interface NewsItem {
   id: string;
   title: string;
   excerpt: string;
   category: string;
-  categoryType: FilterType;
+  categoryType: string;
   date: string;
   image: string;
   isVideo?: boolean;
@@ -356,17 +355,10 @@ interface BentoNewsSectionProps {
 }
 
 export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNewsSectionProps) => {
-  const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeBusinessType, setActiveBusinessType] = useState<BusinessType>('real_estate');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const filters: { key: FilterType; label: string }[] = [
-    { key: 'all', label: t('news.all') },
-    { key: 'company', label: t('news.companyNews') },
-    { key: 'press', label: t('news.pressRelease') },
-  ];
-
+  // Map category to business type - ข่าวที่ไม่มี businessType จะถูกจัดเป็น real_estate (ข่าวประชาสัมพันธ์)
   const getCategoryBusinessType = (category: string): string => {
     const categoryMap: Record<string, string> = {
       'real_estate': 'real_estate',
@@ -394,11 +386,8 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
     });
   };
 
-  const categoryFilteredNews = activeFilter === 'all'
-    ? news
-    : news.filter(item => item.categoryType === activeFilter);
-
-  const businessFilteredNews = categoryFilteredNews.filter(item => {
+  // กรองข่าวตามธุรกิจที่เลือก
+  const businessFilteredNews = news.filter(item => {
     const itemBusinessType = item.businessType || getCategoryBusinessType(item.categoryType);
     return itemBusinessType === activeBusinessType;
   });
@@ -412,26 +401,6 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
           activeType={activeBusinessType} 
           onTypeChange={setActiveBusinessType} 
         />
-      )}
-
-      {showFilters && (
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {filters.map((filter) => (
-            <Button
-              key={filter.key}
-              variant="ghost"
-              onClick={() => setActiveFilter(filter.key)}
-              className={cn(
-                "transition-all duration-300 relative overflow-hidden h-10 px-6 rounded-xl border",
-                activeFilter === filter.key
-                  ? "bg-[#C27803] text-white border-[#C27803] shadow-md shadow-[#C27803]/20"
-                  : "bg-transparent text-[#C27803] border-[#C27803] hover:bg-[#C27803]/10"
-              )}
-            >
-              <span className="relative z-10 font-medium">{filter.label}</span>
-            </Button>
-          ))}
-        </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-auto">
