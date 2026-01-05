@@ -79,13 +79,11 @@ const AboutHistory = () => {
             variant="outline" 
             size="lg"
             className="gap-2 group"
-            asChild
+            onClick={() => window.open(streetViewUrl, '_blank', 'noopener,noreferrer')}
           >
-            <a href={streetViewUrl} target="_blank" rel="noopener noreferrer">
-              <MapPin className="w-4 h-4" />
-              <span>ดูสำนักงานใหญ่ 360°</span>
-              <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </a>
+            <MapPin className="w-4 h-4" />
+            <span>ดูสำนักงานใหญ่ 360°</span>
+            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>
         </div>
       </div>
