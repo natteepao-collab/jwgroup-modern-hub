@@ -255,6 +255,8 @@ export const NewsManagement = () => {
   const [activeTab, setActiveTab] = useState<'th' | 'en' | 'cn'>('th');
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [filterBusinessType, setFilterBusinessType] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleImageUpload = async (file: File) => {
     // Validate file type
@@ -730,6 +732,33 @@ export const NewsManagement = () => {
         </Dialog>
       </CardHeader >
       <CardContent>
+        {/* Filter Section */}
+        <div className="flex flex-wrap gap-4 mb-6">
+          <div className="flex-1 min-w-[200px]">
+            <Input
+              placeholder="ค้นหาข่าว..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <Select
+            value={filterBusinessType}
+            onValueChange={setFilterBusinessType}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="เลือกธุรกิจ" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทุกธุรกิจ</SelectItem>
+              <SelectItem value="real_estate">อสังหาริมทรัพย์</SelectItem>
+              <SelectItem value="hotel">โรงแรม</SelectItem>
+              <SelectItem value="pet">สัตว์เลี้ยง</SelectItem>
+              <SelectItem value="wellness">สุขภาพ</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <Table>
           <TableHeader>
             <TableRow>
@@ -743,7 +772,14 @@ export const NewsManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {(news as NewsItem[]).map((item) => (
+            {(news as NewsItem[])
+              .filter(item => {
+                const matchesBusinessType = filterBusinessType === 'all' || item.business_type === filterBusinessType;
+                const matchesSearch = searchQuery === '' || 
+                  item.title_th.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesBusinessType && matchesSearch;
+              })
+              .map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
                   <div className="w-16 h-12 rounded overflow-hidden">
