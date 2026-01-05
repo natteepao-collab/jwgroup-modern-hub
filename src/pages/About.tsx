@@ -205,12 +205,14 @@ const AboutTeam = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  // Only fetch executives with level 'chairman' or 'director' (ประธาน และ กรรมการผู้จัดการ)
   const { data: executives, isLoading } = useQuery({
-    queryKey: ['executives'],
+    queryKey: ['executives-leadership'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('executives')
         .select('*')
+        .in('level', ['chairman', 'director'])
         .order('position_order', { ascending: true });
       
       if (error) throw error;
@@ -218,9 +220,9 @@ const AboutTeam = () => {
     }
   });
 
-  // Separate chairman from other executives
-  const chairman = executives?.find(e => e.is_chairman);
-  const otherExecutives = executives?.filter(e => !e.is_chairman) || [];
+  // Separate chairman from managing director
+  const chairman = executives?.find(e => e.is_chairman || e.level === 'chairman');
+  const managingDirector = executives?.find(e => e.level === 'director' && !e.is_chairman);
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -281,41 +283,34 @@ const AboutTeam = () => {
             </div>
           )}
 
-          {/* Other Executives Grid */}
-          {otherExecutives.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {otherExecutives.map((executive, index) => (
-                <div 
-                  key={executive.id}
-                  className="group p-4 rounded-xl bg-muted/30 hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all duration-300"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <div className="relative mb-3">
-                    {executive.image_url ? (
-                      <img 
-                        src={executive.image_url} 
-                        alt={executive.name}
-                        className="w-full aspect-square rounded-xl object-cover group-hover:shadow-lg transition-shadow duration-300"
-                      />
-                    ) : (
-                      <div className="w-full aspect-square rounded-xl bg-muted flex items-center justify-center">
-                        <User className="w-10 h-10 text-muted-foreground" />
-                      </div>
-                    )}
+          {/* Managing Director Section */}
+          {managingDirector && (
+            <div className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="flex-shrink-0">
+                {managingDirector.image_url ? (
+                  <img 
+                    src={managingDirector.image_url} 
+                    alt={managingDirector.name}
+                    className="w-28 h-28 md:w-32 md:h-32 rounded-2xl object-cover shadow-md"
+                  />
+                ) : (
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl bg-muted flex items-center justify-center">
+                    <User className="w-10 h-10 text-muted-foreground" />
                   </div>
-                  <h4 className="font-medium text-foreground text-sm md:text-base group-hover:text-primary transition-colors line-clamp-1">
-                    {executive.name}
-                  </h4>
-                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
-                    {executive.title}
-                  </p>
-                  {executive.department && (
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">
-                      {executive.department}
-                    </span>
-                  )}
-                </div>
-              ))}
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="inline-block px-3 py-1 rounded-full bg-muted text-foreground text-xs font-medium mb-3">
+                  กรรมการผู้จัดการ
+                </span>
+                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-1">
+                  {managingDirector.name}
+                </h3>
+                <p className="text-primary font-medium mb-3">{managingDirector.title}</p>
+                {managingDirector.description && (
+                  <p className="text-sm text-muted-foreground">{managingDirector.description}</p>
+                )}
+              </div>
             </div>
           )}
 
