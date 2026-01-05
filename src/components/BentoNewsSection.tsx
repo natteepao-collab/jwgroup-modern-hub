@@ -86,6 +86,22 @@ interface BentoNewsCardProps {
   inView: boolean;
 }
 
+// Business type badge colors
+const getBusinessTypeBadge = (businessType?: string) => {
+  switch (businessType) {
+    case 'real_estate':
+      return { label: 'อสังหาริมทรัพย์', className: 'bg-amber-500 hover:bg-amber-600' };
+    case 'hotel':
+      return { label: 'โรงแรม', className: 'bg-blue-500 hover:bg-blue-600' };
+    case 'pet':
+      return { label: 'สัตว์เลี้ยง', className: 'bg-pink-500 hover:bg-pink-600' };
+    case 'wellness':
+      return { label: 'สุขภาพ', className: 'bg-emerald-500 hover:bg-emerald-600' };
+    default:
+      return { label: 'ทั่วไป', className: 'bg-gray-500 hover:bg-gray-600' };
+  }
+};
+
 const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   const { t } = useTranslation();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -138,9 +154,19 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         onMouseEnter={() => setIsHovered(true)}
       >
         <div>
-          <Badge variant="outline" className="mb-3 text-xs">
-            {news.category}
-          </Badge>
+          <div className="flex gap-2 mb-3">
+            <Badge 
+              className={cn(
+                "text-white text-xs",
+                getBusinessTypeBadge(news.businessType).className
+              )}
+            >
+              {getBusinessTypeBadge(news.businessType).label}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              {news.category}
+            </Badge>
+          </div>
           <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-3">
             {news.title}
           </h3>
@@ -227,10 +253,20 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           )}
         />
 
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-4 left-4 z-10 flex gap-2">
           <Badge
             className={cn(
-              "bg-primary text-primary-foreground shadow-lg transition-all duration-300",
+              "text-white shadow-lg transition-all duration-300",
+              getBusinessTypeBadge(news.businessType).className,
+              isHovered ? "scale-105" : ""
+            )}
+          >
+            {getBusinessTypeBadge(news.businessType).label}
+          </Badge>
+          <Badge
+            variant="secondary"
+            className={cn(
+              "bg-black/50 text-white backdrop-blur-sm shadow-lg transition-all duration-300",
               isHovered ? "scale-105" : ""
             )}
           >
