@@ -47,101 +47,189 @@ const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
   );
 };
 
-const GallerySection = ({ images }: { images: string[] }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+const ImageGalleryWithThumbnails = ({ 
+  mainImage, 
+  galleryImages,
+  title 
+}: { 
+  mainImage: string | null; 
+  galleryImages: string[];
+  title: string;
+}) => {
+  // Combine main image with gallery images
+  const allImages = mainImage ? [mainImage, ...galleryImages] : galleryImages;
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (!images || images.length === 0) return null;
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
+  if (allImages.length === 0) {
+    return <NewsImagePlaceholder title={title} />;
+  }
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setSelectedIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
-  const handleOpen = (index: number) => {
-    setCurrentIndex(index);
-    setIsOpen(true);
+  const handleNext = () => {
+    setSelectedIndex((prev) => (prev + 1) % allImages.length);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
   return (
-    <div className="mt-8 mb-8">
-      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <ImageIcon className="h-5 w-5 text-primary" />
-        แกลเลอรีรูปภาพ
-      </h3>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {images.map((img, index) => (
-          <div
-            key={index}
-            onClick={() => handleOpen(index)}
-            className="relative group aspect-video cursor-pointer overflow-hidden rounded-lg bg-muted"
-          >
-            <img
-              src={img}
-              alt={`Gallery ${index + 1}`}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-              <ImageIcon className="text-white h-8 w-8 drop-shadow-md" />
-            </div>
+    <div className="space-y-4">
+      {/* Main Image Display */}
+      <div 
+        className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted cursor-pointer group"
+        onClick={openModal}
+      >
+        <img
+          src={allImages[selectedIndex]}
+          alt={`${title} - รูปที่ ${selectedIndex + 1}`}
+          className="w-full h-full object-cover transition-transform duration-500"
+        />
+        
+        {/* Zoom indicator on hover */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 text-white px-4 py-2 rounded-full flex items-center gap-2">
+            <ImageIcon className="h-5 w-5" />
+            <span className="text-sm">คลิกเพื่อขยาย</span>
           </div>
-        ))}
+        </div>
+
+        {/* Navigation arrows on main image */}
+        {allImages.length > 1 && (
+          <>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all opacity-0 group-hover:opacity-100"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all opacity-0 group-hover:opacity-100"
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          </>
+        )}
+
+        {/* Image counter */}
+        {allImages.length > 1 && (
+          <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/60 text-white text-sm">
+            {selectedIndex + 1} / {allImages.length}
+          </div>
+        )}
       </div>
 
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-5xl w-full p-0 bg-transparent border-none shadow-none focus:outline-none overflow-hidden">
-          <div className="relative w-full h-[80vh] flex items-center justify-center focus:outline-none">
+      {/* Thumbnails */}
+      {allImages.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
+          {allImages.map((img, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedIndex(index)}
+              className={cn(
+                "relative flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden border-2 transition-all duration-200",
+                selectedIndex === index
+                  ? "border-primary ring-2 ring-primary/30 scale-105"
+                  : "border-transparent hover:border-primary/50 opacity-70 hover:opacity-100"
+              )}
+            >
+              <img
+                src={img}
+                alt={`Thumbnail ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {selectedIndex === index && (
+                <div className="absolute inset-0 bg-primary/10" />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
 
-            {/* Previous Button */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePrev();
-                }}
-                className="absolute left-2 md:left-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="h-8 w-8" />
-              </button>
-            )}
-
-            <img
-              src={images[currentIndex]}
-              alt={`Fullview ${currentIndex + 1}`}
-              className="max-w-full max-h-full object-contain rounded-md shadow-2xl"
-            />
-
-            {/* Next Button */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleNext();
-                }}
-                className="absolute right-2 md:right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                aria-label="Next image"
-              >
-                <ChevronRight className="h-8 w-8" />
-              </button>
-            )}
-
-            {/* Counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-black/50 text-white text-sm">
-              {currentIndex + 1} / {images.length}
+      {/* Fullscreen Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-6xl w-full p-0 bg-black/95 border-none shadow-none focus:outline-none overflow-hidden">
+          <div className="relative w-full h-[85vh] flex flex-col">
+            {/* Main modal image */}
+            <div className="flex-1 flex items-center justify-center p-4">
+              <img
+                src={allImages[selectedIndex]}
+                alt={`${title} - รูปที่ ${selectedIndex + 1}`}
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
             </div>
 
-            {/* Close Button (Custom for better visibility) */}
+            {/* Navigation buttons */}
+            {allImages.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-8 w-8" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-8 w-8" />
+                </button>
+              </>
+            )}
+
+            {/* Close button */}
             <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-2 right-2 md:top-4 md:right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
             >
               <X className="h-6 w-6" />
             </button>
+
+            {/* Modal thumbnails */}
+            {allImages.length > 1 && (
+              <div className="p-4 bg-black/50">
+                <div className="flex gap-2 justify-center overflow-x-auto">
+                  {allImages.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedIndex(index)}
+                      className={cn(
+                        "relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all",
+                        selectedIndex === index
+                          ? "border-white scale-110"
+                          : "border-transparent opacity-50 hover:opacity-80"
+                      )}
+                    >
+                      <img
+                        src={img}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Counter */}
+            <div className="absolute top-4 left-4 px-4 py-2 rounded-full bg-white/10 text-white text-sm">
+              {selectedIndex + 1} / {allImages.length}
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -379,15 +467,11 @@ const NewsDetail = () => {
           </div>
 
           <div className="mb-8">
-            {newsItem.image_url ? (
-              <img
-                src={newsItem.image_url}
-                alt={title}
-                className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-lg"
-              />
-            ) : (
-              <NewsImagePlaceholder title={title} />
-            )}
+            <ImageGalleryWithThumbnails 
+              mainImage={newsItem.image_url} 
+              galleryImages={galleryImages}
+              title={title}
+            />
           </div>
 
           <div className="prose prose-lg dark:prose-invert max-w-none">
@@ -403,8 +487,6 @@ const NewsDetail = () => {
             )}
           </div>
 
-          {/* Gallery Section */}
-          <GallerySection images={galleryImages} />
 
           {/* Bottom Share Section */}
           <div className="mt-12 pt-8 border-t border-border">

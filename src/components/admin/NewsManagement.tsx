@@ -680,13 +680,13 @@ export const NewsManagement = () => {
                     />
                   </div>
                   <div className="col-span-2">
-                    <Label className="mb-2 block">รูปภาพเพิ่มเติม (สูงสุด 3 รูป)</Label>
+                    <Label className="mb-2 block">รูปภาพเพิ่มเติม (สูงสุด 10 รูป)</Label>
                     <MultiDragDropUpload
                       onUpload={handleGalleryUpload}
                       isUploading={isUploading}
                       currentImages={formData.gallery_images}
                       onRemove={handleRemoveGalleryImage}
-                      maxFiles={3}
+                      maxFiles={10}
                     />
                   </div>
                 </div>
