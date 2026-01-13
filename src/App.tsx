@@ -54,33 +54,33 @@ const App = () => (
     <I18nextProvider i18n={i18n}>
       <AuthProvider>
         <TooltipProvider>
-          <CookieConsentProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <CookieConsentProvider>
               <Layout>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/about/*" element={<About />} />
-                <Route path="/about/awards" element={<Awards />} />
-                <Route path="/business" element={<Business />} />
-                <Route path="/awards" element={<Awards />} />
-                <Route path="/news" element={<News />} />
-                <Route path="/news/:id" element={<NewsDetail />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/pdpa" element={<PDPA />} />
-                <Route path="/sustainability" element={<Sustainability />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/admin" element={<Admin />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about/*" element={<About />} />
+                  <Route path="/about/awards" element={<Awards />} />
+                  <Route path="/business" element={<Business />} />
+                  <Route path="/awards" element={<Awards />} />
+                  <Route path="/news" element={<News />} />
+                  <Route path="/news/:id" element={<NewsDetail />} />
+                  <Route path="/careers" element={<Careers />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/pdpa" element={<PDPA />} />
+                  <Route path="/sustainability" element={<Sustainability />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/admin" element={<Admin />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
               </Layout>
-            </BrowserRouter>
-          </CookieConsentProvider>
+            </CookieConsentProvider>
+          </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
     </I18nextProvider>
