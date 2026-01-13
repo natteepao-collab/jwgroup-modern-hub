@@ -20,10 +20,8 @@ import {
   Calendar,
   Building,
   Mail,
-  Snowflake,
-  TreePine,
   GitBranch,
-  Share2
+  Cookie
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -41,6 +39,7 @@ import { SnowfallControl } from '@/components/admin/SnowfallControl';
 import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
 import OrgDepartmentManagement from '@/components/admin/OrgDepartmentManagement';
 import SocialMediaManagement from '@/components/admin/SocialMediaManagement';
+import CookieManagement from '@/components/admin/CookieManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -231,17 +230,12 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
+            <CookieManagement />
             <SocialMediaManagement />
             <div className="grid gap-6 md:grid-cols-2">
               <SnowfallControl />
               <ChristmasThemeControl />
             </div>
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>ฟีเจอร์ตั้งค่าเพิ่มเติมกำลังพัฒนา...</p>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </main>

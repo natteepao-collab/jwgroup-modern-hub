@@ -68,6 +68,48 @@ export type Database = {
         }
         Relationships: []
       }
+      cookie_settings: {
+        Row: {
+          created_at: string
+          description_en: string | null
+          description_th: string | null
+          id: string
+          is_active: boolean | null
+          is_required: boolean | null
+          position_order: number | null
+          setting_key: string
+          title_en: string | null
+          title_th: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          position_order?: number | null
+          setting_key: string
+          title_en?: string | null
+          title_th?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          position_order?: number | null
+          setting_key?: string
+          title_en?: string | null
+          title_th?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       executives: {
         Row: {
           created_at: string
