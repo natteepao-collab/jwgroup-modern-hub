@@ -11,6 +11,7 @@ import { Footer } from './components/Footer';
 import FloatingActions from './components/FloatingActions';
 import Snowfall from './components/Snowfall';
 import ChristmasTheme from './components/ChristmasTheme';
+import CookieConsent from './components/CookieConsent';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Business from "./pages/Business";
@@ -44,6 +45,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </main>
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <FloatingActions />}
+      {!isAdminRoute && <CookieConsent />}
     </div>
   );
 };
