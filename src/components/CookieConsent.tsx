@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, Shield, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Cookie, Shield, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,29 @@ interface CookiePreferences {
   marketing: boolean;
 }
 
-const CookieConsent = () => {
-  const [isVisible, setIsVisible] = useState(false);
+// Context for cookie consent
+interface CookieConsentContextType {
+  openCookieSettings: () => void;
+}
+
+const CookieConsentContext = createContext<CookieConsentContextType | null>(null);
+
+export const useCookieConsent = () => {
+  const context = useContext(CookieConsentContext);
+  if (!context) {
+    throw new Error("useCookieConsent must be used within CookieConsentProvider");
+  }
+  return context;
+};
+
+// Cookie popup component
+const CookieConsentPopup = ({ 
+  isVisible, 
+  setIsVisible 
+}: { 
+  isVisible: boolean; 
+  setIsVisible: (visible: boolean) => void;
+}) => {
   const [showDetails, setShowDetails] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true,
@@ -21,16 +42,19 @@ const CookieConsent = () => {
   });
   const navigate = useNavigate();
 
+  // Load saved preferences when opening
   useEffect(() => {
-    const consent = localStorage.getItem("cookie-consent");
-    if (!consent) {
-      // Show popup after a short delay for better UX
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 1500);
-      return () => clearTimeout(timer);
+    if (isVisible) {
+      const saved = localStorage.getItem("cookie-consent");
+      if (saved) {
+        try {
+          setPreferences(JSON.parse(saved));
+        } catch {
+          // ignore parse errors
+        }
+      }
     }
-  }, []);
+  }, [isVisible]);
 
   const handleAcceptAll = () => {
     const allAccepted = {
@@ -257,4 +281,31 @@ const CookieConsent = () => {
   );
 };
 
-export default CookieConsent;
+// Provider component
+export const CookieConsentProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Auto-show on first visit
+  useEffect(() => {
+    const consent = localStorage.getItem("cookie-consent");
+    if (!consent) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const openCookieSettings = () => {
+    setIsVisible(true);
+  };
+
+  return (
+    <CookieConsentContext.Provider value={{ openCookieSettings }}>
+      {children}
+      <CookieConsentPopup isVisible={isVisible} setIsVisible={setIsVisible} />
+    </CookieConsentContext.Provider>
+  );
+};
+
+export default CookieConsentProvider;
