@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
 import { useState } from 'react';
+import DOMPurify from 'dompurify';
 
 // Placeholder component for news without images
 const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
@@ -478,7 +479,7 @@ const NewsDetail = () => {
             {content ? (
               <div
                 className="[&>p]:text-lg [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-foreground/90"
-                dangerouslySetInnerHTML={{ __html: content }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
               />
             ) : (
               <p className="text-muted-foreground text-center py-8">
