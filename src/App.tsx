@@ -36,18 +36,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const isAdminRoute = location.pathname === '/admin' || location.pathname === '/auth';
 
   return (
-    <CookieConsentProvider>
-      <div className="flex flex-col min-h-screen">
-        <Snowfall />
-        <ChristmasTheme />
-        {!isAdminRoute && <Navbar />}
-        <main className="flex-grow">
-          {children}
-        </main>
-        {!isAdminRoute && <Footer />}
-        {!isAdminRoute && <FloatingActions />}
-      </div>
-    </CookieConsentProvider>
+    <div className="flex flex-col min-h-screen">
+      <Snowfall />
+      <ChristmasTheme />
+      {!isAdminRoute && <Navbar />}
+      <main className="flex-grow">
+        {children}
+      </main>
+      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <FloatingActions />}
+    </div>
   );
 };
 
@@ -56,10 +54,11 @@ const App = () => (
     <I18nextProvider i18n={i18n}>
       <AuthProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Layout>
+          <CookieConsentProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Layout>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/about/*" element={<About />} />
@@ -79,8 +78,9 @@ const App = () => (
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </Layout>
-          </BrowserRouter>
+              </Layout>
+            </BrowserRouter>
+          </CookieConsentProvider>
         </TooltipProvider>
       </AuthProvider>
     </I18nextProvider>
