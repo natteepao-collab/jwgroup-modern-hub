@@ -4,11 +4,25 @@ import { Cookie, Shield, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CookiePreferences {
   necessary: boolean;
   analytics: boolean;
   marketing: boolean;
+}
+
+interface CookieSetting {
+  id: string;
+  setting_key: string;
+  title_th: string | null;
+  title_en: string | null;
+  description_th: string | null;
+  description_en: string | null;
+  is_required: boolean;
+  is_active: boolean;
+  position_order: number;
 }
 
 // Context for cookie consent
@@ -42,6 +56,25 @@ const CookieConsentPopup = ({
   });
   const navigate = useNavigate();
 
+  // Fetch cookie settings from database
+  const { data: cookieSettings } = useQuery({
+    queryKey: ["cookie-settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("cookie_settings")
+        .select("*")
+        .eq("is_active", true)
+        .order("position_order", { ascending: true });
+
+      if (error) throw error;
+      return data as CookieSetting[];
+    },
+  });
+
+  // Get popup title and description
+  const popupSettings = cookieSettings?.find(s => s.setting_key === "popup_title");
+  const cookieTypes = cookieSettings?.filter(s => s.setting_key !== "popup_title") || [];
+
   // Load saved preferences when opening
   useEffect(() => {
     if (isVisible) {
@@ -57,7 +90,7 @@ const CookieConsentPopup = ({
   }, [isVisible]);
 
   const handleAcceptAll = () => {
-    const allAccepted = {
+    const allAccepted: CookiePreferences = {
       necessary: true,
       analytics: true,
       marketing: true,
@@ -74,7 +107,7 @@ const CookieConsentPopup = ({
   };
 
   const handleDeclineAll = () => {
-    const onlyNecessary = {
+    const onlyNecessary: CookiePreferences = {
       necessary: true,
       analytics: false,
       marketing: false,
@@ -83,30 +116,6 @@ const CookieConsentPopup = ({
     localStorage.setItem("cookie-consent-date", new Date().toISOString());
     setIsVisible(false);
   };
-
-  const cookieTypes = [
-    {
-      id: "necessary",
-      title: "คุกกี้ที่จำเป็น",
-      titleEn: "Necessary Cookies",
-      description: "คุกกี้เหล่านี้จำเป็นสำหรับการทำงานของเว็บไซต์ ไม่สามารถปิดได้",
-      required: true,
-    },
-    {
-      id: "analytics",
-      title: "คุกกี้วิเคราะห์",
-      titleEn: "Analytics Cookies",
-      description: "ช่วยให้เราเข้าใจวิธีการใช้งานเว็บไซต์ของผู้เยี่ยมชม",
-      required: false,
-    },
-    {
-      id: "marketing",
-      title: "คุกกี้การตลาด",
-      titleEn: "Marketing Cookies",
-      description: "ใช้เพื่อแสดงโฆษณาที่เกี่ยวข้องกับความสนใจของคุณ",
-      required: false,
-    },
-  ];
 
   return (
     <AnimatePresence>
@@ -140,10 +149,10 @@ const CookieConsentPopup = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-lg font-semibold text-foreground mb-1">
-                      🍪 เราใช้คุกกี้
+                      🍪 {popupSettings?.title_th || "เราใช้คุกกี้"}
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      เว็บไซต์นี้ใช้คุกกี้เพื่อพัฒนาประสบการณ์การใช้งานของคุณ
+                      {popupSettings?.description_th || "เว็บไซต์นี้ใช้คุกกี้เพื่อพัฒนาประสบการณ์การใช้งานของคุณ"}
                     </p>
                   </div>
                 </div>
@@ -187,27 +196,27 @@ const CookieConsentPopup = ({
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
                                 <span className="text-sm font-medium text-foreground">
-                                  {cookie.title}
+                                  {cookie.title_th}
                                 </span>
-                                {cookie.required && (
+                                {cookie.is_required && (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                                     จำเป็น
                                   </span>
                                 )}
                               </div>
                               <p className="text-xs text-muted-foreground leading-relaxed">
-                                {cookie.description}
+                                {cookie.description_th}
                               </p>
                             </div>
                             <Switch
-                              checked={preferences[cookie.id as keyof CookiePreferences]}
+                              checked={preferences[cookie.setting_key as keyof CookiePreferences] ?? false}
                               onCheckedChange={(checked) =>
                                 setPreferences((prev) => ({
                                   ...prev,
-                                  [cookie.id]: checked,
+                                  [cookie.setting_key]: checked,
                                 }))
                               }
-                              disabled={cookie.required}
+                              disabled={cookie.is_required}
                               className="flex-shrink-0"
                             />
                           </div>
