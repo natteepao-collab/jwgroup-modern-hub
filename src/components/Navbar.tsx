@@ -201,12 +201,13 @@ export const Navbar = () => {
               </a>
             </div>
 
-            {/* Tablet Layout (sm to lg) - Top Row */}
+            {/* Tablet Layout (sm to lg) - Single Row */}
             <div className="hidden sm:flex lg:hidden w-full items-center justify-between">
               {/* Left - Logo */}
               <Link
                 to="/"
                 className={cn(
+                  "shrink-0",
                   !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                 )}
               >
@@ -217,97 +218,90 @@ export const Navbar = () => {
                   height="1241"
                   className={cn(
                     "transition-all duration-300 w-auto",
-                    isScrolled ? "h-9" : "h-11"
+                    isScrolled ? "h-8" : "h-10"
                   )}
                 />
               </Link>
 
-              {/* Right - Theme & Language */}
-              <div className="flex items-center gap-2">
-                <ThemeToggle />
-                <LanguageSwitcher />
-              </div>
-            </div>
-
-            {/* Tablet Layout - Bottom Row: Social Icons + Menu */}
-            <div className={cn(
-              "hidden sm:flex lg:hidden items-center justify-between border-t border-foreground/10 transition-all duration-300",
-              isScrolled ? "py-2" : "py-2.5"
-            )}>
-              {/* Left - Social Icons */}
-              <div className="flex items-center gap-2">
+              {/* Center - Social Icons */}
+              <div className="flex items-center gap-1.5 md:gap-2">
                 <a
                   href={socialLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                     "border border-border/50 shadow-sm social-icon-animate btn-press",
                     "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
                   )}
                   aria-label="Facebook"
                 >
-                  <Facebook className="h-4 w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  <Facebook className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                 </a>
                 <a
                   href={socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                     "border border-border/50 shadow-sm social-icon-animate btn-press",
                     "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
                   )}
                   aria-label="Instagram"
                 >
-                  <Instagram className="h-4 w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  <Instagram className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                 </a>
                 <a
                   href={socialLinks.tiktok}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                     "border border-border/50 shadow-sm social-icon-animate btn-press",
                     "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
                   )}
                   aria-label="TikTok"
                 >
-                  <TikTokIcon className="h-4 w-4 text-foreground group-hover:text-background transition-colors duration-300" />
+                  <TikTokIcon className="h-3.5 w-3.5 md:h-4 md:w-4 text-foreground group-hover:text-background transition-colors duration-300" />
                 </a>
                 <a
                   href={socialLinks.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                     "border border-border/50 shadow-sm social-icon-animate btn-press",
                     "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
                   )}
                   aria-label="YouTube"
                 >
-                  <Youtube className="h-4 w-4 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  <Youtube className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                 </a>
               </div>
 
-              {/* Right - Menu Button */}
-              <button
-                onClick={() => setIsMenuOpen(true)}
-                className={cn(
-                  "flex items-center justify-center h-9 md:h-10 px-3 md:px-4 rounded-full transition-all duration-300",
-                  "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
-                  "shadow-lg shadow-primary/25 border border-primary-foreground/10",
-                  "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
-                  "btn-ripple btn-shimmer"
-                )}
-              >
-                <Menu className="h-4 w-4 md:h-5 md:w-5" strokeWidth={2.5} />
-                <span className="ml-1.5 text-xs md:text-sm font-extrabold tracking-widest uppercase">Menu</span>
-              </button>
+              {/* Right - Theme, Language, Menu */}
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <ThemeToggle />
+                <LanguageSwitcher />
+                
+                {/* Menu Button */}
+                <button
+                  onClick={() => setIsMenuOpen(true)}
+                  className={cn(
+                    "flex items-center justify-center h-9 w-9 md:h-10 md:w-10 rounded-full transition-all duration-300",
+                    "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
+                    "shadow-lg shadow-primary/25 border border-primary-foreground/10",
+                    "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
+                    "btn-ripple btn-shimmer"
+                  )}
+                >
+                  <Menu className="h-4 w-4 md:h-5 md:w-5" strokeWidth={2.5} />
+                </button>
+              </div>
             </div>
 
             {/* Desktop Layout (lg and up) */}
