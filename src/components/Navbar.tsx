@@ -201,24 +201,112 @@ export const Navbar = () => {
               </a>
             </div>
 
-            {/* Tablet & Desktop Layout */}
-            <div className="hidden sm:flex w-full items-center justify-between relative">
-              {/* Left - Hamburger (Tablet only) */}
-              <button
-                onClick={() => setIsMenuOpen(true)}
-                className={cn(
-                  "flex lg:hidden items-center justify-center gap-2 h-10 px-4 rounded-full transition-all duration-300",
-                  "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
-                  "shadow-lg shadow-primary/25 border border-primary-foreground/10",
-                  "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
-                  "btn-ripple btn-shimmer"
-                )}
-              >
-                <Menu className="h-5 w-5" strokeWidth={2.5} />
-              </button>
+            {/* Tablet Layout (sm to lg) */}
+            <div className="hidden sm:flex lg:hidden w-full items-center justify-between">
+              {/* Left - Hamburger + Logo */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsMenuOpen(true)}
+                  className={cn(
+                    "flex items-center justify-center h-10 w-10 rounded-full transition-all duration-300",
+                    "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
+                    "shadow-lg shadow-primary/25 border border-primary-foreground/10",
+                    "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
+                    "btn-ripple btn-shimmer"
+                  )}
+                >
+                  <Menu className="h-5 w-5" strokeWidth={2.5} />
+                </button>
+                <Link
+                  to="/"
+                  className={cn(
+                    !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                  )}
+                >
+                  <img
+                    src={jwLogo}
+                    alt="JW Group"
+                    width="1754"
+                    height="1241"
+                    className={cn(
+                      "transition-all duration-300 w-auto",
+                      isScrolled ? "h-9" : "h-11"
+                    )}
+                  />
+                </Link>
+              </div>
 
-              {/* Hidden spacer for desktop distribution */}
-              <div className="hidden lg:block w-24" />
+              {/* Center - Theme & Language */}
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <LanguageSwitcher />
+              </div>
+
+              {/* Right - Social Media Icons */}
+              <div className="flex items-center gap-1.5">
+                <a
+                  href={socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                    "border border-border/50 shadow-sm social-icon-animate btn-press",
+                    "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
+                  )}
+                  aria-label="Facebook"
+                >
+                  <Facebook className="h-4 w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                </a>
+                <a
+                  href={socialLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                    "border border-border/50 shadow-sm social-icon-animate btn-press",
+                    "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
+                  )}
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-4 w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                </a>
+                <a
+                  href={socialLinks.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                    "border border-border/50 shadow-sm social-icon-animate btn-press",
+                    "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
+                  )}
+                  aria-label="TikTok"
+                >
+                  <TikTokIcon className="h-4 w-4 text-foreground group-hover:text-background transition-colors duration-300" />
+                </a>
+                <a
+                  href={socialLinks.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                    "border border-border/50 shadow-sm social-icon-animate btn-press",
+                    "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
+                  )}
+                  aria-label="YouTube"
+                >
+                  <Youtube className="h-4 w-4 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                </a>
+              </div>
+            </div>
+
+            {/* Desktop Layout (lg and up) */}
+            <div className="hidden lg:flex w-full items-center justify-between">
+              {/* Hidden spacer for distribution */}
+              <div className="w-24" />
 
               {/* Center - Logo */}
               <Link
@@ -241,71 +329,71 @@ export const Navbar = () => {
               </Link>
 
               {/* Right - Actions */}
-              <div className="flex items-center gap-1.5 md:gap-2 lg:gap-3">
+              <div className="flex items-center gap-3">
                 {/* Theme & Language */}
                 <ThemeToggle />
                 <LanguageSwitcher />
                 
                 {/* Separator */}
-                <div className="w-px h-6 bg-border/50 mx-0.5 md:mx-1" />
+                <div className="w-px h-6 bg-border/50 mx-1" />
 
-                {/* Social Media Icons - Always visible on tablet and desktop */}
-                <div className="flex items-center gap-1.5 md:gap-2">
+                {/* Social Media Icons */}
+                <div className="flex items-center gap-2">
                   <a
                     href={socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                       "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
                     )}
                     aria-label="Facebook"
                   >
-                    <Facebook className="h-4 w-4 lg:h-5 lg:w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                    <Facebook className="h-5 w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                   </a>
                   <a
                     href={socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                       "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
                     )}
                     aria-label="Instagram"
                   >
-                    <Instagram className="h-4 w-4 lg:h-5 lg:w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                    <Instagram className="h-5 w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                   </a>
                   <a
                     href={socialLinks.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                       "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
                     )}
                     aria-label="TikTok"
                   >
-                    <TikTokIcon className="h-4 w-4 lg:h-5 lg:w-5 text-foreground group-hover:text-background transition-colors duration-300" />
+                    <TikTokIcon className="h-5 w-5 text-foreground group-hover:text-background transition-colors duration-300" />
                   </a>
                   <a
                     href={socialLinks.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "group flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full transition-all duration-300",
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
                       "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
                     )}
                     aria-label="YouTube"
                   >
-                    <Youtube className="h-4 w-4 lg:h-5 lg:w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                    <Youtube className="h-5 w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
                   </a>
                 </div>
 
@@ -313,7 +401,7 @@ export const Navbar = () => {
                 <button
                   onClick={() => setIsMenuOpen(true)}
                   className={cn(
-                    "hidden lg:flex items-center justify-center gap-2 h-11 px-5 rounded-full transition-all duration-300",
+                    "flex items-center justify-center gap-2 h-11 px-5 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
                     "shadow-lg shadow-primary/25 border border-primary-foreground/10",
                     "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
