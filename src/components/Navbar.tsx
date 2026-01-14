@@ -107,7 +107,8 @@ export const Navbar = () => {
                   "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                   "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
                   "shadow-lg shadow-primary/25 border border-primary-foreground/10",
-                  "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95"
+                  "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
+                  "btn-ripple btn-shimmer"
                 )}
               >
                 <Menu className="h-5 w-5" strokeWidth={2.5} />
@@ -148,7 +149,7 @@ export const Navbar = () => {
                 className={cn(
                   "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
                   "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                  "border border-border/50 shadow-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
                   "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
                 )}
                 aria-label="Facebook"
@@ -162,7 +163,7 @@ export const Navbar = () => {
                 className={cn(
                   "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
                   "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                  "border border-border/50 shadow-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
                   "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
                 )}
                 aria-label="Instagram"
@@ -176,7 +177,7 @@ export const Navbar = () => {
                 className={cn(
                   "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
                   "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                  "border border-border/50 shadow-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
                   "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
                 )}
                 aria-label="TikTok"
@@ -190,7 +191,7 @@ export const Navbar = () => {
                 className={cn(
                   "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
                   "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                  "border border-border/50 shadow-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
                   "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
                 )}
                 aria-label="YouTube"
@@ -249,7 +250,7 @@ export const Navbar = () => {
                     className={cn(
                       "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                      "border border-border/50 shadow-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
                     )}
                     aria-label="Facebook"
@@ -263,7 +264,7 @@ export const Navbar = () => {
                     className={cn(
                       "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                      "border border-border/50 shadow-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
                     )}
                     aria-label="Instagram"
@@ -277,7 +278,7 @@ export const Navbar = () => {
                     className={cn(
                       "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                      "border border-border/50 shadow-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
                     )}
                     aria-label="TikTok"
@@ -291,7 +292,7 @@ export const Navbar = () => {
                     className={cn(
                       "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                       "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                      "border border-border/50 shadow-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
                       "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
                     )}
                     aria-label="YouTube"
@@ -311,7 +312,8 @@ export const Navbar = () => {
                     "hidden lg:flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
                     "shadow-lg shadow-primary/25 border border-primary-foreground/10",
-                    "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95"
+                    "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
+                    "btn-ripple btn-shimmer"
                   )}
                 >
                   <Menu className="h-5 w-5" strokeWidth={2.5} />
