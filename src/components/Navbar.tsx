@@ -242,8 +242,8 @@ export const Navbar = () => {
 
               {/* Right - Actions */}
               <div className="flex items-center gap-2 lg:gap-3">
-                {/* Social Media Icons - Premium Glassmorphic Style */}
-                <div className="flex items-center gap-2">
+                {/* Social Media Icons - Hidden on tablet, shown on desktop */}
+                <div className="hidden lg:flex items-center gap-2">
                   <a
                     href={socialLinks.facebook}
                     target="_blank"
@@ -302,7 +302,7 @@ export const Navbar = () => {
                   </a>
                 </div>
 
-                <div className="w-px h-6 bg-border/50 mx-1" />
+                <div className="hidden lg:block w-px h-6 bg-border/50 mx-1" />
 
                 <ThemeToggle />
                 <LanguageSwitcher />
