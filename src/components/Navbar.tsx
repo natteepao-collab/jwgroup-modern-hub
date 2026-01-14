@@ -201,7 +201,7 @@ export const Navbar = () => {
               </a>
             </div>
 
-            {/* Tablet Layout (sm to lg) - Same as Desktop */}
+            {/* Tablet Layout (sm to lg) - Top Row */}
             <div className="hidden sm:flex lg:hidden w-full items-center justify-between relative">
               {/* Left - Spacer for balance */}
               <div className="w-16" />
@@ -226,73 +226,11 @@ export const Navbar = () => {
                 />
               </Link>
 
-              {/* Right - All Actions */}
+              {/* Right - Theme, Language, Menu */}
               <div className="flex items-center gap-1.5 md:gap-2">
-                {/* Theme & Language */}
                 <ThemeToggle />
                 <LanguageSwitcher />
                 
-                {/* Separator */}
-                <div className="w-px h-6 bg-border/50 mx-0.5" />
-
-                {/* Social Media Icons */}
-                <a
-                  href={socialLinks.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
-                  )}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-                <a
-                  href={socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
-                  )}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-                <a
-                  href={socialLinks.tiktok}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
-                  )}
-                  aria-label="TikTok"
-                >
-                  <TikTokIcon className="h-3.5 w-3.5 md:h-4 md:w-4 text-foreground group-hover:text-background transition-colors duration-300" />
-                </a>
-                <a
-                  href={socialLinks.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
-                  )}
-                  aria-label="YouTube"
-                >
-                  <Youtube className="h-3.5 w-3.5 md:h-4 md:w-4 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-
                 {/* Separator */}
                 <div className="w-px h-6 bg-border/50 mx-0.5" />
 
@@ -311,6 +249,69 @@ export const Navbar = () => {
                   <span className="ml-1.5 text-xs md:text-sm font-extrabold tracking-widest uppercase">Menu</span>
                 </button>
               </div>
+            </div>
+
+            {/* Tablet Layout - Bottom Row: Social Icons */}
+            <div className={cn(
+              "hidden sm:flex lg:hidden items-center justify-center gap-2 border-t border-foreground/10 transition-all duration-300",
+              isScrolled ? "py-2" : "py-2.5"
+            )}>
+              <a
+                href={socialLinks.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
+                  "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
+                )}
+                aria-label="Facebook"
+              >
+                <Facebook className="h-4 w-4 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+              </a>
+              <a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
+                  "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
+                )}
+                aria-label="Instagram"
+              >
+                <Instagram className="h-4 w-4 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+              </a>
+              <a
+                href={socialLinks.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
+                  "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
+                )}
+                aria-label="TikTok"
+              >
+                <TikTokIcon className="h-4 w-4 text-foreground group-hover:text-background transition-colors duration-300" />
+              </a>
+              <a
+                href={socialLinks.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
+                  "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                  "border border-border/50 shadow-sm social-icon-animate btn-press",
+                  "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
+                )}
+                aria-label="YouTube"
+              >
+                <Youtube className="h-4 w-4 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+              </a>
             </div>
 
             {/* Desktop Layout (lg and up) */}
