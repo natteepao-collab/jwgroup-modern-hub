@@ -304,13 +304,16 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Desktop Layout (lg and up) - Single Row */}
-            <div className="hidden lg:flex w-full items-center justify-between">
-              {/* Left - Logo */}
+            {/* Desktop Layout (lg and up) */}
+            <div className="hidden lg:flex w-full items-center justify-between relative">
+              {/* Left - Spacer for balance */}
+              <div className="w-24" />
+
+              {/* Center - Logo */}
               <Link
                 to="/"
                 className={cn(
-                  "shrink-0",
+                  "absolute left-1/2 -translate-x-1/2 z-10",
                   !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                 )}
               >
@@ -326,68 +329,72 @@ export const Navbar = () => {
                 />
               </Link>
 
-              {/* Center - Social Icons */}
-              <div className="flex items-center gap-2">
-                <a
-                  href={socialLinks.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
-                  )}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-5 w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-                <a
-                  href={socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
-                  )}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-                <a
-                  href={socialLinks.tiktok}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
-                  )}
-                  aria-label="TikTok"
-                >
-                  <TikTokIcon className="h-5 w-5 text-foreground group-hover:text-background transition-colors duration-300" />
-                </a>
-                <a
-                  href={socialLinks.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
-                    "border border-border/50 shadow-sm social-icon-animate btn-press",
-                    "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
-                  )}
-                  aria-label="YouTube"
-                >
-                  <Youtube className="h-5 w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-              </div>
-
-              {/* Right - Theme, Language, Menu */}
+              {/* Right - Social Icons, Theme, Language, Menu */}
               <div className="flex items-center gap-3">
+                {/* Social Media Icons */}
+                <div className="flex items-center gap-2">
+                  <a
+                    href={socialLinks.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
+                      "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
+                      "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
+                    )}
+                    aria-label="Facebook"
+                  >
+                    <Facebook className="h-5 w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  </a>
+                  <a
+                    href={socialLinks.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
+                      "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
+                      "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
+                    )}
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="h-5 w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  </a>
+                  <a
+                    href={socialLinks.tiktok}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
+                      "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
+                      "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
+                    )}
+                    aria-label="TikTok"
+                  >
+                    <TikTokIcon className="h-5 w-5 text-foreground group-hover:text-background transition-colors duration-300" />
+                  </a>
+                  <a
+                    href={socialLinks.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
+                      "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+                      "border border-border/50 shadow-sm social-icon-animate btn-press",
+                      "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
+                    )}
+                    aria-label="YouTube"
+                  >
+                    <Youtube className="h-5 w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
+                  </a>
+                </div>
+
+                {/* Separator */}
+                <div className="w-px h-6 bg-border/50" />
+
+                {/* Theme & Language */}
                 <ThemeToggle />
                 <LanguageSwitcher />
                 
