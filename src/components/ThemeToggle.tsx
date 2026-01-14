@@ -1,5 +1,6 @@
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
@@ -35,14 +36,20 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="group relative flex items-center justify-center w-12 h-10 rounded-xl bg-purple-100 hover:bg-purple-200 transition-all duration-300 hover:scale-105 active:scale-95"
+      className={cn(
+        "group relative flex items-center justify-center w-10 h-10 rounded-full",
+        "bg-gradient-to-br from-muted/80 to-muted/40 backdrop-blur-sm",
+        "border border-border/50 shadow-sm",
+        "hover:shadow-md hover:border-primary/30 hover:scale-105",
+        "active:scale-95 transition-all duration-300"
+      )}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <div className="relative">
         {isDark ? (
-          <Sun className="h-5 w-5 text-purple-700 transition-transform duration-300 group-hover:rotate-45" />
+          <Sun className="h-5 w-5 text-amber-500 transition-transform duration-300 group-hover:rotate-45 group-hover:text-amber-400" />
         ) : (
-          <Moon className="h-5 w-5 text-purple-600 transition-transform duration-300 group-hover:-rotate-12" />
+          <Moon className="h-5 w-5 text-primary/80 transition-transform duration-300 group-hover:-rotate-12 group-hover:text-primary" />
         )}
       </div>
     </button>
