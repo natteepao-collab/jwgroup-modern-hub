@@ -142,7 +142,7 @@ export const Navbar = () => {
             </div>
 
             {/* Mobile & Tablet: Social Media Icons Row - hidden on lg+ where they show inline */}
-            <div className="flex lg:hidden w-full items-center justify-center gap-2 pb-1">
+            <div className="flex lg:hidden w-full items-center justify-center sm:justify-end gap-2 pb-1">
               <a
                 href={socialLinks.facebook}
                 target="_blank"
