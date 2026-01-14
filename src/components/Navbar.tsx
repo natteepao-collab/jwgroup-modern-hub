@@ -104,7 +104,7 @@ export const Navbar = () => {
               <button
                 onClick={() => setIsMenuOpen(true)}
                 className={cn(
-                  "flex items-center justify-center gap-1.5 h-10 px-3 rounded-full transition-all duration-300",
+                  "flex items-center justify-center gap-2 h-11 px-4 rounded-full transition-all duration-300",
                   "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
                   "shadow-lg shadow-primary/25 border border-primary-foreground/10",
                   "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
@@ -112,7 +112,7 @@ export const Navbar = () => {
                 )}
               >
                 <Menu className="h-5 w-5" strokeWidth={2.5} />
-                <span className="text-xs font-bold tracking-wide">MENU</span>
+                <span className="text-sm font-extrabold tracking-widest uppercase">Menu</span>
               </button>
 
               {/* Center - Logo */}
@@ -310,7 +310,7 @@ export const Navbar = () => {
                 <button
                   onClick={() => setIsMenuOpen(true)}
                   className={cn(
-                    "hidden lg:flex items-center justify-center gap-1.5 h-10 px-4 rounded-full transition-all duration-300",
+                    "hidden lg:flex items-center justify-center gap-2 h-11 px-5 rounded-full transition-all duration-300",
                     "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
                     "shadow-lg shadow-primary/25 border border-primary-foreground/10",
                     "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
@@ -318,7 +318,7 @@ export const Navbar = () => {
                   )}
                 >
                   <Menu className="h-5 w-5" strokeWidth={2.5} />
-                  <span className="text-xs font-bold tracking-wide">MENU</span>
+                  <span className="text-sm font-extrabold tracking-widest uppercase">Menu</span>
                 </button>
               </div>
             </div>
