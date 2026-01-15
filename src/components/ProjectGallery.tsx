@@ -23,7 +23,7 @@ interface Project {
 }
 
 interface ProjectGalleryProps {
-  businessType: 'realestate' | 'hotel' | 'pet' | 'wellness';
+  businessType: 'realestate' | 'hotel' | 'pet' | 'wellness' | 'construction';
   title?: string;
 }
 

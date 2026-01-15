@@ -6,11 +6,13 @@ import { useSiteContent } from '@/hooks/useSiteContent';
 import ProjectGallery from '@/components/ProjectGallery';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Building, Hotel, Heart, Leaf, Images } from 'lucide-react';
+import { Building, Hotel, Heart, Leaf, Images, HardHat } from 'lucide-react';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
 import wellness from '@/assets/business-wellness.jpg';
+import construction from '@/assets/business-construction.jpg';
+import thanabulLogo from '@/assets/thanabul-logo.png';
 
 // Default images fallback
 const defaultBusinessImages: Record<string, string> = {
@@ -18,6 +20,7 @@ const defaultBusinessImages: Record<string, string> = {
   business_hotel_image: hotel,
   business_pet_image: pet,
   business_wellness_image: wellness,
+  business_construction_image: construction,
 };
 
 const businessTabs = [
@@ -25,29 +28,36 @@ const businessTabs = [
     id: 'realestate',
     label: 'อสังหาริมทรัพย์',
     icon: Building,
-    activeColor: 'data-[state=active]:bg-[#D97706] data-[state=active]:text-white', // Amber/Orange
+    activeColor: 'data-[state=active]:bg-[#D97706] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#D97706]/10 hover:text-[#D97706]'
   },
   {
     id: 'hotel',
     label: 'โรงแรม',
     icon: Hotel,
-    activeColor: 'data-[state=active]:bg-[#1A1A1A] data-[state=active]:text-white', // Dark/Neutral
+    activeColor: 'data-[state=active]:bg-[#1A1A1A] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#1A1A1A]/10 hover:text-[#1A1A1A]'
   },
   {
     id: 'pet',
     label: 'สัตว์เลี้ยง',
     icon: Heart,
-    activeColor: 'data-[state=active]:bg-[#14B8A6] data-[state=active]:text-white', // Teal
+    activeColor: 'data-[state=active]:bg-[#14B8A6] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#14B8A6]/10 hover:text-[#14B8A6]'
   },
   {
     id: 'wellness',
     label: 'สุขภาพ',
     icon: Leaf,
-    activeColor: 'data-[state=active]:bg-[#22C55E] data-[state=active]:text-white', // Green
+    activeColor: 'data-[state=active]:bg-[#22C55E] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#22C55E]/10 hover:text-[#22C55E]'
+  },
+  {
+    id: 'construction',
+    label: 'ก่อสร้าง',
+    icon: HardHat,
+    activeColor: 'data-[state=active]:bg-[#3B82F6] data-[state=active]:text-white',
+    hoverColor: 'hover:bg-[#3B82F6]/10 hover:text-[#3B82F6]'
   },
 ];
 
@@ -55,7 +65,7 @@ const Business = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { getImage } = useSiteContent();
+  const { getImage, getContent } = useSiteContent();
   const [activeTab, setActiveTab] = useState('realestate');
   const isMobile = useIsMobile();
   const galleryContainerRef = useRef<HTMLDivElement>(null);
@@ -75,6 +85,9 @@ const Business = () => {
     const dbImage = getImage(sectionKey);
     return dbImage?.url || defaultBusinessImages[sectionKey] || realEstate;
   };
+
+  // Get construction content from database
+  const constructionContent = getContent('business_construction');
 
   const businesses = [
     {
@@ -123,6 +136,18 @@ const Business = () => {
         collapsed: 'bg-green-400/90 dark:bg-green-500/90',
         expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
         expandedDark: 'linear-gradient(to bottom, rgba(22, 101, 52, 0.95), rgba(20, 83, 45, 0.9), rgba(22, 101, 52, 0.95))',
+      },
+    },
+    {
+      name: constructionContent.title || 'ธนบูลย์ พร็อพเพอร์ตี้',
+      description: constructionContent.content || 'บริษัท ธนบูลย์ พร็อพเพอร์ตี้ จำกัด ผู้เชี่ยวชาญด้านการรับเหมาก่อสร้าง และพัฒนาอสังหาริมทรัพย์คุณภาพสูง ด้วยประสบการณ์และความชำนาญในการสร้างสรรค์โครงการที่ได้มาตรฐาน',
+      url: '#',
+      image: thanabulLogo,
+      backgroundImage: getBusinessImage('business_construction_image'),
+      brandColor: {
+        collapsed: 'bg-blue-500/90 dark:bg-blue-600/90',
+        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
+        expandedDark: 'linear-gradient(to bottom, rgba(30, 58, 138, 0.95), rgba(29, 78, 216, 0.9), rgba(30, 58, 138, 0.95))',
       },
     },
   ];
@@ -192,7 +217,7 @@ const Business = () => {
               {businessTabs.map((tab) => (
                 <TabsContent key={tab.id} value={tab.id} className="mt-0 animate-fade-in">
                   <ProjectGallery
-                    businessType={tab.id as 'realestate' | 'hotel' | 'pet' | 'wellness'}
+                    businessType={tab.id as 'realestate' | 'hotel' | 'pet' | 'wellness' | 'construction'}
                   />
                 </TabsContent>
               ))}
