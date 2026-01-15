@@ -253,6 +253,7 @@ export type Database = {
       }
       org_departments: {
         Row: {
+          business_type: string | null
           color: string | null
           created_at: string
           description_en: string | null
@@ -268,6 +269,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          business_type?: string | null
           color?: string | null
           created_at?: string
           description_en?: string | null
@@ -283,6 +285,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          business_type?: string | null
           color?: string | null
           created_at?: string
           description_en?: string | null
