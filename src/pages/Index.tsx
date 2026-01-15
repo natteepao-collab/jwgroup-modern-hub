@@ -84,6 +84,7 @@ const Index = () => {
       url: getBusinessUrl(petContent, 'https://www.3dpethospital.com/'),
       image: getBusinessImage('business_pet_image'),
       backgroundImage: getBusinessImage('business_pet_bg'),
+      logoStyle: { scale: 1.3 },
     },
     {
       name: wellnessContent.title || t('business.wellness.name'),
@@ -91,6 +92,7 @@ const Index = () => {
       url: getBusinessUrl(wellnessContent, 'https://jwherbal-roots-and-remedies.lovable.app'),
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
+      logoStyle: { scale: 1.4 },
     },
     {
       name: constructionContent.title || 'ธนบูลย์ พร็อพเพอร์ตี้',
@@ -98,6 +100,7 @@ const Index = () => {
       url: getBusinessUrl(constructionContent, '#'),
       image: thanabulLogo,
       backgroundImage: getBusinessImage('business_construction_image'),
+      logoStyle: { scale: 1.5 },
     },
   ];
 

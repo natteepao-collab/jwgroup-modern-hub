@@ -15,6 +15,10 @@ interface BusinessItem {
     expanded: string; // Expanded state gradient
     expandedDark: string; // Expanded state gradient for dark mode
   };
+  logoStyle?: {
+    scale?: number; // Scale factor for logo (1 = normal, 1.2 = 20% larger)
+    objectFit?: 'contain' | 'cover' | 'fill';
+  };
 }
 
 interface InteractiveSplitBusinessProps {
@@ -86,7 +90,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   <img
                     src={business.image}
                     alt={business.name}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full"
+                    style={{ 
+                      objectFit: business.logoStyle?.objectFit || 'contain',
+                      transform: `scale(${business.logoStyle?.scale || 1})`
+                    }}
                   />
                 </div>
                 
@@ -113,7 +121,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   <img
                     src={business.image}
                     alt={business.name}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full"
+                    style={{ 
+                      objectFit: business.logoStyle?.objectFit || 'contain',
+                      transform: `scale(${business.logoStyle?.scale || 1})`
+                    }}
                   />
                 </div>
                 
@@ -190,7 +202,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   <img
                     src={business.image}
                     alt={business.name}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full"
+                    style={{ 
+                      objectFit: business.logoStyle?.objectFit || 'contain',
+                      transform: `scale(${business.logoStyle?.scale || 1})`
+                    }}
                   />
                 </div>
                 
@@ -257,7 +273,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                     <img
                       src={business.image}
                       alt={business.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full"
+                      style={{ 
+                        objectFit: business.logoStyle?.objectFit || 'contain',
+                        transform: `scale(${business.logoStyle?.scale || 1})`
+                      }}
                     />
                   </div>
                   
