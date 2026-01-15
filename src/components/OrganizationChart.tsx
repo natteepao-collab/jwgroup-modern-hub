@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Building, Hotel, Heart, Leaf, HardHat, Building2 } from 'lucide-react';
+import { Loader2, Building, Hotel, Heart, Leaf, HardHat } from 'lucide-react';
 
 interface OrgDepartment {
   id: string;
@@ -20,13 +20,6 @@ interface OrgDepartment {
 }
 
 const businessOptions = [
-  { 
-    value: 'jw_group', 
-    label_th: 'JW Group (บริษัทแม่)', 
-    label_en: 'JW Group (Holding)',
-    icon: Building2,
-    color: 'text-primary'
-  },
   { 
     value: 'realestate', 
     label_th: 'อสังหาริมทรัพย์', 
@@ -73,7 +66,7 @@ const OrganizationChart = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDept, setSelectedDept] = useState<OrgDepartment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBusiness, setSelectedBusiness] = useState('jw_group');
+  const [selectedBusiness, setSelectedBusiness] = useState('realestate');
 
   useEffect(() => {
     fetchDepartments();
@@ -119,7 +112,7 @@ const OrganizationChart = () => {
   const getDesc = (dept: OrgDepartment) => isEnglish && dept.description_en ? dept.description_en : dept.description_th;
 
   const currentBusinessOption = businessOptions.find(b => b.value === selectedBusiness);
-  const CurrentIcon = currentBusinessOption?.icon || Building2;
+  const CurrentIcon = currentBusinessOption?.icon || Building;
 
   if (loading) {
     return (
