@@ -19,6 +19,8 @@ import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
 import wellness from '@/assets/business-wellness.jpg';
+import construction from '@/assets/business-construction.jpg';
+import thanabulLogo from '@/assets/thanabul-logo.png';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 
 // Default images fallback
@@ -27,6 +29,7 @@ const defaultBusinessImages: Record<string, string> = {
   business_hotel_image: hotel,
   business_pet_image: pet,
   business_wellness_image: wellness,
+  business_construction_image: construction,
 };
 
 const Index = () => {
@@ -51,6 +54,7 @@ const Index = () => {
   const realEstateContent = getContent('business_realestate');
   const hotelContent = getContent('business_hotel');
   const petContent = getContent('business_pet');
+  const constructionContent = getContent('business_construction');
   const wellnessContent = getContent('business_wellness');
 
   // Get URLs from metadata or use defaults
@@ -87,6 +91,13 @@ const Index = () => {
       url: getBusinessUrl(wellnessContent, 'https://jwherbal-roots-and-remedies.lovable.app'),
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
+    },
+    {
+      name: constructionContent.title || 'ธนบูลย์ พร็อพเพอร์ตี้',
+      description: constructionContent.content || 'บริษัท ธนบูลย์ พร็อพเพอร์ตี้ จำกัด ผู้เชี่ยวชาญด้านการรับเหมาก่อสร้าง และพัฒนาอสังหาริมทรัพย์คุณภาพสูง ด้วยประสบการณ์และความชำนาญในการสร้างสรรค์โครงการที่ได้มาตรฐาน',
+      url: getBusinessUrl(constructionContent, '#'),
+      image: thanabulLogo,
+      backgroundImage: getBusinessImage('business_construction_image'),
     },
   ];
 
