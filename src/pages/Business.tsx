@@ -125,6 +125,7 @@ const Business = () => {
         expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
         expandedDark: 'linear-gradient(to bottom, rgba(17, 94, 89, 0.95), rgba(19, 78, 74, 0.9), rgba(17, 94, 89, 0.95))',
       },
+      logoStyle: { scale: 1.3 },
     },
     {
       name: t('business.wellness.name'),
@@ -137,6 +138,7 @@ const Business = () => {
         expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
         expandedDark: 'linear-gradient(to bottom, rgba(22, 101, 52, 0.95), rgba(20, 83, 45, 0.9), rgba(22, 101, 52, 0.95))',
       },
+      logoStyle: { scale: 1.4 },
     },
     {
       name: constructionContent.title || 'ธนบูลย์ พร็อพเพอร์ตี้',
@@ -149,6 +151,7 @@ const Business = () => {
         expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
         expandedDark: 'linear-gradient(to bottom, rgba(30, 58, 138, 0.95), rgba(29, 78, 216, 0.9), rgba(30, 58, 138, 0.95))',
       },
+      logoStyle: { scale: 1.5 },
     },
   ];
 
