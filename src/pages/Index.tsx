@@ -97,41 +97,12 @@ const Index = () => {
     <div className="min-h-screen">
       <AnnouncementModal autoShow delay={1500} />
 
-      {/* Hero Section */}
+      {/* Hero Section - Cinematic Video Only */}
       <section
         ref={heroRef}
-        className="relative h-screen flex items-center justify-center overflow-hidden"
+        className="relative h-screen overflow-hidden"
       >
         <Hero3DBackground />
-        <div
-          className={`container mx-auto px-4 relative z-10 text-center transition-all duration-1000 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-        >
-          <div className="mb-6">
-            <img
-              src={jwLogo}
-              alt="JW Group"
-              className="h-32 md:h-40 lg:h-52 mx-auto"
-              style={{
-                filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2))'
-              }}
-            />
-          </div>
-          <p className="text-xl md:text-2xl lg:text-3xl text-white/95 mb-4 max-w-4xl mx-auto font-light drop-shadow-lg">
-            {getContent('hero_tagline').content || t('hero.tagline')}
-          </p>
-          <p className="text-base md:text-lg text-white/90 mb-10 max-w-3xl mx-auto drop-shadow-lg">
-            {getContent('hero_subheadline').content || t('hero.subheadline')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center drop-shadow-lg">
-            <Button asChild size="lg" className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all drop-shadow-md">
-              <Link to="/about/history">{t('hero.ctaLearn')}</Link>
-            </Button>
-            <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all drop-shadow-md">
-              <Link to="/business">{t('hero.ctaBusiness')}</Link>
-            </Button>
-          </div>
-        </div>
       </section>
 
       {/* About Section with Stats */}
