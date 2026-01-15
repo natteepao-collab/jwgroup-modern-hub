@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Loader2, Plus, Pencil, Trash2, X, Save } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, X, Save, Building, Hotel, Heart, Leaf, HardHat, Building2 } from 'lucide-react';
 
 interface OrgDepartment {
   id: string;
@@ -21,6 +21,7 @@ interface OrgDepartment {
   sub_items: string[];
   position_order: number;
   is_published: boolean;
+  business_type: string;
 }
 
 const levelOptions = [
@@ -32,11 +33,21 @@ const levelOptions = [
   { value: 'department', label: 'ฝ่ายงาน' },
 ];
 
+const businessOptions = [
+  { value: 'jw_group', label: 'JW Group (บริษัทแม่)', icon: Building2 },
+  { value: 'realestate', label: 'อสังหาริมทรัพย์', icon: Building },
+  { value: 'hotel', label: 'โรงแรม', icon: Hotel },
+  { value: 'pet', label: 'สัตว์เลี้ยง', icon: Heart },
+  { value: 'wellness', label: 'สุขภาพ', icon: Leaf },
+  { value: 'construction', label: 'ก่อสร้าง', icon: HardHat },
+];
+
 const OrgDepartmentManagement = () => {
   const [departments, setDepartments] = useState<OrgDepartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [filterBusiness, setFilterBusiness] = useState<string>('all');
   
   const [formData, setFormData] = useState({
     name_th: '',
@@ -48,6 +59,7 @@ const OrgDepartmentManagement = () => {
     sub_items: '',
     position_order: 0,
     is_published: true,
+    business_type: 'jw_group',
   });
 
   useEffect(() => {
@@ -59,6 +71,7 @@ const OrgDepartmentManagement = () => {
       const { data, error } = await supabase
         .from('org_departments')
         .select('*')
+        .order('business_type')
         .order('level')
         .order('position_order');
       
@@ -66,7 +79,8 @@ const OrgDepartmentManagement = () => {
       
       const parsed: OrgDepartment[] = (data || []).map(d => ({
         ...d,
-        sub_items: Array.isArray(d.sub_items) ? (d.sub_items as string[]) : []
+        sub_items: Array.isArray(d.sub_items) ? (d.sub_items as string[]) : [],
+        business_type: d.business_type || 'jw_group'
       }));
       
       setDepartments(parsed);
@@ -89,6 +103,7 @@ const OrgDepartmentManagement = () => {
       sub_items: '',
       position_order: 0,
       is_published: true,
+      business_type: filterBusiness === 'all' ? 'jw_group' : filterBusiness,
     });
     setEditingId(null);
     setShowAddForm(false);
@@ -105,6 +120,7 @@ const OrgDepartmentManagement = () => {
       sub_items: dept.sub_items.join('\n'),
       position_order: dept.position_order,
       is_published: dept.is_published,
+      business_type: dept.business_type || 'jw_group',
     });
     setEditingId(dept.id);
     setShowAddForm(true);
@@ -132,6 +148,7 @@ const OrgDepartmentManagement = () => {
         sub_items: subItemsArray,
         position_order: formData.position_order,
         is_published: formData.is_published,
+        business_type: formData.business_type,
       };
 
       if (editingId) {
@@ -174,6 +191,11 @@ const OrgDepartmentManagement = () => {
     }
   };
 
+  // Filter departments by selected business
+  const filteredDepartments = filterBusiness === 'all' 
+    ? departments 
+    : departments.filter(d => d.business_type === filterBusiness);
+
   const groupByLevel = (depts: OrgDepartment[]) => {
     const groups: Record<string, OrgDepartment[]> = {};
     depts.forEach(d => {
@@ -181,6 +203,10 @@ const OrgDepartmentManagement = () => {
       groups[d.level].push(d);
     });
     return groups;
+  };
+
+  const getBusinessLabel = (businessType: string) => {
+    return businessOptions.find(b => b.value === businessType)?.label || businessType;
   };
 
   if (loading) {
@@ -191,16 +217,38 @@ const OrgDepartmentManagement = () => {
     );
   }
 
-  const grouped = groupByLevel(departments);
+  const grouped = groupByLevel(filteredDepartments);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h2 className="text-xl font-semibold">จัดการโครงสร้างองค์กร</h2>
-        <Button onClick={() => setShowAddForm(true)} disabled={showAddForm}>
-          <Plus className="h-4 w-4 mr-2" />
-          เพิ่มตำแหน่ง/ฝ่ายงาน
-        </Button>
+        <div className="flex items-center gap-3">
+          {/* Business Filter */}
+          <Select value={filterBusiness} onValueChange={setFilterBusiness}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="กรองตามธุรกิจ" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              {businessOptions.map((opt) => {
+                const Icon = opt.icon;
+                return (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    <div className="flex items-center gap-2">
+                      <Icon className="h-4 w-4" />
+                      <span>{opt.label}</span>
+                    </div>
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+          <Button onClick={() => setShowAddForm(true)} disabled={showAddForm}>
+            <Plus className="h-4 w-4 mr-2" />
+            เพิ่มตำแหน่ง/ฝ่ายงาน
+          </Button>
+        </div>
       </div>
 
       {/* Add/Edit Form */}
@@ -215,6 +263,32 @@ const OrgDepartmentManagement = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Business Type Selector */}
+            <div className="space-y-2">
+              <Label>ธุรกิจ *</Label>
+              <Select
+                value={formData.business_type}
+                onValueChange={(val) => setFormData({ ...formData, business_type: val })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {businessOptions.map((opt) => {
+                    const Icon = opt.icon;
+                    return (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        <div className="flex items-center gap-2">
+                          <Icon className="h-4 w-4" />
+                          <span>{opt.label}</span>
+                        </div>
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>ชื่อ (ไทย) *</Label>
@@ -347,7 +421,12 @@ const OrgDepartmentManagement = () => {
                     style={{ borderLeftColor: dept.color || '#4a7c9b', borderLeftWidth: '4px' }}
                   >
                     <div className="flex-1">
-                      <div className="font-medium">{dept.name_th}</div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{dept.name_th}</span>
+                        <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
+                          {getBusinessLabel(dept.business_type)}
+                        </span>
+                      </div>
                       {dept.name_en && (
                         <div className="text-sm text-muted-foreground">{dept.name_en}</div>
                       )}
@@ -375,6 +454,16 @@ const OrgDepartmentManagement = () => {
           </Card>
         )
       ))}
+
+      {filteredDepartments.length === 0 && (
+        <Card>
+          <CardContent className="py-10 text-center text-muted-foreground">
+            {filterBusiness === 'all' 
+              ? 'ยังไม่มีข้อมูลโครงสร้างองค์กร' 
+              : `ยังไม่มีข้อมูลโครงสร้างองค์กรสำหรับ ${getBusinessLabel(filterBusiness)}`}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
