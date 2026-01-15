@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Loader2, Plus, Pencil, Trash2, X, Save, Building, Hotel, Heart, Leaf, HardHat, Building2 } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, X, Save, Building, Hotel, Heart, Leaf, HardHat } from 'lucide-react';
 
 interface OrgDepartment {
   id: string;
@@ -34,7 +34,6 @@ const levelOptions = [
 ];
 
 const businessOptions = [
-  { value: 'jw_group', label: 'JW Group (บริษัทแม่)', icon: Building2 },
   { value: 'realestate', label: 'อสังหาริมทรัพย์', icon: Building },
   { value: 'hotel', label: 'โรงแรม', icon: Hotel },
   { value: 'pet', label: 'สัตว์เลี้ยง', icon: Heart },
@@ -59,7 +58,7 @@ const OrgDepartmentManagement = () => {
     sub_items: '',
     position_order: 0,
     is_published: true,
-    business_type: 'jw_group',
+    business_type: 'realestate',
   });
 
   useEffect(() => {
@@ -80,7 +79,7 @@ const OrgDepartmentManagement = () => {
       const parsed: OrgDepartment[] = (data || []).map(d => ({
         ...d,
         sub_items: Array.isArray(d.sub_items) ? (d.sub_items as string[]) : [],
-        business_type: d.business_type || 'jw_group'
+        business_type: d.business_type || 'realestate'
       }));
       
       setDepartments(parsed);
@@ -103,7 +102,7 @@ const OrgDepartmentManagement = () => {
       sub_items: '',
       position_order: 0,
       is_published: true,
-      business_type: filterBusiness === 'all' ? 'jw_group' : filterBusiness,
+      business_type: filterBusiness === 'all' ? 'realestate' : filterBusiness,
     });
     setEditingId(null);
     setShowAddForm(false);
@@ -120,7 +119,7 @@ const OrgDepartmentManagement = () => {
       sub_items: dept.sub_items.join('\n'),
       position_order: dept.position_order,
       is_published: dept.is_published,
-      business_type: dept.business_type || 'jw_group',
+      business_type: dept.business_type || 'realestate',
     });
     setEditingId(dept.id);
     setShowAddForm(true);
