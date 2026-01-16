@@ -1,11 +1,12 @@
-import { useState, useRef, MouseEvent } from 'react';
+import React, { useState, useRef, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { Calendar, ArrowRight, Play, ImageIcon, Building2, Hotel, Heart, Stethoscope } from 'lucide-react';
+import { Calendar, ArrowRight, Play, ImageIcon, Building2, Hotel, Heart, Stethoscope, HardHat, LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useBusinessTypes } from '@/hooks/useBusinessTypes';
 
 // Enhanced Mockup placeholder for news without images
 const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: boolean; title?: string }) => {
@@ -65,7 +66,19 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
   );
 };
 
-type BusinessType = 'real_estate' | 'hotel' | 'pet' | 'wellness';
+// Icon mapping helper
+const iconMap: Record<string, LucideIcon> = {
+  building: Building2,
+  hotel: Hotel,
+  heart: Heart,
+  stethoscope: Stethoscope,
+  hardhat: HardHat,
+};
+
+const getIconComponent = (iconName: string | null): LucideIcon => {
+  if (!iconName) return Building2;
+  return iconMap[iconName.toLowerCase()] || Building2;
+};
 
 interface NewsItem {
   id: string;
@@ -84,22 +97,27 @@ interface BentoNewsCardProps {
   news: NewsItem;
   index: number;
   inView: boolean;
+  businessTypes?: { business_key: string; name_th: string; color: string | null }[];
 }
 
-// Business type badge colors
-const getBusinessTypeBadge = (businessType?: string) => {
-  switch (businessType) {
-    case 'real_estate':
-      return { label: 'อสังหาริมทรัพย์', className: 'bg-amber-500 hover:bg-amber-600' };
-    case 'hotel':
-      return { label: 'โรงแรม', className: 'bg-blue-500 hover:bg-blue-600' };
-    case 'pet':
-      return { label: 'สัตว์เลี้ยง', className: 'bg-pink-500 hover:bg-pink-600' };
-    case 'wellness':
-      return { label: 'สุขภาพ', className: 'bg-emerald-500 hover:bg-emerald-600' };
-    default:
-      return { label: 'ทั่วไป', className: 'bg-gray-500 hover:bg-gray-600' };
+// Business type badge colors - dynamic version
+const getBusinessTypeBadge = (
+  businessType: string | undefined,
+  businessTypes?: { business_key: string; name_th: string; color: string | null }[]
+) => {
+  if (!businessTypes) {
+    return { label: 'ทั่วไป', className: 'bg-gray-500 hover:bg-gray-600' };
   }
+  
+  const found = businessTypes.find(bt => bt.business_key === businessType);
+  if (found) {
+    return { 
+      label: found.name_th, 
+      className: '', 
+      style: { backgroundColor: found.color || '#6b7280' } 
+    };
+  }
+  return { label: 'ทั่วไป', className: 'bg-gray-500 hover:bg-gray-600', style: undefined };
 };
 
 const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
@@ -340,7 +358,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
 };
 
 // Uniform News Card for Grid Layout
-const UniformNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
+const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardProps) => {
   const { t } = useTranslation();
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -420,15 +438,21 @@ const UniformNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         />
 
         <div className="absolute top-4 left-4 z-10 flex gap-2">
-          <Badge
-            className={cn(
-              "text-white shadow-lg transition-all duration-300 text-xs",
-              getBusinessTypeBadge(news.businessType).className,
-              isHovered ? "scale-105" : ""
-            )}
-          >
-            {getBusinessTypeBadge(news.businessType).label}
-          </Badge>
+          {(() => {
+            const badge = getBusinessTypeBadge(news.businessType, businessTypes);
+            return (
+              <Badge
+                className={cn(
+                  "text-white shadow-lg transition-all duration-300 text-xs",
+                  badge.className,
+                  isHovered ? "scale-105" : ""
+                )}
+                style={badge.style}
+              >
+                {badge.label}
+              </Badge>
+            );
+          })()}
         </div>
 
         <div
@@ -485,17 +509,21 @@ const UniformNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
 // Business Type Tab Component
 const BusinessTypeTabs = ({ 
   activeType, 
-  onTypeChange 
+  onTypeChange,
+  businessTypesData
 }: { 
-  activeType: BusinessType; 
-  onTypeChange: (type: BusinessType) => void;
+  activeType: string; 
+  onTypeChange: (type: string) => void;
+  businessTypesData: { business_key: string; name_th: string; icon_name: string | null }[];
 }) => {
-  const businessTypes: { key: BusinessType; label: string; icon: React.ReactNode }[] = [
-    { key: 'real_estate', label: 'บริษัทเจดับบลิว เรียลเอสเตท จำกัด', icon: <Building2 className="h-5 w-5" /> },
-    { key: 'hotel', label: 'โรงแรม', icon: <Hotel className="h-5 w-5" /> },
-    { key: 'pet', label: 'สัตว์เลี้ยง', icon: <Heart className="h-5 w-5" /> },
-    { key: 'wellness', label: 'สุขภาพ', icon: <Stethoscope className="h-5 w-5" /> },
-  ];
+  const businessTypes = businessTypesData.map(bt => {
+    const IconComponent = getIconComponent(bt.icon_name);
+    return {
+      key: bt.business_key,
+      label: bt.name_th,
+      icon: <IconComponent className="h-5 w-5" />
+    };
+  });
 
   return (
     <div className="relative mb-10">
@@ -534,8 +562,16 @@ interface BentoNewsSectionProps {
 }
 
 export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNewsSectionProps) => {
-  const [activeBusinessType, setActiveBusinessType] = useState<BusinessType>('real_estate');
+  const { data: businessTypesData = [] } = useBusinessTypes();
+  const [activeBusinessType, setActiveBusinessType] = useState<string>('');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  // Set default active business type when data loads
+  React.useEffect(() => {
+    if (businessTypesData.length > 0 && !activeBusinessType) {
+      setActiveBusinessType(businessTypesData[0].business_key);
+    }
+  }, [businessTypesData, activeBusinessType]);
 
   // กรองข่าวตามธุรกิจที่เลือก (เฉพาะเมื่อเปิด filter)
   const filteredNews = showFilters 
@@ -553,10 +589,11 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
 
   return (
     <div ref={ref}>
-      {showFilters && (
+      {showFilters && businessTypesData.length > 0 && (
         <BusinessTypeTabs 
           activeType={activeBusinessType} 
-          onTypeChange={setActiveBusinessType} 
+          onTypeChange={setActiveBusinessType}
+          businessTypesData={businessTypesData}
         />
       )}
 
@@ -568,6 +605,7 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
             news={newsItem}
             index={index}
             inView={inView}
+            businessTypes={businessTypesData}
           />
         ))}
       </div>

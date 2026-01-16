@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Loader2, Plus, Pencil, Trash2, X, Save, Building, Hotel, Heart, Leaf, HardHat } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, X, Save, Building, Hotel, Heart, Leaf, HardHat, LucideIcon } from 'lucide-react';
+import { useAllBusinessTypes } from '@/hooks/useBusinessTypes';
 
 interface OrgDepartment {
   id: string;
@@ -33,15 +34,22 @@ const levelOptions = [
   { value: 'department', label: 'ฝ่ายงาน' },
 ];
 
-const businessOptions = [
-  { value: 'realestate', label: 'บริษัทเจดับบลิว เรียลเอสเตท จำกัด', icon: Building },
-  { value: 'hotel', label: 'โรงแรม', icon: Hotel },
-  { value: 'pet', label: 'สัตว์เลี้ยง', icon: Heart },
-  { value: 'wellness', label: 'สุขภาพ', icon: Leaf },
-  { value: 'construction', label: 'ก่อสร้าง', icon: HardHat },
-];
+// Icon mapping helper
+const iconMap: Record<string, LucideIcon> = {
+  building: Building,
+  hotel: Hotel,
+  heart: Heart,
+  leaf: Leaf,
+  hardhat: HardHat,
+};
+
+const getIconComponent = (iconName: string | null): LucideIcon => {
+  if (!iconName) return Building;
+  return iconMap[iconName.toLowerCase()] || Building;
+};
 
 const OrgDepartmentManagement = () => {
+  const { data: businessTypesData = [], isLoading: businessTypesLoading } = useAllBusinessTypes();
   const [departments, setDepartments] = useState<OrgDepartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -58,7 +66,7 @@ const OrgDepartmentManagement = () => {
     sub_items: '',
     position_order: 0,
     is_published: true,
-    business_type: 'realestate',
+    business_type: '',
   });
 
   useEffect(() => {
@@ -92,6 +100,9 @@ const OrgDepartmentManagement = () => {
   };
 
   const resetForm = () => {
+    const defaultBusinessType = filterBusiness === 'all' 
+      ? (businessTypesData[0]?.business_key || '') 
+      : filterBusiness;
     setFormData({
       name_th: '',
       name_en: '',
@@ -102,7 +113,7 @@ const OrgDepartmentManagement = () => {
       sub_items: '',
       position_order: 0,
       is_published: true,
-      business_type: filterBusiness === 'all' ? 'realestate' : filterBusiness,
+      business_type: defaultBusinessType,
     });
     setEditingId(null);
     setShowAddForm(false);
@@ -205,10 +216,10 @@ const OrgDepartmentManagement = () => {
   };
 
   const getBusinessLabel = (businessType: string) => {
-    return businessOptions.find(b => b.value === businessType)?.label || businessType;
+    return businessTypesData.find(b => b.business_key === businessType)?.name_th || businessType;
   };
 
-  if (loading) {
+  if (loading || businessTypesLoading) {
     return (
       <div className="flex items-center justify-center py-10">
         <Loader2 className="h-6 w-6 animate-spin" />
@@ -230,13 +241,13 @@ const OrgDepartmentManagement = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">ทั้งหมด</SelectItem>
-              {businessOptions.map((opt) => {
-                const Icon = opt.icon;
+              {businessTypesData.map((opt) => {
+                const Icon = getIconComponent(opt.icon_name);
                 return (
-                  <SelectItem key={opt.value} value={opt.value}>
+                  <SelectItem key={opt.business_key} value={opt.business_key}>
                     <div className="flex items-center gap-2">
                       <Icon className="h-4 w-4" />
-                      <span>{opt.label}</span>
+                      <span>{opt.name_th}</span>
                     </div>
                   </SelectItem>
                 );
@@ -273,13 +284,13 @@ const OrgDepartmentManagement = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {businessOptions.map((opt) => {
-                    const Icon = opt.icon;
+                  {businessTypesData.map((opt) => {
+                    const Icon = getIconComponent(opt.icon_name);
                     return (
-                      <SelectItem key={opt.value} value={opt.value}>
+                      <SelectItem key={opt.business_key} value={opt.business_key}>
                         <div className="flex items-center gap-2">
                           <Icon className="h-4 w-4" />
-                          <span>{opt.label}</span>
+                          <span>{opt.name_th}</span>
                         </div>
                       </SelectItem>
                     );
