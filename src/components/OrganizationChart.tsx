@@ -4,7 +4,8 @@ import { useInView } from 'react-intersection-observer';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Building, Hotel, Heart, Leaf, HardHat } from 'lucide-react';
+import { Loader2, Building, Hotel, Heart, Leaf, HardHat, LucideIcon } from 'lucide-react';
+import { useBusinessTypes, BusinessType } from '@/hooks/useBusinessTypes';
 
 interface OrgDepartment {
   id: string;
@@ -19,58 +20,49 @@ interface OrgDepartment {
   business_type: string;
 }
 
-const businessOptions = [
-  { 
-    value: 'realestate', 
-    label_th: 'บริษัทเจดับบลิว เรียลเอสเตท จำกัด', 
-    label_en: 'JW Real Estate Co., Ltd.',
-    icon: Building,
-    color: 'text-amber-600'
-  },
-  { 
-    value: 'hotel', 
-    label_th: 'โรงแรม', 
-    label_en: 'Hotel',
-    icon: Hotel,
-    color: 'text-neutral-700'
-  },
-  { 
-    value: 'pet', 
-    label_th: 'สัตว์เลี้ยง', 
-    label_en: 'Pet Care',
-    icon: Heart,
-    color: 'text-teal-500'
-  },
-  { 
-    value: 'wellness', 
-    label_th: 'สุขภาพ', 
-    label_en: 'Wellness',
-    icon: Leaf,
-    color: 'text-green-500'
-  },
-  { 
-    value: 'construction', 
-    label_th: 'ก่อสร้าง', 
-    label_en: 'Construction',
-    icon: HardHat,
-    color: 'text-blue-500'
-  },
-];
+// Icon mapping helper
+const iconMap: Record<string, LucideIcon> = {
+  building: Building,
+  hotel: Hotel,
+  heart: Heart,
+  leaf: Leaf,
+  hardhat: HardHat,
+};
+
+const getIconComponent = (iconName: string | null): LucideIcon => {
+  if (!iconName) return Building;
+  return iconMap[iconName.toLowerCase()] || Building;
+};
+
+// Color mapping for text colors
+const getTextColorClass = (color: string | null): string => {
+  if (!color) return 'text-primary';
+  // Convert hex to a tailwind-compatible color or return inline style
+  return 'text-primary';
+};
 
 const OrganizationChart = () => {
   const { i18n } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const isEnglish = i18n.language === 'en';
   
+  const { data: businessTypesData = [], isLoading: businessTypesLoading } = useBusinessTypes();
   const [allDepartments, setAllDepartments] = useState<OrgDepartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDept, setSelectedDept] = useState<OrgDepartment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBusiness, setSelectedBusiness] = useState('realestate');
+  const [selectedBusiness, setSelectedBusiness] = useState('');
 
   useEffect(() => {
     fetchDepartments();
   }, []);
+
+  // Set default selected business when data loads
+  useEffect(() => {
+    if (businessTypesData.length > 0 && !selectedBusiness) {
+      setSelectedBusiness(businessTypesData[0].business_key);
+    }
+  }, [businessTypesData, selectedBusiness]);
 
   const fetchDepartments = async () => {
     try {
@@ -111,10 +103,13 @@ const OrganizationChart = () => {
   const getName = (dept: OrgDepartment) => isEnglish && dept.name_en ? dept.name_en : dept.name_th;
   const getDesc = (dept: OrgDepartment) => isEnglish && dept.description_en ? dept.description_en : dept.description_th;
 
-  const currentBusinessOption = businessOptions.find(b => b.value === selectedBusiness);
-  const CurrentIcon = currentBusinessOption?.icon || Building;
+  const currentBusinessOption = businessTypesData.find(b => b.business_key === selectedBusiness);
+  const CurrentIcon = getIconComponent(currentBusinessOption?.icon_name || null);
+  const currentLabel = currentBusinessOption 
+    ? (isEnglish ? (currentBusinessOption.name_en || currentBusinessOption.name_th) : currentBusinessOption.name_th)
+    : '';
 
-  if (loading) {
+  if (loading || businessTypesLoading) {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -150,25 +145,25 @@ const OrganizationChart = () => {
             <Select value={selectedBusiness} onValueChange={setSelectedBusiness}>
               <SelectTrigger className="w-[320px] h-14 text-lg font-medium border-2 border-primary/20 bg-card shadow-lg hover:border-primary/40 transition-all">
                 <div className="flex items-center gap-3">
-                  <CurrentIcon className={`h-5 w-5 ${currentBusinessOption?.color}`} />
+                  <CurrentIcon className="h-5 w-5" style={{ color: currentBusinessOption?.color || undefined }} />
                   <SelectValue>
-                    {isEnglish ? currentBusinessOption?.label_en : currentBusinessOption?.label_th}
+                    {currentLabel}
                   </SelectValue>
                 </div>
               </SelectTrigger>
               <SelectContent className="w-[320px]">
-                {businessOptions.map((option) => {
-                  const Icon = option.icon;
+                {businessTypesData.map((option) => {
+                  const Icon = getIconComponent(option.icon_name);
                   return (
                     <SelectItem 
-                      key={option.value} 
-                      value={option.value}
+                      key={option.business_key} 
+                      value={option.business_key}
                       className="py-3 cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <Icon className={`h-5 w-5 ${option.color}`} />
+                        <Icon className="h-5 w-5" style={{ color: option.color || undefined }} />
                         <span className="font-medium">
-                          {isEnglish ? option.label_en : option.label_th}
+                          {isEnglish ? (option.name_en || option.name_th) : option.name_th}
                         </span>
                       </div>
                     </SelectItem>
@@ -337,12 +332,12 @@ const OrganizationChart = () => {
           /* Empty State */
           <div className="max-w-2xl mx-auto text-center py-16">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-              <CurrentIcon className={`h-10 w-10 ${currentBusinessOption?.color}`} />
+              <CurrentIcon className="h-10 w-10" style={{ color: currentBusinessOption?.color || undefined }} />
             </div>
             <h3 className="text-2xl font-semibold text-foreground mb-3">
               {isEnglish 
-                ? `No organizational data for ${currentBusinessOption?.label_en}` 
-                : `ยังไม่มีข้อมูลโครงสร้างองค์กรสำหรับ${currentBusinessOption?.label_th}`}
+                ? `No organizational data for ${currentBusinessOption?.name_en || currentBusinessOption?.name_th}` 
+                : `ยังไม่มีข้อมูลโครงสร้างองค์กรสำหรับ${currentBusinessOption?.name_th}`}
             </h3>
             <p className="text-muted-foreground">
               {isEnglish 
