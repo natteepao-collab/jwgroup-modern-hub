@@ -21,7 +21,8 @@ import {
   Building,
   Mail,
   GitBranch,
-  Cookie
+  Cookie,
+  Tags
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -40,6 +41,7 @@ import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
 import OrgDepartmentManagement from '@/components/admin/OrgDepartmentManagement';
 import SocialMediaManagement from '@/components/admin/SocialMediaManagement';
 import CookieManagement from '@/components/admin/CookieManagement';
+import BusinessTypesManagement from '@/components/admin/BusinessTypesManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -230,6 +232,7 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
+            <BusinessTypesManagement />
             <CookieManagement />
             <SocialMediaManagement />
             <div className="grid gap-6 md:grid-cols-2">
