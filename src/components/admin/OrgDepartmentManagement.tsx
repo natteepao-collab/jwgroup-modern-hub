@@ -34,7 +34,7 @@ const levelOptions = [
 ];
 
 const businessOptions = [
-  { value: 'realestate', label: 'อสังหาริมทรัพย์', icon: Building },
+  { value: 'realestate', label: 'บริษัทเจดับบลิว เรียลเอสเตท จำกัด', icon: Building },
   { value: 'hotel', label: 'โรงแรม', icon: Hotel },
   { value: 'pet', label: 'สัตว์เลี้ยง', icon: Heart },
   { value: 'wellness', label: 'สุขภาพ', icon: Leaf },

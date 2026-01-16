@@ -22,8 +22,8 @@ interface OrgDepartment {
 const businessOptions = [
   { 
     value: 'realestate', 
-    label_th: 'อสังหาริมทรัพย์', 
-    label_en: 'Real Estate',
+    label_th: 'บริษัทเจดับบลิว เรียลเอสเตท จำกัด', 
+    label_en: 'JW Real Estate Co., Ltd.',
     icon: Building,
     color: 'text-amber-600'
   },
