@@ -68,6 +68,45 @@ export type Database = {
         }
         Relationships: []
       }
+      business_types: {
+        Row: {
+          business_key: string
+          color: string | null
+          created_at: string
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          name_en: string | null
+          name_th: string
+          position_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          business_key: string
+          color?: string | null
+          created_at?: string
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_en?: string | null
+          name_th: string
+          position_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          business_key?: string
+          color?: string | null
+          created_at?: string
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_en?: string | null
+          name_th?: string
+          position_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cookie_settings: {
         Row: {
           created_at: string
