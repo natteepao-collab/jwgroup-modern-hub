@@ -514,14 +514,15 @@ const BusinessTypeTabs = ({
 }: { 
   activeType: string; 
   onTypeChange: (type: string) => void;
-  businessTypesData: { business_key: string; name_th: string; icon_name: string | null }[];
+  businessTypesData: { business_key: string; name_th: string; icon_name: string | null; color: string | null }[];
 }) => {
   const businessTypes = businessTypesData.map(bt => {
     const IconComponent = getIconComponent(bt.icon_name);
     return {
       key: bt.business_key,
       label: bt.name_th,
-      icon: <IconComponent className="h-4 w-4 md:h-5 md:w-5" />
+      icon: <IconComponent className="h-4 w-4 md:h-5 md:w-5" />,
+      color: bt.color || '#d97706'
     };
   });
 
@@ -531,34 +532,41 @@ const BusinessTypeTabs = ({
       <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible scrollbar-hide">
         <div className="bg-gradient-to-br from-background/80 via-card/60 to-background/80 backdrop-blur-xl rounded-2xl p-1.5 md:p-2 border border-border/30 shadow-lg shadow-black/5 dark:shadow-black/20 inline-flex min-w-max md:w-auto md:mx-auto">
           <div className="flex gap-1 md:gap-1.5">
-            {businessTypes.map((type) => (
-              <button
-                key={type.key}
-                onClick={() => onTypeChange(type.key)}
-                className={cn(
-                  "relative flex items-center gap-1.5 md:gap-2.5 px-3 py-2 md:px-5 md:py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-xs md:text-sm tracking-wide",
-                  activeType === type.key
-                    ? "bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/30 ring-1 ring-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:shadow-sm"
-                )}
-              >
-                <span className={cn(
-                  "transition-all duration-300",
-                  activeType === type.key ? "scale-110 drop-shadow-sm" : "opacity-70 group-hover:opacity-100"
-                )}>
-                  {type.icon}
-                </span>
-                <span className={cn(
-                  "font-semibold",
-                  activeType === type.key && "drop-shadow-sm"
-                )}>
-                  {type.label}
-                </span>
-                {activeType === type.key && (
-                  <span className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
-                )}
-              </button>
-            ))}
+            {businessTypes.map((type) => {
+              const isActive = activeType === type.key;
+              return (
+                <button
+                  key={type.key}
+                  onClick={() => onTypeChange(type.key)}
+                  className={cn(
+                    "relative flex items-center gap-1.5 md:gap-2.5 px-3 py-2 md:px-5 md:py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-xs md:text-sm tracking-wide",
+                    isActive
+                      ? "text-white shadow-lg ring-1 ring-white/20"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:shadow-sm"
+                  )}
+                  style={isActive ? {
+                    background: `linear-gradient(135deg, ${type.color}, ${type.color}dd)`,
+                    boxShadow: `0 10px 25px -5px ${type.color}50`
+                  } : undefined}
+                >
+                  <span className={cn(
+                    "transition-all duration-300",
+                    isActive ? "scale-110 drop-shadow-sm" : "opacity-70"
+                  )}>
+                    {type.icon}
+                  </span>
+                  <span className={cn(
+                    "font-semibold",
+                    isActive && "drop-shadow-sm"
+                  )}>
+                    {type.label}
+                  </span>
+                  {isActive && (
+                    <span className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
