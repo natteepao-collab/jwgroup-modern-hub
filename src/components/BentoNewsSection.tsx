@@ -527,28 +527,31 @@ const BusinessTypeTabs = ({
 
   return (
     <div className="relative mb-10">
-      <div className="bg-muted/30 dark:bg-muted/20 rounded-2xl p-2 border border-border/50 inline-flex w-full md:w-auto md:mx-auto md:flex justify-center">
-        <div className="flex flex-wrap md:flex-nowrap gap-2 w-full md:w-auto justify-center">
-          {businessTypes.map((type) => (
-            <button
-              key={type.key}
-              onClick={() => onTypeChange(type.key)}
-              className={cn(
-                "relative flex items-center gap-2.5 px-5 py-3 rounded-xl font-medium transition-all duration-300 flex-1 md:flex-initial justify-center min-w-[140px]",
-                activeType === type.key
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              )}
-            >
-              <span className={cn(
-                "transition-transform duration-300",
-                activeType === type.key && "scale-110"
-              )}>
-                {type.icon}
-              </span>
-              <span className="whitespace-nowrap">{type.label}</span>
-            </button>
-          ))}
+      {/* Horizontal scroll container for mobile */}
+      <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible">
+        <div className="bg-muted/30 dark:bg-muted/20 rounded-2xl p-2 border border-border/50 inline-flex min-w-max md:w-auto md:mx-auto">
+          <div className="flex gap-2">
+            {businessTypes.map((type) => (
+              <button
+                key={type.key}
+                onClick={() => onTypeChange(type.key)}
+                className={cn(
+                  "relative flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-sm md:text-base md:px-5 md:py-3 md:gap-2.5",
+                  activeType === type.key
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                )}
+              >
+                <span className={cn(
+                  "transition-transform duration-300",
+                  activeType === type.key && "scale-110"
+                )}>
+                  {type.icon}
+                </span>
+                <span>{type.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
