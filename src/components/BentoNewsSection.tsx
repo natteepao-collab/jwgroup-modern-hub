@@ -521,34 +521,42 @@ const BusinessTypeTabs = ({
     return {
       key: bt.business_key,
       label: bt.name_th,
-      icon: <IconComponent className="h-5 w-5" />
+      icon: <IconComponent className="h-4 w-4 md:h-5 md:w-5" />
     };
   });
 
   return (
     <div className="relative mb-10">
       {/* Horizontal scroll container for mobile */}
-      <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible">
-        <div className="bg-muted/30 dark:bg-muted/20 rounded-2xl p-2 border border-border/50 inline-flex min-w-max md:w-auto md:mx-auto">
-          <div className="flex gap-2">
+      <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible scrollbar-hide">
+        <div className="bg-gradient-to-br from-background/80 via-card/60 to-background/80 backdrop-blur-xl rounded-2xl p-1.5 md:p-2 border border-border/30 shadow-lg shadow-black/5 dark:shadow-black/20 inline-flex min-w-max md:w-auto md:mx-auto">
+          <div className="flex gap-1 md:gap-1.5">
             {businessTypes.map((type) => (
               <button
                 key={type.key}
                 onClick={() => onTypeChange(type.key)}
                 className={cn(
-                  "relative flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-sm md:text-base md:px-5 md:py-3 md:gap-2.5",
+                  "relative flex items-center gap-1.5 md:gap-2.5 px-3 py-2 md:px-5 md:py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-xs md:text-sm tracking-wide",
                   activeType === type.key
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    ? "bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/30 ring-1 ring-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:shadow-sm"
                 )}
               >
                 <span className={cn(
-                  "transition-transform duration-300",
-                  activeType === type.key && "scale-110"
+                  "transition-all duration-300",
+                  activeType === type.key ? "scale-110 drop-shadow-sm" : "opacity-70 group-hover:opacity-100"
                 )}>
                   {type.icon}
                 </span>
-                <span>{type.label}</span>
+                <span className={cn(
+                  "font-semibold",
+                  activeType === type.key && "drop-shadow-sm"
+                )}>
+                  {type.label}
+                </span>
+                {activeType === type.key && (
+                  <span className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
+                )}
               </button>
             ))}
           </div>
