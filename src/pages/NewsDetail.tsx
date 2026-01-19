@@ -162,14 +162,14 @@ const ImageGalleryWithThumbnails = ({
 
       {/* Fullscreen Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-6xl w-full p-0 bg-black/95 border-none shadow-none focus:outline-none overflow-hidden">
-          <div className="relative w-full h-[85vh] flex flex-col">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] w-auto h-auto p-0 bg-black/95 border-none shadow-none focus:outline-none overflow-hidden">
+          <div className="relative flex flex-col max-h-[95vh]">
             {/* Main modal image */}
-            <div className="flex-1 flex items-center justify-center p-4">
+            <div className="flex-1 flex items-center justify-center p-4 overflow-auto">
               <img
                 src={allImages[selectedIndex]}
                 alt={`${title} - รูปที่ ${selectedIndex + 1}`}
-                className="max-w-full max-h-full object-contain rounded-lg"
+                className="max-w-[90vw] max-h-[75vh] w-auto h-auto object-contain rounded-lg"
               />
             </div>
 
