@@ -82,13 +82,13 @@ const ImageGalleryWithThumbnails = ({
     <div className="space-y-4">
       {/* Main Image Display */}
       <div 
-        className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted cursor-pointer group"
+        className="relative w-full rounded-xl overflow-hidden bg-muted cursor-pointer group flex items-center justify-center min-h-[300px] md:min-h-[400px] lg:min-h-[500px]"
         onClick={openModal}
       >
         <img
           src={allImages[selectedIndex]}
           alt={`${title} - รูปที่ ${selectedIndex + 1}`}
-          className="w-full h-full object-cover transition-transform duration-500"
+          className="max-w-full max-h-[600px] w-auto h-auto object-contain transition-transform duration-500"
         />
         
         {/* Zoom indicator on hover */}
