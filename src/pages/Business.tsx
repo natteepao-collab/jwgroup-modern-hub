@@ -26,35 +26,35 @@ const defaultBusinessImages: Record<string, string> = {
 const businessTabs = [
   {
     id: 'realestate',
-    label: 'อสังหาริมทรัพย์',
+    label: 'JW Real Estates',
     icon: Building,
     activeColor: 'data-[state=active]:bg-[#D97706] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#D97706]/10 hover:text-[#D97706]'
   },
   {
     id: 'hotel',
-    label: 'โรงแรม',
+    label: '12 The Residence',
     icon: Hotel,
     activeColor: 'data-[state=active]:bg-[#1A1A1A] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#1A1A1A]/10 hover:text-[#1A1A1A]'
   },
   {
     id: 'pet',
-    label: 'สัตว์เลี้ยง',
+    label: '3DPet Hospital',
     icon: Heart,
     activeColor: 'data-[state=active]:bg-[#14B8A6] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#14B8A6]/10 hover:text-[#14B8A6]'
   },
   {
     id: 'wellness',
-    label: 'สุขภาพ',
+    label: 'JW Herbal',
     icon: Leaf,
     activeColor: 'data-[state=active]:bg-[#22C55E] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#22C55E]/10 hover:text-[#22C55E]'
   },
   {
     id: 'construction',
-    label: 'ก่อสร้าง',
+    label: 'ธนบูลย์',
     icon: HardHat,
     activeColor: 'data-[state=active]:bg-[#3B82F6] data-[state=active]:text-white',
     hoverColor: 'hover:bg-[#3B82F6]/10 hover:text-[#3B82F6]'
