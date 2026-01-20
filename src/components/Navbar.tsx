@@ -65,7 +65,7 @@ export const Navbar = () => {
   const menuItems = [
     { path: '/', labelKey: 'nav.home', icon: Home },
     { path: '/business', labelKey: 'nav.business', icon: Building2 },
-    { path: '/sustainability', labelKey: 'nav.sustainability', icon: Leaf },
+    { path: '/vision-mission', labelKey: 'nav.visionMission', icon: Eye },
     { path: '/news', labelKey: 'nav.news', icon: Newspaper },
     { path: '/careers', labelKey: 'nav.careers', icon: Users },
     { path: '/contact', labelKey: 'nav.contact', icon: Phone },
