@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Building2, Hotel, Heart, Leaf, Target, CheckCircle, Sparkles, ChevronDown, Eye, ListChecks } from 'lucide-react';
+import { Building2, Hotel, Heart, Leaf, Target, CheckCircle, Sparkles, ChevronDown, Eye, ListChecks, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+
+// Import business images
+import realEstateImg from '@/assets/business-realestate.jpg';
+import hotelImg from '@/assets/business-hotel.jpg';
+import petImg from '@/assets/business-pet.jpg';
+import herbalImg from '@/assets/business-wellness.jpg';
 
 // Business data with vision, mission, and core concept
 const businessData = [
@@ -12,9 +17,12 @@ const businessData = [
     name: 'JW Real Estates',
     icon: Building2,
     color: 'from-amber-500 to-orange-600',
-    bgGradient: 'from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30',
+    lightColor: 'from-amber-400 to-orange-500',
+    bgGradient: 'from-amber-50/80 to-orange-50/80 dark:from-amber-950/50 dark:to-orange-950/50',
     accentColor: 'text-amber-600 dark:text-amber-400',
-    borderColor: 'border-amber-500/30',
+    borderColor: 'border-amber-500',
+    dotColor: 'bg-amber-500',
+    image: realEstateImg,
     vision: '"เป็นกลุ่มธุรกิจอสังหาริมทรัพย์ที่มุ่งสร้างคุณค่าการอยู่อาศัยอย่างยั่งยืน ด้วยคุณภาพที่จับต้องได้ บนทำเลที่มีศักยภาพเติบโตจริง เพื่อให้ลูกค้าอยู่อาศัยได้อย่างมั่นคง ในทุกสภาวะเศรษฐกิจ"',
     visionSub: 'ไม่ใช่เพียงการขายที่อยู่อาศัย แต่คือการสร้างความมั่นใจให้กับการตัดสินใจครั้งสำคัญของชีวิต',
     missions: [
@@ -49,10 +57,13 @@ const businessData = [
     id: 'hotel',
     name: '12 The Residence Hotel',
     icon: Hotel,
-    color: 'from-blue-500 to-indigo-600',
-    bgGradient: 'from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30',
-    accentColor: 'text-blue-600 dark:text-blue-400',
-    borderColor: 'border-blue-500/30',
+    color: 'from-gray-700 to-gray-900',
+    lightColor: 'from-gray-600 to-gray-800',
+    bgGradient: 'from-gray-100/80 to-slate-100/80 dark:from-gray-900/50 dark:to-slate-900/50',
+    accentColor: 'text-gray-700 dark:text-gray-300',
+    borderColor: 'border-gray-700',
+    dotColor: 'bg-gray-700',
+    image: hotelImg,
     vision: 'มุ่งมั่นเป็นโรงแรมที่ลูกค้าเลือกพักซ้ำ ด้วยประสบการณ์การเข้าพักที่ "มั่นใจ สะดวก และคุ้มค่า"',
     visionSub: 'ผสานความสะดวกสบาย คุณภาพการบริการ และการดูแลอย่างจริงใจตลอด 24 ชั่วโมง เพื่อตอบโจทย์นักเดินทางยุคใหม่ในทุกสถานการณ์',
     missions: [
@@ -80,12 +91,15 @@ const businessData = [
   },
   {
     id: 'pet',
-    name: '3DPet Hospital & Hotel',
+    name: '3DPet Hospital',
     icon: Heart,
-    color: 'from-rose-500 to-pink-600',
-    bgGradient: 'from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30',
-    accentColor: 'text-rose-600 dark:text-rose-400',
-    borderColor: 'border-rose-500/30',
+    color: 'from-teal-400 to-emerald-500',
+    lightColor: 'from-teal-300 to-emerald-400',
+    bgGradient: 'from-teal-50/80 to-emerald-50/80 dark:from-teal-950/50 dark:to-emerald-950/50',
+    accentColor: 'text-teal-600 dark:text-teal-400',
+    borderColor: 'border-teal-500',
+    dotColor: 'bg-teal-500',
+    image: petImg,
     vision: '"เป็นโรงพยาบาลสัตว์ครบวงจรระดับมาตรฐานโรงพยาบาลคน ที่ผสานเทคโนโลยีทางการแพทย์สมัยใหม่ ทีมสัตวแพทย์ผู้เชี่ยวชาญ และการบริการด้วยหัวใจตลอด 24 ชั่วโมง เพื่อยกระดับคุณภาพชีวิตและอายุขัยของสัตว์เลี้ยง ภายใต้ราคาที่เป็นธรรมและเข้าถึงได้"',
     visionSub: '',
     missions: [
@@ -113,12 +127,15 @@ const businessData = [
   },
   {
     id: 'herbal',
-    name: 'JW Herbal & Wellness',
+    name: 'JW Herbal',
     icon: Leaf,
-    color: 'from-emerald-500 to-teal-600',
-    bgGradient: 'from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30',
-    accentColor: 'text-emerald-600 dark:text-emerald-400',
-    borderColor: 'border-emerald-500/30',
+    color: 'from-blue-800 to-indigo-900',
+    lightColor: 'from-blue-700 to-indigo-800',
+    bgGradient: 'from-blue-50/80 to-indigo-50/80 dark:from-blue-950/50 dark:to-indigo-950/50',
+    accentColor: 'text-blue-800 dark:text-blue-400',
+    borderColor: 'border-blue-800',
+    dotColor: 'bg-blue-800',
+    image: herbalImg,
     vision: '"เป็นแบรนด์ผลิตภัณฑ์ดูแลสุขภาพหลอดเลือดจากสมุนไพร ที่ได้รับความเชื่อมั่นในด้านคุณภาพ มาตรฐาน และความปลอดภัย เพื่อยกระดับคุณภาพชีวิตของผู้คนอย่างยั่งยืน"',
     visionSub: 'ไม่ใช่เพียงการดูแลสุขภาพในวันนี้ แต่คือการสร้างโอกาสให้ผู้คนมีชีวิตที่แข็งแรงในระยะยาว',
     missions: [
@@ -157,228 +174,251 @@ const VisionMission = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/70 to-primary/90" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-20" />
+      <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-primary/95" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-15" />
         
         {/* Decorative Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-20 w-60 h-60 bg-white/5 rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-            <Target className="w-5 h-5 text-white" />
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 mb-5">
+            <Target className="w-4 h-4 text-white" />
             <span className="text-white/90 text-sm font-medium">Vision & Mission</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-display">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-display">
             วิสัยทัศน์และพันธกิจ
           </h1>
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
             ทิศทางและเป้าหมายการดำเนินธุรกิจของแต่ละกลุ่มธุรกิจในเครือ JW Group
           </p>
         </div>
+      </section>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1.5 h-3 bg-white/70 rounded-full mt-2 animate-pulse" />
+      {/* Business Selector - Horizontal Cards */}
+      <section className="py-8 px-4 bg-muted/30 sticky top-16 z-40 backdrop-blur-lg border-b border-border/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3">
+            {businessData.map((business) => {
+              const Icon = business.icon;
+              const isActive = activeTab === business.id;
+              return (
+                <button
+                  key={business.id}
+                  onClick={() => {
+                    setActiveTab(business.id);
+                    setExpandedMission(null);
+                  }}
+                  className={cn(
+                    "group flex items-center gap-2.5 px-5 py-3 rounded-xl border-2 transition-all duration-300",
+                    "hover:shadow-lg hover:-translate-y-0.5",
+                    isActive
+                      ? `bg-gradient-to-r ${business.color} text-white border-transparent shadow-lg`
+                      : "bg-card border-border/50 hover:border-primary/30"
+                  )}
+                >
+                  <div className={cn(
+                    "w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300",
+                    isActive ? "bg-white/20" : `bg-gradient-to-br ${business.lightColor}`
+                  )}>
+                    <Icon className={cn(
+                      "w-4 h-4",
+                      isActive ? "text-white" : "text-white"
+                    )} />
+                  </div>
+                  <span className={cn(
+                    "font-semibold text-sm",
+                    isActive ? "text-white" : "text-foreground"
+                  )}>
+                    {business.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Business Tabs Section */}
+      {/* Main Content */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            {/* Business Selector Tabs */}
-            <TabsList className="w-full flex flex-wrap justify-center gap-2 bg-transparent h-auto p-0 mb-12">
-              {businessData.map((business) => {
-                const Icon = business.icon;
-                const isActive = activeTab === business.id;
-                return (
-                  <TabsTrigger
-                    key={business.id}
-                    value={business.id}
-                    className={cn(
-                      "flex items-center gap-2 px-6 py-3 rounded-xl border-2 transition-all duration-300",
-                      "data-[state=active]:shadow-lg",
-                      isActive
-                        ? `bg-gradient-to-r ${business.color} text-white border-transparent`
-                        : "bg-card border-border hover:border-primary/50"
-                    )}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-semibold text-sm md:text-base">{business.name}</span>
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
+          {/* Business Hero Card */}
+          <div className={cn(
+            "relative rounded-3xl overflow-hidden mb-12 transition-all duration-500",
+            `bg-gradient-to-br ${currentBusiness.bgGradient}`
+          )}>
+            {/* Business Image + Info */}
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Image Side */}
+              <div className="relative h-64 lg:h-auto lg:min-h-[400px]">
+                <img 
+                  src={currentBusiness.image}
+                  alt={currentBusiness.name}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-transparent to-black/40"
+                )} />
+                {/* Floating Badge */}
+                <div className={cn(
+                  "absolute bottom-6 left-6 flex items-center gap-3 px-5 py-3 rounded-xl backdrop-blur-md",
+                  `bg-gradient-to-r ${currentBusiness.color}`
+                )}>
+                  <currentBusiness.icon className="w-6 h-6 text-white" />
+                  <span className="text-white font-bold text-lg">{currentBusiness.name}</span>
+                </div>
+              </div>
 
-            {/* Content for each business */}
-            {businessData.map((business) => {
-              const Icon = business.icon;
-              return (
-                <TabsContent key={business.id} value={business.id} className="mt-0">
+              {/* Vision Side */}
+              <div className="p-8 lg:p-10 flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-6">
                   <div className={cn(
-                    "rounded-3xl p-8 md:p-12 transition-all duration-500",
-                    `bg-gradient-to-br ${business.bgGradient}`
+                    "w-12 h-12 rounded-xl flex items-center justify-center",
+                    `bg-gradient-to-br ${currentBusiness.color}`
                   )}>
-                    {/* Business Header */}
-                    <div className="flex items-center gap-4 mb-8">
+                    <Eye className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground font-display">วิสัยทัศน์</h2>
+                    <p className="text-muted-foreground text-sm">Vision</p>
+                  </div>
+                </div>
+                
+                <div className="relative">
+                  <Quote className={cn(
+                    "absolute -top-2 -left-2 w-8 h-8 opacity-20",
+                    currentBusiness.accentColor
+                  )} />
+                  <p className={cn(
+                    "text-lg md:text-xl leading-relaxed font-medium pl-6",
+                    currentBusiness.accentColor
+                  )}>
+                    {currentBusiness.vision}
+                  </p>
+                </div>
+                
+                {currentBusiness.visionSub && (
+                  <p className="text-muted-foreground mt-6 text-base leading-relaxed pl-6 border-l-2 border-muted">
+                    {currentBusiness.visionSub}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Mission Section */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-8">
+              <div className={cn(
+                "w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg",
+                `bg-gradient-to-br ${currentBusiness.color}`
+              )}>
+                <ListChecks className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground font-display">พันธกิจ</h2>
+                <p className="text-muted-foreground">Mission</p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {currentBusiness.missions.map((mission, index) => (
+                <Card 
+                  key={index}
+                  className={cn(
+                    "group border-0 shadow-md bg-card cursor-pointer transition-all duration-300",
+                    "hover:shadow-xl hover:-translate-y-1",
+                    expandedMission === index && `border-l-4 ${currentBusiness.borderColor} shadow-xl`
+                  )}
+                  onClick={() => setExpandedMission(expandedMission === index ? null : index)}
+                >
+                  <CardContent className="p-5">
+                    <div className="flex items-start gap-4">
                       <div className={cn(
-                        "w-16 h-16 rounded-2xl flex items-center justify-center",
-                        `bg-gradient-to-br ${business.color}`
+                        "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300",
+                        `bg-gradient-to-br ${currentBusiness.color}`,
+                        "group-hover:scale-110"
                       )}>
-                        <Icon className="w-8 h-8 text-white" />
+                        <span className="text-white font-bold">{index + 1}</span>
                       </div>
-                      <div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-foreground font-display">
-                          {business.name}
-                        </h2>
-                      </div>
-                    </div>
-
-                    {/* Vision Section */}
-                    <div className="mb-12">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className={cn(
-                          "w-10 h-10 rounded-xl flex items-center justify-center",
-                          `bg-gradient-to-br ${business.color}`
-                        )}>
-                          <Eye className="w-5 h-5 text-white" />
-                        </div>
-                        <h3 className="text-xl md:text-2xl font-bold text-foreground font-display">
-                          วิสัยทัศน์ (Vision)
-                        </h3>
-                      </div>
-                      
-                      <Card className="border-0 shadow-lg bg-card/80 backdrop-blur-sm">
-                        <CardContent className="p-6 md:p-8">
-                          <p className={cn(
-                            "text-lg md:text-xl leading-relaxed font-medium",
-                            business.accentColor
-                          )}>
-                            {business.vision}
-                          </p>
-                          {business.visionSub && (
-                            <p className="text-muted-foreground mt-4 text-base md:text-lg">
-                              {business.visionSub}
-                            </p>
-                          )}
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    {/* Mission Section */}
-                    <div className="mb-12">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className={cn(
-                          "w-10 h-10 rounded-xl flex items-center justify-center",
-                          `bg-gradient-to-br ${business.color}`
-                        )}>
-                          <ListChecks className="w-5 h-5 text-white" />
-                        </div>
-                        <h3 className="text-xl md:text-2xl font-bold text-foreground font-display">
-                          พันธกิจ (Mission)
-                        </h3>
-                      </div>
-
-                      <div className="space-y-4">
-                        {business.missions.map((mission, index) => (
-                          <Card 
-                            key={index}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <h4 className="font-bold text-foreground text-base leading-tight pr-2">
+                            {mission.title}
+                          </h4>
+                          <ChevronDown 
                             className={cn(
-                              "border-0 shadow-md bg-card/80 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:shadow-lg",
-                              expandedMission === index && `border-l-4 ${business.borderColor}`
+                              "w-5 h-5 text-muted-foreground shrink-0 transition-transform duration-300",
+                              expandedMission === index && "rotate-180"
                             )}
-                            onClick={() => setExpandedMission(expandedMission === index ? null : index)}
-                          >
-                            <CardContent className="p-4 md:p-6">
-                              <div className="flex items-start gap-4">
-                                <div className={cn(
-                                  "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5",
-                                  `bg-gradient-to-br ${business.color}`
-                                )}>
-                                  <span className="text-white font-bold text-sm">{index + 1}</span>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between gap-2">
-                                    <h4 className="font-bold text-foreground text-base md:text-lg">
-                                      {mission.title}
-                                    </h4>
-                                    <ChevronDown 
-                                      className={cn(
-                                        "w-5 h-5 text-muted-foreground shrink-0 transition-transform duration-300",
-                                        expandedMission === index && "rotate-180"
-                                      )}
-                                    />
-                                  </div>
-                                  <div className={cn(
-                                    "overflow-hidden transition-all duration-300",
-                                    expandedMission === index ? "max-h-48 mt-3 opacity-100" : "max-h-0 opacity-0"
-                                  )}>
-                                    <p className="text-muted-foreground leading-relaxed">
-                                      {mission.description}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
+                          />
+                        </div>
+                        <div className={cn(
+                          "overflow-hidden transition-all duration-300",
+                          expandedMission === index ? "max-h-40 mt-3 opacity-100" : "max-h-0 opacity-0"
+                        )}>
+                          <p className="text-muted-foreground text-sm leading-relaxed">
+                            {mission.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
 
-                    {/* Core Concept Section (if exists) */}
-                    {business.coreConcept && (
-                      <div>
-                        <div className="flex items-center gap-3 mb-6">
-                          <div className={cn(
-                            "w-10 h-10 rounded-xl flex items-center justify-center",
-                            `bg-gradient-to-br ${business.color}`
-                          )}>
-                            <Sparkles className="w-5 h-5 text-white" />
-                          </div>
-                          <h3 className="text-xl md:text-2xl font-bold text-foreground font-display">
-                            แนวคิดหลัก (Core Concept)
-                          </h3>
-                        </div>
-
-                        <Card className={cn(
-                          "border-0 shadow-xl overflow-hidden",
-                          `bg-gradient-to-br ${business.color}`
-                        )}>
-                          <CardContent className="p-8 md:p-10 text-center">
-                            <p className="text-2xl md:text-3xl font-bold text-white mb-2 font-display">
-                              "{business.coreConcept.title}"
-                            </p>
-                            <p className="text-lg md:text-xl text-white/90 mb-4">
-                              {business.coreConcept.subtitle}
-                            </p>
-                            {business.coreConcept.description && (
-                              <p className="text-white/80">
-                                {business.coreConcept.description}
-                              </p>
-                            )}
-                          </CardContent>
-                        </Card>
-                      </div>
+          {/* Core Concept Section (if exists) */}
+          {currentBusiness.coreConcept && (
+            <Card className={cn(
+              "border-0 shadow-2xl overflow-hidden",
+              `bg-gradient-to-br ${currentBusiness.color}`
+            )}>
+              <CardContent className="p-0">
+                <div className="grid md:grid-cols-5 gap-0">
+                  {/* Icon Section */}
+                  <div className="md:col-span-1 flex items-center justify-center p-8 bg-black/10">
+                    <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center">
+                      <Sparkles className="w-10 h-10 text-white" />
+                    </div>
+                  </div>
+                  {/* Content Section */}
+                  <div className="md:col-span-4 p-8 md:p-10 flex flex-col justify-center">
+                    <p className="text-white/70 text-sm font-medium uppercase tracking-wider mb-2">
+                      แนวคิดหลัก / Core Concept
+                    </p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 font-display">
+                      "{currentBusiness.coreConcept.title}"
+                    </h3>
+                    <p className="text-lg md:text-xl text-white/90 mb-3">
+                      {currentBusiness.coreConcept.subtitle}
+                    </p>
+                    {currentBusiness.coreConcept.description && (
+                      <p className="text-white/70 text-base">
+                        {currentBusiness.coreConcept.description}
+                      </p>
                     )}
                   </div>
-                </TabsContent>
-              );
-            })}
-          </Tabs>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </section>
 
-      {/* Overview Section */}
+      {/* JW Group Values Section */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-display">
+            <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-5 py-2 mb-4">
+              <Target className="w-4 h-4 text-primary" />
+              <span className="text-primary text-sm font-medium">Core Values</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3 font-display">
               JW Group Values
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -386,40 +426,51 @@ const VisionMission = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: CheckCircle,
                 title: 'คุณภาพ',
                 subtitle: 'Quality',
-                description: 'มุ่งมั่นรักษามาตรฐานคุณภาพสูงสุดในทุกผลิตภัณฑ์และบริการ'
+                description: 'มุ่งมั่นรักษามาตรฐานคุณภาพสูงสุดในทุกผลิตภัณฑ์และบริการ',
+                gradient: 'from-amber-500 to-orange-600'
               },
               {
                 icon: Heart,
                 title: 'ความใส่ใจ',
                 subtitle: 'Care',
-                description: 'ดูแลลูกค้าและสังคมด้วยความจริงใจเสมือนคนในครอบครัว'
+                description: 'ดูแลลูกค้าและสังคมด้วยความจริงใจเสมือนคนในครอบครัว',
+                gradient: 'from-rose-500 to-pink-600'
               },
               {
                 icon: Target,
                 title: 'ความยั่งยืน',
                 subtitle: 'Sustainability',
-                description: 'ดำเนินธุรกิจโดยคำนึงถึงความยั่งยืนในระยะยาว'
+                description: 'ดำเนินธุรกิจโดยคำนึงถึงความยั่งยืนในระยะยาว',
+                gradient: 'from-emerald-500 to-teal-600'
               },
               {
                 icon: Sparkles,
                 title: 'นวัตกรรม',
                 subtitle: 'Innovation',
-                description: 'พัฒนาและปรับปรุงอย่างต่อเนื่องเพื่อตอบสนองความต้องการ'
+                description: 'พัฒนาและปรับปรุงอย่างต่อเนื่องเพื่อตอบสนองความต้องการ',
+                gradient: 'from-blue-500 to-indigo-600'
               }
             ].map((value, index) => (
-              <Card key={index} className="border-0 shadow-lg bg-card hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <CardContent className="p-6 text-center">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <value.icon className="w-7 h-7 text-primary" />
+              <Card 
+                key={index} 
+                className="group border-0 shadow-lg bg-card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
+              >
+                <CardContent className="p-6 text-center relative">
+                  <div className={cn(
+                    "w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 transition-all duration-300",
+                    `bg-gradient-to-br ${value.gradient}`,
+                    "group-hover:scale-110 group-hover:shadow-lg"
+                  )}>
+                    <value.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-1 font-display">{value.title}</h3>
-                  <p className="text-sm text-primary mb-3">{value.subtitle}</p>
+                  <h3 className="text-xl font-bold text-foreground mb-1 font-display">{value.title}</h3>
+                  <p className="text-sm text-primary mb-3 font-medium">{value.subtitle}</p>
                   <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
                 </CardContent>
               </Card>
