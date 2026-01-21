@@ -629,6 +629,57 @@ export type Database = {
         }
         Relationships: []
       }
+      vision_missions: {
+        Row: {
+          business_type: string
+          core_concept: Json | null
+          created_at: string
+          id: string
+          is_published: boolean | null
+          missions: Json
+          position_order: number | null
+          updated_at: string
+          vision_cn: string | null
+          vision_en: string | null
+          vision_sub_cn: string | null
+          vision_sub_en: string | null
+          vision_sub_th: string | null
+          vision_th: string
+        }
+        Insert: {
+          business_type: string
+          core_concept?: Json | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          missions?: Json
+          position_order?: number | null
+          updated_at?: string
+          vision_cn?: string | null
+          vision_en?: string | null
+          vision_sub_cn?: string | null
+          vision_sub_en?: string | null
+          vision_sub_th?: string | null
+          vision_th: string
+        }
+        Update: {
+          business_type?: string
+          core_concept?: Json | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          missions?: Json
+          position_order?: number | null
+          updated_at?: string
+          vision_cn?: string | null
+          vision_en?: string | null
+          vision_sub_cn?: string | null
+          vision_sub_en?: string | null
+          vision_sub_th?: string | null
+          vision_th?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
