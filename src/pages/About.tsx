@@ -444,7 +444,6 @@ const About = () => {
 
   const navItems = [
     { path: '/about/history', labelKey: 'about.history', icon: Info },
-    { path: '/about/vision', labelKey: 'about.vision', icon: Eye },
     { path: '/about/structure', labelKey: 'about.structure', icon: Network },
     { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
     { path: '/about/awards', labelKey: 'about.awards', icon: Award },
