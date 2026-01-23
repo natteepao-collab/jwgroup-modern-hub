@@ -68,6 +68,87 @@ export type Database = {
         }
         Relationships: []
       }
+      business_types: {
+        Row: {
+          business_key: string
+          color: string | null
+          created_at: string
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          name_en: string | null
+          name_th: string
+          position_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          business_key: string
+          color?: string | null
+          created_at?: string
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_en?: string | null
+          name_th: string
+          position_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          business_key?: string
+          color?: string | null
+          created_at?: string
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_en?: string | null
+          name_th?: string
+          position_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cookie_settings: {
+        Row: {
+          created_at: string
+          description_en: string | null
+          description_th: string | null
+          id: string
+          is_active: boolean | null
+          is_required: boolean | null
+          position_order: number | null
+          setting_key: string
+          title_en: string | null
+          title_th: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          position_order?: number | null
+          setting_key: string
+          title_en?: string | null
+          title_th?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          position_order?: number | null
+          setting_key?: string
+          title_en?: string | null
+          title_th?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       executives: {
         Row: {
           created_at: string
@@ -115,6 +196,7 @@ export type Database = {
       }
       news: {
         Row: {
+          business_type: string | null
           category: string
           content_cn: string | null
           content_en: string | null
@@ -136,6 +218,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          business_type?: string | null
           category?: string
           content_cn?: string | null
           content_en?: string | null
@@ -157,6 +240,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          business_type?: string | null
           category?: string
           content_cn?: string | null
           content_en?: string | null
@@ -208,6 +292,7 @@ export type Database = {
       }
       org_departments: {
         Row: {
+          business_type: string | null
           color: string | null
           created_at: string
           description_en: string | null
@@ -223,6 +308,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          business_type?: string | null
           color?: string | null
           created_at?: string
           description_en?: string | null
@@ -238,6 +324,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          business_type?: string | null
           color?: string | null
           created_at?: string
           description_en?: string | null
@@ -539,6 +626,57 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      vision_missions: {
+        Row: {
+          business_type: string
+          core_concept: Json | null
+          created_at: string
+          id: string
+          is_published: boolean | null
+          missions: Json
+          position_order: number | null
+          updated_at: string
+          vision_cn: string | null
+          vision_en: string | null
+          vision_sub_cn: string | null
+          vision_sub_en: string | null
+          vision_sub_th: string | null
+          vision_th: string
+        }
+        Insert: {
+          business_type: string
+          core_concept?: Json | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          missions?: Json
+          position_order?: number | null
+          updated_at?: string
+          vision_cn?: string | null
+          vision_en?: string | null
+          vision_sub_cn?: string | null
+          vision_sub_en?: string | null
+          vision_sub_th?: string | null
+          vision_th: string
+        }
+        Update: {
+          business_type?: string
+          core_concept?: Json | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          missions?: Json
+          position_order?: number | null
+          updated_at?: string
+          vision_cn?: string | null
+          vision_en?: string | null
+          vision_sub_cn?: string | null
+          vision_sub_en?: string | null
+          vision_sub_th?: string | null
+          vision_th?: string
         }
         Relationships: []
       }

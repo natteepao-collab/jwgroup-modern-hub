@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Building2, Users, Briefcase, Award, ChevronDown, ChevronUp, Calendar, Trophy } from 'lucide-react';
+import { Building2, Users, Briefcase, Award, ChevronDown, ChevronUp, Calendar, Trophy, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 interface TimelineEvent {
   id: string;
@@ -131,6 +132,20 @@ const StatCard = ({
       )}
     </div>
   );
+};
+
+// Helper to parse image_url which can be JSON array or single URL
+const parseAwardImage = (imageUrl: string | null): string | null => {
+  if (!imageUrl) return null;
+  try {
+    const parsed = JSON.parse(imageUrl);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed[0]; // Return first image
+    }
+    return imageUrl;
+  } catch {
+    return imageUrl; // Return as-is if not JSON
+  }
 };
 
 const AnimatedStats = () => {
@@ -285,33 +300,38 @@ const AnimatedStats = () => {
                 <h4 className="font-bold text-foreground">รางวัลที่ได้รับทั้งหมด</h4>
               </div>
               <div className="space-y-3">
-                {awards.map((award) => (
-                  <div 
-                    key={award.id}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
-                  >
-                    {award.image_url ? (
-                      <img 
-                        src={award.image_url} 
-                        alt={getTitle(award)}
-                        className="w-12 h-12 rounded-lg object-cover"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <Trophy className="w-6 h-6 text-primary" />
+                  {awards.map((award) => {
+                    const awardImageUrl = parseAwardImage(award.image_url);
+                    return (
+                    <Link 
+                      to="/awards"
+                      key={award.id}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-primary/10 transition-colors group cursor-pointer"
+                    >
+                      {awardImageUrl ? (
+                        <img 
+                          src={awardImageUrl} 
+                          alt={getTitle(award)}
+                          className="w-12 h-12 rounded-lg object-cover"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <Trophy className="w-6 h-6 text-primary" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-foreground truncate group-hover:text-primary transition-colors">
+                          {getTitle(award)}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {award.award_year && `ปี ${award.award_year}`}
+                          {award.awarding_organization && ` • ${award.awarding_organization}`}
+                        </p>
                       </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-foreground truncate">
-                        {getTitle(award)}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {award.award_year && `ปี ${award.award_year}`}
-                        {award.awarding_organization && ` • ${award.awarding_organization}`}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                    );
+                  })}
                 {awards.length === 0 && (
                   <p className="text-center text-muted-foreground py-4">กำลังโหลดข้อมูล...</p>
                 )}

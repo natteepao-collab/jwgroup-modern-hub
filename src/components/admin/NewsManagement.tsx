@@ -29,6 +29,7 @@ interface NewsItem {
   content_en: string | null;
   content_cn: string | null;
   category: string;
+  business_type: string;
   image_url: string | null;
   video_url: string | null;
   is_featured: boolean;
@@ -47,6 +48,7 @@ interface NewsFormData {
   content_en: string;
   content_cn: string;
   category: string;
+  business_type: string;
   image_url: string;
   gallery_images: string[];
   is_featured: boolean;
@@ -63,7 +65,8 @@ const initialFormData: NewsFormData = {
   content_th: '',
   content_en: '',
   content_cn: '',
-  category: 'company',
+  category: 'press_release',
+  business_type: 'real_estate',
   image_url: '',
   gallery_images: [],
   is_featured: false,
@@ -252,6 +255,8 @@ export const NewsManagement = () => {
   const [activeTab, setActiveTab] = useState<'th' | 'en' | 'cn'>('th');
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [filterBusinessType, setFilterBusinessType] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleImageUpload = async (file: File) => {
     // Validate file type
@@ -427,7 +432,8 @@ export const NewsManagement = () => {
       content_th: newsItem.content_th || '',
       content_en: newsItem.content_en || '',
       content_cn: newsItem.content_cn || '',
-      category: newsItem.category || 'company',
+      category: 'press_release',
+      business_type: newsItem.business_type || 'real_estate',
       image_url: newsItem.image_url || '',
       gallery_images: gallery,
       is_featured: newsItem.is_featured || false,
@@ -649,29 +655,38 @@ export const NewsManagement = () => {
               <div className="space-y-4 border-t pt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="category">หมวดหมู่</Label>
+                    <Label htmlFor="business_type">ธุรกิจ</Label>
                     <Select
-                      value={formData.category}
-                      onValueChange={(value) => setFormData({ ...formData, category: value })}
+                      value={formData.business_type}
+                      onValueChange={(value) => setFormData({ ...formData, business_type: value })}
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="company">ข่าวบริษัท</SelectItem>
-                        <SelectItem value="press">ข่าวประชาสัมพันธ์</SelectItem>
-                        <SelectItem value="csr">CSR</SelectItem>
+                        <SelectItem value="real_estate">อสังหาริมทรัพย์</SelectItem>
+                        <SelectItem value="hotel">โรงแรม</SelectItem>
+                        <SelectItem value="pet">สัตว์เลี้ยง</SelectItem>
+                        <SelectItem value="wellness">สุขภาพ</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
+                  <div>
+                    <Label htmlFor="category">หมวดหมู่</Label>
+                    <Input
+                      value="ข่าวประชาสัมพันธ์"
+                      disabled
+                      className="bg-muted"
+                    />
+                  </div>
                   <div className="col-span-2">
-                    <Label className="mb-2 block">รูปภาพเพิ่มเติม (สูงสุด 3 รูป)</Label>
+                    <Label className="mb-2 block">รูปภาพเพิ่มเติม (สูงสุด 10 รูป)</Label>
                     <MultiDragDropUpload
                       onUpload={handleGalleryUpload}
                       isUploading={isUploading}
                       currentImages={formData.gallery_images}
                       onRemove={handleRemoveGalleryImage}
-                      maxFiles={3}
+                      maxFiles={10}
                     />
                   </div>
                 </div>
@@ -709,11 +724,39 @@ export const NewsManagement = () => {
         </Dialog>
       </CardHeader >
       <CardContent>
+        {/* Filter Section */}
+        <div className="flex flex-wrap gap-4 mb-6">
+          <div className="flex-1 min-w-[200px]">
+            <Input
+              placeholder="ค้นหาข่าว..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <Select
+            value={filterBusinessType}
+            onValueChange={setFilterBusinessType}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="เลือกธุรกิจ" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทุกธุรกิจ</SelectItem>
+              <SelectItem value="real_estate">อสังหาริมทรัพย์</SelectItem>
+              <SelectItem value="hotel">โรงแรม</SelectItem>
+              <SelectItem value="pet">สัตว์เลี้ยง</SelectItem>
+              <SelectItem value="wellness">สุขภาพ</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[80px]">รูปภาพ</TableHead>
-              <TableHead className="w-[280px]">หัวข้อ</TableHead>
+              <TableHead className="w-[240px]">หัวข้อ</TableHead>
+              <TableHead>ธุรกิจ</TableHead>
               <TableHead>หมวดหมู่</TableHead>
               <TableHead>วันที่</TableHead>
               <TableHead>สถานะ</TableHead>
@@ -721,7 +764,14 @@ export const NewsManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {(news as NewsItem[]).map((item) => (
+            {(news as NewsItem[])
+              .filter(item => {
+                const matchesBusinessType = filterBusinessType === 'all' || item.business_type === filterBusinessType;
+                const matchesSearch = searchQuery === '' || 
+                  item.title_th.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesBusinessType && matchesSearch;
+              })
+              .map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
                   <div className="w-16 h-12 rounded overflow-hidden">
@@ -745,10 +795,14 @@ export const NewsManagement = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline">
-                    {item.category === 'company' ? 'ข่าวบริษัท' :
-                      item.category === 'press' ? 'ข่าวประชาสัมพันธ์' : 'CSR'}
+                  <Badge variant="secondary" className="text-xs">
+                    {item.business_type === 'real_estate' ? 'อสังหาฯ' :
+                      item.business_type === 'hotel' ? 'โรงแรม' :
+                      item.business_type === 'pet' ? 'สัตว์เลี้ยง' : 'สุขภาพ'}
                   </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline">ข่าวประชาสัมพันธ์</Badge>
                 </TableCell>
                 <TableCell>{formatDate(item.published_at)}</TableCell>
                 <TableCell>

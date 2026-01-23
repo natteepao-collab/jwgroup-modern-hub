@@ -16,6 +16,7 @@ interface NewsItem {
   content_en: string | null;
   content_cn: string | null;
   category: string;
+  business_type: string;
   image_url: string | null;
   video_url: string | null;
   is_featured: boolean;
@@ -32,6 +33,7 @@ export interface FormattedNewsItem {
   content: string;
   category: string;
   categoryType: 'company' | 'press' | 'csr' | 'all';
+  businessType: string;
   date: string;
   image: string;
   isVideo: boolean;
@@ -39,7 +41,7 @@ export interface FormattedNewsItem {
   isFeatured: boolean;
 }
 
-export const useNews = () => {
+export const useNews = (featuredOnly: boolean = true) => {
   const { i18n, t } = useTranslation();
   const queryClient = useQueryClient();
 
@@ -54,13 +56,9 @@ export const useNews = () => {
     return item[thField] as string || '';
   };
 
-  const getCategoryLabel = (category: string) => {
-    switch (category) {
-      case 'company': return t('news.companyNews');
-      case 'press': return t('news.pressRelease');
-      case 'csr': return 'CSR';
-      default: return t('news.companyNews');
-    }
+  const getCategoryLabel = () => {
+    // All news now uses single category - Press Release
+    return 'ข่าวประชาสัมพันธ์';
   };
 
   const formatDate = (dateString: string) => {
@@ -72,13 +70,19 @@ export const useNews = () => {
   };
 
   const { data: newsItems, isLoading, error } = useQuery({
-    queryKey: ['news'],
+    queryKey: ['news', featuredOnly],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('news')
         .select('*')
-        .eq('is_published', true)
-        .order('created_at', { ascending: false });
+        .eq('is_published', true);
+      
+      // Filter by featured only for homepage
+      if (featuredOnly) {
+        query = query.eq('is_featured', true);
+      }
+      
+      const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
       return data as NewsItem[];
@@ -149,8 +153,9 @@ export const useNews = () => {
       title: getLocalizedField(item, 'title'),
       excerpt: getLocalizedField(item, 'excerpt'),
       content: getLocalizedField(item, 'content'),
-      category: getCategoryLabel(item.category),
+      category: getCategoryLabel(),
       categoryType: item.category as FormattedNewsItem['categoryType'],
+      businessType: item.business_type || 'real_estate',
       date: formatDate(item.published_at),
       image: item.image_url || '',
       isVideo: isVideo,

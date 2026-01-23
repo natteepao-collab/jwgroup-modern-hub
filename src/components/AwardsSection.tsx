@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import DOMPurify from 'dompurify';
 
 interface Award {
   id: string;
@@ -227,7 +228,7 @@ const AwardDetailModal = ({
           {/* Full Description */}
           {getDescription() && (
             <div className="prose max-w-none dark:prose-invert">
-              <div dangerouslySetInnerHTML={{ __html: getDescription() || '' }} />
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getDescription() || '') }} />
             </div>
           )}
         </div>
@@ -344,7 +345,7 @@ const AwardItem = ({
             {getDescription() && (
               <div
                 className="text-muted-foreground text-lg leading-relaxed line-clamp-4 prose max-w-none dark:prose-invert"
-                dangerouslySetInnerHTML={{ __html: getDescription() || '' }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getDescription() || '') }}
               />
             )}
           </div>

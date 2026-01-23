@@ -20,10 +20,11 @@ import {
   Calendar,
   Building,
   Mail,
-  Snowflake,
-  TreePine,
   GitBranch,
-  Share2
+  Cookie,
+  Tags,
+  Target,
+  Info
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -41,6 +42,10 @@ import { SnowfallControl } from '@/components/admin/SnowfallControl';
 import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
 import OrgDepartmentManagement from '@/components/admin/OrgDepartmentManagement';
 import SocialMediaManagement from '@/components/admin/SocialMediaManagement';
+import CookieManagement from '@/components/admin/CookieManagement';
+import BusinessTypesManagement from '@/components/admin/BusinessTypesManagement';
+import VisionMissionManagement from '@/components/admin/VisionMissionManagement';
+import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -134,7 +139,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-1">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-7 lg:grid-cols-14 gap-1">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
@@ -143,6 +148,10 @@ const Admin = () => {
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">โครงการ</span>
             </TabsTrigger>
+            <TabsTrigger value="abouthistory" className="flex items-center gap-2">
+              <Info className="h-4 w-4" />
+              <span className="hidden sm:inline">ประวัติ</span>
+            </TabsTrigger>
             <TabsTrigger value="executives" className="flex items-center gap-2">
               <UserCircle className="h-4 w-4" />
               <span className="hidden sm:inline">ผู้บริหาร</span>
@@ -150,6 +159,10 @@ const Admin = () => {
             <TabsTrigger value="orgchart" className="flex items-center gap-2">
               <GitBranch className="h-4 w-4" />
               <span className="hidden sm:inline">โครงสร้าง</span>
+            </TabsTrigger>
+            <TabsTrigger value="visionmission" className="flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              <span className="hidden sm:inline">วิสัยทัศน์</span>
             </TabsTrigger>
             <TabsTrigger value="timeline" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -193,12 +206,20 @@ const Admin = () => {
             <ProjectsManagement />
           </TabsContent>
 
+          <TabsContent value="abouthistory">
+            <AboutHistoryManagement />
+          </TabsContent>
+
           <TabsContent value="executives">
             <ExecutiveManagement />
           </TabsContent>
 
           <TabsContent value="orgchart">
             <OrgDepartmentManagement />
+          </TabsContent>
+
+          <TabsContent value="visionmission">
+            <VisionMissionManagement />
           </TabsContent>
 
           <TabsContent value="timeline">
@@ -231,17 +252,13 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
+            <BusinessTypesManagement />
+            <CookieManagement />
             <SocialMediaManagement />
             <div className="grid gap-6 md:grid-cols-2">
               <SnowfallControl />
               <ChristmasThemeControl />
             </div>
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>ฟีเจอร์ตั้งค่าเพิ่มเติมกำลังพัฒนา...</p>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </main>

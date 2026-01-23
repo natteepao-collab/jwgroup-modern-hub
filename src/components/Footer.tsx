@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Cookie } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { useCookieConsent } from '@/components/CookieConsent';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 
 // TikTok icon component (not in lucide-react)
@@ -14,6 +15,7 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 export const Footer = () => {
   const { t } = useTranslation();
   const { getContent } = useSiteContent();
+  const { openCookieSettings } = useCookieConsent();
 
   // Get contact data from database
   const addressContent = getContent('contact_address');
@@ -160,6 +162,13 @@ export const Footer = () => {
             <Link to="/pdpa" className="hover:text-primary transition-colors">
               {t('footer.pdpa')}
             </Link>
+            <button
+              onClick={openCookieSettings}
+              className="hover:text-primary transition-colors flex items-center gap-1"
+            >
+              <Cookie className="h-3.5 w-3.5" />
+              ตั้งค่าคุกกี้
+            </button>
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { Footer } from './components/Footer';
 import FloatingActions from './components/FloatingActions';
 import Snowfall from './components/Snowfall';
 import ChristmasTheme from './components/ChristmasTheme';
+import { CookieConsentProvider } from './components/CookieConsent';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Business from "./pages/Business";
@@ -21,12 +22,13 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import PDPA from "./pages/PDPA";
-import Sustainability from "./pages/Sustainability";
+import VisionMission from "./pages/VisionMission";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import Awards from "./pages/Awards";
 import PremiumAnalysis from "./pages/PremiumAnalysis";
+import Sustainability from "./pages/Sustainability";
 
 const queryClient = new QueryClient();
 
@@ -57,28 +59,31 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/about/*" element={<About />} />
-                <Route path="/about/awards" element={<Awards />} />
-                <Route path="/business" element={<Business />} />
-                <Route path="/awards" element={<Awards />} />
-                <Route path="/premium-search" element={<PremiumAnalysis />} />
-                <Route path="/news" element={<News />} />
-                <Route path="/news/:id" element={<NewsDetail />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/pdpa" element={<PDPA />} />
-                <Route path="/sustainability" element={<Sustainability />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/admin" element={<Admin />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Layout>
+            <CookieConsentProvider>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about/*" element={<About />} />
+                  <Route path="/about/awards" element={<Awards />} />
+                  <Route path="/business" element={<Business />} />
+                  <Route path="/awards" element={<Awards />} />
+                  <Route path="/premium-search" element={<PremiumAnalysis />} />
+                  <Route path="/news" element={<News />} />
+                  <Route path="/news/:id" element={<NewsDetail />} />
+                  <Route path="/careers" element={<Careers />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/pdpa" element={<PDPA />} />
+                  <Route path="/sustainability" element={<Sustainability />} />
+                  <Route path="/vision-mission" element={<VisionMission />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/admin" element={<Admin />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Layout>
+            </CookieConsentProvider>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

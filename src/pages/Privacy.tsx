@@ -1,7 +1,11 @@
 import { useTranslation } from 'react-i18next';
+import { Cookie, Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useCookieConsent } from '@/components/CookieConsent';
 
 const Privacy = () => {
   const { t } = useTranslation();
+  const { openCookieSettings } = useCookieConsent();
 
   return (
     <div className="pt-24 min-h-screen bg-background">
@@ -47,6 +51,30 @@ const Privacy = () => {
               ท่านมีสิทธิในการเข้าถึง แก้ไข ลบ หรือจำกัดการใช้ข้อมูลส่วนบุคคลของท่าน
               ตามที่กฎหมายกำหนด
             </p>
+          </section>
+
+          {/* Cookie Settings Section */}
+          <section className="mt-8 p-6 rounded-2xl bg-muted/50 border border-border">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Cookie className="w-6 h-6 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold mb-2">การตั้งค่าคุกกี้</h2>
+                <p className="text-muted-foreground mb-4">
+                  ท่านสามารถปรับเปลี่ยนการตั้งค่าคุกกี้ได้ตลอดเวลา 
+                  เพื่อควบคุมว่าเราจะใช้คุกกี้ประเภทใดบ้างบนเว็บไซต์ของเรา
+                </p>
+                <Button 
+                  onClick={openCookieSettings}
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <Settings className="w-4 h-4" />
+                  ตั้งค่าคุกกี้
+                </Button>
+              </div>
+            </div>
           </section>
 
           <section>

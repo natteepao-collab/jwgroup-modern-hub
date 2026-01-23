@@ -1,15 +1,15 @@
-import { useState, useRef, MouseEvent } from 'react';
+import React, { useState, useRef, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { Calendar, ArrowRight, Play, ImageIcon } from 'lucide-react';
+import { Calendar, ArrowRight, Play, ImageIcon, Building2, Hotel, Heart, Stethoscope, HardHat, LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useBusinessTypes } from '@/hooks/useBusinessTypes';
 
 // Enhanced Mockup placeholder for news without images
 const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: boolean; title?: string }) => {
-  // Generate a gradient based on title for variety
   const gradients = [
     'from-blue-500/30 via-blue-400/20 to-indigo-500/30',
     'from-orange-500/30 via-amber-400/20 to-yellow-500/30',
@@ -26,14 +26,12 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
       "w-full h-full flex flex-col items-center justify-center relative overflow-hidden",
       `bg-gradient-to-br ${gradient}`
     )}>
-      {/* Decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-4 left-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
         <div className="absolute bottom-8 right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 text-center p-6">
         <div className={cn(
           "mx-auto mb-4 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center",
@@ -58,7 +56,6 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
         </p>
       </div>
 
-      {/* Pattern overlay */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -69,25 +66,59 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
   );
 };
 
-type FilterType = 'all' | 'company' | 'press' | 'csr';
+// Icon mapping helper
+const iconMap: Record<string, LucideIcon> = {
+  building: Building2,
+  hotel: Hotel,
+  heart: Heart,
+  stethoscope: Stethoscope,
+  hardhat: HardHat,
+};
+
+const getIconComponent = (iconName: string | null): LucideIcon => {
+  if (!iconName) return Building2;
+  return iconMap[iconName.toLowerCase()] || Building2;
+};
 
 interface NewsItem {
   id: string;
   title: string;
   excerpt: string;
   category: string;
-  categoryType: FilterType;
+  categoryType: string;
   date: string;
   image: string;
   isVideo?: boolean;
   size?: 'large' | 'medium' | 'small' | 'text-only';
+  businessType?: string;
 }
 
 interface BentoNewsCardProps {
   news: NewsItem;
   index: number;
   inView: boolean;
+  businessTypes?: { business_key: string; name_th: string; color: string | null }[];
 }
+
+// Business type badge colors - dynamic version
+const getBusinessTypeBadge = (
+  businessType: string | undefined,
+  businessTypes?: { business_key: string; name_th: string; color: string | null }[]
+) => {
+  if (!businessTypes) {
+    return { label: 'ทั่วไป', className: 'bg-gray-500 hover:bg-gray-600' };
+  }
+  
+  const found = businessTypes.find(bt => bt.business_key === businessType);
+  if (found) {
+    return { 
+      label: found.name_th, 
+      className: '', 
+      style: { backgroundColor: found.color || '#6b7280' } 
+    };
+  }
+  return { label: 'ทั่วไป', className: 'bg-gray-500 hover:bg-gray-600', style: undefined };
+};
 
 const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   const { t } = useTranslation();
@@ -115,7 +146,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   const isMedium = news.size === 'medium';
   const isTextOnly = news.size === 'text-only';
 
-  // Grid span classes based on size
   const gridClasses = cn(
     "relative overflow-hidden rounded-2xl cursor-pointer group",
     isLarge && "md:col-span-2 md:row-span-2",
@@ -142,9 +172,19 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         onMouseEnter={() => setIsHovered(true)}
       >
         <div>
-          <Badge variant="outline" className="mb-3 text-xs">
-            {news.category}
-          </Badge>
+          <div className="flex gap-2 mb-3">
+            <Badge 
+              className={cn(
+                "text-white text-xs",
+                getBusinessTypeBadge(news.businessType).className
+              )}
+            >
+              {getBusinessTypeBadge(news.businessType).label}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              {news.category}
+            </Badge>
+          </div>
           <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-3">
             {news.title}
           </h3>
@@ -166,7 +206,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
     );
   }
 
-  // Fixed height for small cards
   const cardHeight = isLarge
     ? "min-h-[400px] md:min-h-[500px]"
     : isMedium
@@ -197,7 +236,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         onMouseLeave={handleMouseLeave}
         onMouseEnter={() => setIsHovered(true)}
       >
-        {/* Background Image with Zoom Effect */}
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
           {news.image && news.image !== '/placeholder.svg' && news.image !== '' ? (
             <img
@@ -212,7 +250,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           ) : (
             <NewsMockupPlaceholder isLarge={isLarge} title={news.title} />
           )}
-          {/* Video Play Icon */}
           {news.isVideo && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className={cn(
@@ -225,7 +262,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           )}
         </div>
 
-        {/* Gradient Overlay */}
         <div
           className={cn(
             "absolute inset-0 rounded-2xl transition-all duration-500",
@@ -235,11 +271,20 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           )}
         />
 
-        {/* Category Badge - Top */}
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-4 left-4 z-10 flex gap-2">
           <Badge
             className={cn(
-              "bg-primary text-primary-foreground shadow-lg transition-all duration-300",
+              "text-white shadow-lg transition-all duration-300",
+              getBusinessTypeBadge(news.businessType).className,
+              isHovered ? "scale-105" : ""
+            )}
+          >
+            {getBusinessTypeBadge(news.businessType).label}
+          </Badge>
+          <Badge
+            variant="secondary"
+            className={cn(
+              "bg-black/50 text-white backdrop-blur-sm shadow-lg transition-all duration-300",
               isHovered ? "scale-105" : ""
             )}
           >
@@ -247,20 +292,17 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </Badge>
         </div>
 
-        {/* Content - Bottom with Slide Up Animation */}
         <div
           className={cn(
             "absolute bottom-0 left-0 right-0 p-6 transition-all duration-500",
             isHovered ? "translate-y-0" : "translate-y-4"
           )}
         >
-          {/* Date */}
           <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
             <Calendar className="h-4 w-4" />
             <span>{news.date}</span>
           </div>
 
-          {/* Title - Large Typography */}
           <h3
             className={cn(
               "font-bold text-white mb-3 transition-all duration-300 line-clamp-2",
@@ -270,7 +312,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
             {news.title}
           </h3>
 
-          {/* Excerpt - Revealed on Hover */}
           <p
             className={cn(
               "text-white/80 text-sm mb-4 line-clamp-2 transition-all duration-500",
@@ -280,7 +321,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
             {news.excerpt}
           </p>
 
-          {/* Read More Button - Revealed on Hover */}
           <div
             className={cn(
               "transition-all duration-500",
@@ -298,7 +338,6 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           </div>
         </div>
 
-        {/* Shine Effect on Hover */}
         <div
           className={cn(
             "absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500",
@@ -318,6 +357,223 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   );
 };
 
+// Uniform News Card for Grid Layout
+const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardProps) => {
+  const { t } = useTranslation();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    setTilt({
+      x: (y - 0.5) * 10,
+      y: (x - 0.5) * -10,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
+
+  return (
+    <Link
+      to={`/news/${news.id}`}
+      className={cn(
+        "relative overflow-hidden rounded-2xl cursor-pointer group block h-[320px] transition-all duration-500",
+        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      )}
+      style={{
+        transitionDelay: `${index * 100}ms`,
+      }}
+    >
+      <div
+        ref={cardRef}
+        className="w-full h-full relative"
+        style={{
+          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transition: 'transform 0.15s ease-out',
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setIsHovered(true)}
+      >
+        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+          {news.image && news.image !== '/placeholder.svg' && news.image !== '' ? (
+            <img
+              src={news.image}
+              alt={news.title}
+              className={cn(
+                "w-full h-full object-cover transition-all duration-700",
+                isHovered ? "scale-110 brightness-110" : "scale-100"
+              )}
+              loading="lazy"
+            />
+          ) : (
+            <NewsMockupPlaceholder isLarge={false} title={news.title} />
+          )}
+          {news.isVideo && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className={cn(
+                "w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-xl transition-all duration-300",
+                isHovered ? "scale-110" : "scale-100"
+              )}>
+                <Play className="h-5 w-5 text-primary ml-1" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div
+          className={cn(
+            "absolute inset-0 rounded-2xl transition-all duration-500",
+            isHovered
+              ? "bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+              : "bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+          )}
+        />
+
+        <div className="absolute top-4 left-4 z-10 flex gap-2">
+          {(() => {
+            const badge = getBusinessTypeBadge(news.businessType, businessTypes);
+            return (
+              <Badge
+                className={cn(
+                  "text-white shadow-lg transition-all duration-300 text-xs",
+                  badge.className,
+                  isHovered ? "scale-105" : ""
+                )}
+                style={badge.style}
+              >
+                {badge.label}
+              </Badge>
+            );
+          })()}
+        </div>
+
+        <div
+          className={cn(
+            "absolute bottom-0 left-0 right-0 p-5 transition-all duration-500",
+            isHovered ? "translate-y-0" : "translate-y-2"
+          )}
+        >
+          <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
+            <Calendar className="h-3.5 w-3.5" />
+            <span>{news.date}</span>
+          </div>
+
+          <h3 className="font-bold text-white text-lg mb-2 line-clamp-2 transition-all duration-300">
+            {news.title}
+          </h3>
+
+          <div
+            className={cn(
+              "transition-all duration-500",
+              isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            )}
+          >
+            <Button
+              variant="secondary"
+              size="sm"
+              className="group/btn"
+            >
+              {t('news.readMore')}
+              <ArrowRight className="ml-2 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            "absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500",
+            isHovered ? "opacity-100" : "opacity-0"
+          )}
+          style={{
+            background: `linear-gradient(
+              ${105 + tilt.y * 2}deg,
+              transparent 40%,
+              rgba(255, 255, 255, 0.1) 50%,
+              transparent 60%
+            )`,
+          }}
+        />
+      </div>
+    </Link>
+  );
+};
+
+// Business Type Tab Component
+const BusinessTypeTabs = ({ 
+  activeType, 
+  onTypeChange,
+  businessTypesData
+}: { 
+  activeType: string; 
+  onTypeChange: (type: string) => void;
+  businessTypesData: { business_key: string; name_th: string; icon_name: string | null; color: string | null }[];
+}) => {
+  const businessTypes = businessTypesData.map(bt => {
+    const IconComponent = getIconComponent(bt.icon_name);
+    return {
+      key: bt.business_key,
+      label: bt.name_th,
+      icon: <IconComponent className="h-4 w-4 md:h-5 md:w-5" />,
+      color: bt.color || '#d97706'
+    };
+  });
+
+  return (
+    <div className="relative mb-10">
+      {/* Horizontal scroll container for mobile */}
+      <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible scrollbar-hide">
+        <div className="bg-gradient-to-br from-background/80 via-card/60 to-background/80 backdrop-blur-xl rounded-2xl p-1.5 md:p-2 border border-border/30 shadow-lg shadow-black/5 dark:shadow-black/20 inline-flex min-w-max md:w-auto md:mx-auto">
+          <div className="flex gap-1 md:gap-1.5">
+            {businessTypes.map((type) => {
+              const isActive = activeType === type.key;
+              return (
+                <button
+                  key={type.key}
+                  onClick={() => onTypeChange(type.key)}
+                  className={cn(
+                    "relative flex items-center gap-1.5 md:gap-2.5 px-3 py-2 md:px-5 md:py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-xs md:text-sm tracking-wide",
+                    isActive
+                      ? "text-white shadow-lg ring-1 ring-white/20"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:shadow-sm"
+                  )}
+                  style={isActive ? {
+                    background: `linear-gradient(135deg, ${type.color}, ${type.color}dd)`,
+                    boxShadow: `0 10px 25px -5px ${type.color}50`
+                  } : undefined}
+                >
+                  <span className={cn(
+                    "transition-all duration-300",
+                    isActive ? "scale-110 drop-shadow-sm" : "opacity-70"
+                  )}>
+                    {type.icon}
+                  </span>
+                  <span className={cn(
+                    "font-semibold",
+                    isActive && "drop-shadow-sm"
+                  )}>
+                    {type.label}
+                  </span>
+                  {isActive && (
+                    <span className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface BentoNewsSectionProps {
   news: Omit<NewsItem, 'size'>[];
   showFilters?: boolean;
@@ -325,83 +581,61 @@ interface BentoNewsSectionProps {
 }
 
 export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNewsSectionProps) => {
-  const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const { data: businessTypesData = [] } = useBusinessTypes();
+  const [activeBusinessType, setActiveBusinessType] = useState<string>('');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const filters: { key: FilterType; label: string }[] = [
-    { key: 'all', label: t('news.all') },
-    { key: 'company', label: t('news.companyNews') },
-    { key: 'press', label: t('news.pressRelease') },
-  ];
+  // Set default active business type when data loads
+  React.useEffect(() => {
+    if (businessTypesData.length > 0 && !activeBusinessType) {
+      setActiveBusinessType(businessTypesData[0].business_key);
+    }
+  }, [businessTypesData, activeBusinessType]);
 
-  // Assign sizes to news items for Bento Grid layout
-  const assignSizes = (items: Omit<NewsItem, 'size'>[]): NewsItem[] => {
-    return items.map((item, index) => {
-      let size: NewsItem['size'] = 'small';
+  // กรองข่าวตามธุรกิจที่เลือก (เฉพาะเมื่อเปิด filter)
+  const filteredNews = showFilters 
+    ? news.filter(item => {
+        const itemBusinessType = item.businessType || 'real_estate';
+        return itemBusinessType === activeBusinessType;
+      })
+    : news;
 
-      // First item is always large (hero)
-      if (index === 0) {
-        size = 'large';
-      }
-      // Second item is medium (side column top)
-      else if (index === 1) {
-        size = 'medium';
-      }
-      // Items 2, 3, 4 are small cards - all same size
-      else {
-        size = 'small';
-      }
-
-      return { ...item, size };
-    });
-  };
-
-  const filteredNews = activeFilter === 'all'
-    ? news
-    : news.filter(item => item.categoryType === activeFilter);
-
-  const displayNews = assignSizes(maxItems ? filteredNews.slice(0, maxItems) : filteredNews);
+  // ใช้ uniform size สำหรับ grid layout
+  const displayNews: NewsItem[] = (maxItems ? filteredNews.slice(0, maxItems) : filteredNews).map(item => ({
+    ...item,
+    size: 'small' as const
+  }));
 
   return (
     <div ref={ref}>
-      {/* Animated Filter Bar */}
-      {showFilters && (
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {filters.map((filter) => (
-            <Button
-              key={filter.key}
-              variant="ghost"
-              onClick={() => setActiveFilter(filter.key)}
-              className={cn(
-                "transition-all duration-300 relative overflow-hidden h-10 px-6 rounded-xl border",
-                activeFilter === filter.key
-                  ? "bg-[#C27803] text-white border-[#C27803] shadow-md shadow-[#C27803]/20"
-                  : "bg-transparent text-[#C27803] border-[#C27803] hover:bg-[#C27803]/10"
-              )}
-            >
-              <span className="relative z-10 font-medium">{filter.label}</span>
-            </Button>
-          ))}
-        </div>
+      {showFilters && businessTypesData.length > 0 && (
+        <BusinessTypeTabs 
+          activeType={activeBusinessType} 
+          onTypeChange={setActiveBusinessType}
+          businessTypesData={businessTypesData}
+        />
       )}
 
-      {/* Bento Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-auto">
+      {/* Grid 2x3 Layout - 3 columns, 2 rows */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayNews.map((newsItem, index) => (
-          <BentoNewsCard
+          <UniformNewsCard
             key={newsItem.id}
             news={newsItem}
             index={index}
             inView={inView}
+            businessTypes={businessTypesData}
           />
         ))}
       </div>
 
-      {/* Empty State */}
       {displayNews.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground">
-          ไม่พบข่าวสารในหมวดหมู่นี้
+        <div className="text-center py-16">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-muted/50 flex items-center justify-center">
+            <ImageIcon className="h-10 w-10 text-muted-foreground/50" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">ไม่พบข่าวสาร</h3>
+          <p className="text-muted-foreground">ยังไม่มีข่าวสารในหมวดหมู่นี้</p>
         </div>
       )}
     </div>

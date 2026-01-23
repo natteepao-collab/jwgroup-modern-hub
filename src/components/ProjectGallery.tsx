@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { X, ChevronLeft, ChevronRight, MapPin, Calendar, Maximize2 } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import DOMPurify from 'dompurify';
 
 interface Project {
   id: string;
@@ -22,7 +23,7 @@ interface Project {
 }
 
 interface ProjectGalleryProps {
-  businessType: 'realestate' | 'hotel' | 'pet' | 'wellness';
+  businessType: 'realestate' | 'hotel' | 'pet' | 'wellness' | 'construction';
   title?: string;
 }
 
@@ -292,7 +293,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   {getDescription(selectedProject) && (
                     <div
                       className="text-foreground/90 prose prose-sm dark:prose-invert max-w-none [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol]:mb-3 leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: getDescription(selectedProject) || '' }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getDescription(selectedProject) || '') }}
                     />
                   )}
 

@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const News = () => {
   const { t } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { news, isLoading } = useNews();
+  const { news, isLoading } = useNews(false); // Show all news, not just featured
 
   return (
     <div className="pt-24 min-h-screen bg-background">
