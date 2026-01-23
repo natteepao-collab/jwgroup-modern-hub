@@ -23,7 +23,8 @@ import {
   GitBranch,
   Cookie,
   Tags,
-  Target
+  Target,
+  Info
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -44,6 +45,7 @@ import SocialMediaManagement from '@/components/admin/SocialMediaManagement';
 import CookieManagement from '@/components/admin/CookieManagement';
 import BusinessTypesManagement from '@/components/admin/BusinessTypesManagement';
 import VisionMissionManagement from '@/components/admin/VisionMissionManagement';
+import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -137,7 +139,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-7 lg:grid-cols-13 gap-1">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-7 lg:grid-cols-14 gap-1">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
@@ -145,6 +147,10 @@ const Admin = () => {
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">โครงการ</span>
+            </TabsTrigger>
+            <TabsTrigger value="abouthistory" className="flex items-center gap-2">
+              <Info className="h-4 w-4" />
+              <span className="hidden sm:inline">ประวัติ</span>
             </TabsTrigger>
             <TabsTrigger value="executives" className="flex items-center gap-2">
               <UserCircle className="h-4 w-4" />
@@ -198,6 +204,10 @@ const Admin = () => {
 
           <TabsContent value="projects">
             <ProjectsManagement />
+          </TabsContent>
+
+          <TabsContent value="abouthistory">
+            <AboutHistoryManagement />
           </TabsContent>
 
           <TabsContent value="executives">
