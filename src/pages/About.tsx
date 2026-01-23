@@ -15,11 +15,17 @@ import { useState } from 'react';
 import jwHq1 from '@/assets/jw-headquarters-1.webp';
 import jwHq2 from '@/assets/jw-headquarters-2.webp';
 import jwHq3 from '@/assets/jw-headquarters-3.webp';
+import jwHq4 from '@/assets/jw-headquarters-4.jpg';
+import jwHq5 from '@/assets/jw-headquarters-5.jpg';
+import jwHq6 from '@/assets/jw-headquarters-6.jpg';
+import jwHq7 from '@/assets/jw-headquarters-7.jpg';
+import jwHq8 from '@/assets/jw-headquarters-8.jpg';
 
 const AboutHistory = () => {
   const { t, i18n } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const currentLang = i18n.language;
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Fetch content from database
   const { data: historyContents } = useQuery({
@@ -74,81 +80,179 @@ const AboutHistory = () => {
   const foundedContent = getContent('about_history_founded');
   const growthContent = getContent('about_history_growth');
 
-  // Get images with fallbacks
-  const heroImage = getImage('about_history_hero') || jwHq1;
-  const gallery1Image = getImage('about_history_gallery_1') || jwHq2;
-  const gallery2Image = getImage('about_history_gallery_2') || jwHq3;
+  // Get images with fallbacks - use imported images as defaults
+  const heroImage = getImage('about_history_hero') || jwHq8;
+
+  // Gallery images array
+  const galleryImages = [
+    { src: getImage('about_history_gallery_1') || jwHq5, alt: 'JW GROUP Entrance', title: 'ทางเข้าสำนักงานใหญ่' },
+    { src: getImage('about_history_gallery_2') || jwHq7, alt: 'JW GROUP Building Overview', title: 'มุมมองอาคารด้านหน้า' },
+    { src: jwHq4, alt: 'JW GROUP Courtyard', title: 'ลานกลางอาคาร' },
+    { src: jwHq6, alt: 'JW GROUP Architecture', title: 'สถาปัตยกรรมทันสมัย' },
+    { src: jwHq1, alt: 'JW GROUP Headquarters', title: 'อาคารสำนักงาน' },
+    { src: jwHq2, alt: 'JW GROUP Interior', title: 'ภายในอาคาร' },
+  ];
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Hero Section with Main Image */}
-      <div className="relative mb-10 rounded-2xl overflow-hidden">
+      <div className="relative mb-12 rounded-3xl overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
         <img 
           src={heroImage} 
           alt="JW GROUP Headquarters" 
-          className="w-full h-64 md:h-80 object-cover"
+          className="w-full h-72 md:h-96 lg:h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-secondary/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-          <h2 className="text-2xl md:text-3xl font-semibold text-secondary-foreground mb-2">
+        <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-1.5 h-10 bg-primary rounded-full" />
+            <span className="text-primary font-medium text-sm uppercase tracking-widest">Since 2007</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-foreground mb-3">
             {titleContent.title || 'JW GROUP'}
           </h2>
-          <p className="text-secondary-foreground/80 text-sm md:text-base">
+          <p className="text-secondary-foreground/90 text-base md:text-lg max-w-2xl">
             {titleContent.content || 'จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร'}
           </p>
         </div>
       </div>
 
       {/* Story Content */}
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-1 h-8 bg-primary rounded-full" />
-            <span className="text-sm font-medium text-primary tracking-wide uppercase">
+      <div className="space-y-10">
+        {/* Founded Section */}
+        <div className="relative pl-6 border-l-2 border-primary/30">
+          <div className="absolute left-0 top-0 w-4 h-4 rounded-full bg-primary -translate-x-[9px]" />
+          <div className="space-y-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+              <Building2 className="w-4 h-4" />
               {foundedContent.title || 'ก่อตั้งปี 2550'}
             </span>
+            <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
+              {foundedContent.content || 'ก่อตั้งขึ้นเมื่อปี 2550 โดยเริ่มต้นจากความเชี่ยวชาญในธุรกิจอสังหาริมทรัพย์ ด้วยปณิธานแน่วแน่ของผู้บริหารที่ต้องการสร้างสรรค์ที่อยู่อาศัยซึ่งไม่เพียงแค่สวยงาม แต่ต้องตอบโจทย์การใช้งานจริง และใช้สอยพื้นที่ให้เกิดประโยชน์สูงสุด เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับผู้อยู่อาศัย'}
+            </p>
           </div>
-          <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
-            {foundedContent.content || 'ก่อตั้งขึ้นเมื่อปี 2550 โดยเริ่มต้นจากความเชี่ยวชาญในธุรกิจอสังหาริมทรัพย์ ด้วยปณิธานแน่วแน่ของผู้บริหารที่ต้องการสร้างสรรค์ที่อยู่อาศัยซึ่งไม่เพียงแค่สวยงาม แต่ต้องตอบโจทย์การใช้งานจริง และใช้สอยพื้นที่ให้เกิดประโยชน์สูงสุด เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับผู้อยู่อาศัย'}
-          </p>
         </div>
 
-        <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
-          {growthContent.content || 'จากความสำเร็จในทุกโครงการที่ผ่านมา นำไปสู่การเติบโตและขยายขอบเขตธุรกิจอย่างต่อเนื่อง ปัจจุบัน JW GROUP คือกลุ่มธุรกิจชั้นนำที่ครอบคลุมทั้งด้านอสังหาริมทรัพย์ โรงแรม ธุรกิจโรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ โดยยังคงยึดมั่นในภารกิจสำคัญ คือการสร้างสรรค์นวัตกรรมเพื่อยกระดับคุณภาพชีวิตที่ดีกว่าให้กับทุกคน'}
-        </p>
-
-        {/* Image Gallery */}
-        <div className="grid grid-cols-2 gap-3 md:gap-4 mt-8">
-          <div className="aspect-[4/3] rounded-xl overflow-hidden">
-            <img 
-              src={gallery1Image} 
-              alt="JW GROUP Building" 
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-            />
+        {/* Growth Section */}
+        <div className="relative pl-6 border-l-2 border-primary/30">
+          <div className="absolute left-0 top-0 w-4 h-4 rounded-full bg-primary -translate-x-[9px]" />
+          <div className="space-y-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+              <Award className="w-4 h-4" />
+              {growthContent.title || 'การเติบโต'}
+            </span>
+            <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
+              {growthContent.content || 'จากความสำเร็จในทุกโครงการที่ผ่านมา นำไปสู่การเติบโตและขยายขอบเขตธุรกิจอย่างต่อเนื่อง ปัจจุบัน JW GROUP คือกลุ่มธุรกิจชั้นนำที่ครอบคลุมทั้งด้านอสังหาริมทรัพย์ โรงแรม ธุรกิจโรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ โดยยังคงยึดมั่นในภารกิจสำคัญ คือการสร้างสรรค์นวัตกรรมเพื่อยกระดับคุณภาพชีวิตที่ดีกว่าให้กับทุกคน'}
+            </p>
           </div>
-          <div className="aspect-[4/3] rounded-xl overflow-hidden">
-            <img 
-              src={gallery2Image} 
-              alt="JW GROUP Office" 
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-            />
+        </div>
+
+        {/* Professional Bento Gallery */}
+        <div className="mt-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-8 bg-primary rounded-full" />
+            <span className="text-sm font-medium text-primary tracking-wide uppercase">สำนักงานใหญ่</span>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {/* Large featured image - spans 2 cols and 2 rows */}
+            <div 
+              className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group"
+              onClick={() => setSelectedImage(galleryImages[0].src)}
+            >
+              <img 
+                src={galleryImages[0].src} 
+                alt={galleryImages[0].alt}
+                className="w-full h-full min-h-[300px] md:min-h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <p className="text-secondary-foreground font-medium text-sm md:text-base">{galleryImages[0].title}</p>
+              </div>
+              <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <Eye className="w-5 h-5 text-foreground" />
+              </div>
+            </div>
+
+            {/* Medium images - each spans 1 col */}
+            {galleryImages.slice(1, 3).map((image, index) => (
+              <div 
+                key={index}
+                className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
+                onClick={() => setSelectedImage(image.src)}
+              >
+                <img 
+                  src={image.src} 
+                  alt={image.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <p className="text-secondary-foreground font-medium text-xs md:text-sm">{image.title}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Bottom row - 3 smaller images on desktop */}
+            {galleryImages.slice(3, 6).map((image, index) => (
+              <div 
+                key={index + 3}
+                className={cn(
+                  "relative rounded-2xl overflow-hidden cursor-pointer group",
+                  index === 0 ? "col-span-2 md:col-span-1 aspect-[2/1] md:aspect-square" : "aspect-square hidden md:block"
+                )}
+                onClick={() => setSelectedImage(image.src)}
+              >
+                <img 
+                  src={image.src} 
+                  alt={image.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <p className="text-secondary-foreground font-medium text-xs md:text-sm">{image.title}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Street View Button */}
-        <div className="flex justify-center pt-4">
+        <div className="flex justify-center pt-6">
           <Button 
             variant="outline" 
             size="lg"
-            className="gap-2 group"
+            className="gap-3 group px-8 py-6 text-base border-primary/30 hover:border-primary hover:bg-primary/5"
             onClick={() => window.open(streetViewUrl, '_blank', 'noopener,noreferrer')}
           >
-            <MapPin className="w-4 h-4" />
+            <MapPin className="w-5 h-5 text-primary" />
             <span>ดูสำนักงานใหญ่ 360°</span>
-            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
           </Button>
         </div>
       </div>
+
+      {/* Image Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-[95vw] max-h-[95vh]">
+            <img 
+              src={selectedImage} 
+              alt="Gallery Image"
+              className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
+            />
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors shadow-lg"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
