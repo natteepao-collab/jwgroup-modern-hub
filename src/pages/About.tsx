@@ -84,14 +84,15 @@ const AboutHistory = () => {
   const heroImage = getImage('about_history_hero') || jwHq8;
 
   // Gallery images array
+  const galleryImage2 = getImage('about_history_gallery_2');
+
   const galleryImages = [
-    { src: getImage('about_history_gallery_1') || jwHq5, alt: 'JW GROUP Entrance', title: 'ทางเข้าสำนักงานใหญ่' },
-    { src: getImage('about_history_gallery_2') || jwHq7, alt: 'JW GROUP Building Overview', title: 'มุมมองอาคารด้านหน้า' },
+    galleryImage2 && { src: galleryImage2, alt: 'JW GROUP Building Overview', title: 'มุมมองอาคารด้านหน้า' },
     { src: jwHq4, alt: 'JW GROUP Courtyard', title: 'ลานกลางอาคาร' },
     { src: jwHq6, alt: 'JW GROUP Architecture', title: 'สถาปัตยกรรมทันสมัย' },
     { src: jwHq1, alt: 'JW GROUP Headquarters', title: 'อาคารสำนักงาน' },
     { src: jwHq2, alt: 'JW GROUP Interior', title: 'ภายในอาคาร' },
-  ];
+  ].filter((img): img is { src: string; alt: string; title: string } => Boolean(img));
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -640,18 +641,18 @@ const About = () => {
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          "group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0 border-2",
+                          "group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0 border shadow-sm backdrop-blur",
                           active
-                            ? "bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-lg shadow-primary/10 translate-x-2"
-                            : "bg-orange-50/50 hover:bg-orange-50 border-transparent hover:border-primary/20 hover:shadow-md hover:translate-x-1"
+                            ? "bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 border-slate-600/60 shadow-lg shadow-sky-500/20 translate-x-2"
+                            : "bg-white/80 hover:bg-slate-50 border-slate-200 hover:border-sky-200 hover:shadow-md hover:-translate-y-0.5"
                         )}
                       >
                         {/* Icon Container with Gradient */}
                         <div className={cn(
-                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 shadow-sm",
+                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 shadow-sm ring-1",
                           active
-                            ? "bg-gradient-to-br from-primary to-amber-600 text-white shadow-md shadow-primary/30 rotate-3"
-                            : "bg-white text-amber-600/80 group-hover:text-amber-600 group-hover:scale-110 group-hover:shadow-md"
+                            ? "bg-gradient-to-br from-sky-500 to-cyan-400 text-white ring-sky-200 shadow-lg shadow-sky-400/30 scale-105"
+                            : "bg-slate-100 text-slate-600 ring-slate-200 group-hover:text-sky-600 group-hover:ring-sky-200 group-hover:shadow-md"
                         )}>
                           <item.icon className={cn(
                             "h-5 w-5 transition-transform duration-300",
@@ -660,7 +661,7 @@ const About = () => {
 
                           {/* Active Indicator Dot - now a ring effect */}
                           {active && (
-                            <span className="absolute inset-0 rounded-xl border-2 border-white/20 animate-pulse" />
+                            <span className="absolute inset-0 rounded-xl border-2 border-white/30 animate-pulse" />
                           )}
                         </div>
 
@@ -668,8 +669,8 @@ const About = () => {
                         <span className={cn(
                           "text-sm font-bold transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
                           active
-                            ? "text-primary"
-                            : "text-amber-900/70 group-hover:text-amber-700"
+                            ? "text-white"
+                            : "text-slate-700 group-hover:text-slate-900"
                         )}>
                           {t(item.labelKey)}
                         </span>
@@ -679,8 +680,8 @@ const About = () => {
                           className={cn(
                             "hidden lg:block w-4 h-4 ml-auto transition-all duration-300",
                             active
-                              ? "opacity-100 text-primary translate-x-0"
-                              : "opacity-0 text-amber-400 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                              ? "opacity-100 text-sky-200 translate-x-0"
+                              : "opacity-0 text-slate-300 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
                           )}
                           fill="none"
                           viewBox="0 0 24 24"

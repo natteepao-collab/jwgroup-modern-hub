@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -76,6 +78,11 @@ export const AnnouncementModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-5xl p-0 gap-0 overflow-hidden border-0 shadow-2xl rounded-3xl">
+        {/* Accessible title/description for screen readers */}
+        <DialogTitle className="sr-only">{title || t('welcomeModal.title')}</DialogTitle>
+        <DialogDescription className="sr-only">
+          {[subtitle, description].filter(Boolean).join(' ')}
+        </DialogDescription>
         {/* Two Column Layout */}
         <div className="grid md:grid-cols-2 min-h-[550px]">
           {/* Left Column - Content with Cream Background */}
