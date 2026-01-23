@@ -17,27 +17,84 @@ import jwHq2 from '@/assets/jw-headquarters-2.webp';
 import jwHq3 from '@/assets/jw-headquarters-3.webp';
 
 const AboutHistory = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const currentLang = i18n.language;
+
+  // Fetch content from database
+  const { data: historyContents } = useQuery({
+    queryKey: ['about-history-content'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_content')
+        .select('*')
+        .like('section_key', 'about_history%');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  // Fetch images from database
+  const { data: historyImages } = useQuery({
+    queryKey: ['about-history-images'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_images')
+        .select('*')
+        .like('section_key', 'about_history%');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  const getContent = (sectionKey: string) => {
+    const content = historyContents?.find(c => c.section_key === sectionKey);
+    if (!content) return { title: '', content: '' };
+    
+    const titleKey = `title_${currentLang === 'th' ? 'th' : currentLang === 'cn' ? 'cn' : 'en'}` as keyof typeof content;
+    const contentKey = `content_${currentLang === 'th' ? 'th' : currentLang === 'cn' ? 'cn' : 'en'}` as keyof typeof content;
+    
+    return {
+      title: (content[titleKey] as string) || content.title_th || '',
+      content: (content[contentKey] as string) || content.content_th || ''
+    };
+  };
+
+  const getImage = (sectionKey: string) => {
+    const image = historyImages?.find(img => img.section_key === sectionKey);
+    return image?.image_url || null;
+  };
 
   const streetViewUrl = "https://www.google.com/maps/place/JW+Group+Head+Office/@13.9272703,100.5999695,3a,75y,40.45h,90t/data=!3m7!1e1!3m5!1sKCRm7M3QP13vFoNxDC3Tcw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DKCRm7M3QP13vFoNxDC3Tcw%26yaw%3D40.44574!7i16384!8i8192!4m6!3m5!1s0x30e2826bc528edb1:0x1a95b4253779ef2c!8m2!3d13.9273592!4d100.600054!16s%2Fg%2F1vhkgzvf?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D";
+
+  // Get content with fallbacks
+  const titleContent = getContent('about_history_title');
+  const foundedContent = getContent('about_history_founded');
+  const growthContent = getContent('about_history_growth');
+
+  // Get images with fallbacks
+  const heroImage = getImage('about_history_hero') || jwHq1;
+  const gallery1Image = getImage('about_history_gallery_1') || jwHq2;
+  const gallery2Image = getImage('about_history_gallery_2') || jwHq3;
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Hero Section with Main Image */}
       <div className="relative mb-10 rounded-2xl overflow-hidden">
         <img 
-          src={jwHq1} 
+          src={heroImage} 
           alt="JW GROUP Headquarters" 
           className="w-full h-64 md:h-80 object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-secondary/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
           <h2 className="text-2xl md:text-3xl font-semibold text-secondary-foreground mb-2">
-            JW GROUP
+            {titleContent.title || 'JW GROUP'}
           </h2>
           <p className="text-secondary-foreground/80 text-sm md:text-base">
-            จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร
+            {titleContent.content || 'จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร'}
           </p>
         </div>
       </div>
@@ -47,29 +104,31 @@ const AboutHistory = () => {
         <div className="space-y-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-1 h-8 bg-primary rounded-full" />
-            <span className="text-sm font-medium text-primary tracking-wide uppercase">ก่อตั้งปี 2550</span>
+            <span className="text-sm font-medium text-primary tracking-wide uppercase">
+              {foundedContent.title || 'ก่อตั้งปี 2550'}
+            </span>
           </div>
           <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
-            ก่อตั้งขึ้นเมื่อปี 2550 โดยเริ่มต้นจากความเชี่ยวชาญในธุรกิจอสังหาริมทรัพย์ ด้วยปณิธานแน่วแน่ของผู้บริหารที่ต้องการสร้างสรรค์ที่อยู่อาศัยซึ่งไม่เพียงแค่สวยงาม แต่ต้องตอบโจทย์การใช้งานจริง และใช้สอยพื้นที่ให้เกิดประโยชน์สูงสุด เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับผู้อยู่อาศัย
+            {foundedContent.content || 'ก่อตั้งขึ้นเมื่อปี 2550 โดยเริ่มต้นจากความเชี่ยวชาญในธุรกิจอสังหาริมทรัพย์ ด้วยปณิธานแน่วแน่ของผู้บริหารที่ต้องการสร้างสรรค์ที่อยู่อาศัยซึ่งไม่เพียงแค่สวยงาม แต่ต้องตอบโจทย์การใช้งานจริง และใช้สอยพื้นที่ให้เกิดประโยชน์สูงสุด เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับผู้อยู่อาศัย'}
           </p>
         </div>
 
         <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
-          จากความสำเร็จในทุกโครงการที่ผ่านมา นำไปสู่การเติบโตและขยายขอบเขตธุรกิจอย่างต่อเนื่อง ปัจจุบัน JW GROUP คือกลุ่มธุรกิจชั้นนำที่ครอบคลุมทั้งด้านอสังหาริมทรัพย์ โรงแรม ธุรกิจโรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ โดยยังคงยึดมั่นในภารกิจสำคัญ คือการสร้างสรรค์นวัตกรรมเพื่อยกระดับคุณภาพชีวิตที่ดีกว่าให้กับทุกคน
+          {growthContent.content || 'จากความสำเร็จในทุกโครงการที่ผ่านมา นำไปสู่การเติบโตและขยายขอบเขตธุรกิจอย่างต่อเนื่อง ปัจจุบัน JW GROUP คือกลุ่มธุรกิจชั้นนำที่ครอบคลุมทั้งด้านอสังหาริมทรัพย์ โรงแรม ธุรกิจโรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ โดยยังคงยึดมั่นในภารกิจสำคัญ คือการสร้างสรรค์นวัตกรรมเพื่อยกระดับคุณภาพชีวิตที่ดีกว่าให้กับทุกคน'}
         </p>
 
         {/* Image Gallery */}
         <div className="grid grid-cols-2 gap-3 md:gap-4 mt-8">
           <div className="aspect-[4/3] rounded-xl overflow-hidden">
             <img 
-              src={jwHq2} 
+              src={gallery1Image} 
               alt="JW GROUP Building" 
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
           </div>
           <div className="aspect-[4/3] rounded-xl overflow-hidden">
             <img 
-              src={jwHq3} 
+              src={gallery2Image} 
               alt="JW GROUP Office" 
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
