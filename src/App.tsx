@@ -26,6 +26,7 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import Awards from "./pages/Awards";
+import PremiumAnalysis from "./pages/PremiumAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ const App = () => (
                 <Route path="/about/awards" element={<Awards />} />
                 <Route path="/business" element={<Business />} />
                 <Route path="/awards" element={<Awards />} />
+                <Route path="/premium-search" element={<PremiumAnalysis />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/news/:id" element={<NewsDetail />} />
                 <Route path="/careers" element={<Careers />} />
