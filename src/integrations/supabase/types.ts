@@ -635,6 +635,7 @@ export type Database = {
           core_concept: Json | null
           created_at: string
           id: string
+          image_url: string | null
           is_published: boolean | null
           missions: Json
           position_order: number | null
@@ -651,6 +652,7 @@ export type Database = {
           core_concept?: Json | null
           created_at?: string
           id?: string
+          image_url?: string | null
           is_published?: boolean | null
           missions?: Json
           position_order?: number | null
@@ -667,6 +669,7 @@ export type Database = {
           core_concept?: Json | null
           created_at?: string
           id?: string
+          image_url?: string | null
           is_published?: boolean | null
           missions?: Json
           position_order?: number | null
