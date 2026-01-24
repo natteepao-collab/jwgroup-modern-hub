@@ -11,15 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
 
-// Import headquarters images
-import jwHq1 from '@/assets/jw-headquarters-1.webp';
-import jwHq2 from '@/assets/jw-headquarters-2.webp';
-import jwHq3 from '@/assets/jw-headquarters-3.webp';
-import jwHq4 from '@/assets/jw-headquarters-4.jpg';
-import jwHq5 from '@/assets/jw-headquarters-5.jpg';
-import jwHq6 from '@/assets/jw-headquarters-6.jpg';
-import jwHq7 from '@/assets/jw-headquarters-7.jpg';
-import jwHq8 from '@/assets/jw-headquarters-8.jpg';
+// No hardcoded imports - all images from database
 
 const AboutHistory = () => {
   const { t, i18n } = useTranslation();
@@ -80,43 +72,53 @@ const AboutHistory = () => {
   const foundedContent = getContent('about_history_founded');
   const growthContent = getContent('about_history_growth');
 
-  // Get images with fallbacks - use imported images as defaults
-  const heroImage = getImage('about_history_hero') || jwHq8;
-
-  // Gallery images array
-  const galleryImage2 = getImage('about_history_gallery_2');
-
+  // Gallery images from database (5 images)
   const galleryImages = [
-    galleryImage2 && { src: galleryImage2, alt: 'JW GROUP Building Overview', title: 'มุมมองอาคารด้านหน้า' },
-    { src: jwHq4, alt: 'JW GROUP Courtyard', title: 'ลานกลางอาคาร' },
-    { src: jwHq6, alt: 'JW GROUP Architecture', title: 'สถาปัตยกรรมทันสมัย' },
-    { src: jwHq1, alt: 'JW GROUP Headquarters', title: 'อาคารสำนักงาน' },
-    { src: jwHq2, alt: 'JW GROUP Interior', title: 'ภายในอาคาร' },
-  ].filter((img): img is { src: string; alt: string; title: string } => Boolean(img));
+    { src: getImage('about_history_bento_1'), alt: 'JW GROUP Building 1', title: 'สำนักงานใหญ่' },
+    { src: getImage('about_history_bento_2'), alt: 'JW GROUP Building 2', title: 'มุมมองอาคาร' },
+    { src: getImage('about_history_bento_3'), alt: 'JW GROUP Building 3', title: 'สถาปัตยกรรม' },
+    { src: getImage('about_history_bento_4'), alt: 'JW GROUP Building 4', title: 'พื้นที่สำนักงาน' },
+    { src: getImage('about_history_bento_5'), alt: 'JW GROUP Building 5', title: 'บริเวณรอบอาคาร' },
+  ].filter(img => img.src && img.src !== 'placeholder');
+
+  const heroImage = galleryImages[0]?.src;
+
+  if (galleryImages.length === 0) {
+    return (
+      <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="text-center py-16">
+          <div className="text-muted-foreground mb-4">กรุณาอัปโหลดรูปภาพในหน้า Admin Panel</div>
+          <a href="/admin" className="text-primary underline">ไปที่หน้า Admin</a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Hero Section with Main Image */}
-      <div className="relative mb-12 rounded-3xl overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
-        <img 
-          src={heroImage} 
-          alt="JW GROUP Headquarters" 
-          className="w-full h-72 md:h-96 lg:h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-1.5 h-10 bg-primary rounded-full" />
-            <span className="text-primary font-medium text-sm uppercase tracking-widest">Since 2007</span>
+      {heroImage && (
+        <div className="relative mb-12 rounded-3xl overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
+          <img 
+            src={heroImage} 
+            alt="JW GROUP Headquarters" 
+            className="w-full h-72 md:h-96 lg:h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-1.5 h-10 bg-primary rounded-full" />
+              <span className="text-primary font-medium text-sm uppercase tracking-widest">Since 2007</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-foreground mb-3">
+              {titleContent.title || 'JW GROUP'}
+            </h2>
+            <p className="text-secondary-foreground/90 text-base md:text-lg max-w-2xl">
+              {titleContent.content || 'จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร'}
+            </p>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-foreground mb-3">
-            {titleContent.title || 'JW GROUP'}
-          </h2>
-          <p className="text-secondary-foreground/90 text-base md:text-lg max-w-2xl">
-            {titleContent.content || 'จากรากฐานอสังหาริมทรัพย์ สู่ผู้นำธุรกิจไลฟ์สไตล์ครบวงจร'}
-          </p>
         </div>
-      </div>
+      )}
 
       {/* Story Content */}
       <div className="space-y-10">
@@ -149,74 +151,75 @@ const AboutHistory = () => {
         </div>
 
         {/* Professional Bento Gallery */}
-        <div className="mt-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-8 bg-primary rounded-full" />
-            <span className="text-sm font-medium text-primary tracking-wide uppercase">สำนักงานใหญ่</span>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {/* Large featured image - spans 2 cols and 2 rows */}
-            <div 
-              className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group"
-              onClick={() => setSelectedImage(galleryImages[0].src)}
-            >
-              <img 
-                src={galleryImages[0].src} 
-                alt={galleryImages[0].alt}
-                className="w-full h-full min-h-[300px] md:min-h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="text-secondary-foreground font-medium text-sm md:text-base">{galleryImages[0].title}</p>
-              </div>
-              <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Eye className="w-5 h-5 text-foreground" />
-              </div>
+        {galleryImages.length > 0 && (
+          <div className="mt-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-1 h-8 bg-primary rounded-full" />
+              <span className="text-sm font-medium text-primary tracking-wide uppercase">สำนักงานใหญ่</span>
             </div>
-
-            {/* Medium images - each spans 1 col */}
-            {galleryImages.slice(1, 3).map((image, index) => (
-              <div 
-                key={index}
-                className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
-                onClick={() => setSelectedImage(image.src)}
-              >
-                <img 
-                  src={image.src} 
-                  alt={image.alt}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-secondary-foreground font-medium text-xs md:text-sm">{image.title}</p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              {/* Large featured image - spans 2 cols and 2 rows */}
+              {galleryImages[0] && (
+                <div 
+                  className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group"
+                  onClick={() => galleryImages[0]?.src && setSelectedImage(galleryImages[0].src)}
+                >
+                  <img 
+                    src={galleryImages[0].src!} 
+                    alt={galleryImages[0].alt}
+                    className="w-full h-full min-h-[300px] md:min-h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-secondary-foreground font-medium text-sm md:text-base">{galleryImages[0].title}</p>
+                  </div>
+                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Eye className="w-5 h-5 text-foreground" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              )}
 
-            {/* Bottom row - 3 smaller images on desktop */}
-            {galleryImages.slice(3, 6).map((image, index) => (
-              <div 
-                key={index + 3}
-                className={cn(
-                  "relative rounded-2xl overflow-hidden cursor-pointer group",
-                  index === 0 ? "col-span-2 md:col-span-1 aspect-[2/1] md:aspect-square" : "aspect-square hidden md:block"
-                )}
-                onClick={() => setSelectedImage(image.src)}
-              >
-                <img 
-                  src={image.src} 
-                  alt={image.alt}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-secondary-foreground font-medium text-xs md:text-sm">{image.title}</p>
+              {/* Medium images - each spans 1 col */}
+              {galleryImages.slice(1, 3).map((image, index) => (
+                <div 
+                  key={index}
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
+                  onClick={() => image.src && setSelectedImage(image.src)}
+                >
+                  <img 
+                    src={image.src!} 
+                    alt={image.alt}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-secondary-foreground font-medium text-xs md:text-sm">{image.title}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+
+              {/* Bottom row - 2 smaller images */}
+              {galleryImages.slice(3, 5).map((image, index) => (
+                <div 
+                  key={index + 3}
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
+                  onClick={() => image.src && setSelectedImage(image.src)}
+                >
+                  <img 
+                    src={image.src!} 
+                    alt={image.alt}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <p className="text-secondary-foreground font-medium text-xs md:text-sm">{image.title}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Street View Button */}
         <div className="flex justify-center pt-6">

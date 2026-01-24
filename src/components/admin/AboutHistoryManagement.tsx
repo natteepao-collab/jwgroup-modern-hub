@@ -43,9 +43,11 @@ export const AboutHistoryManagement = () => {
   };
 
   const imageLabels: Record<string, string> = {
-    'about_history_hero': 'รูป Hero Section',
-    'about_history_gallery_1': 'รูป Gallery 1',
-    'about_history_gallery_2': 'รูป Gallery 2',
+    'about_history_bento_1': 'รูป Hero (รูปใหญ่หลัก)',
+    'about_history_bento_2': 'รูป Gallery 2',
+    'about_history_bento_3': 'รูป Gallery 3',
+    'about_history_bento_4': 'รูป Gallery 4',
+    'about_history_bento_5': 'รูป Gallery 5',
   };
 
   useEffect(() => {
