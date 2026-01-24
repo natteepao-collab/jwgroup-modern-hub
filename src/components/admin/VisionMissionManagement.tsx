@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBusinessTypes } from '@/hooks/useBusinessTypes';
@@ -29,7 +29,10 @@ import {
   Loader2,
   GripVertical,
   ChevronUp,
-  ChevronDown
+  ChevronDown,
+  ImageIcon,
+  Upload,
+  X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -67,6 +70,7 @@ interface VisionMission {
   core_concept: CoreConcept | null;
   position_order: number;
   is_published: boolean;
+  image_url: string | null;
 }
 
 const businessIcons: Record<string, React.ElementType> = {
@@ -123,7 +127,8 @@ const VisionMissionManagement = () => {
         missions: Array.isArray(item.missions) ? (item.missions as unknown as Mission[]) : [],
         core_concept: item.core_concept ? (item.core_concept as unknown as CoreConcept) : null,
         position_order: item.position_order || 0,
-        is_published: item.is_published ?? true
+        is_published: item.is_published ?? true,
+        image_url: (item as any).image_url || null
       }));
       
       setVisionMissions(parsed);
@@ -166,7 +171,8 @@ const VisionMissionManagement = () => {
           vision_sub_cn: vm.vision_sub_cn,
           missions: missionsJson,
           core_concept: coreConceptJson,
-          is_published: vm.is_published
+          is_published: vm.is_published,
+          image_url: vm.image_url
         })
         .eq('id', vm.id);
 
@@ -266,6 +272,111 @@ const VisionMissionManagement = () => {
     return bt?.name_th || key;
   };
 
+  // Image upload handling
+  const [isUploading, setIsUploading] = useState<string | null>(null);
+  const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const handleImageUpload = async (vmId: string, file: File) => {
+    if (!isAdmin) {
+      toast.error('คุณไม่มีสิทธิ์อัปโหลดรูปภาพ');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('กรุณาเลือกไฟล์รูปภาพ');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('ขนาดไฟล์ต้องไม่เกิน 5MB');
+      return;
+    }
+
+    setIsUploading(vmId);
+    try {
+      const vm = visionMissions.find(v => v.id === vmId);
+      if (!vm) return;
+
+      // Generate unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${vm.business_type}-${Date.now()}.${fileExt}`;
+
+      // Upload to storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('vision-mission-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('vision-mission-images')
+        .getPublicUrl(fileName);
+
+      // Delete old image if exists
+      if (vm.image_url) {
+        const oldFileName = vm.image_url.split('/').pop();
+        if (oldFileName) {
+          await supabase.storage
+            .from('vision-mission-images')
+            .remove([oldFileName]);
+        }
+      }
+
+      // Update local state
+      setVisionMissions(prev =>
+        prev.map(v =>
+          v.id === vmId ? { ...v, image_url: urlData.publicUrl } : v
+        )
+      );
+
+      toast.success('อัปโหลดรูปภาพสำเร็จ');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('ไม่สามารถอัปโหลดรูปภาพได้');
+    }
+    setIsUploading(null);
+  };
+
+  const handleImageDelete = async (vmId: string) => {
+    if (!isAdmin) {
+      toast.error('คุณไม่มีสิทธิ์ลบรูปภาพ');
+      return;
+    }
+
+    const vm = visionMissions.find(v => v.id === vmId);
+    if (!vm || !vm.image_url) return;
+
+    setIsUploading(vmId);
+    try {
+      // Extract filename from URL
+      const fileName = vm.image_url.split('/').pop();
+      if (fileName) {
+        await supabase.storage
+          .from('vision-mission-images')
+          .remove([fileName]);
+      }
+
+      // Update local state
+      setVisionMissions(prev =>
+        prev.map(v =>
+          v.id === vmId ? { ...v, image_url: null } : v
+        )
+      );
+
+      toast.success('ลบรูปภาพสำเร็จ');
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      toast.error('ไม่สามารถลบรูปภาพได้');
+    }
+    setIsUploading(null);
+  };
+
   const currentVM = visionMissions.find(vm => vm.business_type === activeTab);
   const Icon = businessIcons[activeTab] || Building2;
 
@@ -346,7 +457,93 @@ const VisionMissionManagement = () => {
                   </div>
                 </div>
 
-                <Accordion type="multiple" defaultValue={['vision', 'missions']} className="space-y-4">
+                <Accordion type="multiple" defaultValue={['vision', 'missions', 'image']} className="space-y-4">
+                  {/* Image Upload Section */}
+                  <AccordionItem value="image" className="border rounded-lg px-4">
+                    <AccordionTrigger className="hover:no-underline">
+                      <div className="flex items-center gap-2">
+                        <ImageIcon className="h-4 w-4 text-primary" />
+                        <span className="font-medium">รูปภาพธุรกิจ (Business Image)</span>
+                        {vm.image_url && <span className="text-xs text-green-600">(มีรูป)</span>}
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="space-y-4 pt-4">
+                      <div className="grid gap-4">
+                        {/* Current Image Preview */}
+                        {vm.image_url ? (
+                          <div className="relative group">
+                            <img
+                              src={vm.image_url}
+                              alt={`รูปภาพ ${getBusinessName(vm.business_type)}`}
+                              className="w-full h-48 object-cover rounded-lg border"
+                            />
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => fileInputRefs.current[vm.id]?.click()}
+                                disabled={isUploading === vm.id}
+                              >
+                                <Upload className="h-4 w-4 mr-2" />
+                                เปลี่ยนรูป
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleImageDelete(vm.id)}
+                                disabled={isUploading === vm.id}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                ลบรูป
+                              </Button>
+                            </div>
+                            {isUploading === vm.id && (
+                              <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-white" />
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div
+                            className={cn(
+                              "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+                              "hover:border-primary hover:bg-primary/5",
+                              isUploading === vm.id && "pointer-events-none opacity-50"
+                            )}
+                            onClick={() => fileInputRefs.current[vm.id]?.click()}
+                          >
+                            {isUploading === vm.id ? (
+                              <Loader2 className="h-12 w-12 mx-auto mb-3 animate-spin text-primary" />
+                            ) : (
+                              <ImageIcon className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+                            )}
+                            <p className="text-sm font-medium text-muted-foreground">
+                              {isUploading === vm.id ? 'กำลังอัปโหลด...' : 'คลิกเพื่ออัปโหลดรูปภาพ'}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              รองรับ JPG, PNG, WebP (ขนาดไม่เกิน 5MB)
+                            </p>
+                          </div>
+                        )}
+                        
+                        {/* Hidden file input */}
+                        <input
+                          type="file"
+                          ref={(el) => { fileInputRefs.current[vm.id] = el; }}
+                          className="hidden"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleImageUpload(vm.id, file);
+                              e.target.value = '';
+                            }
+                          }}
+                        />
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
                   {/* Vision Section */}
                   <AccordionItem value="vision" className="border rounded-lg px-4">
                     <AccordionTrigger className="hover:no-underline">
