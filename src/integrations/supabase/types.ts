@@ -107,6 +107,45 @@ export type Database = {
         }
         Relationships: []
       }
+      career_benefits: {
+        Row: {
+          created_at: string
+          description_en: string | null
+          description_th: string | null
+          icon_name: string | null
+          id: string
+          is_published: boolean | null
+          position_order: number | null
+          title_en: string | null
+          title_th: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          icon_name?: string | null
+          id?: string
+          is_published?: boolean | null
+          position_order?: number | null
+          title_en?: string | null
+          title_th: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_en?: string | null
+          description_th?: string | null
+          icon_name?: string | null
+          id?: string
+          is_published?: boolean | null
+          position_order?: number | null
+          title_en?: string | null
+          title_th?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cookie_settings: {
         Row: {
           created_at: string
@@ -190,6 +229,63 @@ export type Database = {
           position_order?: number
           quote?: string | null
           title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          created_at: string
+          department_en: string | null
+          department_th: string | null
+          description_en: string | null
+          description_th: string | null
+          id: string
+          is_published: boolean | null
+          job_type: string | null
+          location_en: string | null
+          location_th: string | null
+          position_order: number | null
+          requirements_en: string | null
+          requirements_th: string | null
+          title_en: string | null
+          title_th: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department_en?: string | null
+          department_th?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_published?: boolean | null
+          job_type?: string | null
+          location_en?: string | null
+          location_th?: string | null
+          position_order?: number | null
+          requirements_en?: string | null
+          requirements_th?: string | null
+          title_en?: string | null
+          title_th: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department_en?: string | null
+          department_th?: string | null
+          description_en?: string | null
+          description_th?: string | null
+          id?: string
+          is_published?: boolean | null
+          job_type?: string | null
+          location_en?: string | null
+          location_th?: string | null
+          position_order?: number | null
+          requirements_en?: string | null
+          requirements_th?: string | null
+          title_en?: string | null
+          title_th?: string
           updated_at?: string
         }
         Relationships: []
