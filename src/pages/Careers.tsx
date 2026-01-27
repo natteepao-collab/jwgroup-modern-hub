@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Clock, Gift, Shield, Calendar, Car, Percent, TrendingUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import JobApplicationForm from '@/components/JobApplicationForm';
 
 // Icon mapping for benefits
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -18,7 +20,21 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   briefcase: Briefcase,
 };
 
+interface Job {
+  id: string;
+  title_th: string;
+  title_en: string | null;
+  department_th: string | null;
+  department_en: string | null;
+  location_th: string | null;
+  location_en: string | null;
+  job_type: string | null;
+  description_th: string | null;
+  description_en: string | null;
+}
+
 const Careers = () => {
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const { t, i18n } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const isEnglish = i18n.language === 'en';
@@ -163,7 +179,12 @@ const Careers = () => {
                     </p>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full">{t('careers.apply')}</Button>
+                    <Button 
+                      className="w-full"
+                      onClick={() => setSelectedJob(job)}
+                    >
+                      {t('careers.apply')}
+                    </Button>
                   </CardFooter>
                 </Card>
               ))}
@@ -181,6 +202,16 @@ const Careers = () => {
             </Card>
           )}
         </div>
+
+        {/* Job Application Form Modal */}
+        {selectedJob && (
+          <JobApplicationForm
+            jobId={selectedJob.id}
+            jobTitle={isEnglish ? (selectedJob.title_en || selectedJob.title_th) : selectedJob.title_th}
+            open={!!selectedJob}
+            onOpenChange={(open) => !open && setSelectedJob(null)}
+          />
+        )}
       </div>
     </div>
   );
