@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Plus, Trash2, Save, Briefcase, Gift } from 'lucide-react';
+import { Plus, Trash2, Save, Briefcase, Gift, FileText } from 'lucide-react';
+import ApplicationsManagement from './ApplicationsManagement';
 
 interface Job {
   id: string;
@@ -230,6 +231,10 @@ const CareersManagement = () => {
             <TabsTrigger value="benefits" className="flex items-center gap-2">
               <Gift className="h-4 w-4" />
               สวัสดิการ ({benefits.length})
+            </TabsTrigger>
+            <TabsTrigger value="applications" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              ใบสมัคร
             </TabsTrigger>
           </TabsList>
 
@@ -473,6 +478,11 @@ const CareersManagement = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+          </TabsContent>
+
+          {/* Applications Tab */}
+          <TabsContent value="applications">
+            <ApplicationsManagement />
           </TabsContent>
         </Tabs>
       </CardContent>
