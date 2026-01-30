@@ -626,17 +626,18 @@ const About = () => {
           <aside className="w-full lg:w-72 shrink-0">
             <div className="sticky top-28">
               {/* Header */}
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-foreground mb-1">เกี่ยวกับเรา</h2>
-                <p className="text-sm text-muted-foreground">ข้อมูลองค์กร JW Group</p>
+              <div className="mb-6 relative">
+                <div className="absolute -left-2 top-0 w-1 h-full bg-gradient-to-b from-primary to-primary/30 rounded-full" />
+                <h2 className="text-xl font-bold text-foreground mb-1 pl-4">เกี่ยวกับเรา</h2>
+                <p className="text-sm text-muted-foreground pl-4">ข้อมูลองค์กร JW Group</p>
               </div>
 
               {/* Navigation Items */}
               <nav className="relative">
                 {/* Decorative Line */}
-                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/20 via-primary/10 to-transparent hidden lg:block" />
+                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/30 via-primary/10 to-transparent hidden lg:block" />
 
-                <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
+                <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
                   {navItems.map((item, index) => {
                     const active = isActive(item.path);
                     return (
@@ -644,47 +645,53 @@ const About = () => {
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          "group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0 border shadow-sm backdrop-blur",
+                          "group relative flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0 border backdrop-blur-sm",
                           active
-                            ? "bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 border-slate-600/60 shadow-lg shadow-sky-500/20 translate-x-2"
-                            : "bg-white/80 hover:bg-slate-50 border-slate-200 hover:border-sky-200 hover:shadow-md hover:-translate-y-0.5"
+                            ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15 lg:translate-x-1"
+                            : "bg-card/80 hover:bg-card border-border/60 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
                         )}
                       >
-                        {/* Icon Container with Gradient */}
+                        {/* Icon Container with Premium Gradient */}
                         <div className={cn(
-                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 shadow-sm ring-1",
+                          "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
                           active
-                            ? "bg-gradient-to-br from-sky-500 to-cyan-400 text-white ring-sky-200 shadow-lg shadow-sky-400/30 scale-105"
-                            : "bg-slate-100 text-slate-600 ring-slate-200 group-hover:text-sky-600 group-hover:ring-sky-200 group-hover:shadow-md"
+                            ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
+                            : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
                         )}>
+                          {/* Shine overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
                           <item.icon className={cn(
-                            "h-5 w-5 transition-transform duration-300",
-                            active ? "scale-100" : "group-hover:scale-110"
-                          )} />
+                            "relative h-5 w-5 z-10 transition-all duration-300",
+                            active 
+                              ? "text-primary-foreground" 
+                              : "text-muted-foreground group-hover:text-primary-foreground"
+                          )} strokeWidth={1.8} />
 
-                          {/* Active Indicator Dot - now a ring effect */}
+                          {/* Active glow ring */}
                           {active && (
-                            <span className="absolute inset-0 rounded-xl border-2 border-white/30 animate-pulse" />
+                            <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
                           )}
                         </div>
 
-                        {/* Label */}
-                        <span className={cn(
-                          "text-sm font-bold transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
-                          active
-                            ? "text-white"
-                            : "text-slate-700 group-hover:text-slate-900"
-                        )}>
-                          {t(item.labelKey)}
-                        </span>
+                        {/* Label with Premium Typography */}
+                        <div className="flex flex-col gap-0.5">
+                          <span className={cn(
+                            "text-[15px] font-bold tracking-wide transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
+                            active
+                              ? "text-primary-foreground"
+                              : "text-foreground group-hover:text-primary"
+                          )}>
+                            {t(item.labelKey)}
+                          </span>
+                        </div>
 
-                        {/* Arrow Indicator */}
+                        {/* Premium Arrow Indicator */}
                         <svg
                           className={cn(
-                            "hidden lg:block w-4 h-4 ml-auto transition-all duration-300",
+                            "hidden lg:block w-5 h-5 ml-auto transition-all duration-300",
                             active
-                              ? "opacity-100 text-sky-200 translate-x-0"
-                              : "opacity-0 text-slate-300 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                              ? "opacity-100 text-primary translate-x-0"
+                              : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
                           )}
                           fill="none"
                           viewBox="0 0 24 24"
@@ -692,22 +699,27 @@ const About = () => {
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                         </svg>
+
+                        {/* Active indicator bar */}
+                        {active && (
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50 hidden lg:block" />
+                        )}
                       </Link>
                     );
                   })}
                 </div>
               </nav>
 
-              {/* Quick Stats */}
-              <div className="hidden lg:block mt-8 p-4 bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl border border-primary/10">
+              {/* Quick Stats with Premium Styling */}
+              <div className="hidden lg:block mt-8 p-5 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl border border-primary/15 shadow-inner">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-primary">17+</p>
-                    <p className="text-xs text-muted-foreground">ปีแห่งประสบการณ์</p>
+                  <div className="text-center p-2 rounded-xl bg-card/50">
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">17+</p>
+                    <p className="text-xs text-muted-foreground font-medium mt-1">ปีแห่งประสบการณ์</p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-primary">4</p>
-                    <p className="text-xs text-muted-foreground">กลุ่มธุรกิจหลัก</p>
+                  <div className="text-center p-2 rounded-xl bg-card/50">
+                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">4</p>
+                    <p className="text-xs text-muted-foreground font-medium mt-1">กลุ่มธุรกิจหลัก</p>
                   </div>
                 </div>
               </div>
