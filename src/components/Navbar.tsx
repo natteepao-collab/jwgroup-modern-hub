@@ -401,27 +401,32 @@ export const Navbar = () => {
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          "group flex items-center gap-5 px-6 py-4 mx-3 rounded-xl transition-all duration-200",
-                          "hover:bg-primary/10",
+                          "group flex items-center gap-4 px-5 py-3.5 mx-3 rounded-xl transition-all duration-300",
+                          "hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/10",
                           isActive(item.path)
-                            ? "text-primary bg-primary/10 font-bold"
-                            : "text-foreground/70 hover:text-primary"
+                            ? "text-primary bg-gradient-to-r from-primary/10 to-primary/5"
+                            : "text-foreground/80 hover:text-foreground"
                         )}
                       >
                         <div className={cn(
-                          "relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 overflow-hidden",
+                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 overflow-hidden",
                           isActive(item.path)
-                            ? "bg-[#FCD34D] text-black shadow-lg shadow-yellow-400/30"
-                            : "bg-[#FCD34D] text-black/80 group-hover:text-black group-hover:scale-110 group-hover:shadow-md"
+                            ? "bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground shadow-lg shadow-primary/40 scale-105"
+                            : "bg-gradient-to-br from-secondary/90 to-secondary/70 text-secondary-foreground group-hover:from-primary group-hover:to-accent group-hover:text-primary-foreground group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30"
                         )}>
-                          <div className="absolute -right-2 -bottom-2 w-6 h-6 bg-white/30 rounded-full blur-[2px]" />
-                          <item.icon className="relative h-4 w-4 z-10" strokeWidth={2} />
+                          <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent" />
+                          <item.icon className="relative h-5 w-5 z-10" strokeWidth={1.8} />
                         </div>
-                        <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t(item.labelKey)}</span>
+                        <div className="flex flex-col gap-0.5">
+                          <span className={cn(
+                            "text-[14px] font-bold tracking-wide leading-tight transition-colors duration-300",
+                            isActive(item.path) ? "text-primary" : "text-foreground group-hover:text-primary"
+                          )}>{t(item.labelKey)}</span>
+                        </div>
                         <ChevronRight className={cn(
-                          "h-4 w-4 ml-auto opacity-0 -translate-x-2 transition-all duration-200",
-                          "group-hover:opacity-100 group-hover:translate-x-0",
-                          isActive(item.path) && "opacity-100 translate-x-0"
+                          "h-4 w-4 ml-auto transition-all duration-300 text-muted-foreground",
+                          "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary",
+                          isActive(item.path) && "opacity-100 translate-x-0 text-primary"
                         )} />
                       </Link>
                     ))}
