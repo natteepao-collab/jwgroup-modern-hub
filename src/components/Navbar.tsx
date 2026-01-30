@@ -531,22 +531,24 @@ export const Navbar = () => {
         {/* Drawer Panel - Slide from Left */}
         <div
           className={cn(
-            'absolute top-0 left-0 h-full w-[85%] max-w-[400px] bg-white/90 backdrop-blur-md shadow-2xl transition-transform duration-300 ease-out overflow-y-auto font-[\'Noto_Sans_Thai\']',
+            "absolute top-0 left-0 h-full w-[85%] max-w-[400px] bg-gradient-to-b from-card via-card to-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-out overflow-y-auto font-['Noto_Sans_Thai']",
             isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
-          {/* Header */}
-          <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-foreground/10">
+          {/* Premium Header */}
+          <div className="sticky top-0 z-10 bg-gradient-to-r from-secondary via-secondary to-secondary/95 backdrop-blur-sm border-b border-primary/20">
             <div className="px-5 py-4 flex items-center justify-between">
-              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-8 w-auto" />
+              <div className="p-2 bg-card/95 rounded-xl shadow-lg">
+                <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-8 w-auto" />
+              </div>
 
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2 text-foreground/70 hover:text-foreground transition-colors"
+                  className="p-2.5 rounded-xl bg-card/20 text-secondary-foreground hover:bg-card/30 transition-all duration-300 hover:scale-105"
                 >
-                  <X className="h-6 w-6" strokeWidth={2.5} />
+                  <X className="h-5 w-5" strokeWidth={2.5} />
                 </button>
               </div>
             </div>
@@ -554,45 +556,68 @@ export const Navbar = () => {
 
           {/* Menu Items */}
           <div className="px-4 py-6">
-            {/* Gradient accent line */}
-            <div className="h-1 w-16 bg-gradient-to-r from-primary to-primary/50 rounded-full mb-6" />
+            {/* Premium Header Label */}
+            <div className="mb-6 relative">
+              <div className="absolute -left-2 top-0 w-1 h-full bg-gradient-to-b from-primary to-primary/30 rounded-full" />
+              <h3 className="text-lg font-bold text-foreground mb-1 pl-4">เมนู</h3>
+              <p className="text-xs text-muted-foreground pl-4">JW Group Navigation</p>
+            </div>
 
             {/* Main Navigation */}
-            <nav className="space-y-1.5">
+            <nav className="space-y-2.5">
               {/* Home */}
               <Link
                 to="/"
                 className={cn(
-                  'group flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
-                  'hover:bg-primary/10',
-                  isActive('/') ? 'text-primary bg-primary/10' : 'text-foreground',
+                  "group relative flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border backdrop-blur-sm",
+                  isActive('/')
+                    ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15"
+                    : "bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5",
                   isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
                 )}
                 style={{ animationDelay: '100ms', animationFillMode: 'both' }}
               >
+                {/* Premium Icon Container */}
                 <div className={cn(
-                  "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
+                  "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
                   isActive('/')
-                    ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/40"
-                    : "bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary group-hover:shadow-lg group-hover:shadow-primary/20"
+                    ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
+                    : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
                 )}>
-                  <Home className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                  <Home className={cn(
+                    "relative h-5 w-5 z-10 transition-all duration-300",
+                    isActive('/') ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                  )} strokeWidth={1.8} />
                   {isActive('/') && (
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/20 to-transparent" />
+                    <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
                   )}
                 </div>
-                <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1">{t('nav.home')}</span>
+
+                {/* Label */}
+                <span className={cn(
+                  "text-[15px] font-bold tracking-wide transition-colors duration-300 flex-1",
+                  isActive('/') ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                )}>
+                  {t('nav.home')}
+                </span>
+
+                {/* Arrow */}
                 <ChevronRight className={cn(
-                  "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-300",
-                  "group-hover:opacity-70 group-hover:translate-x-0",
-                  isActive('/') && "opacity-70 translate-x-0"
+                  "h-5 w-5 transition-all duration-300",
+                  isActive('/') ? "opacity-100 text-primary translate-x-0" : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
                 )} />
+
+                {/* Active indicator bar */}
+                {isActive('/') && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
+                )}
               </Link>
 
               {/* About Us - Expandable */}
               <div
                 className={cn(
-                  "overflow-hidden rounded-xl",
+                  "overflow-hidden rounded-2xl",
                   isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
                 )}
                 style={{ animationDelay: '150ms', animationFillMode: 'both' }}
@@ -600,69 +625,97 @@ export const Navbar = () => {
                 <button
                   onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
-                    'group w-full flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
-                    'hover:bg-primary/10',
-                    isAboutActive ? 'text-primary bg-primary/10' : 'text-foreground'
+                    "group relative w-full flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border backdrop-blur-sm",
+                    isAboutActive
+                      ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15"
+                      : "bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
                   )}
                 >
+                  {/* Premium Icon Container */}
                   <div className={cn(
-                    "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
+                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
                     isAboutActive
-                      ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/40"
-                      : "bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary group-hover:shadow-lg group-hover:shadow-primary/20"
+                      ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
+                      : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
                   )}>
-                    <Info className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                    <Info className={cn(
+                      "relative h-5 w-5 z-10 transition-all duration-300",
+                      isAboutActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                    )} strokeWidth={1.8} />
                     {isAboutActive && (
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/20 to-transparent" />
+                      <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
                     )}
                   </div>
-                  <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1 text-left">{t('nav.about')}</span>
-                  <ChevronDown
-                    className={cn(
-                      'h-5 w-5 transition-transform duration-300',
-                      aboutExpanded && 'rotate-180'
-                    )}
-                  />
+
+                  {/* Label */}
+                  <span className={cn(
+                    "text-[15px] font-bold tracking-wide transition-colors duration-300 flex-1 text-left",
+                    isAboutActive ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                  )}>
+                    {t('nav.about')}
+                  </span>
+
+                  {/* Chevron */}
+                  <ChevronDown className={cn(
+                    "h-5 w-5 transition-all duration-300",
+                    isAboutActive ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                    aboutExpanded && "rotate-180"
+                  )} />
+
+                  {/* Active indicator bar */}
+                  {isAboutActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
+                  )}
                 </button>
 
-                {/* Submenu */}
+                {/* Premium Submenu */}
                 <div
                   className={cn(
                     'overflow-hidden transition-all duration-300 ease-out',
                     aboutExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                   )}
                 >
-                  <div className="ml-4 mt-2 mb-2 space-y-1.5 bg-muted/50 rounded-xl p-3">
+                  <div className="ml-4 mt-2 mb-2 space-y-2 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl p-3 border border-primary/15">
                     {aboutSubItems.map((item, subIndex) => (
                       <Link
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          'group flex items-center gap-4 py-3.5 px-4 rounded-lg transition-all duration-200',
-                          'hover:bg-primary/10',
+                          "group relative flex items-center gap-3 py-3 px-3 rounded-xl transition-all duration-300 border backdrop-blur-sm",
                           isActive(item.path)
-                            ? 'text-primary bg-primary/10 font-bold'
-                            : 'text-foreground/70 hover:text-primary',
+                            ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-lg shadow-primary/10"
+                            : "bg-card/60 border-transparent hover:bg-card hover:border-primary/20 hover:shadow-md",
                           aboutExpanded ? 'animate-fade-in opacity-100' : 'opacity-0'
                         )}
                         style={{ animationDelay: `${subIndex * 50}ms`, animationFillMode: 'both' }}
                       >
+                        {/* Submenu Icon */}
                         <div className={cn(
-                          "relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-105",
+                          "relative flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300 overflow-hidden",
                           isActive(item.path)
-                            ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30"
-                            : "bg-gradient-to-br from-background via-background to-muted/50 border border-border/40 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary"
+                            ? "bg-gradient-to-br from-primary via-primary to-accent shadow-md shadow-primary/30"
+                            : "bg-gradient-to-br from-muted/80 to-muted/50 group-hover:from-primary group-hover:to-accent group-hover:shadow-md group-hover:shadow-primary/20 group-hover:scale-105"
                         )}>
-                          <item.icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
-                          {isActive(item.path) && (
-                            <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/20 to-transparent" />
-                          )}
+                          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/15" />
+                          <item.icon className={cn(
+                            "relative h-4 w-4 z-10 transition-all duration-300",
+                            isActive(item.path) ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                          )} strokeWidth={1.8} />
                         </div>
-                        <span className="text-[15px] font-bold tracking-widest leading-relaxed">{t(item.labelKey)}</span>
+
+                        {/* Submenu Label */}
+                        <span className={cn(
+                          "text-[14px] font-bold tracking-wide transition-colors duration-300",
+                          isActive(item.path) ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                        )}>
+                          {t(item.labelKey)}
+                        </span>
+
+                        {/* Arrow */}
                         <ChevronRight className={cn(
-                          "h-4 w-4 ml-auto opacity-0 -translate-x-2 transition-all duration-200",
-                          "group-hover:opacity-70 group-hover:translate-x-0",
-                          isActive(item.path) && "opacity-70 translate-x-0"
+                          "h-4 w-4 ml-auto transition-all duration-300",
+                          isActive(item.path) ? "opacity-100 text-primary translate-x-0" : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
                         )} />
                       </Link>
                     ))}
@@ -676,41 +729,64 @@ export const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    'group flex items-center gap-5 py-4 px-5 rounded-xl transition-all duration-200',
-                    'hover:bg-primary/10',
-                    isActive(item.path) ? 'text-primary bg-primary/10' : 'text-foreground',
+                    "group relative flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border backdrop-blur-sm",
+                    isActive(item.path)
+                      ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15"
+                      : "bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5",
                     isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
                   )}
                   style={{ animationDelay: `${200 + (index * 50)}ms`, animationFillMode: 'both' }}
                 >
+                  {/* Premium Icon Container */}
                   <div className={cn(
-                    "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-105",
+                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
                     isActive(item.path)
-                      ? "bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-xl shadow-primary/40"
-                      : "bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/20 group-hover:via-primary/15 group-hover:to-primary/10 group-hover:border-primary/30 group-hover:text-primary group-hover:shadow-lg group-hover:shadow-primary/20"
+                      ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
+                      : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
                   )}>
-                    <item.icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                    <item.icon className={cn(
+                      "relative h-5 w-5 z-10 transition-all duration-300",
+                      isActive(item.path) ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                    )} strokeWidth={1.8} />
                     {isActive(item.path) && (
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/20 to-transparent" />
+                      <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
                     )}
                   </div>
-                  <span className="text-[17px] font-bold tracking-widest leading-relaxed flex-1">{t(item.labelKey)}</span>
+
+                  {/* Label */}
+                  <span className={cn(
+                    "text-[15px] font-bold tracking-wide transition-colors duration-300 flex-1",
+                    isActive(item.path) ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                  )}>
+                    {t(item.labelKey)}
+                  </span>
+
+                  {/* Arrow */}
                   <ChevronRight className={cn(
-                    "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
-                    "group-hover:opacity-70 group-hover:translate-x-0",
-                    isActive(item.path) && "opacity-70 translate-x-0"
+                    "h-5 w-5 transition-all duration-300",
+                    isActive(item.path) ? "opacity-100 text-primary translate-x-0" : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
                   )} />
+
+                  {/* Active indicator bar */}
+                  {isActive(item.path) && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
+                  )}
                 </Link>
               ))}
             </nav>
 
-            {/* Divider */}
-            <div className="my-6 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
+            {/* Premium Divider */}
+            <div className="my-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+              <div className="w-2 h-2 rounded-full bg-primary/50" />
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            </div>
 
             {/* Admin & Auth Section */}
             <div
               className={cn(
-                "space-y-3",
+                "space-y-2.5",
                 isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
               )}
               style={{ animationDelay: '450ms', animationFillMode: 'both' }}
@@ -718,15 +794,16 @@ export const Navbar = () => {
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="group relative flex items-center gap-4 py-4 px-5 rounded-2xl overflow-hidden bg-gradient-to-r from-primary/15 via-primary/10 to-primary/5 text-primary hover:from-primary/25 hover:via-primary/20 hover:to-primary/15 transition-all duration-300 border border-primary/20 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/20"
+                  className="group relative flex items-center gap-4 py-4 px-4 rounded-2xl overflow-hidden bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border border-primary/30 shadow-lg shadow-primary/15 transition-all duration-300 hover:shadow-xl hover:shadow-primary/25"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/40 group-hover:scale-105 transition-transform duration-300">
-                    <Shield className="h-5 w-5" strokeWidth={2} />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/20 to-transparent" />
+                  <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                    <Shield className="relative h-5 w-5 text-primary-foreground z-10" strokeWidth={1.8} />
+                    <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
                   </div>
-                  <span className="relative text-[16px] font-bold tracking-widest leading-relaxed">Admin Panel</span>
-                  <ChevronRight className="relative h-5 w-5 ml-auto opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                  <span className="text-[15px] font-bold tracking-wide text-primary-foreground">Admin Panel</span>
+                  <ChevronRight className="h-5 w-5 ml-auto text-primary opacity-100" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
                 </Link>
               )}
 
@@ -736,46 +813,54 @@ export const Navbar = () => {
                     signOut();
                     setIsMenuOpen(false);
                   }}
-                  className="group relative w-full flex items-center gap-4 py-4 px-5 rounded-2xl overflow-hidden text-foreground/70 hover:text-destructive transition-all duration-300 border border-transparent hover:border-destructive/30 hover:bg-gradient-to-r hover:from-destructive/10 hover:via-destructive/5 hover:to-transparent"
+                  className="group relative w-full flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border bg-card/80 border-border/60 hover:bg-destructive/10 hover:border-destructive/30 hover:shadow-lg hover:shadow-destructive/10"
                 >
-                  <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-destructive/20 group-hover:via-destructive/15 group-hover:to-destructive/10 group-hover:border-destructive/30 transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-destructive/20">
-                    <LogOut className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                  <div className={cn(
+                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
+                    "bg-gradient-to-br from-muted to-muted/70 group-hover:from-destructive group-hover:to-destructive/80 group-hover:shadow-lg group-hover:shadow-destructive/30 group-hover:scale-110"
+                  )}>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                    <LogOut className="relative h-5 w-5 z-10 text-muted-foreground group-hover:text-destructive-foreground transition-colors duration-300" strokeWidth={1.8} />
                   </div>
-                  <span className="text-[16px] font-bold tracking-widest leading-relaxed">{t('nav.logout')}</span>
-                  <ChevronRight className="h-5 w-5 ml-auto opacity-0 -translate-x-2 group-hover:opacity-70 group-hover:translate-x-0 transition-all duration-300" />
+                  <span className="text-[15px] font-bold tracking-wide text-foreground group-hover:text-destructive transition-colors duration-300">{t('nav.logout')}</span>
+                  <ChevronRight className="h-5 w-5 ml-auto text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-destructive transition-all duration-300" />
                 </button>
               ) : (
                 <Link
                   to="/auth"
-                  className="group relative flex items-center gap-4 py-4 px-5 rounded-2xl overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-transparent text-foreground/70 hover:text-primary transition-all duration-300 border border-primary/20 hover:border-primary/40 hover:from-primary/20 hover:via-primary/15 hover:to-primary/5 hover:shadow-lg hover:shadow-primary/15"
+                  className="group relative flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-muted via-muted to-muted/80 border border-border/50 group-hover:from-primary/25 group-hover:via-primary/20 group-hover:to-primary/15 group-hover:border-primary/40 transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-primary/25">
-                    <LogIn className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={2} />
+                  <div className={cn(
+                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
+                    "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
+                  )}>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                    <LogIn className="relative h-5 w-5 z-10 text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300" strokeWidth={1.8} />
                   </div>
-                  <span className="relative text-[16px] font-bold tracking-widest leading-relaxed">{t('nav.login')}</span>
-                  <ChevronRight className="relative h-5 w-5 ml-auto opacity-0 -translate-x-2 group-hover:opacity-70 group-hover:translate-x-0 transition-all duration-300" />
+                  <span className="text-[15px] font-bold tracking-wide text-foreground group-hover:text-primary transition-colors duration-300">{t('nav.login')}</span>
+                  <ChevronRight className="h-5 w-5 ml-auto text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary transition-all duration-300" />
                 </Link>
               )}
             </div>
 
-            {/* Contact Info */}
+            {/* Premium Contact Info */}
             <div
               className={cn(
-                "mt-8 p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10",
+                "mt-8 p-5 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl border border-primary/15 shadow-inner",
                 isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
               )}
               style={{ animationDelay: '500ms', animationFillMode: 'both' }}
             >
-              <p className="text-foreground/50 text-xs font-bold uppercase tracking-wider mb-2">{t('nav.contactUs')}</p>
+              <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-3">{t('nav.contactUs')}</p>
               <a
                 href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`}
-                className="flex items-center gap-3 text-xl font-bold text-primary hover:text-primary/80 transition-colors"
+                className="group flex items-center gap-3 text-lg font-bold text-foreground hover:text-primary transition-all duration-300"
               >
-                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/30">
-                  <Phone className="h-5 w-5" strokeWidth={2} />
+                <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/30 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
+                  <Phone className="relative h-5 w-5 text-primary-foreground z-10" strokeWidth={1.8} />
                 </div>
-                {phoneNumber}
+                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{phoneNumber}</span>
               </a>
             </div>
           </div>
