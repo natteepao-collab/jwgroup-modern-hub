@@ -12,6 +12,7 @@ import FloatingActions from './components/FloatingActions';
 import Snowfall from './components/Snowfall';
 import ChristmasTheme from './components/ChristmasTheme';
 import { CookieConsentProvider } from './components/CookieConsent';
+import PageTransition from './components/PageTransition';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Business from "./pages/Business";
@@ -61,27 +62,29 @@ const App = () => (
           <BrowserRouter>
             <CookieConsentProvider>
               <Layout>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/about/*" element={<About />} />
-                  <Route path="/about/awards" element={<Awards />} />
-                  <Route path="/business" element={<Business />} />
-                  <Route path="/awards" element={<Awards />} />
-                  <Route path="/premium-search" element={<PremiumAnalysis />} />
-                  <Route path="/news" element={<News />} />
-                  <Route path="/news/:id" element={<NewsDetail />} />
-                  <Route path="/careers" element={<Careers />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/pdpa" element={<PDPA />} />
-                  <Route path="/sustainability" element={<Sustainability />} />
-                  <Route path="/vision-mission" element={<VisionMission />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/admin" element={<Admin />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <PageTransition>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/about/*" element={<About />} />
+                    <Route path="/about/awards" element={<Awards />} />
+                    <Route path="/business" element={<Business />} />
+                    <Route path="/awards" element={<Awards />} />
+                    <Route path="/premium-search" element={<PremiumAnalysis />} />
+                    <Route path="/news" element={<News />} />
+                    <Route path="/news/:id" element={<NewsDetail />} />
+                    <Route path="/careers" element={<Careers />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/pdpa" element={<PDPA />} />
+                    <Route path="/sustainability" element={<Sustainability />} />
+                    <Route path="/vision-mission" element={<VisionMission />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/admin" element={<Admin />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </PageTransition>
               </Layout>
             </CookieConsentProvider>
           </BrowserRouter>
