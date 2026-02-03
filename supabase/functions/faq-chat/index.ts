@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -23,7 +24,7 @@ const cleanupRateLimitMap = () => {
 // Run cleanup every 5 minutes
 setInterval(cleanupRateLimitMap, 5 * 60 * 1000);
 
-const SYSTEM_PROMPT = `คุณคือผู้ช่วย FAQ ของ JW Group บริษัทชั้นนำในประเทศไทยที่มีธุรกิจหลากหลาย ตอบคำถามเป็นภาษาไทยอย่างสุภาพ กระชับ และเป็นมิตร
+const BASE_SYSTEM_PROMPT = `คุณคือผู้ช่วย FAQ ของ JW Group บริษัทชั้นนำในประเทศไทยที่มีธุรกิจหลากหลาย ตอบคำถามเป็นภาษาไทยอย่างสุภาพ กระชับ และเป็นมิตร
 
 ═══════════════════════════════════════
 📍 ข้อมูลบริษัท JW GROUP
@@ -99,6 +100,87 @@ const SYSTEM_PROMPT = `คุณคือผู้ช่วย FAQ ของ JW 
 
 ถ้าไม่ทราบคำตอบ ให้แนะนำติดต่อเบอร์โทรหรืออีเมลแทน`;
 
+// Function to fetch news from database
+async function fetchLatestNews(): Promise<string> {
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error("Supabase credentials not configured");
+      return "";
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Fetch latest 10 published news
+    const { data: news, error } = await supabase
+      .from('news')
+      .select('title_th, excerpt_th, content_th, category, business_type, published_at')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false })
+      .limit(10);
+
+    if (error) {
+      console.error("Error fetching news:", error);
+      return "";
+    }
+
+    if (!news || news.length === 0) {
+      return "";
+    }
+
+    // Format news for AI context
+    const formatDate = (dateStr: string) => {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    };
+
+    const getCategoryName = (category: string) => {
+      const categories: Record<string, string> = {
+        'company': 'ข่าวบริษัท',
+        'press': 'ข่าวประชาสัมพันธ์',
+        'csr': 'กิจกรรม CSR',
+        'all': 'ข่าวทั่วไป'
+      };
+      return categories[category] || 'ข่าวทั่วไป';
+    };
+
+    const getBusinessName = (type: string) => {
+      const types: Record<string, string> = {
+        'real_estate': 'อสังหาริมทรัพย์',
+        'hotel': 'โรงแรม',
+        'pet': 'สัตวแพทย์',
+        'wellness': 'สุขภาพและสมุนไพร'
+      };
+      return types[type] || 'ทั่วไป';
+    };
+
+    const newsContent = news.map((item, index) => {
+      const excerpt = item.excerpt_th || (item.content_th ? item.content_th.substring(0, 200) + '...' : '');
+      return `${index + 1}. 📰 ${item.title_th}
+   📅 วันที่: ${formatDate(item.published_at)}
+   🏷️ หมวด: ${getCategoryName(item.category)} | ธุรกิจ: ${getBusinessName(item.business_type)}
+   📝 รายละเอียด: ${excerpt}`;
+    }).join('\n\n');
+
+    return `
+
+═══════════════════════════════════════
+📰 ข่าวสารล่าสุดของบริษัท
+═══════════════════════════════════════
+${newsContent}
+
+📌 หมายเหตุ: หากต้องการอ่านข่าวฉบับเต็ม สามารถเข้าไปดูได้ที่หน้า "ข่าวสาร" บนเว็บไซต์ของเรา`;
+  } catch (error) {
+    console.error("Error in fetchLatestNews:", error);
+    return "";
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -144,6 +226,12 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
+    // Fetch latest news from database
+    const newsContext = await fetchLatestNews();
+    const fullSystemPrompt = BASE_SYSTEM_PROMPT + newsContext;
+
+    console.log("News context loaded:", newsContext ? "Yes" : "No");
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -153,7 +241,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: fullSystemPrompt },
           ...messages,
         ],
         stream: true,
