@@ -107,6 +107,14 @@ interface ContactRecord {
   content_th: string | null;
 }
 
+interface AwardRecord {
+  title_th: string;
+  description_th: string | null;
+  award_year: number | null;
+  awarding_organization: string | null;
+  category: string | null;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnySupabaseClient = SupabaseClient<any, any, any>;
 
@@ -312,6 +320,59 @@ function getDefaultContactInfo(): string {
 📌 สามารถส่งข้อความผ่านแบบฟอร์มติดต่อบนเว็บไซต์ได้ที่หน้า "ติดต่อเรา"`;
 }
 
+// Function to fetch awards from database
+async function fetchAwards(supabase: AnySupabaseClient): Promise<string> {
+  try {
+    const { data, error } = await supabase
+      .from('awards')
+      .select('title_th, description_th, award_year, awarding_organization, category')
+      .eq('is_published', true)
+      .order('award_year', { ascending: false })
+      .limit(15);
+
+    if (error) {
+      console.error("Error fetching awards:", error);
+      return "";
+    }
+
+    const awards = data as AwardRecord[] | null;
+    if (!awards || awards.length === 0) {
+      return "";
+    }
+
+    const getCategoryName = (category: string | null) => {
+      const categories: Record<string, string> = {
+        'excellence': 'รางวัลความเป็นเลิศ',
+        'innovation': 'รางวัลนวัตกรรม',
+        'sustainability': 'รางวัลความยั่งยืน',
+        'service': 'รางวัลการบริการ',
+        'design': 'รางวัลการออกแบบ',
+        'csr': 'รางวัล CSR'
+      };
+      return categories[category || ''] || 'รางวัลทั่วไป';
+    };
+
+    const awardsContent = awards.map((award, index) => {
+      const description = award.description_th ? `\n   📝 ${award.description_th.substring(0, 150)}...` : '';
+      const org = award.awarding_organization ? ` | 🏛️ ${award.awarding_organization}` : '';
+      return `${index + 1}. 🏆 ${award.title_th}
+   📅 ปี ${award.award_year || 'ไม่ระบุ'} | 🏷️ ${getCategoryName(award.category)}${org}${description}`;
+    }).join('\n\n');
+
+    return `
+
+═══════════════════════════════════════
+🏆 รางวัลและผลงานของบริษัท (${awards.length} รางวัล)
+═══════════════════════════════════════
+${awardsContent}
+
+📌 ดูรายละเอียดรางวัลทั้งหมดได้ที่หน้า "รางวัลและผลงาน" บนเว็บไซต์`;
+  } catch (error) {
+    console.error("Error in fetchAwards:", error);
+    return "";
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -357,14 +418,15 @@ serve(async (req) => {
     let dynamicContext = "";
 
     if (supabase) {
-      const [newsContext, jobsContext, contactContext] = await Promise.all([
+      const [newsContext, jobsContext, contactContext, awardsContext] = await Promise.all([
         fetchLatestNews(supabase),
         fetchJobListings(supabase),
-        fetchContactInfo(supabase)
+        fetchContactInfo(supabase),
+        fetchAwards(supabase)
       ]);
 
-      dynamicContext = newsContext + jobsContext + contactContext;
-      console.log("Dynamic context loaded - News:", !!newsContext, "Jobs:", !!jobsContext, "Contact:", !!contactContext);
+      dynamicContext = newsContext + jobsContext + contactContext + awardsContext;
+      console.log("Dynamic context loaded - News:", !!newsContext, "Jobs:", !!jobsContext, "Contact:", !!contactContext, "Awards:", !!awardsContext);
     } else {
       dynamicContext = getDefaultContactInfo();
     }
