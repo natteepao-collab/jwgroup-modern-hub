@@ -82,10 +82,9 @@ export const ChairmanQuote = ({
   const chairmanQuote = chairman?.quote || defaultQuote || 'เราเชื่อมั่นในการสร้างธุรกิจที่ยั่งยืน ควบคู่ไปกับการพัฒนาคุณภาพชีวิตของสังคม';
   const chairmanImage = chairman?.image_url || chairmanDefault;
 
-  // Fallback images for directors if no database image
-  const getDirectorImage = (director: Executive, index: number) => {
-    if (director.image_url) return director.image_url;
-    return index === 0 ? chalisaImg : pornnatchaImg;
+  // Get director image from database with fallback
+  const getDirectorImage = (director: Executive) => {
+    return director.image_url || null;
   };
 
   const handleChairmanClick = () => {
@@ -379,11 +378,19 @@ export const ChairmanQuote = ({
                             ? 'border-primary scale-110 shadow-primary/30 shadow-xl' 
                             : 'border-primary/15'
                         }`}>
-                          <img 
-                            src={getDirectorImage(director, index)} 
-                            alt={director.name}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          />
+                          {getDirectorImage(director) ? (
+                            <img 
+                              src={getDirectorImage(director)!} 
+                              alt={director.name}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-muted flex items-center justify-center">
+                              <span className="text-2xl md:text-3xl font-bold text-muted-foreground">
+                                {director.name.charAt(0)}
+                              </span>
+                            </div>
+                          )}
                         </div>
                         
                         {/* Decorative ring */}
