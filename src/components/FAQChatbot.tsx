@@ -258,14 +258,7 @@ const FAQChatbot = () => {
         >
           {/* Toggle Handle - Chevron */}
           <button
-            onClick={() => {
-              if (isButtonVisible) {
-                setIsButtonVisible(false);
-                setIsOpen(false);
-              } else {
-                setIsButtonVisible(true);
-              }
-            }}
+          onClick={() => setIsButtonVisible(!isButtonVisible)}
             className={cn(
               "flex items-center justify-center w-6 h-16 rounded-l-lg shadow-lg transition-all duration-300 bg-card border border-r-0 border-border hover:bg-muted"
             )}
