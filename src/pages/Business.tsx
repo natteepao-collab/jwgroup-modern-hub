@@ -13,6 +13,7 @@ import pet from '@/assets/business-pet.jpg';
 import wellness from '@/assets/business-wellness.jpg';
 import construction from '@/assets/business-construction.jpg';
 import thanabulLogo from '@/assets/thanabul-logo.png';
+import { SEO } from '@/components/SEO';
 
 // Default images fallback
 const defaultBusinessImages: Record<string, string> = {
@@ -63,6 +64,9 @@ const businessTabs = [
 
 const Business = () => {
   const { t } = useTranslation();
+
+  const seoTitle = t('business.title') || "กลุ่มธุรกิจของเรา";
+  const seoDesc = t('business.subtitle') || "JW Group ดำเนินธุรกิจหลากหลายประเภท ทั้งอสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ และก่อสร้าง";
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const { getImage, getContent } = useSiteContent();
@@ -157,6 +161,11 @@ const Business = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={seoTitle}
+        description={seoDesc}
+        url="/business"
+      />
       <div className="container mx-auto px-4 py-12">
         <div
           ref={ref}

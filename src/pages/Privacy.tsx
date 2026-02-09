@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Cookie, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCookieConsent } from '@/components/CookieConsent';
+import { SEO } from '@/components/SEO';
 
 const Privacy = () => {
   const { t } = useTranslation();
@@ -9,9 +10,14 @@ const Privacy = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={t('footer.privacy') || "นโยบายความเป็นส่วนตัว"}
+        description="นโยบายความเป็นส่วนตัวของ JW Group การเก็บรวบรวม การใช้ และการเปิดเผยข้อมูลส่วนบุคคล"
+        url="/privacy"
+      />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">{t('footer.privacy')}</h1>
-        
+
         <div className="prose max-w-none space-y-6">
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. การเก็บรวบรวมข้อมูล</h2>
@@ -62,10 +68,10 @@ const Privacy = () => {
               <div className="flex-1">
                 <h2 className="text-xl font-semibold mb-2">การตั้งค่าคุกกี้</h2>
                 <p className="text-muted-foreground mb-4">
-                  ท่านสามารถปรับเปลี่ยนการตั้งค่าคุกกี้ได้ตลอดเวลา 
+                  ท่านสามารถปรับเปลี่ยนการตั้งค่าคุกกี้ได้ตลอดเวลา
                   เพื่อควบคุมว่าเราจะใช้คุกกี้ประเภทใดบ้างบนเว็บไซต์ของเรา
                 </p>
-                <Button 
+                <Button
                   onClick={openCookieSettings}
                   variant="outline"
                   className="gap-2"

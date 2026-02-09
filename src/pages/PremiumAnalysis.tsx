@@ -12,6 +12,7 @@ import { Calendar as CalendarIcon, Clock, Sparkles } from 'lucide-react';
 import { th } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SEO } from '@/components/SEO';
 
 const PremiumAnalysis = () => {
     const { t } = useTranslation();
@@ -28,6 +29,12 @@ const PremiumAnalysis = () => {
 
     return (
         <div className="min-h-screen bg-[#0F172A] text-white py-12 px-4 relative overflow-hidden">
+            <SEO
+                title={t('premium.title') || "วิเคราะห์ชื่อมงคลขั้นสูง"}
+                description="บริการวิเคราะห์ชื่อมงคลขั้นสูง ด้วยศาสตร์ทักษาปกรณ์และเลขศาสตร์ชั้นสูง โดย JW Group"
+                url="/premium-analysis"
+                image="/og-premium.jpg"
+            />
             {/* Background Ambience */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 

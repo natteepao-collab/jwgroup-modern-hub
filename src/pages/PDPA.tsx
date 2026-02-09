@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Cookie, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCookieConsent } from '@/components/CookieConsent';
+import { SEO } from '@/components/SEO';
 
 const PDPA = () => {
   const { t } = useTranslation();
@@ -9,9 +10,14 @@ const PDPA = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={t('footer.pdpa') || "PDPA นโยบายคุ้มครองข้อมูลส่วนบุคคล"}
+        description="นโยบายการคุ้มครองข้อมูลส่วนบุคคล (PDPA) ของ JW Group"
+        url="/pdpa"
+      />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">{t('footer.pdpa')}</h1>
-        
+
         <div className="prose max-w-none space-y-6">
           <section>
             <h2 className="text-2xl font-semibold mb-4">นโยบายการคุ้มครองข้อมูลส่วนบุคคล</h2>
@@ -80,10 +86,10 @@ const PDPA = () => {
               <div className="flex-1">
                 <h2 className="text-xl font-semibold mb-2">การตั้งค่าคุกกี้</h2>
                 <p className="text-muted-foreground mb-4">
-                  ท่านสามารถจัดการความยินยอมในการใช้คุกกี้ได้ตลอดเวลา 
+                  ท่านสามารถจัดการความยินยอมในการใช้คุกกี้ได้ตลอดเวลา
                   ตามสิทธิในการถอนความยินยอมภายใต้ PDPA
                 </p>
-                <Button 
+                <Button
                   onClick={openCookieSettings}
                   variant="outline"
                   className="gap-2"

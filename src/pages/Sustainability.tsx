@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Leaf, Recycle, Sun, Droplets, TreePine, Heart, Users, Globe, Target, Award } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { SEO } from '@/components/SEO';
 
 const Sustainability = () => {
   const { t } = useTranslation();
@@ -55,11 +56,16 @@ const Sustainability = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={t('sustainability.title') || "ความยั่งยืน"}
+        description="JW Group มุ่งมั่นสร้างธุรกิจที่เติบโตอย่างยั่งยืน ควบคู่ไปกับการดูแลสิ่งแวดล้อมและสังคม (ESG)"
+        url="/sustainability"
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-emerald-800/80 to-teal-900/90" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920')] bg-cover bg-center opacity-30" />
-        
+
         {/* Floating Leaves Animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(6)].map((_, i) => (
@@ -112,20 +118,20 @@ const Sustainability = () => {
                 วิสัยทัศน์ด้านความยั่งยืน
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                เรามุ่งมั่นที่จะเป็นผู้นำในการสร้างธุรกิจที่รับผิดชอบต่อสังคมและสิ่งแวดล้อม 
-                ผ่านการดำเนินธุรกิจที่โปร่งใส การใช้ทรัพยากรอย่างมีประสิทธิภาพ 
+                เรามุ่งมั่นที่จะเป็นผู้นำในการสร้างธุรกิจที่รับผิดชอบต่อสังคมและสิ่งแวดล้อม
+                ผ่านการดำเนินธุรกิจที่โปร่งใส การใช้ทรัพยากรอย่างมีประสิทธิภาพ
                 และการสร้างคุณค่าร่วมกันกับชุมชน
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                ทุกโครงการของ JW Group ถูกออกแบบโดยคำนึงถึงผลกระทบต่อสิ่งแวดล้อม 
-                ตั้งแต่การเลือกใช้วัสดุที่เป็นมิตรต่อสิ่งแวดล้อม การออกแบบที่ประหยัดพลังงาน 
+                ทุกโครงการของ JW Group ถูกออกแบบโดยคำนึงถึงผลกระทบต่อสิ่งแวดล้อม
+                ตั้งแต่การเลือกใช้วัสดุที่เป็นมิตรต่อสิ่งแวดล้อม การออกแบบที่ประหยัดพลังงาน
                 ไปจนถึงการสร้างพื้นที่สีเขียวที่ส่งเสริมคุณภาพชีวิต
               </p>
             </div>
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800" 
+                <img
+                  src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800"
                   alt="Sustainability Vision"
                   className="w-full h-full object-cover"
                 />
@@ -192,7 +198,7 @@ const Sustainability = () => {
               ESG Framework
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              เราดำเนินธุรกิจตามหลักการ ESG (Environment, Social, Governance) 
+              เราดำเนินธุรกิจตามหลักการ ESG (Environment, Social, Governance)
               เพื่อสร้างคุณค่าอย่างยั่งยืนให้กับผู้มีส่วนได้เสียทุกฝ่าย
             </p>
           </div>
@@ -305,8 +311,8 @@ const Sustainability = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {sdgGoals.map((goal) => (
-              <div 
-                key={goal.number} 
+              <div
+                key={goal.number}
                 className={`${goal.color} rounded-xl p-6 text-white text-center hover:scale-105 transition-transform cursor-pointer shadow-lg`}
               >
                 <div className="text-3xl font-bold mb-2">{goal.number}</div>
@@ -325,7 +331,7 @@ const Sustainability = () => {
             ร่วมสร้างอนาคตที่ยั่งยืนไปด้วยกัน
           </h2>
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            เราเชื่อว่าทุกก้าวเล็กๆ สามารถสร้างการเปลี่ยนแปลงที่ยิ่งใหญ่ได้ 
+            เราเชื่อว่าทุกก้าวเล็กๆ สามารถสร้างการเปลี่ยนแปลงที่ยิ่งใหญ่ได้
             ร่วมเป็นส่วนหนึ่งในการสร้างโลกที่ดีกว่าไปกับ JW Group
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

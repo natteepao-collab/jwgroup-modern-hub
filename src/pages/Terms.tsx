@@ -1,13 +1,19 @@
 import { useTranslation } from 'react-i18next';
+import { SEO } from '@/components/SEO';
 
 const Terms = () => {
   const { t } = useTranslation();
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={t('footer.terms') || "ข้อกำหนดและเงื่อนไข"}
+        description="ข้อกำหนดและเงื่อนไขการใช้งานเว็บไซต์ JW Group"
+        url="/terms"
+      />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">{t('footer.terms')}</h1>
-        
+
         <div className="prose max-w-none space-y-6">
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. การยอมรับข้อกำหนด</h2>

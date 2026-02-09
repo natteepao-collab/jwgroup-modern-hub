@@ -22,6 +22,7 @@ import wellness from '@/assets/business-wellness.jpg';
 import construction from '@/assets/business-construction.jpg';
 import thanabulLogo from '@/assets/thanabul-logo.png';
 import jwLogo from '@/assets/jw-group-logo-full.png';
+import { SEO } from '@/components/SEO';
 
 // Default images fallback
 const defaultBusinessImages: Record<string, string> = {
@@ -36,6 +37,10 @@ const Index = () => {
   const { t } = useTranslation();
   const { getContent, getImage, isLoading } = useSiteContent();
   const { news: dbNews, isLoading: newsLoading } = useNews();
+
+  // Basic SEO setup for home page
+  const seoTitle = t('hero.title') || "กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ";
+  const seoDesc = t('hero.subtitle') || "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า";
 
   // Scroll reveal animations
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -109,6 +114,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title={seoTitle}
+        description={seoDesc}
+        url="/"
+      />
       <AnnouncementModal autoShow delay={1500} />
 
       {/* Hero Section - Cinematic Video Only - Responsive height */}

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import { SEO } from '@/components/SEO';
 
 // Default fallback images
 import realEstateImg from '@/assets/business-realestate.jpg';
@@ -179,6 +180,11 @@ const VisionMission = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={t('vision_mission.title') || "วิสัยทัศน์และพันธกิจ"}
+        description="ทิศทางและเป้าหมายการดำเนินธุรกิจของแต่ละกลุ่มธุรกิจในเครือ JW Group"
+        url="/vision-mission"
+      />
       {/* Hero Section */}
       <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-primary/95" />

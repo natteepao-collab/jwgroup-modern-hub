@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
+import { SEO } from '@/components/SEO';
 
 // No hardcoded imports - all images from database
 
@@ -27,7 +28,7 @@ const AboutHistory = () => {
         .from('site_content')
         .select('*')
         .like('section_key', 'about_history%');
-      
+
       if (error) throw error;
       return data;
     }
@@ -41,7 +42,7 @@ const AboutHistory = () => {
         .from('site_images')
         .select('*')
         .like('section_key', 'about_history%');
-      
+
       if (error) throw error;
       return data;
     }
@@ -50,10 +51,10 @@ const AboutHistory = () => {
   const getContent = (sectionKey: string) => {
     const content = historyContents?.find(c => c.section_key === sectionKey);
     if (!content) return { title: '', content: '' };
-    
+
     const titleKey = `title_${currentLang === 'th' ? 'th' : currentLang === 'cn' ? 'cn' : 'en'}` as keyof typeof content;
     const contentKey = `content_${currentLang === 'th' ? 'th' : currentLang === 'cn' ? 'cn' : 'en'}` as keyof typeof content;
-    
+
     return {
       title: (content[titleKey] as string) || content.title_th || '',
       content: (content[contentKey] as string) || content.content_th || ''
@@ -99,9 +100,9 @@ const AboutHistory = () => {
       {/* Hero Section with Main Image */}
       {heroImage && (
         <div className="relative mb-12 rounded-3xl overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
-          <img 
-            src={heroImage} 
-            alt="JW GROUP Headquarters" 
+          <img
+            src={heroImage}
+            alt="JW GROUP Headquarters"
             className="w-full h-72 md:h-96 lg:h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent" />
@@ -157,16 +158,16 @@ const AboutHistory = () => {
               <div className="w-1 h-8 bg-primary rounded-full" />
               <span className="text-sm font-medium text-primary tracking-wide uppercase">สำนักงานใหญ่</span>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {/* Large featured image - spans 2 cols and 2 rows */}
               {galleryImages[0] && (
-                <div 
+                <div
                   className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group"
                   onClick={() => galleryImages[0]?.src && setSelectedImage(galleryImages[0].src)}
                 >
-                  <img 
-                    src={galleryImages[0].src!} 
+                  <img
+                    src={galleryImages[0].src!}
                     alt={galleryImages[0].alt}
                     className="w-full h-full min-h-[300px] md:min-h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -182,13 +183,13 @@ const AboutHistory = () => {
 
               {/* Medium images - each spans 1 col */}
               {galleryImages.slice(1, 3).map((image, index) => (
-                <div 
+                <div
                   key={index}
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
                   onClick={() => image.src && setSelectedImage(image.src)}
                 >
-                  <img 
-                    src={image.src!} 
+                  <img
+                    src={image.src!}
                     alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -201,13 +202,13 @@ const AboutHistory = () => {
 
               {/* Bottom row - 2 smaller images */}
               {galleryImages.slice(3, 5).map((image, index) => (
-                <div 
+                <div
                   key={index + 3}
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
                   onClick={() => image.src && setSelectedImage(image.src)}
                 >
-                  <img 
-                    src={image.src!} 
+                  <img
+                    src={image.src!}
                     alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -223,8 +224,8 @@ const AboutHistory = () => {
 
         {/* Street View Button */}
         <div className="flex justify-center pt-6">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="lg"
             className="gap-3 group px-8 py-6 text-base border-primary/30 hover:border-primary hover:bg-primary/5"
             onClick={() => window.open(streetViewUrl, '_blank', 'noopener,noreferrer')}
@@ -238,17 +239,17 @@ const AboutHistory = () => {
 
       {/* Image Lightbox Modal */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md p-4"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative max-w-[95vw] max-h-[95vh]">
-            <img 
-              src={selectedImage} 
+            <img
+              src={selectedImage}
               alt="Gallery Image"
               className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
             />
-            <button 
+            <button
               onClick={() => setSelectedImage(null)}
               className="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors shadow-lg"
             >
@@ -291,7 +292,7 @@ const AboutVision = () => {
           <div className="w-1 h-8 bg-primary rounded-full" />
           <span className="text-sm font-medium text-primary tracking-wide uppercase">Vision</span>
         </div>
-        
+
         <div className="relative">
           <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary/30 to-transparent rounded-full hidden md:block" />
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
@@ -323,7 +324,7 @@ const AboutVision = () => {
 
         <div className="space-y-4">
           {missions.map((mission, index) => (
-            <div 
+            <div
               key={index}
               className="group flex gap-5 p-5 rounded-2xl bg-gradient-to-r from-muted/50 to-transparent hover:from-primary/5 hover:to-primary/10 transition-all duration-300 border border-transparent hover:border-primary/20"
               style={{ animationDelay: `${index * 100}ms` }}
@@ -384,7 +385,7 @@ const AboutTeam = () => {
         .select('*')
         .lte('position_order', 3)
         .order('position_order', { ascending: true });
-      
+
       if (error) throw error;
       return data;
     }
@@ -416,7 +417,7 @@ const AboutTeam = () => {
         <div className="space-y-8">
           {/* Chairman - Hero Card */}
           {chairman && (
-            <div 
+            <div
               className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-background border border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
               onMouseEnter={() => setHoveredId(chairman.id)}
               onMouseLeave={() => setHoveredId(null)}
@@ -436,8 +437,8 @@ const AboutTeam = () => {
                     hoveredId === chairman.id ? "opacity-100" : "opacity-0"
                   )} />
                   {chairman.image_url ? (
-                    <img 
-                      src={chairman.image_url} 
+                    <img
+                      src={chairman.image_url}
                       alt={chairman.name}
                       className={cn(
                         "relative w-36 h-36 md:w-48 md:h-48 rounded-2xl object-cover shadow-xl transition-transform duration-500",
@@ -461,7 +462,7 @@ const AboutTeam = () => {
                     {chairman.name}
                   </h3>
                   <p className="text-primary font-medium text-lg mb-4">{chairman.title}</p>
-                  
+
                   {chairman.quote && (
                     <div className={cn(
                       "relative transition-all duration-500 overflow-hidden",
@@ -473,7 +474,7 @@ const AboutTeam = () => {
                       </blockquote>
                     </div>
                   )}
-                  
+
                   {chairman.description && (
                     <p className={cn(
                       "text-sm text-muted-foreground mt-4 transition-all duration-500",
@@ -496,12 +497,12 @@ const AboutTeam = () => {
           {managingDirectors.length > 0 && (
             <div className="grid md:grid-cols-2 gap-4 md:gap-6">
               {managingDirectors.map((director, index) => (
-                <div 
+                <div
                   key={director.id}
                   className={cn(
                     "group relative overflow-hidden rounded-2xl border transition-all duration-500 cursor-pointer",
-                    hoveredId === director.id 
-                      ? "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 shadow-xl shadow-primary/5 scale-[1.02]" 
+                    hoveredId === director.id
+                      ? "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 shadow-xl shadow-primary/5 scale-[1.02]"
                       : "bg-muted/30 border-border/50 hover:border-primary/20"
                   )}
                   style={{ animationDelay: `${index * 150}ms` }}
@@ -520,8 +521,8 @@ const AboutTeam = () => {
                       {/* Image */}
                       <div className="relative flex-shrink-0">
                         {director.image_url ? (
-                          <img 
-                            src={director.image_url} 
+                          <img
+                            src={director.image_url}
                             alt={director.name}
                             className={cn(
                               "w-20 h-20 md:w-28 md:h-28 rounded-xl object-cover shadow-lg transition-all duration-500",
@@ -544,8 +545,8 @@ const AboutTeam = () => {
                       <div className="flex-1 min-w-0">
                         <span className={cn(
                           "inline-block px-3 py-1 rounded-full text-xs font-medium mb-2 transition-colors duration-300",
-                          hoveredId === director.id 
-                            ? "bg-primary text-primary-foreground" 
+                          hoveredId === director.id
+                            ? "bg-primary text-primary-foreground"
                             : "bg-primary/10 text-primary"
                         )}>
                           กรรมการผู้จัดการ
@@ -609,6 +610,9 @@ const About = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
+  const seoTitle = t('about.title') || "เกี่ยวกับเรา";
+  const seoDesc = t('about.subtitle') || "JW Group - ความเป็นมา วิสัยทัศน์ และโครงสร้างองค์กร";
+
   const navItems = [
     { path: '/about/history', labelKey: 'about.history', icon: Info },
     { path: '/about/structure', labelKey: 'about.structure', icon: Network },
@@ -620,6 +624,11 @@ const About = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={seoTitle}
+        description={seoDesc}
+        url="/about"
+      />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Navigation */}
@@ -662,8 +671,8 @@ const About = () => {
                           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
                           <item.icon className={cn(
                             "relative h-5 w-5 z-10 transition-all duration-300",
-                            active 
-                              ? "text-primary-foreground" 
+                            active
+                              ? "text-primary-foreground"
                               : "text-muted-foreground group-hover:text-primary-foreground"
                           )} strokeWidth={1.8} />
 

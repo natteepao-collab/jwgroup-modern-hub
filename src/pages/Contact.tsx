@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Mail, Clock, Facebook, Linkedin } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { SEO } from '@/components/SEO';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -28,12 +29,16 @@ const Contact = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={t('contact.title')}
+        description="ติดต่อ JW Group สอบถามข้อมูลเพิ่มเติมเกี่ยวกับธุรกิจของเรา"
+        url="/contact"
+      />
       <div className="container mx-auto px-4 py-12">
         <div
           ref={ref}
-          className={`text-center mb-12 transition-all duration-1000 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">{t('contact.title')}</h1>
           <p className="text-lg text-muted-foreground">
@@ -64,7 +69,7 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <a 
+                <a
                   href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
                   className="hover:text-primary transition-colors"
                 >
@@ -82,7 +87,7 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <a 
+                <a
                   href={`mailto:${email}`}
                   className="hover:text-primary transition-colors"
                 >

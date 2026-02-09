@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
+import { SEO } from '@/components/SEO';
 
 // Placeholder component for news without images
 const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
@@ -48,12 +49,12 @@ const NewsImagePlaceholder = ({ title = '' }: { title?: string }) => {
   );
 };
 
-const ImageGalleryWithThumbnails = ({ 
-  mainImage, 
+const ImageGalleryWithThumbnails = ({
+  mainImage,
   galleryImages,
-  title 
-}: { 
-  mainImage: string | null; 
+  title
+}: {
+  mainImage: string | null;
   galleryImages: string[];
   title: string;
 }) => {
@@ -81,7 +82,7 @@ const ImageGalleryWithThumbnails = ({
   return (
     <div className="space-y-4">
       {/* Main Image Display */}
-      <div 
+      <div
         className="relative w-full rounded-xl overflow-hidden bg-muted cursor-pointer group flex items-center justify-center min-h-[300px] md:min-h-[400px] lg:min-h-[500px]"
         onClick={openModal}
       >
@@ -90,7 +91,7 @@ const ImageGalleryWithThumbnails = ({
           alt={`${title} - รูปที่ ${selectedIndex + 1}`}
           className="max-w-full max-h-[600px] w-auto h-auto object-contain transition-transform duration-500"
         />
-        
+
         {/* Zoom indicator on hover */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
           <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 text-white px-4 py-2 rounded-full flex items-center gap-2">
@@ -444,6 +445,13 @@ const NewsDetail = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={title}
+        description={getLocalizedContent().excerpt}
+        image={newsItem.image_url}
+        url={`/news/${id}`}
+        type="article"
+      />
       <div className="container mx-auto px-4 py-8">
         <Button asChild variant="ghost" className="mb-6">
           <Link to="/news" className="flex items-center gap-2">
@@ -468,8 +476,8 @@ const NewsDetail = () => {
           </div>
 
           <div className="mb-8">
-            <ImageGalleryWithThumbnails 
-              mainImage={newsItem.image_url} 
+            <ImageGalleryWithThumbnails
+              mainImage={newsItem.image_url}
               galleryImages={galleryImages}
               title={title}
             />

@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Clock, Gift, Shield, Calendar, Car, Percent, TrendingUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import JobApplicationForm from '@/components/JobApplicationForm';
+import { SEO } from '@/components/SEO';
 
 // Icon mapping for benefits
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -48,7 +49,7 @@ const Careers = () => {
         .select('*')
         .eq('is_published', true)
         .order('position_order');
-      
+
       if (error) throw error;
       return data || [];
     }
@@ -63,7 +64,7 @@ const Careers = () => {
         .select('*')
         .eq('is_published', true)
         .order('position_order');
-      
+
       if (error) throw error;
       return data || [];
     }
@@ -81,13 +82,17 @@ const Careers = () => {
 
   return (
     <div className="pt-24 min-h-screen bg-background">
+      <SEO
+        title={t('careers.title')}
+        description={t('careers.description') || "ร่วมงานกับเรา JW Group"}
+        url="/careers"
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div
           ref={ref}
-          className={`text-center mb-12 transition-all duration-1000 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('careers.title')}</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -105,9 +110,8 @@ const Careers = () => {
                 return (
                   <Card
                     key={benefit.id}
-                    className={`transition-all duration-500 ${
-                      inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                    }`}
+                    className={`transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                      }`}
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
                     <CardContent className="pt-6">
@@ -140,9 +144,8 @@ const Careers = () => {
               {jobs.map((job, index) => (
                 <Card
                   key={job.id}
-                  className={`transition-all duration-500 hover:shadow-lg ${
-                    inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
+                  className={`transition-all duration-500 hover:shadow-lg ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardHeader>
@@ -151,8 +154,8 @@ const Careers = () => {
                         {isEnglish ? (job.title_en || job.title_th) : job.title_th}
                       </CardTitle>
                       <Badge>
-                        {isEnglish 
-                          ? (job.department_en || job.department_th) 
+                        {isEnglish
+                          ? (job.department_en || job.department_th)
                           : job.department_th}
                       </Badge>
                     </div>
@@ -160,8 +163,8 @@ const Careers = () => {
                       <span className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
                         <span>
-                          {isEnglish 
-                            ? (job.location_en || job.location_th) 
+                          {isEnglish
+                            ? (job.location_en || job.location_th)
                             : job.location_th}
                         </span>
                       </span>
@@ -173,13 +176,13 @@ const Careers = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      {isEnglish 
-                        ? (job.description_en || job.description_th) 
+                      {isEnglish
+                        ? (job.description_en || job.description_th)
                         : job.description_th}
                     </p>
                   </CardContent>
                   <CardFooter>
-                    <Button 
+                    <Button
                       className="w-full"
                       onClick={() => setSelectedJob(job)}
                     >
@@ -194,8 +197,8 @@ const Careers = () => {
               <CardContent className="py-12 text-center">
                 <Briefcase className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-muted-foreground">
-                  {isEnglish 
-                    ? 'No positions available at the moment. Please check back later.' 
+                  {isEnglish
+                    ? 'No positions available at the moment. Please check back later.'
                     : 'ไม่มีตำแหน่งงานว่างในขณะนี้ กรุณากลับมาตรวจสอบภายหลัง'}
                 </p>
               </CardContent>
