@@ -104,29 +104,44 @@ export const Navbar = () => {
       {/* Quick Access Secondary Bar - Mobile & Tablet Only (hidden on Desktop lg+) */}
       <div
         className={cn(
-          "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 overflow-hidden lg:hidden",
-          isScrolled ? "h-0 opacity-0" : "h-10 sm:h-11 opacity-100"
+          "fixed top-0 left-0 right-0 z-[60] transition-all duration-500 lg:hidden",
+          isScrolled ? "h-0 opacity-0 pointer-events-none" : "h-12 sm:h-14 opacity-100"
         )}
       >
-        <div className="h-full bg-background/60 backdrop-blur-md border-b border-border/30">
-          <div className="container mx-auto px-4 sm:px-6 h-full">
-            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-6 h-full overflow-x-auto scrollbar-hide">
-              {quickAccessItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    "flex flex-col items-center justify-center gap-0.5 px-2 py-1 transition-all duration-300 whitespace-nowrap",
-                    "text-[10px] sm:text-[11px] font-medium",
-                    isActive(item.path) || (item.path === '/about/history' && isAboutActive)
-                      ? "text-primary"
-                      : "text-foreground/70 hover:text-primary"
-                  )}
-                >
-                  <item.icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.8} />
-                  <span>{t(item.labelKey)}</span>
-                </Link>
-              ))}
+        <div className="h-full bg-gradient-to-r from-secondary via-secondary/95 to-secondary border-b border-primary/20 shadow-md">
+          <div className="h-full max-w-screen-lg mx-auto px-2 sm:px-4">
+            <div className="flex items-center justify-between h-full">
+              {quickAccessItems.map((item) => {
+                const isItemActive = isActive(item.path) || (item.path === '/about/history' && isAboutActive);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={cn(
+                      "flex flex-col items-center justify-center flex-1 py-1.5 transition-all duration-300 group",
+                      isItemActive ? "text-primary" : "text-secondary-foreground/80 hover:text-primary"
+                    )}
+                  >
+                    <div className={cn(
+                      "flex items-center justify-center rounded-lg transition-all duration-300",
+                      isItemActive 
+                        ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" 
+                        : "group-hover:scale-110"
+                    )}>
+                      <item.icon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={isItemActive ? 2.5 : 1.8} />
+                    </div>
+                    <span className={cn(
+                      "text-[9px] sm:text-[10px] font-semibold tracking-wide mt-0.5 truncate max-w-[50px] sm:max-w-[60px] text-center",
+                      isItemActive && "font-bold"
+                    )}>
+                      {t(item.labelKey)}
+                    </span>
+                    {isItemActive && (
+                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
