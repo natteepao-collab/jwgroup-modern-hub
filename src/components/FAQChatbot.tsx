@@ -245,23 +245,48 @@ const FAQChatbot = () => {
         </div>
       </div>
 
-      {/* Hidden Side Tab - Click to reveal button */}
+      {/* Hidden Side Tab - Click to toggle */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
         {/* Slide-out Main Button */}
         <div
           className={cn(
-            "transition-all duration-300 ease-out",
-            isButtonVisible || isOpen
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
+            "transition-all duration-300 ease-out flex items-center",
+            isButtonVisible
+              ? "translate-x-0"
+              : "translate-x-[calc(100%-12px)]"
           )}
         >
+          {/* Tab Handle - always visible */}
           <button
-            onClick={handleToggleButton}
+            onClick={() => {
+              if (isButtonVisible) {
+                setIsButtonVisible(false);
+                setIsOpen(false);
+              } else {
+                setIsButtonVisible(true);
+              }
+            }}
             className={cn(
-              "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 mr-4",
+              "flex items-center justify-center py-6 px-1.5 rounded-l-xl shadow-lg transition-all duration-300",
+              isButtonVisible
+                ? "bg-muted text-muted-foreground hover:bg-muted/80"
+                : "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white hover:px-2.5"
+            )}
+            aria-label={isButtonVisible ? 'ซ่อนช่วยเหลือ' : 'แสดงช่วยเหลือ'}
+          >
+            <MessageCircle className={cn(
+              "w-4 h-4 transition-transform duration-300",
+              isButtonVisible ? "rotate-180" : ""
+            )} />
+          </button>
+
+          {/* Main Chat Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 mx-3",
               isOpen
-                ? "rotate-0 bg-muted-foreground text-background hover:bg-muted-foreground/80"
+                ? "bg-muted-foreground text-background hover:bg-muted-foreground/80"
                 : "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white hover:scale-110 hover:shadow-xl hover:shadow-teal-500/40"
             )}
             aria-label={isOpen ? 'ปิดแชท' : 'เปิดแชท FAQ'}
@@ -269,33 +294,7 @@ const FAQChatbot = () => {
             {isOpen ? <X className="w-5 h-5" /> : <MessageCircle className="w-6 h-6" />}
           </button>
         </div>
-
-        {/* Hidden Tab Trigger */}
-        <button
-          onClick={() => {
-            setIsButtonVisible(true);
-            setTimeout(() => handleOpenChat(), 150);
-          }}
-          className={cn(
-            "absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1 py-3 px-1.5 rounded-l-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white shadow-lg transition-all duration-300 hover:px-3 group",
-            isButtonVisible || isOpen ? "opacity-0 pointer-events-none translate-x-full" : "opacity-100"
-          )}
-          aria-label="เปิดช่วยเหลือ"
-        >
-          <MessageCircle className="w-4 h-4" />
-          <span className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            ช่วยเหลือ
-          </span>
-        </button>
       </div>
-
-      {/* Backdrop to close when clicking outside (only when button is visible but chat is closed) */}
-      {isButtonVisible && !isOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsButtonVisible(false)}
-        />
-      )}
     </>
   );
 };
