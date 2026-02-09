@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       clearTimeout(timeoutTimer);
       subscription.unsubscribe();
     };
-  }, [checkAdminRole]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [checkAdminRole]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
