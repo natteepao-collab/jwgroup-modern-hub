@@ -380,80 +380,71 @@ const CompanyTimeline = () => {
           </p>
         </div>
 
-        {/* Jump to Year - Premium Mobile Layout */}
+        {/* Jump to Year - Improved Mobile Layout */}
         {isOpen && (
           <div className="mb-6 sm:mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-                <MapPin className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs font-semibold text-primary">ข้ามไปยังปี</span>
-              </div>
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <MapPin className="w-4 h-4 text-primary" />
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">ข้ามไปยังปี</span>
             </div>
             
-            {/* Mobile: Premium Grid Layout */}
-            <div className="block sm:hidden px-2">
-              <div className="grid grid-cols-4 gap-1.5 max-w-sm mx-auto">
-                {uniqueYears.map((year, index) => (
+            {/* Mobile: Grid Layout for better display */}
+            <div className="block sm:hidden">
+              <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
+                {uniqueYears.slice(0, 6).map((year) => (
                   <button
                     key={year}
                     onClick={() => jumpToYear(year)}
-                    className={`relative overflow-hidden py-2.5 rounded-lg text-[11px] font-bold transition-all duration-300 ${
+                    className={`px-2 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${
                       selectedYear === year
-                        ? 'bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground shadow-lg shadow-primary/40 scale-[1.02] ring-2 ring-primary/30'
-                        : 'bg-card/80 backdrop-blur-sm border border-border/40 text-foreground hover:bg-primary/10 hover:border-primary/40 hover:scale-[1.02]'
+                        ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30 scale-105'
+                        : 'bg-card border border-border/50 text-foreground hover:bg-primary/10 hover:border-primary/50'
                     }`}
                   >
-                    {/* Shine effect on selected */}
-                    {selectedYear === year && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
-                    )}
-                    <span className="relative z-10">{year}</span>
+                    {year}
                   </button>
                 ))}
-                {/* Show remaining count if more than 8 */}
-                {uniqueYears.length > 8 && (
-                  <div className="col-span-4 mt-1">
-                    <ScrollArea className="w-full">
-                      <div className="flex justify-center gap-1.5 pb-2">
-                        {uniqueYears.slice(8).map((year) => (
-                          <button
-                            key={year}
-                            onClick={() => jumpToYear(year)}
-                            className={`px-3 py-1.5 rounded-md text-[10px] font-semibold transition-all duration-300 whitespace-nowrap ${
-                              selectedYear === year
-                                ? 'bg-primary text-primary-foreground shadow-md'
-                                : 'bg-muted/60 text-muted-foreground hover:bg-primary/15'
-                            }`}
-                          >
-                            {year}
-                          </button>
-                        ))}
-                      </div>
-                      <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
-                  </div>
-                )}
               </div>
+              {/* Show more button if there are more years */}
+              {uniqueYears.length > 6 && (
+                <div className="mt-2 text-center">
+                  <ScrollArea className="w-full">
+                    <div className="flex justify-center gap-2 pb-2 px-2">
+                      {uniqueYears.slice(6).map((year) => (
+                        <button
+                          key={year}
+                          onClick={() => jumpToYear(year)}
+                          className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all duration-300 whitespace-nowrap ${
+                            selectedYear === year
+                              ? 'bg-primary text-primary-foreground shadow-md'
+                              : 'bg-muted/50 text-muted-foreground hover:bg-primary/10'
+                          }`}
+                        >
+                          {year}
+                        </button>
+                      ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </div>
+              )}
             </div>
             
-            {/* Tablet & Desktop: Horizontal Pills */}
+            {/* Tablet & Desktop: Horizontal Scroll */}
             <div className="hidden sm:block">
               <ScrollArea className="w-full whitespace-nowrap">
-                <div className="flex justify-center gap-2 pb-3 px-4">
+                <div className="flex justify-center gap-2 pb-3 px-2">
                   {uniqueYears.map((year) => (
                     <button
                       key={year}
                       onClick={() => jumpToYear(year)}
-                      className={`relative overflow-hidden px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 ${
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 ${
                         selectedYear === year
-                          ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30'
+                          ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
                           : 'bg-card border border-border/50 text-foreground hover:bg-primary/10 hover:border-primary/50'
                       }`}
                     >
-                      {selectedYear === year && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
-                      )}
-                      <span className="relative z-10">{year}</span>
+                      {year}
                     </button>
                   ))}
                 </div>
