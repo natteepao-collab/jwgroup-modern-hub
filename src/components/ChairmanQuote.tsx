@@ -264,8 +264,10 @@ export const ChairmanQuote = ({
             {/* Only show directors section if there are directors */}
             {directors.length > 0 && (
               <>
-                {/* Connecting Lines SVG - Always Visible */}
-                <div className="relative h-20 md:h-24">
+                {/* Connecting Lines SVG - Toggle visibility */}
+                <div className={`relative h-20 md:h-24 transition-all duration-700 overflow-hidden ${
+                  showDirectors ? 'opacity-100 max-h-24' : 'opacity-0 max-h-0'
+                }`}>
                   <svg 
                     className="absolute inset-0 w-full h-full" 
                     viewBox="0 0 400 80" 
@@ -277,6 +279,10 @@ export const ChairmanQuote = ({
                       className="stroke-primary/40" 
                       strokeWidth="2"
                       strokeDasharray="4 2"
+                      style={{
+                        strokeDashoffset: showDirectors ? 0 : 20,
+                        transition: 'stroke-dashoffset 0.5s ease-out'
+                      }}
                     />
                     
                     {/* Horizontal line */}
@@ -285,6 +291,10 @@ export const ChairmanQuote = ({
                       className="stroke-primary/40" 
                       strokeWidth="2"
                       strokeDasharray="4 2"
+                      style={{
+                        strokeDashoffset: showDirectors ? 0 : 200,
+                        transition: 'stroke-dashoffset 0.8s ease-out 0.3s'
+                      }}
                     />
                     
                     {/* Left vertical line to director 1 */}
@@ -293,6 +303,10 @@ export const ChairmanQuote = ({
                       className="stroke-primary/40" 
                       strokeWidth="2"
                       strokeDasharray="4 2"
+                      style={{
+                        strokeDashoffset: showDirectors ? 0 : 50,
+                        transition: 'stroke-dashoffset 0.5s ease-out 0.6s'
+                      }}
                     />
                     
                     {/* Right vertical line to director 2 */}
@@ -301,17 +315,34 @@ export const ChairmanQuote = ({
                       className="stroke-primary/40" 
                       strokeWidth="2"
                       strokeDasharray="4 2"
+                      style={{
+                        strokeDashoffset: showDirectors ? 0 : 50,
+                        transition: 'stroke-dashoffset 0.5s ease-out 0.6s'
+                      }}
                     />
 
                     {/* Connection points */}
-                    <circle cx="200" cy="30" r="4" className="fill-primary/60" />
-                    <circle cx="100" cy="30" r="4" className="fill-primary/60" />
-                    <circle cx="300" cy="30" r="4" className="fill-primary/60" />
+                    <circle cx="200" cy="30" r="4" className="fill-primary/60" style={{
+                      opacity: showDirectors ? 1 : 0,
+                      transition: 'opacity 0.3s ease-out 0.2s'
+                    }} />
+                    <circle cx="100" cy="30" r="4" className="fill-primary/60" style={{
+                      opacity: showDirectors ? 1 : 0,
+                      transition: 'opacity 0.3s ease-out 0.5s'
+                    }} />
+                    <circle cx="300" cy="30" r="4" className="fill-primary/60" style={{
+                      opacity: showDirectors ? 1 : 0,
+                      transition: 'opacity 0.3s ease-out 0.5s'
+                    }} />
                   </svg>
                 </div>
 
-                {/* Managing Directors - Always Visible */}
-                <div className="flex justify-center gap-8 md:gap-24 lg:gap-32 transition-all duration-700">
+                {/* Managing Directors - Toggle visibility */}
+                <div className={`flex justify-center gap-8 md:gap-24 lg:gap-32 transition-all duration-700 overflow-hidden ${
+                  showDirectors 
+                    ? 'opacity-100 translate-y-0 max-h-[500px]' 
+                    : 'opacity-0 -translate-y-10 max-h-0'
+                }`}>
                   {directors.map((director, index) => (
                     <div 
                       key={director.id}
@@ -319,7 +350,9 @@ export const ChairmanQuote = ({
                         hoveredMember === director.id ? 'z-10' : ''
                       }`}
                       style={{ 
-                        transitionDelay: `${0.3 + index * 0.15}s`
+                        transitionDelay: showDirectors ? `${0.3 + index * 0.15}s` : '0s',
+                        transform: showDirectors ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.9)',
+                        opacity: showDirectors ? 1 : 0
                       }}
                       onMouseEnter={() => setHoveredMember(director.id)}
                       onMouseLeave={() => setHoveredMember(null)}
@@ -357,14 +390,14 @@ export const ChairmanQuote = ({
                         }`} />
                       </div>
                       
-                      {/* Info - Always Visible */}
+                      {/* Info - Always Visible when shown */}
                       <div className={`mt-4 transition-all duration-300 ${
                         hoveredMember === director.id ? 'transform scale-105' : ''
                       }`}>
                         <div className="text-lg font-bold text-foreground">{director.name}</div>
                         <div className="text-primary font-medium text-sm">{director.title}</div>
                         
-                        {/* Description - Always visible */}
+                        {/* Description - Always visible when shown */}
                         {director.description && (
                           <div className="mt-2 text-sm text-muted-foreground max-w-[200px] mx-auto">
                             {director.description}
@@ -375,6 +408,12 @@ export const ChairmanQuote = ({
                   ))}
                 </div>
 
+                {/* Toggle hint */}
+                <div className="text-center mt-6">
+                  <p className="text-sm text-muted-foreground">
+                    {showDirectors ? 'คลิกที่รูปประธานเพื่อซ่อน' : 'คลิกที่รูปประธานเพื่อดูทีมผู้บริหาร'}
+                  </p>
+                </div>
               </>
             )}
 
