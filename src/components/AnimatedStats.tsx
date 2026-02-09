@@ -86,47 +86,47 @@ const StatCard = ({
     <div className="relative">
       <div
         onClick={onClick}
-        className={`relative group p-8 rounded-2xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${
+        className={`relative group p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${
           inView ? 'animate-fade-in opacity-100' : 'opacity-0'
         } ${isClickable ? 'cursor-pointer' : ''} ${isExpanded ? 'ring-2 ring-primary/30' : ''}`}
         style={{ animationDelay: `${index * 150}ms` }}
       >
         {/* Gradient background on hover */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Icon */}
-        <div className="relative mb-4 inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+        <div className="relative mb-3 sm:mb-4 inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
           {icon}
         </div>
 
         {/* Value */}
-        <div className="relative flex items-center gap-2">
-          <span className="text-4xl md:text-5xl font-bold text-foreground">
+        <div className="relative flex items-center gap-1 sm:gap-2">
+          <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             {value === 2550 ? count : count.toLocaleString()}
           </span>
-          <span className="text-3xl md:text-4xl font-bold text-primary">
+          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
             {suffix}
           </span>
           {isClickable && (
             <div className="ml-auto">
               {isExpanded ? (
-                <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
               )}
             </div>
           )}
         </div>
 
         {/* Label */}
-        <p className="relative mt-2 text-muted-foreground font-medium">
+        <p className="relative mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-muted-foreground font-medium">
           {label}
         </p>
       </div>
 
       {/* Dropdown Content */}
       {children && (
-        <div className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[600px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+        <div className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[600px] opacity-100 mt-3 sm:mt-4' : 'max-h-0 opacity-0'}`}>
           {children}
         </div>
       )}
@@ -196,22 +196,22 @@ const AnimatedStats = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-background to-muted/30">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
             ความสำเร็จของเรา
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
             ตัวเลขที่บ่งบอกถึงความมุ่งมั่นและความสำเร็จของ JW Group ตลอดระยะเวลาที่ผ่านมา
           </p>
         </div>
 
-        {/* Stats Grid */}
+        {/* Stats Grid - 2 columns on mobile */}
         <div
           ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8"
         >
           {/* Year Founded */}
           <StatCard

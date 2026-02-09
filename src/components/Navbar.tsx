@@ -80,6 +80,16 @@ export const Navbar = () => {
     { path: '/about/awards', labelKey: 'about.awards', icon: Award },
   ];
 
+  // Quick Access Tab Items (Secondary Bar)
+  const quickAccessItems = [
+    { path: '/', labelKey: 'nav.home', icon: Home },
+    { path: '/about/history', labelKey: 'nav.about', icon: Info },
+    { path: '/business', labelKey: 'nav.business', icon: Building2 },
+    { path: '/news', labelKey: 'nav.news', icon: Newspaper },
+    { path: '/careers', labelKey: 'nav.careers', icon: Users },
+    { path: '/contact', labelKey: 'nav.contact', icon: Phone },
+  ];
+
   // Bottom Tab Items for mobile/tablet
   const bottomTabItems = [
     { path: '/', labelKey: 'nav.home', icon: Home },
@@ -91,13 +101,44 @@ export const Navbar = () => {
 
   return (
     <>
+      {/* Quick Access Secondary Bar - Shows when NOT scrolled */}
+      <div
+        className={cn(
+          "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 overflow-hidden",
+          isScrolled ? "h-0 opacity-0" : "h-10 sm:h-11 opacity-100"
+        )}
+      >
+        <div className="h-full bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-b border-primary/20">
+          <div className="container mx-auto px-4 sm:px-6 h-full">
+            <div className="flex items-center justify-center gap-1 sm:gap-2 md:gap-4 lg:gap-6 h-full overflow-x-auto scrollbar-hide">
+              {quickAccessItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg transition-all duration-300 whitespace-nowrap",
+                    "text-[11px] sm:text-xs font-bold tracking-wide",
+                    isActive(item.path) || (item.path === '/about/history' && isAboutActive)
+                      ? "bg-primary/20 text-primary"
+                      : "text-secondary-foreground/80 hover:bg-primary/10 hover:text-primary"
+                  )}
+                >
+                  <item.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2} />
+                  <span className="hidden sm:inline">{t(item.labelKey)}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main Navbar - Clean & Minimal */}
       <nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          'fixed left-0 right-0 z-50 transition-all duration-300',
           isScrolled
-            ? 'bg-card/90 backdrop-blur-xl shadow-lg border-b border-border/50'
-            : 'bg-background/30 backdrop-blur-lg border-b border-white/10'
+            ? 'top-0 bg-card/90 backdrop-blur-xl shadow-lg border-b border-border/50'
+            : 'top-10 sm:top-11 bg-background/30 backdrop-blur-lg border-b border-white/10'
         )}
       >
         <div className="container mx-auto px-4 sm:px-6">

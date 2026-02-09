@@ -47,7 +47,7 @@ const Hero3DBackground = () => {
             isVideoLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
-            objectPosition: 'center center',
+            objectPosition: 'center 30%',
             filter: 'saturate(1.2) contrast(1.1) brightness(1.15)',
           }}
         >
