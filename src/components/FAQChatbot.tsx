@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import { ChevronLeft, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import jwLogo from '@/assets/jw-group-logo.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -245,18 +246,17 @@ const FAQChatbot = () => {
         </div>
       </div>
 
-      {/* Hidden Side Tab - Click to toggle */}
+      {/* Slide-out Assistant Tab - Reference design style */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
-        {/* Slide-out Main Button */}
         <div
           className={cn(
-            "transition-all duration-300 ease-out flex items-center",
+            "flex items-center transition-all duration-300 ease-out",
             isButtonVisible
               ? "translate-x-0"
-              : "translate-x-[calc(100%-12px)]"
+              : "translate-x-[calc(100%-24px)]"
           )}
         >
-          {/* Tab Handle - always visible */}
+          {/* Toggle Handle - Chevron */}
           <button
             onClick={() => {
               if (isButtonVisible) {
@@ -267,31 +267,44 @@ const FAQChatbot = () => {
               }
             }}
             className={cn(
-              "flex items-center justify-center py-6 px-1.5 rounded-l-xl shadow-lg transition-all duration-300",
-              isButtonVisible
-                ? "bg-muted text-muted-foreground hover:bg-muted/80"
-                : "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white hover:px-2.5"
+              "flex items-center justify-center w-6 h-16 rounded-l-lg shadow-lg transition-all duration-300 bg-card border border-r-0 border-border hover:bg-muted"
             )}
             aria-label={isButtonVisible ? 'ซ่อนช่วยเหลือ' : 'แสดงช่วยเหลือ'}
           >
-            <MessageCircle className={cn(
-              "w-4 h-4 transition-transform duration-300",
-              isButtonVisible ? "rotate-180" : ""
+            <ChevronLeft className={cn(
+              "w-4 h-4 text-muted-foreground transition-transform duration-300",
+              isButtonVisible ? "" : "rotate-180"
             )} />
           </button>
 
-          {/* Main Chat Button */}
+          {/* Main Assistant Panel */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 mx-3",
+              "flex items-center gap-3 px-4 py-3 rounded-l-xl shadow-lg transition-all duration-300 bg-card border border-r-0 border-border",
               isOpen
-                ? "bg-muted-foreground text-background hover:bg-muted-foreground/80"
-                : "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white hover:scale-110 hover:shadow-xl hover:shadow-teal-500/40"
+                ? "bg-muted"
+                : "hover:bg-muted/50"
             )}
             aria-label={isOpen ? 'ปิดแชท' : 'เปิดแชท FAQ'}
           >
-            {isOpen ? <X className="w-5 h-5" /> : <MessageCircle className="w-6 h-6" />}
+            {/* Logo */}
+            <img 
+              src={jwLogo} 
+              alt="JW Group" 
+              className="w-10 h-10 object-contain"
+            />
+            
+            {/* Text */}
+            <div className="flex flex-col items-start">
+              <span className="text-sm font-bold text-foreground tracking-wide">
+                <span className="text-primary">JW</span>
+                <span className="text-muted-foreground">GROUP</span>
+              </span>
+              <span className="text-xs font-semibold text-primary tracking-widest">
+                ASSISTANT
+              </span>
+            </div>
           </button>
         </div>
       </div>
