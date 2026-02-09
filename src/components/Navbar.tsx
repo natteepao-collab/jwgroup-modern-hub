@@ -101,15 +101,15 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* Quick Access Secondary Bar - Mobile & Tablet Only (hidden on Desktop lg+) */}
+      {/* Quick Access Secondary Bar - Minimal Icons Only - Mobile & Tablet Only */}
       <div
         className={cn(
           "fixed top-0 left-0 right-0 z-[60] transition-all duration-500 lg:hidden",
-          isScrolled ? "h-0 opacity-0 pointer-events-none" : "h-12 sm:h-14 opacity-100"
+          isScrolled ? "h-0 opacity-0 pointer-events-none" : "h-10 opacity-100"
         )}
       >
-        <div className="h-full bg-gradient-to-r from-secondary via-secondary/95 to-secondary border-b border-primary/20 shadow-md">
-          <div className="h-full max-w-screen-lg mx-auto px-2 sm:px-4">
+        <div className="h-full bg-secondary/95 backdrop-blur-sm border-b border-primary/10">
+          <div className="h-full max-w-md mx-auto px-4">
             <div className="flex items-center justify-between h-full">
               {quickAccessItems.map((item) => {
                 const isItemActive = isActive(item.path) || (item.path === '/about/history' && isAboutActive);
@@ -117,27 +117,31 @@ export const Navbar = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={cn(
-                      "flex flex-col items-center justify-center flex-1 py-1.5 transition-all duration-300 group",
-                      isItemActive ? "text-primary" : "text-secondary-foreground/80 hover:text-primary"
-                    )}
+                    className="relative group flex items-center justify-center p-2"
+                    title={t(item.labelKey)}
                   >
                     <div className={cn(
-                      "flex items-center justify-center rounded-lg transition-all duration-300",
+                      "flex items-center justify-center transition-all duration-300",
                       isItemActive 
-                        ? "text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" 
-                        : "group-hover:scale-110"
+                        ? "text-primary scale-110" 
+                        : "text-secondary-foreground/70 group-hover:text-primary group-hover:scale-110"
                     )}>
-                      <item.icon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={isItemActive ? 2.5 : 1.8} />
+                      <item.icon className="h-5 w-5" strokeWidth={isItemActive ? 2.2 : 1.6} />
                     </div>
-                    <span className={cn(
-                      "text-[9px] sm:text-[10px] font-semibold tracking-wide mt-0.5 truncate max-w-[50px] sm:max-w-[60px] text-center",
-                      isItemActive && "font-bold"
+                    {/* Tooltip on hover */}
+                    <div className={cn(
+                      "absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md text-[10px] font-medium whitespace-nowrap",
+                      "bg-card text-card-foreground shadow-lg border border-border/50",
+                      "opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none",
+                      "translate-y-1 group-hover:translate-y-0"
                     )}>
                       {t(item.labelKey)}
-                    </span>
+                      {/* Arrow */}
+                      <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-card border-l border-t border-border/50 rotate-45" />
+                    </div>
+                    {/* Active indicator dot */}
                     {isItemActive && (
-                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
                     )}
                   </Link>
                 );
