@@ -372,38 +372,49 @@ export const Navbar = () => {
         "fixed bottom-0 left-0 right-0 z-50 lg:hidden",
         "bg-card/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
       )}>
-        <div className="container mx-auto px-2">
-          <div className="flex items-center justify-around py-2">
-            {bottomTabItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-300 min-w-[60px]",
-                  isActive(item.path)
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <div className={cn(
-                  "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300",
-                  isActive(item.path)
-                    ? "bg-gradient-to-br from-primary to-primary/80 shadow-lg shadow-primary/30"
-                    : "bg-transparent"
-                )}>
-                  <item.icon className={cn(
-                    "h-5 w-5 transition-colors duration-300",
-                    isActive(item.path) ? "text-primary-foreground" : "text-current"
-                  )} strokeWidth={2} />
-                </div>
-                <span className={cn(
-                  "text-[10px] font-bold tracking-wide transition-colors duration-300",
-                  isActive(item.path) ? "text-primary" : "text-current"
-                )}>
-                  {t(item.labelKey)}
-                </span>
-              </Link>
-            ))}
+        <div className="max-w-md mx-auto px-1">
+          <div className="flex items-center justify-between py-1.5">
+            {bottomTabItems.map((item) => {
+              const isItemActive = isActive(item.path);
+              // Short labels for mobile
+              const getShortLabel = (key: string) => {
+                const shortLabels: Record<string, string> = {
+                  'nav.home': 'หน้าแรก',
+                  'nav.business': 'ธุรกิจ',
+                  'nav.news': 'ข่าวสาร',
+                  'nav.careers': 'ร่วมงาน',
+                  'nav.contact': 'ติดต่อ',
+                };
+                return shortLabels[key] || t(key);
+              };
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "flex flex-col items-center justify-center flex-1 py-1 transition-all duration-300"
+                  )}
+                >
+                  <div className={cn(
+                    "flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300",
+                    isItemActive
+                      ? "bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/25"
+                      : "bg-transparent"
+                  )}>
+                    <item.icon className={cn(
+                      "h-[18px] w-[18px] transition-colors duration-300",
+                      isItemActive ? "text-primary-foreground" : "text-muted-foreground"
+                    )} strokeWidth={isItemActive ? 2.2 : 1.8} />
+                  </div>
+                  <span className={cn(
+                    "text-[9px] font-semibold mt-0.5 transition-colors duration-300",
+                    isItemActive ? "text-primary font-bold" : "text-muted-foreground"
+                  )}>
+                    {getShortLabel(item.labelKey)}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
         {/* Safe Area Padding for iOS */}
