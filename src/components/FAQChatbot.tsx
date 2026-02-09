@@ -171,8 +171,8 @@ const FAQChatbot = () => {
                 )}
               >
                 {msg.role === 'assistant' && (
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-4 h-4 text-primary" />
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <img src={jwLogo} alt="JW Group" className="w-6 h-6 object-contain" />
                   </div>
                 )}
                 <div
@@ -194,8 +194,8 @@ const FAQChatbot = () => {
             ))}
             {isLoading && messages[messages.length - 1]?.role === 'user' && (
               <div className="flex gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-primary" />
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                  <img src={jwLogo} alt="JW Group" className="w-6 h-6 object-contain" />
                 </div>
                 <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-2">
                   <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
