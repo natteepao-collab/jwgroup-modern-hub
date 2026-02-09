@@ -356,35 +356,103 @@ const CompanyTimeline = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-muted/20">
-      <div className="container mx-auto px-4 sm:px-6">
-        {/* Section Header - Minimal & Elegant */}
+    <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-muted/30">
+      <div className="container mx-auto px-3 sm:px-4">
+        {/* Section Header - Clickable */}
         <div 
           ref={headerRef}
           onClick={toggleAll}
-          className={`text-center mb-10 sm:mb-12 md:mb-16 cursor-pointer group transition-all duration-700 ${
+          className={`text-center mb-6 sm:mb-8 cursor-pointer group transition-all duration-700 ${
             headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="inline-flex items-center gap-3 sm:gap-4">
-            <div className="h-px w-8 sm:w-12 bg-gradient-to-r from-transparent to-primary/50" />
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
+          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
               เส้นทางแห่งความสำเร็จ
             </h2>
-            <div className="h-px w-8 sm:w-12 bg-gradient-to-l from-transparent to-primary/50" />
-          </div>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-4 sm:mt-5 max-w-xl mx-auto">
-            {isOpen ? 'คลิกที่แต่ละเหตุการณ์เพื่อดูรายละเอียด' : 'คลิกเพื่อดูเส้นทางการเติบโตของ JW Group'}
-          </p>
-          
-          {/* Subtle Toggle Indicator */}
-          <div className={`mt-4 sm:mt-6 inline-flex items-center gap-2 text-sm text-muted-foreground/70 transition-all duration-300 group-hover:text-primary`}>
-            <span className="text-xs tracking-wide uppercase">{isOpen ? 'ซ่อน' : 'แสดง'}</span>
             <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
             </div>
           </div>
+          <p className="text-sm sm:text-base text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto px-2">
+            {isOpen ? 'คลิกที่แต่ละเหตุการณ์เพื่อดูรายละเอียด' : 'คลิกเพื่อดูเส้นทางการเติบโตของ JW Group'}
+          </p>
         </div>
+
+        {/* Jump to Year - Improved Mobile Layout */}
+        {isOpen && (
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <MapPin className="w-4 h-4 text-primary" />
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">ข้ามไปยังปี</span>
+            </div>
+            
+            {/* Mobile: Grid Layout for better display */}
+            <div className="block sm:hidden">
+              <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
+                {uniqueYears.slice(0, 6).map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => jumpToYear(year)}
+                    className={`px-2 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${
+                      selectedYear === year
+                        ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30 scale-105'
+                        : 'bg-card border border-border/50 text-foreground hover:bg-primary/10 hover:border-primary/50'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+              {/* Show more button if there are more years */}
+              {uniqueYears.length > 6 && (
+                <div className="mt-2 text-center">
+                  <ScrollArea className="w-full">
+                    <div className="flex justify-center gap-2 pb-2 px-2">
+                      {uniqueYears.slice(6).map((year) => (
+                        <button
+                          key={year}
+                          onClick={() => jumpToYear(year)}
+                          className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all duration-300 whitespace-nowrap ${
+                            selectedYear === year
+                              ? 'bg-primary text-primary-foreground shadow-md'
+                              : 'bg-muted/50 text-muted-foreground hover:bg-primary/10'
+                          }`}
+                        >
+                          {year}
+                        </button>
+                      ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </div>
+              )}
+            </div>
+            
+            {/* Tablet & Desktop: Horizontal Scroll */}
+            <div className="hidden sm:block">
+              <ScrollArea className="w-full whitespace-nowrap">
+                <div className="flex justify-center gap-2 pb-3 px-2">
+                  {uniqueYears.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => jumpToYear(year)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                        selectedYear === year
+                          ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+                          : 'bg-card border border-border/50 text-foreground hover:bg-primary/10 hover:border-primary/50'
+                      }`}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          </div>
+        )}
 
         {/* Timeline Content - Collapsible */}
         <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[8000px] opacity-100' : 'max-h-0 opacity-0'}`}>
@@ -410,24 +478,35 @@ const CompanyTimeline = () => {
             </div>
           </div>
 
-          {/* Collapse Button - Minimal */}
-          <div className="text-center mt-12 sm:mt-16">
-            <button 
-              onClick={toggleAll} 
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
-            >
+          {/* Collapse Button */}
+          <div className="text-center mt-12">
+            <Button variant="outline" onClick={toggleAll} className="gap-2">
               <ChevronUp className="w-4 h-4" />
-              <span className="tracking-wide">ย่อ Timeline</span>
-            </button>
+              ย่อ Timeline
+            </Button>
           </div>
         </div>
 
-        {/* Minimal preview when collapsed */}
+        {/* Preview when collapsed */}
         {!isOpen && (
-          <div className="text-center mt-6">
-            <p className="text-sm text-muted-foreground">
-              <span className="text-primary font-semibold">{events.length}</span> เหตุการณ์สำคัญ
-            </p>
+          <div className="flex justify-center gap-4 flex-wrap mt-4">
+            {events.slice(0, 4).map((event, index) => (
+              <div 
+                key={event.id}
+                className={`px-4 py-2 rounded-full bg-card border border-border/50 shadow-sm transition-all duration-300 ${
+                  headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+                }`}
+                style={{ transitionDelay: `${index * 100 + 300}ms` }}
+              >
+                <span className="text-sm font-medium text-primary">{event.year}</span>
+                <span className="text-sm text-muted-foreground ml-2">{event.title_th.slice(0, 15)}...</span>
+              </div>
+            ))}
+            {events.length > 4 && (
+              <div className="px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                +{events.length - 4} เหตุการณ์
+              </div>
+            )}
           </div>
         )}
       </div>
