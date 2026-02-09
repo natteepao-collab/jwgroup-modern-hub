@@ -149,11 +149,11 @@ const TimelineItem = ({
   return (
     <div
       ref={ref}
-      className={`relative flex items-start ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} flex-row`}
+      className={`relative flex flex-col md:flex-row items-start ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
       {/* Content Card */}
       <div
-        className={`w-full md:w-5/12 ${isLeft ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'} pl-16 md:pl-0 transition-all duration-700 ${
+        className={`w-full md:w-5/12 ${isLeft ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'} pl-14 sm:pl-16 md:pl-0 transition-all duration-700 ${
           inView 
             ? 'opacity-100 translate-x-0' 
             : `opacity-0 ${isLeft ? 'md:-translate-x-10' : 'md:translate-x-10'} -translate-x-10`
@@ -162,7 +162,7 @@ const TimelineItem = ({
       >
         <div
           onClick={onToggle}
-          className={`relative cursor-pointer p-6 rounded-2xl bg-card border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
+          className={`relative cursor-pointer p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl bg-card border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
             event.is_highlight 
               ? 'border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10' 
               : 'border-border/50'
@@ -175,9 +175,9 @@ const TimelineItem = ({
             <div className="absolute inset-0 rounded-2xl bg-primary/20 animate-ping pointer-events-none" style={{ animationDuration: '1s', animationIterationCount: '2' }} />
           )}
           {/* Year Badge */}
-          <div className={`flex items-center gap-2 mb-3 ${isLeft ? 'md:justify-end' : 'md:justify-start'}`}>
+          <div className={`flex items-center gap-2 mb-2 sm:mb-3 ${isLeft ? 'md:justify-end' : 'md:justify-start'}`}>
             <span 
-              className={`inline-block px-3 py-1 text-sm font-bold rounded-full ${
+              className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-bold rounded-full ${
                 event.is_highlight 
                   ? 'bg-primary text-primary-foreground' 
                   : 'bg-muted text-muted-foreground'
@@ -186,38 +186,38 @@ const TimelineItem = ({
               {event.year}
             </span>
             {isExpanded ? (
-              <ChevronUp className="w-4 h-4 text-muted-foreground" />
+              <ChevronUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
             ) : (
-              <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
             )}
           </div>
           
           {/* Title */}
-          <h3 className="text-xl font-bold text-foreground mb-2">
+          <h3 className="text-base sm:text-lg md:text-xl font-bold text-foreground mb-1 sm:mb-2 leading-tight">
             {getTitle()}
           </h3>
 
           {/* Expanded Content */}
           <div className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
             {/* Description */}
-            <p className="text-muted-foreground mb-4">
+            <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
               {getDescription()}
             </p>
             
             {/* Image */}
             {event.image_url && (
-              <div className={`mt-4 ${isLeft ? 'md:ml-auto' : ''} group/image`}>
-                <div className="relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 max-w-[350px]">
+              <div className={`mt-3 sm:mt-4 ${isLeft ? 'md:ml-auto' : ''} group/image`}>
+                <div className="relative overflow-hidden rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 max-w-full sm:max-w-[350px]">
                   {/* Image with zoom effect */}
                   <img 
                     src={event.image_url} 
                     alt={getTitle()}
-                    className="w-full h-[200px] object-cover transform group-hover/image:scale-110 transition-transform duration-700 ease-out"
+                    className="w-full h-[140px] sm:h-[180px] md:h-[200px] object-cover transform group-hover/image:scale-110 transition-transform duration-700 ease-out"
                   />
                   {/* Premium gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity duration-500" />
                   {/* Year badge on image */}
-                  <div className="absolute bottom-3 left-3 px-3 py-1 bg-primary/90 backdrop-blur-sm text-primary-foreground text-sm font-bold rounded-full shadow-lg">
+                  <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 px-2 sm:px-3 py-0.5 sm:py-1 bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs sm:text-sm font-bold rounded-full shadow-lg">
                     {event.year}
                   </div>
                   {/* Shine effect */}
@@ -229,7 +229,7 @@ const TimelineItem = ({
 
           {/* Preview text when collapsed */}
           {!isExpanded && (
-            <p className="text-sm text-muted-foreground line-clamp-1">
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-1">
               {getDescription()}
             </p>
           )}
@@ -237,11 +237,11 @@ const TimelineItem = ({
       </div>
 
       {/* Center Line & Icon */}
-      <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 flex flex-col items-center">
+      <div className="absolute left-0 sm:left-2 md:left-1/2 md:-translate-x-1/2 flex flex-col items-center">
         {/* Icon Circle */}
         <div
           onClick={onToggle}
-          className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 ${
+          className={`relative z-10 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 ${
             inView ? 'scale-100' : 'scale-0'
           } ${
             event.is_highlight 
@@ -250,7 +250,7 @@ const TimelineItem = ({
           } ${isExpanded ? 'ring-4 ring-primary/20 scale-110' : 'hover:scale-110'}`}
           style={{ transitionDelay: `${index * 100 + 200}ms` }}
         >
-          {iconMap[event.icon_name] || <Calendar className="w-6 h-6" />}
+          <div className="[&>svg]:w-5 [&>svg]:h-5 sm:[&>svg]:w-6 sm:[&>svg]:h-6">{iconMap[event.icon_name] || <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />}</div>
         </div>
       </div>
 
@@ -356,44 +356,44 @@ const CompanyTimeline = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-muted/30">
+      <div className="container mx-auto px-3 sm:px-4">
         {/* Section Header - Clickable */}
         <div 
           ref={headerRef}
           onClick={toggleAll}
-          className={`text-center mb-8 cursor-pointer group transition-all duration-700 ${
+          className={`text-center mb-6 sm:mb-8 cursor-pointer group transition-all duration-700 ${
             headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <Calendar className="w-6 h-6 text-primary" />
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
               เส้นทางแห่งความสำเร็จ
             </h2>
             <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-              <ChevronDown className="w-6 h-6 text-primary" />
+              <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
             </div>
           </div>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto px-2">
             {isOpen ? 'คลิกที่แต่ละเหตุการณ์เพื่อดูรายละเอียด' : 'คลิกเพื่อดูเส้นทางการเติบโตของ JW Group'}
           </p>
         </div>
 
         {/* Jump to Year - Only show when timeline is open */}
         {isOpen && (
-          <div className="mb-8">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">ข้ามไปยังปี</span>
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
+              <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">ข้ามไปยังปี</span>
             </div>
             <ScrollArea className="w-full whitespace-nowrap">
-              <div className="flex justify-center gap-2 pb-3">
+              <div className="flex justify-center gap-1.5 sm:gap-2 pb-3 px-2">
                 {uniqueYears.map((year) => (
                   <button
                     key={year}
                     onClick={() => jumpToYear(year)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 ${
                       selectedYear === year
                         ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
                         : 'bg-card border border-border/50 text-foreground hover:bg-primary/10 hover:border-primary/50'
@@ -411,12 +411,12 @@ const CompanyTimeline = () => {
         {/* Timeline Content - Collapsible */}
         <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[8000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           {/* Timeline */}
-          <div className="relative pt-8">
+          <div className="relative pt-4 sm:pt-6 md:pt-8">
             {/* Vertical Line */}
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent md:-translate-x-1/2" />
+            <div className="absolute left-[18px] sm:left-[22px] md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent md:-translate-x-1/2" />
 
             {/* Timeline Events */}
-            <div className="space-y-8 md:space-y-12">
+            <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-12">
               {events.map((event, index) => (
                 <div key={event.id} ref={(el) => setEventRef(event.id, el)}>
                   <TimelineItem

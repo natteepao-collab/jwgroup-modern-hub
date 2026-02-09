@@ -101,30 +101,30 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* Quick Access Secondary Bar - Shows when NOT scrolled */}
+      {/* Quick Access Secondary Bar - Mobile & Tablet Only (hidden on Desktop lg+) */}
       <div
         className={cn(
-          "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 overflow-hidden",
+          "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 overflow-hidden lg:hidden",
           isScrolled ? "h-0 opacity-0" : "h-10 sm:h-11 opacity-100"
         )}
       >
-        <div className="h-full bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-b border-primary/20">
+        <div className="h-full bg-background/60 backdrop-blur-md border-b border-border/30">
           <div className="container mx-auto px-4 sm:px-6 h-full">
-            <div className="flex items-center justify-center gap-1 sm:gap-2 md:gap-4 lg:gap-6 h-full overflow-x-auto scrollbar-hide">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-6 h-full overflow-x-auto scrollbar-hide">
               {quickAccessItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    "flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg transition-all duration-300 whitespace-nowrap",
-                    "text-[11px] sm:text-xs font-bold tracking-wide",
+                    "flex flex-col items-center justify-center gap-0.5 px-2 py-1 transition-all duration-300 whitespace-nowrap",
+                    "text-[10px] sm:text-[11px] font-medium",
                     isActive(item.path) || (item.path === '/about/history' && isAboutActive)
-                      ? "bg-primary/20 text-primary"
-                      : "text-secondary-foreground/80 hover:bg-primary/10 hover:text-primary"
+                      ? "text-primary"
+                      : "text-foreground/70 hover:text-primary"
                   )}
                 >
-                  <item.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2} />
-                  <span className="hidden sm:inline">{t(item.labelKey)}</span>
+                  <item.icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={1.8} />
+                  <span>{t(item.labelKey)}</span>
                 </Link>
               ))}
             </div>
@@ -138,7 +138,7 @@ export const Navbar = () => {
           'fixed left-0 right-0 z-50 transition-all duration-300',
           isScrolled
             ? 'top-0 bg-card/90 backdrop-blur-xl shadow-lg border-b border-border/50'
-            : 'top-10 sm:top-11 bg-background/30 backdrop-blur-lg border-b border-white/10'
+            : 'top-10 sm:top-11 lg:top-0 bg-background/30 backdrop-blur-lg border-b border-white/10'
         )}
       >
         <div className="container mx-auto px-4 sm:px-6">
