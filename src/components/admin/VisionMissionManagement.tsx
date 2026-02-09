@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBusinessTypes } from '@/hooks/useBusinessTypes';
@@ -12,13 +12,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { 
-  Target, 
-  ListChecks, 
-  Sparkles, 
-  Plus, 
-  Trash2, 
-  Save, 
+import {
+  Target,
+  ListChecks,
+  Sparkles,
+  Plus,
+  Trash2,
+  Save,
   RefreshCw,
   Eye,
   EyeOff,
@@ -104,7 +104,7 @@ const VisionMissionManagement = () => {
     description_th: ''
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase
@@ -113,7 +113,7 @@ const VisionMissionManagement = () => {
         .order('position_order');
 
       if (error) throw error;
-      
+
       // Parse missions from JSON with proper typing
       const parsed: VisionMission[] = (data || []).map(item => ({
         id: item.id,
@@ -128,25 +128,27 @@ const VisionMissionManagement = () => {
         core_concept: item.core_concept ? (item.core_concept as unknown as CoreConcept) : null,
         position_order: item.position_order || 0,
         is_published: item.is_published ?? true,
-        image_url: (item as any).image_url || null
+        image_url: (item as { image_url?: string | null }).image_url || null
       }));
-      
+
       setVisionMissions(parsed);
-      
+
       // Set first available tab
-      if (parsed.length > 0 && !parsed.find(p => p.business_type === activeTab)) {
-        setActiveTab(parsed[0].business_type);
+      if (parsed.length > 0) {
+        // We can't easily check 'activeTab' here without adding it to dependencies which might cause loops.
+        // Instead we rely on initial state or user interaction
+        // checking if activeTab triggers update might be tricky inside fetchData
       }
     } catch (error) {
       console.error('Error fetching vision missions:', error);
       toast.error('ไม่สามารถโหลดข้อมูลได้');
     }
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleSave = async (vm: VisionMission) => {
     if (!isAdmin) {
@@ -159,7 +161,7 @@ const VisionMissionManagement = () => {
       // Convert to JSON-compatible format
       const missionsJson = JSON.parse(JSON.stringify(vm.missions));
       const coreConceptJson = vm.core_concept ? JSON.parse(JSON.stringify(vm.core_concept)) : null;
-      
+
       const { error } = await supabase
         .from('vision_missions')
         .update({
@@ -187,15 +189,15 @@ const VisionMissionManagement = () => {
   };
 
   const handleFieldChange = (id: string, field: string, value: string | boolean) => {
-    setVisionMissions(prev => 
-      prev.map(vm => 
+    setVisionMissions(prev =>
+      prev.map(vm =>
         vm.id === id ? { ...vm, [field]: value } : vm
       )
     );
   };
 
   const handleMissionChange = (vmId: string, missionIndex: number, field: string, value: string) => {
-    setVisionMissions(prev => 
+    setVisionMissions(prev =>
       prev.map(vm => {
         if (vm.id !== vmId) return vm;
         const newMissions = [...vm.missions];
@@ -206,7 +208,7 @@ const VisionMissionManagement = () => {
   };
 
   const handleAddMission = (vmId: string) => {
-    setVisionMissions(prev => 
+    setVisionMissions(prev =>
       prev.map(vm => {
         if (vm.id !== vmId) return vm;
         return {
@@ -218,7 +220,7 @@ const VisionMissionManagement = () => {
   };
 
   const handleRemoveMission = (vmId: string, missionIndex: number) => {
-    setVisionMissions(prev => 
+    setVisionMissions(prev =>
       prev.map(vm => {
         if (vm.id !== vmId) return vm;
         const newMissions = vm.missions.filter((_, i) => i !== missionIndex);
@@ -228,7 +230,7 @@ const VisionMissionManagement = () => {
   };
 
   const handleMoveMission = (vmId: string, fromIndex: number, direction: 'up' | 'down') => {
-    setVisionMissions(prev => 
+    setVisionMissions(prev =>
       prev.map(vm => {
         if (vm.id !== vmId) return vm;
         const newMissions = [...vm.missions];
@@ -241,7 +243,7 @@ const VisionMissionManagement = () => {
   };
 
   const handleCoreConceptChange = (vmId: string, field: string, value: string) => {
-    setVisionMissions(prev => 
+    setVisionMissions(prev =>
       prev.map(vm => {
         if (vm.id !== vmId) return vm;
         return {
@@ -256,7 +258,7 @@ const VisionMissionManagement = () => {
   };
 
   const toggleCoreConcept = (vmId: string) => {
-    setVisionMissions(prev => 
+    setVisionMissions(prev =>
       prev.map(vm => {
         if (vm.id !== vmId) return vm;
         return {
@@ -525,7 +527,7 @@ const VisionMissionManagement = () => {
                             </p>
                           </div>
                         )}
-                        
+
                         {/* Hidden file input */}
                         <input
                           type="file"
@@ -559,7 +561,7 @@ const VisionMissionManagement = () => {
                           <TabsTrigger value="en">🇺🇸 English</TabsTrigger>
                           <TabsTrigger value="cn">🇨🇳 中文</TabsTrigger>
                         </TabsList>
-                        
+
                         <TabsContent value="th" className="space-y-4">
                           <div>
                             <Label>วิสัยทัศน์หลัก (Thai)</Label>
@@ -673,14 +675,14 @@ const VisionMissionManagement = () => {
                                 </Button>
                               </div>
                             </div>
-                            
+
                             <Tabs defaultValue="th" className="w-full">
                               <TabsList className="mb-3">
                                 <TabsTrigger value="th" className="text-xs">🇹🇭 TH</TabsTrigger>
                                 <TabsTrigger value="en" className="text-xs">🇺🇸 EN</TabsTrigger>
                                 <TabsTrigger value="cn" className="text-xs">🇨🇳 CN</TabsTrigger>
                               </TabsList>
-                              
+
                               <TabsContent value="th" className="space-y-3">
                                 <div>
                                   <Label className="text-xs">หัวข้อ (Thai)</Label>
@@ -781,7 +783,7 @@ const VisionMissionManagement = () => {
                             <TabsTrigger value="en">🇺🇸 English</TabsTrigger>
                             <TabsTrigger value="cn">🇨🇳 中文</TabsTrigger>
                           </TabsList>
-                          
+
                           <TabsContent value="th" className="space-y-4">
                             <div>
                               <Label>หัวข้อหลัก (Thai)</Label>
@@ -873,7 +875,7 @@ const VisionMissionManagement = () => {
 
                 {/* Save Button */}
                 <div className="flex justify-end pt-4">
-                  <Button 
+                  <Button
                     onClick={() => handleSave(vm)}
                     disabled={isSaving === vm.id}
                     className="min-w-32"

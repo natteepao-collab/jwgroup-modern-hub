@@ -125,7 +125,7 @@ const CareersManagement = () => {
 
   const handleDeleteJob = async (id: string) => {
     if (!confirm('ยืนยันการลบตำแหน่งงานนี้?')) return;
-    
+
     try {
       const { error } = await supabase.from('jobs').delete().eq('id', id);
       if (error) throw error;
@@ -137,7 +137,7 @@ const CareersManagement = () => {
     }
   };
 
-  const handleJobChange = (id: string, field: keyof Job, value: any) => {
+  const handleJobChange = (id: string, field: keyof Job, value: Job[keyof Job]) => {
     setJobs(jobs.map(j => j.id === id ? { ...j, [field]: value } : j));
   };
 
@@ -189,7 +189,7 @@ const CareersManagement = () => {
 
   const handleDeleteBenefit = async (id: string) => {
     if (!confirm('ยืนยันการลบสวัสดิการนี้?')) return;
-    
+
     try {
       const { error } = await supabase.from('career_benefits').delete().eq('id', id);
       if (error) throw error;
@@ -201,7 +201,7 @@ const CareersManagement = () => {
     }
   };
 
-  const handleBenefitChange = (id: string, field: keyof Benefit, value: any) => {
+  const handleBenefitChange = (id: string, field: keyof Benefit, value: Benefit[keyof Benefit]) => {
     setBenefits(benefits.map(b => b.id === id ? { ...b, [field]: value } : b));
   };
 

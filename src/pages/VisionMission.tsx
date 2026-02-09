@@ -138,7 +138,7 @@ const VisionMission = () => {
         vision_sub_cn: item.vision_sub_cn,
         missions: Array.isArray(item.missions) ? (item.missions as unknown as Mission[]) : [],
         core_concept: item.core_concept ? (item.core_concept as unknown as CoreConcept) : null,
-        image_url: (item as any).image_url || null,
+        image_url: (item as { image_url?: string | null }).image_url || null,
         is_published: item.is_published ?? true
       }));
 
@@ -183,7 +183,7 @@ const VisionMission = () => {
       <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-primary/95" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-15" />
-        
+
         {/* Decorative Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
@@ -259,7 +259,7 @@ const VisionMission = () => {
               <div className="grid lg:grid-cols-2 gap-0">
                 {/* Image Side */}
                 <div className="relative h-64 lg:h-auto lg:min-h-[400px]">
-                  <img 
+                  <img
                     src={getImageUrl()}
                     alt={businessNames[activeTab]}
                     className="absolute inset-0 w-full h-full object-cover"
@@ -291,7 +291,7 @@ const VisionMission = () => {
                       <p className="text-muted-foreground text-sm">Vision</p>
                     </div>
                   </div>
-                  
+
                   <div className="relative">
                     <Quote className={cn(
                       "absolute -top-2 -left-2 w-8 h-8 opacity-20",
@@ -304,7 +304,7 @@ const VisionMission = () => {
                       "{getLocalizedText(currentData.vision_th, currentData.vision_en, currentData.vision_cn)}"
                     </p>
                   </div>
-                  
+
                   {(currentData.vision_sub_th || currentData.vision_sub_en) && (
                     <p className="mt-4 text-muted-foreground leading-relaxed pl-6">
                       {getLocalizedText(currentData.vision_sub_th || '', currentData.vision_sub_en, currentData.vision_sub_cn)}
@@ -424,7 +424,7 @@ const VisionMission = () => {
                     )}
                   </div>
                 </div>
-                
+
                 {/* Decorative elements */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
