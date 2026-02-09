@@ -111,10 +111,10 @@ const Index = () => {
     <div className="min-h-screen">
       <AnnouncementModal autoShow delay={1500} />
 
-      {/* Hero Section - Cinematic Video Only */}
+      {/* Hero Section - Cinematic Video Only - Responsive height */}
       <section
         ref={heroRef}
-        className="relative h-screen overflow-hidden"
+        className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen overflow-hidden"
       >
         <Hero3DBackground />
       </section>
