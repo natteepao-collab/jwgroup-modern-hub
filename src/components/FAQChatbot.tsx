@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import { ChevronLeft, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import jwLogo from '@/assets/jw-group-logo.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -14,6 +15,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/faq-chat`;
 
 const FAQChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: 'สวัสดีครับ! ผมเป็นผู้ช่วย FAQ ของ JW Group ยินดีให้บริการครับ มีอะไรให้ช่วยไหมครับ?' }
   ]);
@@ -116,6 +118,18 @@ const FAQChatbot = () => {
     'บริษัทได้รับรางวัลอะไรบ้าง?',
     'ติดต่อบริษัทได้อย่างไร?',
   ];
+
+  const handleToggleButton = () => {
+    if (isButtonVisible) {
+      setIsOpen(!isOpen);
+    } else {
+      setIsButtonVisible(true);
+    }
+  };
+
+  const handleOpenChat = () => {
+    setIsOpen(true);
+  };
 
   return (
     <>
@@ -232,19 +246,68 @@ const FAQChatbot = () => {
         </div>
       </div>
 
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          "w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300",
-          isOpen
-            ? "rotate-0 bg-muted-foreground text-background hover:bg-muted-foreground/80"
-            : "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white hover:scale-110 hover:shadow-xl hover:shadow-teal-500/40 hover:-translate-y-1"
-        )}
-        aria-label={isOpen ? 'ปิดแชท' : 'เปิดแชท FAQ'}
-      >
-        {isOpen ? <X className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
-      </button>
+      {/* Slide-out Assistant Tab - Reference design style */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
+        <div
+          className={cn(
+            "flex items-center transition-all duration-300 ease-out",
+            isButtonVisible
+              ? "translate-x-0"
+              : "translate-x-[calc(100%-24px)]"
+          )}
+        >
+          {/* Toggle Handle - Chevron */}
+          <button
+            onClick={() => {
+              if (isButtonVisible) {
+                setIsButtonVisible(false);
+                setIsOpen(false);
+              } else {
+                setIsButtonVisible(true);
+              }
+            }}
+            className={cn(
+              "flex items-center justify-center w-6 h-16 rounded-l-lg shadow-lg transition-all duration-300 bg-card border border-r-0 border-border hover:bg-muted"
+            )}
+            aria-label={isButtonVisible ? 'ซ่อนช่วยเหลือ' : 'แสดงช่วยเหลือ'}
+          >
+            <ChevronLeft className={cn(
+              "w-4 h-4 text-muted-foreground transition-transform duration-300",
+              isButtonVisible ? "" : "rotate-180"
+            )} />
+          </button>
+
+          {/* Main Assistant Panel */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "flex items-center gap-3 px-4 py-3 rounded-l-xl shadow-lg transition-all duration-300 bg-card border border-r-0 border-border",
+              isOpen
+                ? "bg-muted"
+                : "hover:bg-muted/50"
+            )}
+            aria-label={isOpen ? 'ปิดแชท' : 'เปิดแชท FAQ'}
+          >
+            {/* Logo */}
+            <img 
+              src={jwLogo} 
+              alt="JW Group" 
+              className="w-10 h-10 object-contain"
+            />
+            
+            {/* Text */}
+            <div className="flex flex-col items-start">
+              <span className="text-sm font-bold text-foreground tracking-wide">
+                <span className="text-primary">JW</span>
+                <span className="text-muted-foreground">GROUP</span>
+              </span>
+              <span className="text-xs font-semibold text-primary tracking-widest">
+                ASSISTANT
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
     </>
   );
 };

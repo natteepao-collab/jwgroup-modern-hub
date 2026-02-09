@@ -151,7 +151,7 @@ export const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-secondary-foreground/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
-          <div className="mb-4 md:mb-0">{t('footer.copyright')}</div>
+          <div className="mb-4 md:mb-0">© 2026 JW Group. สงวนลิขสิทธิ์</div>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/privacy" className="hover:text-primary transition-colors">
               {t('footer.privacy')}
