@@ -260,7 +260,7 @@ const FAQChatbot = () => {
           <button
           onClick={() => setIsButtonVisible(!isButtonVisible)}
             className={cn(
-              "flex items-center justify-center w-6 h-16 rounded-l-lg shadow-lg transition-all duration-300 bg-card border border-r-0 border-border hover:bg-muted"
+              "flex items-center justify-center w-6 h-16 rounded-l-lg shadow-lg transition-all duration-300 bg-background border border-r-0 border-border hover:bg-muted backdrop-blur-none"
             )}
             aria-label={isButtonVisible ? 'ซ่อนช่วยเหลือ' : 'แสดงช่วยเหลือ'}
           >
@@ -274,7 +274,7 @@ const FAQChatbot = () => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              "flex items-center gap-3 px-4 py-3 rounded-l-xl shadow-lg transition-all duration-300 bg-card border border-r-0 border-border",
+              "flex items-center gap-3 px-4 py-3 rounded-l-xl shadow-lg transition-all duration-300 bg-background border border-r-0 border-border",
               isOpen
                 ? "bg-muted"
                 : "hover:bg-muted/50"
