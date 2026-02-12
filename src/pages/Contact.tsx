@@ -1,17 +1,51 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { MapPin, Phone, Mail, Clock, Facebook, Linkedin } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Linkedin, Loader2 } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { SEO } from '@/components/SEO';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const { getContent, isLoading } = useSiteContent();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '', email: '', phone: '', subject: '', message: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      toast({ title: 'กรุณากรอกข้อมูลให้ครบ', description: 'ชื่อ อีเมล และข้อความ จำเป็นต้องกรอก', variant: 'destructive' });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData,
+      });
+      if (error) throw error;
+      toast({ title: 'ส่งข้อความสำเร็จ', description: 'ขอบคุณที่ติดต่อเรา เราจะติดต่อกลับโดยเร็ว' });
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Contact form error:', error);
+      toast({ title: 'เกิดข้อผิดพลาด', description: 'ไม่สามารถส่งข้อความได้ กรุณาลองใหม่อีกครั้ง', variant: 'destructive' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Get contact data from database
   const addressContent = getContent('contact_address');
@@ -142,24 +176,24 @@ const Contact = () => {
               <CardDescription>กรอกข้อมูลด้านล่างและเราจะติดต่อกลับโดยเร็ว</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
-                  <Input placeholder={t('contact.form.name')} className="h-12 text-base" />
+                  <Input name="name" value={formData.name} onChange={handleChange} placeholder={t('contact.form.name')} className="h-12 text-base" required />
                 </div>
                 <div>
-                  <Input type="email" placeholder={t('contact.form.email')} className="h-12 text-base" />
+                  <Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder={t('contact.form.email')} className="h-12 text-base" required />
                 </div>
                 <div>
-                  <Input type="tel" placeholder={t('contact.form.phone')} className="h-12 text-base" />
+                  <Input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder={t('contact.form.phone')} className="h-12 text-base" />
                 </div>
                 <div>
-                  <Input placeholder={t('contact.form.subject')} className="h-12 text-base" />
+                  <Input name="subject" value={formData.subject} onChange={handleChange} placeholder={t('contact.form.subject')} className="h-12 text-base" />
                 </div>
                 <div>
-                  <Textarea placeholder={t('contact.form.message')} rows={6} className="text-base py-3" />
+                  <Textarea name="message" value={formData.message} onChange={handleChange} placeholder={t('contact.form.message')} rows={6} className="text-base py-3" required />
                 </div>
-                <Button className="w-full" size="lg">
-                  {t('contact.form.send')}
+                <Button className="w-full" size="lg" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> กำลังส่ง...</> : t('contact.form.send')}
                 </Button>
               </form>
             </CardContent>
