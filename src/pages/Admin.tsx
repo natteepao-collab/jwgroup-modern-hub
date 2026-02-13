@@ -25,7 +25,8 @@ import {
   Tags,
   Target,
   Info,
-  Briefcase
+  Briefcase,
+  MessageSquare
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -48,6 +49,7 @@ import BusinessTypesManagement from '@/components/admin/BusinessTypesManagement'
 import VisionMissionManagement from '@/components/admin/VisionMissionManagement';
 import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagement';
 import CareersManagement from '@/components/admin/CareersManagement';
+import ContactManagement from '@/components/admin/ContactManagement';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -186,6 +188,10 @@ const Admin = () => {
               <Mail className="h-4 w-4" />
               <span className="hidden sm:inline">Newsletter</span>
             </TabsTrigger>
+            <TabsTrigger value="contacts" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              <span className="hidden sm:inline">ติดต่อ</span>
+            </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">เนื้อหา</span>
@@ -246,6 +252,10 @@ const Admin = () => {
 
           <TabsContent value="newsletter">
             <NewsletterManagement />
+          </TabsContent>
+
+          <TabsContent value="contacts">
+            <ContactManagement />
           </TabsContent>
 
           <TabsContent value="content">
