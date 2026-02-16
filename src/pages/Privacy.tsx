@@ -13,7 +13,7 @@ const Privacy = () => {
       <SEO
         title={t('footer.privacy') || "นโยบายความเป็นส่วนตัว"}
         description="นโยบายความเป็นส่วนตัวของ JW Group การเก็บรวบรวม การใช้ และการเปิดเผยข้อมูลส่วนบุคคล"
-        url="/privacy"
+        canonicalUrl="/privacy"
       />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">{t('footer.privacy')}</h1>

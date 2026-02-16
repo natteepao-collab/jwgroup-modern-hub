@@ -66,7 +66,7 @@ const Contact = () => {
       <SEO
         title={t('contact.title')}
         description="ติดต่อ JW Group สอบถามข้อมูลเพิ่มเติมเกี่ยวกับธุรกิจของเรา"
-        url="/contact"
+        canonicalUrl="/contact"
       />
       <div className="container mx-auto px-4 py-12">
         <div

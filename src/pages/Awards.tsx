@@ -7,7 +7,7 @@ const Awards = () => {
             <SEO
                 title="รางวัลและความสำเร็จ"
                 description="รางวัลและความสำเร็จของ JW Group เครื่องหมายการันตีคุณภาพและความมุ่งมั่นของเรา"
-                url="/awards"
+                canonicalUrl="/awards"
             />
             <AwardsSection />
         </div>

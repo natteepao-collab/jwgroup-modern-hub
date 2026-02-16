@@ -85,7 +85,7 @@ const Careers = () => {
       <SEO
         title={t('careers.title')}
         description={t('careers.description') || "ร่วมงานกับเรา JW Group"}
-        url="/careers"
+        canonicalUrl="/careers"
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

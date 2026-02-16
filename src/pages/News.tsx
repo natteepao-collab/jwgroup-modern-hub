@@ -15,7 +15,7 @@ const News = () => {
       <SEO
         title={t('news.title')}
         description="ติดตามข่าวสารและความเคลื่อนไหวล่าสุดจาก JW Group"
-        url="/news"
+        canonicalUrl="/news"
       />
       <div className="container mx-auto px-4 py-12">
         <div

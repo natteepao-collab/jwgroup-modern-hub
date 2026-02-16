@@ -117,7 +117,7 @@ const Index = () => {
       <SEO
         title={seoTitle}
         description={seoDesc}
-        url="/"
+        canonicalUrl="/"
       />
       <AnnouncementModal autoShow delay={1500} />
 

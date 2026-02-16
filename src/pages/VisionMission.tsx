@@ -183,7 +183,7 @@ const VisionMission = () => {
       <SEO
         title={t('vision_mission.title') || "วิสัยทัศน์และพันธกิจ"}
         description="ทิศทางและเป้าหมายการดำเนินธุรกิจของแต่ละกลุ่มธุรกิจในเครือ JW Group"
-        url="/vision-mission"
+        canonicalUrl="/vision-mission"
       />
       {/* Hero Section */}
       <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">

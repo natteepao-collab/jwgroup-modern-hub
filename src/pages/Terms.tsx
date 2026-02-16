@@ -9,7 +9,7 @@ const Terms = () => {
       <SEO
         title={t('footer.terms') || "ข้อกำหนดและเงื่อนไข"}
         description="ข้อกำหนดและเงื่อนไขการใช้งานเว็บไซต์ JW Group"
-        url="/terms"
+        canonicalUrl="/terms"
       />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">{t('footer.terms')}</h1>

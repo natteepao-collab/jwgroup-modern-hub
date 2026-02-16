@@ -59,7 +59,7 @@ const Sustainability = () => {
       <SEO
         title={t('sustainability.title') || "ความยั่งยืน"}
         description="JW Group มุ่งมั่นสร้างธุรกิจที่เติบโตอย่างยั่งยืน ควบคู่ไปกับการดูแลสิ่งแวดล้อมและสังคม (ESG)"
-        url="/sustainability"
+        canonicalUrl="/sustainability"
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">

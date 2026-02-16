@@ -164,7 +164,7 @@ const Business = () => {
       <SEO
         title={seoTitle}
         description={seoDesc}
-        url="/business"
+        canonicalUrl="/business"
       />
       <div className="container mx-auto px-4 py-12">
         <div
