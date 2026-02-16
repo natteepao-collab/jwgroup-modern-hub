@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.jwgroupthailand.com/</loc>
-    <changefreq>daily</changefreq>
+    <loc>https://www.jwgroupthailand.com</loc>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/about</loc>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/about/awards</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/business</loc>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/awards</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/premium-search</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
@@ -22,47 +37,181 @@
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/careers</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/contact</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/sustainability</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/vision-mission</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/awards</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/premium-search</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/privacy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/terms</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/pdpa</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/sustainability</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/vision-mission</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/49bc9b59-f7b7-415e-9725-bf616e6a18d6</loc>
+    <lastmod>2026-01-10T02:41:13.182Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/7e47b1e6-fc4e-4599-a368-9bd388a1a8ff</loc>
+    <lastmod>2026-01-05T07:33:29.838Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/2602e1e2-1780-4c6c-b1c4-0a819a1ba809</loc>
+    <lastmod>2026-01-14T09:56:39.194Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/3a4bac68-1d89-49e9-a1ab-f5e546098451</loc>
+    <lastmod>2026-01-05T07:18:53.246Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/833cfed3-9eb0-4f74-82d0-a054350cb6ca</loc>
+    <lastmod>2026-01-05T07:19:38.124Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/f71216a0-4973-407f-bb27-0a36a7605566</loc>
+    <lastmod>2026-01-26T10:06:00.367Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/6da697f6-a1a6-404b-8fdc-820863a887b3</loc>
+    <lastmod>2026-02-09T02:15:20.095Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/d86be9c6-e14f-434c-9cad-2a3a05e0e334</loc>
+    <lastmod>2026-02-09T02:15:22.363Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/d370a60a-5651-4bc1-8f2e-72245c0d84dd</loc>
+    <lastmod>2026-01-05T07:29:33.990Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/180da5eb-bce6-446c-9e6b-483be4e55803</loc>
+    <lastmod>2026-01-10T02:41:12.200Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/294e8576-c162-40f9-9da7-c139fcc57f46</loc>
+    <lastmod>2026-02-05T10:53:19.753Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/97a9c298-dde2-4b6e-aa19-57b4ebb4ce7e</loc>
+    <lastmod>2026-01-05T07:19:48.716Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/357dc6fc-0fea-4aa7-ba3f-453cc014f2ec</loc>
+    <lastmod>2026-01-05T07:31:16.688Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/2ced4352-1cae-4ab1-a91d-6a70158bc5df</loc>
+    <lastmod>2026-02-09T02:13:39.807Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/9b8ff70b-6ca4-4893-9da9-5d2573b94461</loc>
+    <lastmod>2026-01-05T07:33:59.088Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/b82312ce-323f-407c-b85b-257230bf3e70</loc>
+    <lastmod>2026-01-05T07:17:46.464Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/3e5ef838-f14b-4d37-928c-d0f68b3f273b</loc>
+    <lastmod>2026-01-05T07:17:55.605Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/d4d1c6a5-28a9-41f7-8621-b5f0a90970bf</loc>
+    <lastmod>2026-02-14T04:40:36.788Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/f03fb227-7572-4163-af3d-32cb152f1ad7</loc>
+    <lastmod>2026-01-05T07:30:59.845Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/b02510ac-9b36-4261-bbf4-c3f8bec09c64</loc>
+    <lastmod>2026-01-05T07:31:07.923Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/386e34d3-60a4-43ff-aec4-06cd20476148</loc>
+    <lastmod>2026-01-05T07:31:05.247Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/27268508-868a-4ff5-b7a3-43b56462f667</loc>
+    <lastmod>2026-01-05T07:19:14.872Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/3f129c05-7b26-4da0-a8f0-1115fd3bd5b7</loc>
+    <lastmod>2026-01-05T07:29:18.748Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/news/98b68437-9e25-4fc2-929c-7e9413847cf8</loc>
+    <lastmod>2026-01-05T07:31:12.044Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

@@ -404,6 +404,7 @@ const NewsDetail = () => {
   if (error || !newsItem) {
     return (
       <div className="pt-24 min-h-screen bg-background">
+        <SEO title="News Not Found" noindex={true} />
         <div className="container mx-auto px-4 py-8">
           <Button asChild variant="ghost" className="mb-6">
             <Link to="/news" className="flex items-center gap-2">
@@ -443,14 +444,43 @@ const NewsDetail = () => {
 
   const galleryImages = getGalleryImages();
 
+  // Structured Data (JSON-LD) for Article
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "image": newsItem.image_url ? [newsItem.image_url, ...galleryImages] : [window.location.origin + '/og-image.png'],
+    "datePublished": newsItem.created_at,
+    "dateModified": newsItem.updated_at || newsItem.created_at,
+    "author": [{
+      "@type": "Organization",
+      "name": "JW Group",
+      "url": "https://www.jwgroupthailand.com"
+    }],
+    "publisher": {
+      "@type": "Organization",
+      "name": "JW Group",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.jwgroupthailand.com/logo.png"
+      }
+    },
+    "description": getLocalizedContent().excerpt,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": currentUrl
+    }
+  };
+
   return (
     <div className="pt-24 min-h-screen bg-background">
       <SEO
         title={title}
         description={getLocalizedContent().excerpt}
-        image={newsItem.image_url}
-        url={`/news/${id}`}
-        type="article"
+        ogImage={newsItem.image_url}
+        canonicalUrl={`/news/${id}`}
+        ogType="article"
+        structuredData={articleSchema}
       />
       <div className="container mx-auto px-4 py-8">
         <Button asChild variant="ghost" className="mb-6">

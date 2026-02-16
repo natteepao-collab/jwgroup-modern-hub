@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, Variants, Transition } from 'framer-motion';
+import { m, AnimatePresence, Variants, Transition } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { ReactNode } from 'react';
 
@@ -94,7 +94,7 @@ export const PageTransition = ({ children }: PageTransitionProps) => {
 
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <motion.div
+      <m.div
         key={location.pathname}
         initial="initial"
         animate="in"
@@ -105,7 +105,7 @@ export const PageTransition = ({ children }: PageTransitionProps) => {
         style={{ transformOrigin: 'center top' }}
       >
         {children}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 };

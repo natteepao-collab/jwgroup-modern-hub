@@ -3,19 +3,23 @@ import { Helmet } from 'react-helmet-async';
 interface SEOProps {
     title?: string;
     description?: string;
+    canonicalUrl?: string;
+    ogType?: 'website' | 'article' | 'product' | 'profile';
+    ogImage?: string;
     keywords?: string;
-    image?: string;
-    url?: string;
-    type?: string;
+    structuredData?: Record<string, any> | object;
+    noindex?: boolean;
 }
 
 export const SEO = ({
     title,
     description,
+    canonicalUrl,
+    ogType = 'website',
+    ogImage,
     keywords,
-    image,
-    url,
-    type = 'website'
+    structuredData,
+    noindex = false,
 }: SEOProps) => {
     const siteTitle = 'JW Group';
     const fullTitle = title ? `${title} | ${siteTitle}` : `${siteTitle} - กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ`;
@@ -23,36 +27,50 @@ export const SEO = ({
     const defaultDescription = 'JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า ธุรกิจอสังหาริมทรัพย์ โรงแรมหรู โรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ';
     const metaDescription = description || defaultDescription;
 
+    const siteUrl = 'https://www.jwgroupthailand.com';
+    // If canonicalUrl is provided, use it. Otherwise, default to siteUrl (or window.location.href if dynamic behavior is preferred globally, but passed prop is safer)
+    // Logic: if canonicalUrl starts with http, use it. If it starts with /, append to siteUrl. If undefined, use siteUrl.
+    const finalCanonicalUrl = canonicalUrl
+        ? (canonicalUrl.startsWith('http') ? canonicalUrl : `${siteUrl}${canonicalUrl}`)
+        : siteUrl;
+
+    const defaultImage = `${siteUrl}/og-image.png`; // Ensure this image exists in public folder
+    const metaImage = ogImage
+        ? (ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`)
+        : defaultImage;
+
     const defaultKeywords = 'JW Group, อสังหาริมทรัพย์, โรงแรม, สัตวแพทย์, สุขภาพ, ธุรกิจ, บริษัท';
     const metaKeywords = keywords || defaultKeywords;
 
-    const siteUrl = 'https://www.jwgroupthailand.com';
-    const canonicalUrl = url ? `${siteUrl}${url}` : siteUrl;
-
-    const defaultImage = `${siteUrl}/og-image.png`;
-    const metaImage = image ? (image.startsWith('http') ? image : `${siteUrl}${image}`) : defaultImage;
-
     return (
         <Helmet>
-            {/* Basic Meta Tags */}
+            {/* Standard Metadata */}
             <title>{fullTitle}</title>
             <meta name="description" content={metaDescription} />
-            <meta name="keywords" content={metaKeywords} />
-            <link rel="canonical" href={canonicalUrl} />
+            {noindex && <meta name="robots" content="noindex" />}
+            {metaKeywords && <meta name="keywords" content={metaKeywords} />}
+            <link rel="canonical" href={finalCanonicalUrl} />
 
             {/* Open Graph / Facebook */}
-            <meta property="og:type" content={type} />
-            <meta property="og:url" content={canonicalUrl} />
+            <meta property="og:type" content={ogType} />
+            <meta property="og:url" content={finalCanonicalUrl} />
             <meta property="og:title" content={fullTitle} />
             <meta property="og:description" content={metaDescription} />
             <meta property="og:image" content={metaImage} />
 
             {/* Twitter */}
             <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content={canonicalUrl} />
+            <meta property="twitter:url" content={finalCanonicalUrl} />
             <meta property="twitter:title" content={fullTitle} />
             <meta property="twitter:description" content={metaDescription} />
             <meta property="twitter:image" content={metaImage} />
+
+            {/* Structured Data (JSON-LD) */}
+            {structuredData && (
+                <script type="application/ld+json">
+                    {JSON.stringify(structuredData)}
+                </script>
+            )}
         </Helmet>
     );
 };

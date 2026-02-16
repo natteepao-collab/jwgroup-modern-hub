@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactQuill from 'react-quill';
+import React, { Suspense, lazy } from 'react';
+const ReactQuill = lazy(() => import('react-quill'));
 import 'react-quill/dist/quill.snow.css';
 
 interface RichTextEditorProps {
@@ -34,15 +34,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
 }) => {
     return (
         <div className={`rich-text-editor ${className}`}>
-            <ReactQuill
-                theme="snow"
-                value={value}
-                onChange={onChange}
-                modules={modules}
-                formats={formats}
-                placeholder={placeholder}
-                className="bg-card text-card-foreground rounded-md border border-input focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-            />
+            <Suspense fallback={<div className="h-[150px] w-full animate-pulse rounded-md bg-muted" />}>
+                <ReactQuill
+                    theme="snow"
+                    value={value}
+                    onChange={onChange}
+                    modules={modules}
+                    formats={formats}
+                    placeholder={placeholder}
+                    className="bg-card text-card-foreground rounded-md border border-input focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+                />
+            </Suspense>
             <style>{`
         .ql-toolbar {
           border-top-left-radius: 0.5rem;
