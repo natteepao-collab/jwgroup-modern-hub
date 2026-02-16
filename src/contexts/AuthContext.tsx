@@ -63,10 +63,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Timeout safeguard: Force loading to false after 10 seconds to prevent infinite hang
     const timeoutTimer = setTimeout(() => {
-      if (mounted && loading) {
-        console.warn('Auth check timed out, forcing loading false');
-        setLoading(false);
-        setAdminCheckComplete(true);
+      if (mounted) {
+        setLoading((prev) => {
+          if (prev) {
+            console.warn('Auth check timed out, forcing loading false');
+            setAdminCheckComplete(true);
+            return false;
+          }
+          return prev;
+        });
       }
     }, 15000);
 

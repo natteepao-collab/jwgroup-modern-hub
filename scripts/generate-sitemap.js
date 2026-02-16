@@ -37,8 +37,8 @@ async function generateSitemap() {
     const supabaseKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-        console.error('Error: VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY is missing in .env');
-        process.exit(1);
+        console.warn('⚠️ Warning: VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY is missing. Skipping sitemap generation.');
+        process.exit(0);
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
