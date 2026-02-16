@@ -7,7 +7,7 @@ interface SEOProps {
     ogType?: 'website' | 'article' | 'product' | 'profile';
     ogImage?: string;
     keywords?: string;
-    structuredData?: Record<string, any> | object;
+    structuredData?: Record<string, unknown> | object;
     noindex?: boolean;
 }
 
