@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
-const ReactQuill = lazy(() => import('react-quill'));
 import 'react-quill/dist/quill.snow.css';
+
+const ReactQuill = lazy(() => import('react-quill'));
 
 interface RichTextEditorProps {
     value: string;
