@@ -16,6 +16,10 @@ const BASE_URL = 'https://www.jwgroupthailand.com';
 const staticRoutes = [
     '',
     '/about',
+    '/about/history',
+    '/about/vision',
+    '/about/structure',
+    '/about/team',
     '/about/awards',
     '/business',
     '/awards',
