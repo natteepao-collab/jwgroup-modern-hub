@@ -1,5 +1,8 @@
 User-agent: *
+Allow: /
 Disallow: /admin/
 Disallow: /auth/
+
+Crawl-delay: 1
 
 Sitemap: https://www.jwgroupthailand.com/sitemap.xml

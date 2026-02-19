@@ -59,11 +59,11 @@ export const SEO = ({
             <meta property="og:image" content={metaImage} />
 
             {/* Twitter */}
-            <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content={finalCanonicalUrl} />
-            <meta property="twitter:title" content={fullTitle} />
-            <meta property="twitter:description" content={metaDescription} />
-            <meta property="twitter:image" content={metaImage} />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content={finalCanonicalUrl} />
+            <meta name="twitter:title" content={fullTitle} />
+            <meta name="twitter:description" content={metaDescription} />
+            <meta name="twitter:image" content={metaImage} />
 
             {/* Structured Data (JSON-LD) */}
             {structuredData && (

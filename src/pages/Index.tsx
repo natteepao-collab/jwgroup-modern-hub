@@ -42,6 +42,22 @@ const Index = () => {
   const seoTitle = t('hero.title') || "กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ";
   const seoDesc = t('hero.subtitle') || "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า";
 
+  // Organization structured data for Google Knowledge Panel
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "JW Group",
+    "alternateName": "เจดับเบิ้ลยู กรุ๊ป",
+    "url": "https://www.jwgroupthailand.com",
+    "logo": "https://www.jwgroupthailand.com/og-image.png",
+    "description": "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า ธุรกิจอสังหาริมทรัพย์ โรงแรมหรู โรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "TH"
+    },
+    "sameAs": []
+  };
+
   // Scroll reveal animations
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [aboutRef, aboutInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -118,6 +134,7 @@ const Index = () => {
         title={seoTitle}
         description={seoDesc}
         canonicalUrl="/"
+        structuredData={organizationSchema}
       />
       <AnnouncementModal autoShow delay={1500} />
 

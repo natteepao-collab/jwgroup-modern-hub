@@ -68,10 +68,12 @@ async function generateSitemap() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
     // Add static routes
+    const today = new Date().toISOString().split('T')[0];
     staticRoutes.forEach((route) => {
         sitemap += `
   <url>
     <loc>${BASE_URL}${route}</loc>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${route === '' ? '1.0' : '0.8'}</priority>
   </url>`;
@@ -103,8 +105,11 @@ async function generateSitemap() {
 
     // Generate robots.txt
     const robotsTxt = `User-agent: *
+Allow: /
 Disallow: /admin/
 Disallow: /auth/
+
+Crawl-delay: 1
 
 Sitemap: ${BASE_URL}/sitemap.xml`;
 

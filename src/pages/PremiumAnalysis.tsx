@@ -32,7 +32,7 @@ const PremiumAnalysis = () => {
             <SEO
                 title={t('premium.title') || "วิเคราะห์ชื่อมงคลขั้นสูง"}
                 description="บริการวิเคราะห์ชื่อมงคลขั้นสูง ด้วยศาสตร์ทักษาปกรณ์และเลขศาสตร์ชั้นสูง โดย JW Group"
-                canonicalUrl="/premium-analysis"
+                canonicalUrl="/premium-search"
                 ogImage="/og-premium.jpg"
             />
             {/* Background Ambience */}
