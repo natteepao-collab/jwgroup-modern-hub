@@ -13,6 +13,7 @@ const languages = [
   { code: 'th', label: 'ไทย', flag: '🇹🇭' },
   { code: 'en', label: 'English', flag: '🇺🇸' },
   { code: 'cn', label: '中文', flag: '🇨🇳' },
+  { code: 'kr', label: '한국어', flag: '🇰🇷' },
 ];
 
 export const LanguageSwitcher = () => {
