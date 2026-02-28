@@ -181,8 +181,8 @@ const VisionMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title={t('vision_mission.title') || "วิสัยทัศน์และพันธกิจ"}
-        description="ทิศทางและเป้าหมายการดำเนินธุรกิจของแต่ละกลุ่มธุรกิจในเครือ JW Group"
+        title={t('visionMission.title')}
+        description={t('visionMission.seoDesc')}
         canonicalUrl="/vision-mission"
       />
       {/* Hero Section */}
@@ -199,13 +199,13 @@ const VisionMission = () => {
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 mb-5">
             <Target className="w-4 h-4 text-white" />
-            <span className="text-white/90 text-sm font-medium">Vision & Mission</span>
+            <span className="text-white/90 text-sm font-medium">{t('nav.visionMission')}</span>
           </div>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-display">
-            วิสัยทัศน์และพันธกิจ
+            {t('visionMission.title')}
           </h1>
           <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-            ทิศทางและเป้าหมายการดำเนินธุรกิจของแต่ละกลุ่มธุรกิจในเครือ JW Group
+            {t('visionMission.subtitle')}
           </p>
         </div>
       </section>
@@ -293,7 +293,7 @@ const VisionMission = () => {
                       <Eye className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-foreground font-display">วิสัยทัศน์</h2>
+                     <h2 className="text-2xl font-bold text-foreground font-display">{t('visionMission.vision')}</h2>
                       <p className="text-muted-foreground text-sm">Vision</p>
                     </div>
                   </div>
@@ -331,8 +331,8 @@ const VisionMission = () => {
                     <ListChecks className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground font-display">พันธกิจ</h2>
-                    <p className="text-muted-foreground text-sm">Mission ({currentData.missions.length} ข้อ)</p>
+                    <h2 className="text-2xl font-bold text-foreground font-display">{t('visionMission.mission')}</h2>
+                    <p className="text-muted-foreground text-sm">Mission ({currentData.missions.length} {t('visionMission.missionCount')})</p>
                   </div>
                 </div>
 
