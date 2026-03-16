@@ -323,15 +323,15 @@ export const Navbar = () => {
 
       {/* Bottom Tab Bar - Mobile & Tablet Only */}
       <div className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-transform duration-300",
-        "bg-card/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]",
+        "fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+        "bg-card/98 backdrop-blur-2xl border-t border-border/30",
+        "shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.15)]",
         isBottomBarVisible ? "translate-y-0" : "translate-y-full"
       )}>
-        <div className="max-w-md mx-auto px-1">
-          <div className="flex items-center justify-between py-1.5">
+        <div className="max-w-lg mx-auto px-3">
+          <div className="flex items-center justify-around py-2">
             {bottomTabItems.map((item) => {
               const isItemActive = isActive(item.path);
-              // Short labels for mobile
               const getShortLabel = (key: string) => {
                 const shortLabels: Record<string, string> = {
                   'nav.home': 'หน้าแรก',
@@ -347,26 +347,31 @@ export const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    "flex flex-col items-center justify-center flex-1 py-1 transition-all duration-300"
+                    "relative flex flex-col items-center justify-center flex-1 py-1 transition-all duration-300 group"
                   )}
                 >
+                  {/* Active pill background */}
                   <div className={cn(
-                    "flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300",
+                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300",
                     isItemActive
-                      ? "bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/25"
-                      : "bg-transparent"
+                      ? "bg-primary shadow-sm shadow-primary/20 scale-105"
+                      : "bg-transparent group-hover:bg-muted/50"
                   )}>
                     <item.icon className={cn(
-                      "h-[18px] w-[18px] transition-colors duration-300",
-                      isItemActive ? "text-primary-foreground" : "text-muted-foreground"
-                    )} strokeWidth={isItemActive ? 2.2 : 1.8} />
+                      "h-[18px] w-[18px] transition-all duration-300",
+                      isItemActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"
+                    )} strokeWidth={isItemActive ? 2 : 1.6} />
                   </div>
                   <span className={cn(
-                    "text-[9px] font-semibold mt-0.5 transition-colors duration-300",
-                    isItemActive ? "text-primary font-bold" : "text-muted-foreground"
+                    "text-[9px] font-medium mt-0.5 transition-all duration-300",
+                    isItemActive ? "text-primary font-semibold" : "text-muted-foreground group-hover:text-foreground"
                   )}>
                     {getShortLabel(item.labelKey)}
                   </span>
+                  {/* Active dot indicator */}
+                  {isItemActive && (
+                    <div className="absolute -top-0.5 w-1 h-1 rounded-full bg-primary" />
+                  )}
                 </Link>
               );
             })}
