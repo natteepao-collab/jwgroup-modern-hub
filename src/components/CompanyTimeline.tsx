@@ -212,6 +212,8 @@ const TimelineItem = ({
                   <img 
                     src={event.image_url} 
                     alt={getTitle()}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-[140px] sm:h-[180px] md:h-[200px] object-cover transform group-hover/image:scale-110 transition-transform duration-700 ease-out"
                   />
                   {/* Premium gradient overlay */}

@@ -55,6 +55,8 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   <img
                     src={bgImage}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     className={cn(
                       "w-full h-full object-cover transition-all duration-700",
                       isActive 

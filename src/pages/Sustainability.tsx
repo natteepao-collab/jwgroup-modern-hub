@@ -80,7 +80,7 @@ const Sustainability = () => {
             </div>
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800" alt="Sustainability Vision" className="w-full h-full object-cover" />
+                <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800" alt="Sustainability Vision" loading="lazy" decoding="async" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-lg">
                 <Globe className="w-8 h-8 mb-2" />
