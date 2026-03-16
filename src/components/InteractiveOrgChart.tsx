@@ -44,7 +44,7 @@ const InteractiveOrgChart = () => {
 
   // Auto-play functionality
   useEffect(() => {
-    let interval: NodeJS.Timeout | undefined;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (isAutoPlay) {
       interval = setInterval(nextSlide, 5000);
     }
