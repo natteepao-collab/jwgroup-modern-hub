@@ -379,208 +379,163 @@ export const Navbar = () => {
       {/* Drawer Overlay Menu */}
       <div
         className={cn(
-          'fixed inset-0 z-[100] transition-all duration-300',
+          'fixed inset-0 z-[100] transition-all duration-500',
           isMenuOpen ? 'visible' : 'invisible pointer-events-none'
         )}
       >
-        {/* Dark Backdrop */}
+        {/* Frosted Backdrop */}
         <div
           className={cn(
-            'absolute inset-0 bg-black/60 transition-opacity duration-300',
+            'absolute inset-0 bg-background/40 backdrop-blur-md transition-opacity duration-500',
             isMenuOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setIsMenuOpen(false)}
         />
 
-        {/* Drawer Panel - Slide from Left */}
+        {/* Drawer Panel */}
         <div
           className={cn(
-            "absolute top-0 left-0 h-full w-[85%] max-w-[400px] bg-gradient-to-b from-card via-card to-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-out overflow-y-auto font-['Noto_Sans_Thai']",
+            "absolute top-0 left-0 h-full w-[88%] max-w-[420px] flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            "bg-card/98 backdrop-blur-2xl shadow-[20px_0_60px_-15px_rgba(0,0,0,0.3)]",
+            "border-r border-border/30",
             isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
-          {/* Premium Header */}
-          <div className="sticky top-0 z-10 bg-gradient-to-r from-secondary via-secondary to-secondary/95 backdrop-blur-sm border-b border-primary/20">
-            <div className="px-5 py-4 flex items-center justify-between">
-              <div className="p-2 bg-card/95 rounded-xl shadow-lg">
-                <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-8 w-auto" />
-              </div>
+          {/* ── Header ── */}
+          <div className="relative px-6 pt-6 pb-5">
+            {/* Decorative top accent */}
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary via-accent to-primary/40" />
+            
+            <div className="flex items-center justify-between">
+              <Link to="/" onClick={() => setIsMenuOpen(false)} className="group">
+                <div className="p-2.5 bg-card rounded-2xl border border-border/50 shadow-sm group-hover:shadow-md group-hover:border-primary/30 transition-all duration-300">
+                  <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-9 w-auto" />
+                </div>
+              </Link>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <LanguageSwitcher />
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2.5 rounded-xl bg-card/20 text-secondary-foreground hover:bg-card/30 transition-all duration-300 hover:scale-105"
+                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-muted/60 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-300 hover:scale-105 active:scale-95"
+                  aria-label="Close menu"
                 >
-                  <X className="h-5 w-5" strokeWidth={2.5} />
+                  <X className="h-5 w-5" strokeWidth={2} />
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Menu Items */}
-          <div className="px-4 py-6">
-            {/* Premium Header Label */}
-            <div className="mb-6 relative">
-              <div className="absolute -left-2 top-0 w-1 h-full bg-gradient-to-b from-primary to-primary/30 rounded-full" />
-              <h3 className="text-lg font-bold text-foreground mb-1 pl-4">เมนู</h3>
-              <p className="text-xs text-muted-foreground pl-4">JW Group Navigation</p>
+          {/* ── Navigation ── */}
+          <div className="flex-1 overflow-y-auto px-5 pb-6 scrollbar-thin">
+            {/* Section Label */}
+            <div className="flex items-center gap-3 mb-4 px-1">
+              <div className="w-8 h-[2px] bg-gradient-to-r from-primary to-transparent rounded-full" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t('nav.home') === 'หน้าแรก' ? 'เมนูหลัก' : 'Navigation'}</span>
             </div>
 
-            {/* Main Navigation */}
-            <nav className="space-y-2.5">
+            <nav className="space-y-1.5">
               {/* Home */}
               <Link
                 to="/"
+                onClick={() => setIsMenuOpen(false)}
                 className={cn(
-                  "group relative flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border backdrop-blur-sm",
+                  "group relative flex items-center gap-3.5 py-3.5 px-4 rounded-2xl transition-all duration-300",
                   isActive('/')
-                    ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15"
-                    : "bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5",
-                  isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                    : "hover:bg-muted/60"
                 )}
-                style={{ animationDelay: '100ms', animationFillMode: 'both' }}
+                style={{ animationDelay: '80ms', animationFillMode: 'both' }}
               >
-                {/* Premium Icon Container */}
                 <div className={cn(
-                  "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
+                  "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300",
                   isActive('/')
-                    ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
-                    : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
+                    ? "bg-primary-foreground/20"
+                    : "bg-primary/10 group-hover:bg-primary/15"
                 )}>
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
                   <Home className={cn(
-                    "relative h-5 w-5 z-10 transition-all duration-300",
-                    isActive('/') ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                    "h-[18px] w-[18px] transition-colors",
+                    isActive('/') ? "text-primary-foreground" : "text-primary"
                   )} strokeWidth={1.8} />
-                  {isActive('/') && (
-                    <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
-                  )}
                 </div>
-
-                {/* Label */}
                 <span className={cn(
-                  "text-[15px] font-bold tracking-wide transition-colors duration-300 flex-1",
-                  isActive('/') ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                  "text-[15px] font-semibold tracking-wide flex-1",
+                  isActive('/') ? "text-primary-foreground" : "text-foreground"
                 )}>
                   {t('nav.home')}
                 </span>
-
-                {/* Arrow */}
-                <ChevronRight className={cn(
-                  "h-5 w-5 transition-all duration-300",
-                  isActive('/') ? "opacity-100 text-primary translate-x-0" : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
-                )} />
-
-                {/* Active indicator bar */}
                 {isActive('/') && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
+                  <div className="w-2 h-2 rounded-full bg-primary-foreground/60 animate-pulse" />
                 )}
               </Link>
 
               {/* About Us - Expandable */}
-              <div
-                className={cn(
-                  "overflow-hidden rounded-2xl",
-                  isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
-                )}
-                style={{ animationDelay: '150ms', animationFillMode: 'both' }}
-              >
+              <div className="rounded-2xl overflow-hidden">
                 <button
                   onClick={() => setAboutExpanded(!aboutExpanded)}
                   className={cn(
-                    "group relative w-full flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border backdrop-blur-sm",
+                    "group relative w-full flex items-center gap-3.5 py-3.5 px-4 rounded-2xl transition-all duration-300",
                     isAboutActive
-                      ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15"
-                      : "bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                      : "hover:bg-muted/60"
                   )}
                 >
-                  {/* Premium Icon Container */}
                   <div className={cn(
-                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
+                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300",
                     isAboutActive
-                      ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
-                      : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
+                      ? "bg-primary-foreground/20"
+                      : "bg-primary/10 group-hover:bg-primary/15"
                   )}>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
                     <Info className={cn(
-                      "relative h-5 w-5 z-10 transition-all duration-300",
-                      isAboutActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                      "h-[18px] w-[18px] transition-colors",
+                      isAboutActive ? "text-primary-foreground" : "text-primary"
                     )} strokeWidth={1.8} />
-                    {isAboutActive && (
-                      <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
-                    )}
                   </div>
-
-                  {/* Label */}
                   <span className={cn(
-                    "text-[15px] font-bold tracking-wide transition-colors duration-300 flex-1 text-left",
-                    isAboutActive ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                    "text-[15px] font-semibold tracking-wide flex-1 text-left",
+                    isAboutActive ? "text-primary-foreground" : "text-foreground"
                   )}>
                     {t('nav.about')}
                   </span>
-
-                  {/* Chevron */}
                   <ChevronDown className={cn(
-                    "h-5 w-5 transition-all duration-300",
-                    isAboutActive ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                    "h-4 w-4 transition-all duration-300",
+                    isAboutActive ? "text-primary-foreground" : "text-muted-foreground",
                     aboutExpanded && "rotate-180"
                   )} />
-
-                  {/* Active indicator bar */}
-                  {isAboutActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
-                  )}
                 </button>
 
-                {/* Premium Submenu */}
-                <div
-                  className={cn(
-                    'overflow-hidden transition-all duration-300 ease-out',
-                    aboutExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                  )}
-                >
-                  <div className="ml-4 mt-2 mb-2 space-y-2 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl p-3 border border-primary/15">
+                {/* Submenu */}
+                <div className={cn(
+                  'overflow-hidden transition-all duration-400 ease-out',
+                  aboutExpanded ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+                )}>
+                  <div className="ml-6 mt-1.5 mb-2 space-y-1 pl-4 border-l-2 border-primary/20">
                     {aboutSubItems.map((item, subIndex) => (
                       <Link
                         key={item.path}
                         to={item.path}
+                        onClick={() => setIsMenuOpen(false)}
                         className={cn(
-                          "group relative flex items-center gap-3 py-3 px-3 rounded-xl transition-all duration-300 border backdrop-blur-sm",
+                          "group flex items-center gap-3 py-2.5 px-3 rounded-xl transition-all duration-300",
                           isActive(item.path)
-                            ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-lg shadow-primary/10"
-                            : "bg-card/60 border-transparent hover:bg-card hover:border-primary/20 hover:shadow-md",
-                          aboutExpanded ? 'animate-fade-in opacity-100' : 'opacity-0'
+                            ? "bg-primary/10 text-primary"
+                            : "hover:bg-muted/50 text-muted-foreground hover:text-foreground"
                         )}
-                        style={{ animationDelay: `${subIndex * 50}ms`, animationFillMode: 'both' }}
+                        style={{ animationDelay: `${subIndex * 40}ms`, animationFillMode: 'both' }}
                       >
-                        {/* Submenu Icon */}
-                        <div className={cn(
-                          "relative flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300 overflow-hidden",
-                          isActive(item.path)
-                            ? "bg-gradient-to-br from-primary via-primary to-accent shadow-md shadow-primary/30"
-                            : "bg-gradient-to-br from-muted/80 to-muted/50 group-hover:from-primary group-hover:to-accent group-hover:shadow-md group-hover:shadow-primary/20 group-hover:scale-105"
-                        )}>
-                          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/15" />
-                          <item.icon className={cn(
-                            "relative h-4 w-4 z-10 transition-all duration-300",
-                            isActive(item.path) ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
-                          )} strokeWidth={1.8} />
-                        </div>
-
-                        {/* Submenu Label */}
+                        <item.icon className={cn(
+                          "h-4 w-4 transition-colors",
+                          isActive(item.path) ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+                        )} strokeWidth={1.8} />
                         <span className={cn(
-                          "text-[14px] font-bold tracking-wide transition-colors duration-300",
-                          isActive(item.path) ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                          "text-[13px] font-medium flex-1",
+                          isActive(item.path) ? "font-semibold text-primary" : ""
                         )}>
                           {t(item.labelKey)}
                         </span>
-
-                        {/* Arrow */}
-                        <ChevronRight className={cn(
-                          "h-4 w-4 ml-auto transition-all duration-300",
-                          isActive(item.path) ? "opacity-100 text-primary translate-x-0" : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
-                        )} />
+                        {isActive(item.path) && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        )}
                       </Link>
                     ))}
                   </div>
@@ -592,227 +547,156 @@ export const Navbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
+                  onClick={() => setIsMenuOpen(false)}
                   className={cn(
-                    "group relative flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border backdrop-blur-sm",
+                    "group relative flex items-center gap-3.5 py-3.5 px-4 rounded-2xl transition-all duration-300",
                     isActive(item.path)
-                      ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15"
-                      : "bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5",
-                    isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                      : "hover:bg-muted/60"
                   )}
-                  style={{ animationDelay: `${200 + (index * 50)}ms`, animationFillMode: 'both' }}
+                  style={{ animationDelay: `${120 + (index * 40)}ms`, animationFillMode: 'both' }}
                 >
-                  {/* Premium Icon Container */}
                   <div className={cn(
-                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
+                    "flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300",
                     isActive(item.path)
-                      ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
-                      : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
+                      ? "bg-primary-foreground/20"
+                      : "bg-primary/10 group-hover:bg-primary/15"
                   )}>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
                     <item.icon className={cn(
-                      "relative h-5 w-5 z-10 transition-all duration-300",
-                      isActive(item.path) ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground"
+                      "h-[18px] w-[18px] transition-colors",
+                      isActive(item.path) ? "text-primary-foreground" : "text-primary"
                     )} strokeWidth={1.8} />
-                    {isActive(item.path) && (
-                      <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
-                    )}
                   </div>
-
-                  {/* Label */}
                   <span className={cn(
-                    "text-[15px] font-bold tracking-wide transition-colors duration-300 flex-1",
-                    isActive(item.path) ? "text-primary-foreground" : "text-foreground group-hover:text-primary"
+                    "text-[15px] font-semibold tracking-wide flex-1",
+                    isActive(item.path) ? "text-primary-foreground" : "text-foreground"
                   )}>
                     {t(item.labelKey)}
                   </span>
-
-                  {/* Arrow */}
-                  <ChevronRight className={cn(
-                    "h-5 w-5 transition-all duration-300",
-                    isActive(item.path) ? "opacity-100 text-primary translate-x-0" : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
-                  )} />
-
-                  {/* Active indicator bar */}
                   {isActive(item.path) && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
+                    <div className="w-2 h-2 rounded-full bg-primary-foreground/60 animate-pulse" />
                   )}
                 </Link>
               ))}
             </nav>
 
-            {/* Premium Divider */}
-            <div className="my-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-              <div className="w-2 h-2 rounded-full bg-primary/50" />
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            {/* ── Divider ── */}
+            <div className="my-6 flex items-center gap-3 px-1">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-border to-transparent" />
+              <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+              <div className="h-[1px] flex-1 bg-gradient-to-l from-border to-transparent" />
             </div>
 
-            {/* Social Media & Theme Section in Sidebar */}
-            <div
-              className={cn(
-                "mb-6 p-5 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl border border-primary/15",
-                isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
-              )}
-              style={{ animationDelay: '400ms', animationFillMode: 'both' }}
-            >
-              <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-4">ติดตามเรา</p>
-              
-              {/* Social Media Icons */}
-              <div className="flex items-center justify-center gap-3 mb-5">
-                <a
-                  href={socialLinks.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300",
-                    "bg-[#E8F4FD] dark:bg-[#1877F2]/20",
-                    "border-2 border-[#1877F2]/30 shadow-sm",
-                    "hover:bg-[#1877F2] hover:border-[#1877F2] hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30"
-                  )}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-5 w-5 text-[#1877F2] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-                <a
-                  href={socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300",
-                    "bg-[#FEE9F0] dark:bg-[#E4405F]/20",
-                    "border-2 border-[#E4405F]/30 shadow-sm",
-                    "hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-[#DD2A7B] hover:scale-110 hover:shadow-lg hover:shadow-[#E4405F]/30"
-                  )}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5 text-[#E4405F] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
-                <a
-                  href={socialLinks.tiktok}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300",
-                    "bg-muted/50 dark:bg-foreground/10",
-                    "border-2 border-foreground/20 shadow-sm",
-                    "hover:bg-foreground hover:border-foreground hover:scale-110 hover:shadow-lg hover:shadow-foreground/30"
-                  )}
-                  aria-label="TikTok"
-                >
-                  <TikTokIcon className="h-5 w-5 text-foreground group-hover:text-background transition-colors duration-300" />
-                </a>
-                <a
-                  href={socialLinks.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300",
-                    "bg-[#FEE9E9] dark:bg-[#FF0000]/20",
-                    "border-2 border-[#FF0000]/30 shadow-sm",
-                    "hover:bg-[#FF0000] hover:border-[#FF0000] hover:scale-110 hover:shadow-lg hover:shadow-[#FF0000]/30"
-                  )}
-                  aria-label="YouTube"
-                >
-                  <Youtube className="h-5 w-5 text-[#FF0000] group-hover:text-white transition-colors duration-300" strokeWidth={2} />
-                </a>
+            {/* ── Social Media ── */}
+            <div className="mb-5">
+              <div className="flex items-center gap-3 mb-3.5 px-1">
+                <div className="w-6 h-[2px] bg-gradient-to-r from-primary/60 to-transparent rounded-full" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                  {t('nav.home') === 'หน้าแรก' ? 'ติดตามเรา' : 'Follow Us'}
+                </span>
               </div>
+              
+              <div className="flex items-center gap-3 px-2">
+                {[
+                  { href: socialLinks.facebook, icon: Facebook, label: 'Facebook', hoverBg: 'hover:bg-[#1877F2]', textColor: 'text-[#1877F2]' },
+                  { href: socialLinks.instagram, icon: Instagram, label: 'Instagram', hoverBg: 'hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF]', textColor: 'text-[#E4405F]' },
+                  { href: socialLinks.tiktok, icon: null, label: 'TikTok', hoverBg: 'hover:bg-foreground', textColor: 'text-foreground' },
+                  { href: socialLinks.youtube, icon: Youtube, label: 'YouTube', hoverBg: 'hover:bg-[#FF0000]', textColor: 'text-[#FF0000]' },
+                ].map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300",
+                      "bg-muted/50 border border-border/50",
+                      social.hoverBg, "hover:border-transparent hover:text-white hover:scale-110 hover:shadow-lg"
+                    )}
+                    aria-label={social.label}
+                  >
+                    {social.icon ? (
+                      <social.icon className={cn("h-[18px] w-[18px] transition-colors duration-300", social.textColor, "group-hover:text-white")} strokeWidth={1.8} />
+                    ) : (
+                      <TikTokIcon className={cn("h-[18px] w-[18px] transition-colors duration-300", social.textColor, "group-hover:text-background")} />
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
 
-              {/* Theme Toggle in Sidebar */}
-              <div className="flex items-center justify-between p-3 bg-card/60 rounded-xl border border-border/50">
+            {/* ── Theme Toggle ── */}
+            <div className="mb-5 px-2">
+              <div className="flex items-center justify-between p-3.5 bg-muted/40 rounded-xl border border-border/40">
                 <div className="flex items-center gap-3">
                   {theme === 'dark' ? (
-                    <Moon className="h-5 w-5 text-primary" />
+                    <Moon className="h-[18px] w-[18px] text-primary" />
                   ) : (
-                    <Sun className="h-5 w-5 text-primary" />
+                    <Sun className="h-[18px] w-[18px] text-primary" />
                   )}
-                  <span className="text-sm font-bold text-foreground">
-                    {theme === 'dark' ? 'โหมดมืด' : 'โหมดสว่าง'}
+                  <span className="text-sm font-medium text-foreground">
+                    {theme === 'dark' ? (t('nav.home') === 'หน้าแรก' ? 'โหมดมืด' : 'Dark Mode') : (t('nav.home') === 'หน้าแรก' ? 'โหมดสว่าง' : 'Light Mode')}
                   </span>
                 </div>
                 <ThemeToggle />
               </div>
             </div>
 
-            {/* Admin & Auth Section */}
-            <div
-              className={cn(
-                "space-y-2.5",
-                isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
-              )}
-              style={{ animationDelay: '450ms', animationFillMode: 'both' }}
-            >
+            {/* ── Admin & Auth ── */}
+            <div className="space-y-1.5 px-0">
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="group relative flex items-center gap-4 py-4 px-4 rounded-2xl overflow-hidden bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border border-primary/30 shadow-lg shadow-primary/15 transition-all duration-300 hover:shadow-xl hover:shadow-primary/25"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="group flex items-center gap-3.5 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 hover:from-primary/20 hover:to-accent/20 transition-all duration-300"
                 >
-                  <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
-                    <Shield className="relative h-5 w-5 text-primary-foreground z-10" strokeWidth={1.8} />
-                    <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent shadow-sm">
+                    <Shield className="h-[18px] w-[18px] text-primary-foreground" strokeWidth={1.8} />
                   </div>
-                  <span className="text-[15px] font-bold tracking-wide text-primary-foreground">Admin Panel</span>
-                  <ChevronRight className="h-5 w-5 ml-auto text-primary opacity-100" />
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50" />
+                  <span className="text-[15px] font-semibold text-foreground">Admin Panel</span>
+                  <ChevronRight className="h-4 w-4 ml-auto text-primary" />
                 </Link>
               )}
 
               {user ? (
                 <button
-                  onClick={() => {
-                    signOut();
-                    setIsMenuOpen(false);
-                  }}
-                  className="group relative w-full flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border bg-card/80 border-border/60 hover:bg-destructive/10 hover:border-destructive/30 hover:shadow-lg hover:shadow-destructive/10"
+                  onClick={() => { signOut(); setIsMenuOpen(false); }}
+                  className="group w-full flex items-center gap-3.5 py-3.5 px-4 rounded-2xl hover:bg-destructive/8 transition-all duration-300"
                 >
-                  <div className={cn(
-                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
-                    "bg-gradient-to-br from-muted to-muted/70 group-hover:from-destructive group-hover:to-destructive/80 group-hover:shadow-lg group-hover:shadow-destructive/30 group-hover:scale-110"
-                  )}>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
-                    <LogOut className="relative h-5 w-5 z-10 text-muted-foreground group-hover:text-destructive-foreground transition-colors duration-300" strokeWidth={1.8} />
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-muted/60 group-hover:bg-destructive/15 transition-colors duration-300">
+                    <LogOut className="h-[18px] w-[18px] text-muted-foreground group-hover:text-destructive transition-colors" strokeWidth={1.8} />
                   </div>
-                  <span className="text-[15px] font-bold tracking-wide text-foreground group-hover:text-destructive transition-colors duration-300">{t('nav.logout')}</span>
-                  <ChevronRight className="h-5 w-5 ml-auto text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-destructive transition-all duration-300" />
+                  <span className="text-[15px] font-semibold text-foreground group-hover:text-destructive transition-colors">{t('nav.logout')}</span>
                 </button>
               ) : (
                 <Link
                   to="/auth"
-                  className="group relative flex items-center gap-4 py-4 px-4 rounded-2xl transition-all duration-300 border bg-card/80 border-border/60 hover:bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="group flex items-center gap-3.5 py-3.5 px-4 rounded-2xl hover:bg-muted/60 transition-all duration-300"
                 >
-                  <div className={cn(
-                    "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
-                    "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
-                  )}>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
-                    <LogIn className="relative h-5 w-5 z-10 text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300" strokeWidth={1.8} />
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors duration-300">
+                    <LogIn className="h-[18px] w-[18px] text-primary" strokeWidth={1.8} />
                   </div>
-                  <span className="text-[15px] font-bold tracking-wide text-foreground group-hover:text-primary transition-colors duration-300">{t('nav.login')}</span>
-                  <ChevronRight className="h-5 w-5 ml-auto text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary transition-all duration-300" />
+                  <span className="text-[15px] font-semibold text-foreground group-hover:text-primary transition-colors">{t('nav.login')}</span>
                 </Link>
               )}
             </div>
+          </div>
 
-            {/* Premium Contact Info */}
-            <div
-              className={cn(
-                "mt-8 p-5 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl border border-primary/15 shadow-inner",
-                isMenuOpen ? 'animate-fade-in opacity-100' : 'opacity-0'
-              )}
-              style={{ animationDelay: '500ms', animationFillMode: 'both' }}
+          {/* ── Footer Contact ── */}
+          <div className="px-6 py-5 border-t border-border/30 bg-muted/20">
+            <a
+              href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`}
+              className="group flex items-center gap-3"
             >
-              <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-3">{t('nav.contactUs')}</p>
-              <a
-                href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`}
-                className="group flex items-center gap-3 text-lg font-bold text-foreground hover:text-primary transition-all duration-300"
-              >
-                <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/30 overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
-                  <Phone className="relative h-5 w-5 text-primary-foreground z-10" strokeWidth={1.8} />
-                </div>
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{phoneNumber}</span>
-              </a>
-            </div>
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary shadow-sm shadow-primary/20 group-hover:scale-105 transition-transform duration-300">
+                <Phone className="h-[18px] w-[18px] text-primary-foreground" strokeWidth={1.8} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">{t('nav.contactUs') || 'ติดต่อเรา'}</span>
+                <span className="text-base font-bold text-foreground group-hover:text-primary transition-colors">{phoneNumber}</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
