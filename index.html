@@ -9,11 +9,30 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#ffffff" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Preconnect to critical origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://uaybdoganngshxsytbaq.supabase.co" />
+  <link rel="preconnect" href="https://storage.googleapis.com" />
+
+  <!-- DNS prefetch for external resources -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://storage.googleapis.com" />
+
+  <!-- Google Fonts with display=swap for fast text rendering -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- Preload hero video for faster LCP -->
+  <link rel="preload" as="video" href="https://storage.googleapis.com/nbcloudbucket/video/jw/JW%20PARK%20HOME%20OFFICE_Final_260623.mp4" type="video/mp4" />
+
   <title>JW Group - กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ</title>
   <meta name="description"
     content="JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า ธุรกิจอสังหาริมทรัพย์ โรงแรมหรู โรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ" />
@@ -29,10 +48,26 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@JWGroup" />
   <meta name="twitter:image" content="https://www.jwgroupthailand.com/og-image.png" />
+
+  <!-- Inline critical CSS for instant first paint -->
+  <style>
+    #root { min-height: 100vh; }
+    body { margin: 0; font-family: 'Noto Sans Thai', 'Noto Sans', sans-serif; }
+    .initial-loader { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .initial-loader svg { width: 40px; height: 40px; animation: spin 1s linear infinite; color: #f97316; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Inline loading skeleton for instant feedback before JS loads -->
+    <div class="initial-loader" aria-label="Loading">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    </div>
+  </div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
