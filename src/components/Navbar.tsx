@@ -162,42 +162,41 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Main Navbar - Clean & Minimal */}
+      {/* Main Navbar */}
       <nav
         className={cn(
-          'fixed left-0 right-0 z-50 transition-all duration-300',
+          'fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
           isScrolled
-            ? 'top-0 bg-card/90 backdrop-blur-xl shadow-lg border-b border-border/50'
-            : 'top-10 sm:top-11 lg:top-0 bg-background/30 backdrop-blur-lg border-b border-white/10'
+            ? 'top-0 bg-card/98 backdrop-blur-2xl shadow-[0_4px_30px_-12px_rgba(0,0,0,0.12)] border-b border-border/30'
+            : 'top-10 sm:top-11 lg:top-0 bg-transparent backdrop-blur-sm border-b border-white/5'
         )}
       >
-        <div className="container mx-auto px-4 sm:px-6">
-          {/* Single Row Layout - All Breakpoints */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Primary Row */}
           <div className={cn(
-            "flex items-center justify-between transition-all duration-300",
-            isScrolled ? "py-2" : "py-3"
+            "flex items-center justify-between transition-all duration-500",
+            isScrolled ? "py-2.5" : "py-3.5"
           )}>
             {/* Left - Menu Button */}
             <button
               onClick={() => setIsMenuOpen(true)}
               className={cn(
-                "flex items-center justify-center gap-2 h-10 w-10 lg:w-auto lg:h-11 lg:px-5 rounded-full transition-all duration-300",
-                "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
-                "shadow-lg shadow-primary/25 border border-primary-foreground/10",
-                "hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95",
-                "btn-ripple btn-shimmer"
+                "flex items-center justify-center gap-2.5 h-10 w-10 lg:w-auto lg:h-10 lg:px-5 rounded-xl transition-all duration-300",
+                "bg-primary text-primary-foreground",
+                "shadow-sm shadow-primary/20",
+                "hover:shadow-md hover:shadow-primary/25 hover:scale-105 active:scale-95"
               )}
             >
-              <Menu className="h-5 w-5" strokeWidth={2.5} />
-              <span className="hidden lg:inline text-sm font-extrabold tracking-widest uppercase">Menu</span>
+              <Menu className="h-[18px] w-[18px]" strokeWidth={2} />
+              <span className="hidden lg:inline text-[13px] font-bold tracking-[0.15em] uppercase">Menu</span>
             </button>
 
-            {/* Center - Logo (Absolute Positioned for Perfect Center) */}
+            {/* Center - Logo */}
             <Link
               to="/"
               className={cn(
-                "absolute left-1/2 -translate-x-1/2 z-10",
-                !isScrolled && "drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                "absolute left-1/2 -translate-x-1/2 z-10 transition-all duration-500",
+                !isScrolled && "drop-shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
               )}
             >
               <img
@@ -206,13 +205,13 @@ export const Navbar = () => {
                 width="1754"
                 height="1241"
                 className={cn(
-                  "transition-all duration-300 w-auto",
+                  "transition-all duration-500 w-auto",
                   isScrolled ? "h-8 sm:h-9 lg:h-10" : "h-9 sm:h-10 lg:h-12"
                 )}
               />
             </Link>
 
-            {/* Right - Language Switcher Only */}
+            {/* Right - Language Switcher */}
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
             </div>
@@ -220,14 +219,12 @@ export const Navbar = () => {
 
           {/* Secondary Navigation Bar - Desktop Only */}
           <div className={cn(
-            "hidden lg:flex items-center justify-between border-t border-foreground/10 transition-all duration-300",
-            isScrolled ? "py-2" : "py-3"
+            "hidden lg:flex items-center justify-center transition-all duration-500",
+            isScrolled
+              ? "py-2 border-t border-border/20"
+              : "py-2.5 border-t border-white/10"
           )}>
-            {/* Left - Spacer */}
-            <div className="w-40" />
-
-            {/* Center - Navigation Links */}
-            <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center justify-center gap-1">
               {/* About Us with Dropdown */}
               <div
                 ref={aboutDropdownRef}
@@ -237,13 +234,17 @@ export const Navbar = () => {
               >
                 <button
                   className={cn(
-                    "relative flex items-center gap-1.5 text-[15px] font-semibold tracking-wide transition-all duration-300",
-                    aboutDropdownOpen || isAboutActive ? "text-primary" : "text-foreground/80 hover:text-primary"
+                    "relative flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
+                    aboutDropdownOpen || isAboutActive
+                      ? "text-primary bg-primary/8"
+                      : isScrolled
+                        ? "text-foreground/70 hover:text-primary hover:bg-muted/50"
+                        : "text-white/80 hover:text-white hover:bg-white/10"
                   )}
                 >
                   {t('nav.about')}
                   <ChevronDown className={cn(
-                    "h-4 w-4 transition-transform duration-200",
+                    "h-3.5 w-3.5 transition-transform duration-300",
                     aboutDropdownOpen && "rotate-180"
                   )} />
                 </button>
@@ -251,72 +252,70 @@ export const Navbar = () => {
                 {/* Dropdown Menu */}
                 <div
                   className={cn(
-                    "absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ease-out",
-                    aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-3"
+                    "absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 ease-out",
+                    aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
                   )}
                 >
-                  {/* Arrow indicator */}
-                  <div className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-3 h-3 bg-card border-l border-t border-border rotate-45 z-10" />
-
-                  <div className="relative bg-card border border-border rounded-2xl shadow-2xl min-w-[280px] py-4 overflow-hidden">
-                    {/* Subtle gradient header */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+                  <div className="relative bg-card/98 backdrop-blur-2xl border border-border/30 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] min-w-[260px] py-2 overflow-hidden">
+                    {/* Top accent line */}
+                    <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
 
                     {aboutSubItems.map((item) => (
                       <Link
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          "group flex items-center gap-4 px-5 py-3.5 mx-3 rounded-xl transition-all duration-300",
-                          "hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/10",
+                          "group flex items-center gap-3 px-4 py-3 mx-2 rounded-xl transition-all duration-300",
                           isActive(item.path)
-                            ? "text-primary bg-gradient-to-r from-primary/10 to-primary/5"
-                            : "text-foreground/80 hover:text-foreground"
+                            ? "bg-primary text-primary-foreground"
+                            : "hover:bg-muted/60 text-foreground/80 hover:text-foreground"
                         )}
                       >
                         <div className={cn(
-                          "relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 overflow-hidden",
+                          "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-300",
                           isActive(item.path)
-                            ? "bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground shadow-lg shadow-primary/40 scale-105"
-                            : "bg-gradient-to-br from-secondary/90 to-secondary/70 text-secondary-foreground group-hover:from-primary group-hover:to-accent group-hover:text-primary-foreground group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/30"
+                            ? "bg-primary-foreground/20"
+                            : "bg-primary/10 group-hover:bg-primary/15"
                         )}>
-                          <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent" />
-                          <item.icon className="relative h-5 w-5 z-10" strokeWidth={1.8} />
+                          <item.icon className={cn(
+                            "h-4 w-4 transition-colors",
+                            isActive(item.path) ? "text-primary-foreground" : "text-primary"
+                          )} strokeWidth={1.8} />
                         </div>
-                        <div className="flex flex-col gap-0.5">
-                          <span className={cn(
-                            "text-[14px] font-bold tracking-wide leading-tight transition-colors duration-300",
-                            isActive(item.path) ? "text-primary" : "text-foreground group-hover:text-primary"
-                          )}>{t(item.labelKey)}</span>
-                        </div>
-                        <ChevronRight className={cn(
-                          "h-4 w-4 ml-auto transition-all duration-300 text-muted-foreground",
-                          "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary",
-                          isActive(item.path) && "opacity-100 translate-x-0 text-primary"
-                        )} />
+                        <span className={cn(
+                          "text-[13px] font-semibold tracking-wide",
+                          isActive(item.path) ? "text-primary-foreground" : ""
+                        )}>{t(item.labelKey)}</span>
+                        {isActive(item.path) && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary-foreground/60 ml-auto" />
+                        )}
                       </Link>
                     ))}
                   </div>
                 </div>
               </div>
+
+              {/* Other nav links */}
               {menuItems.slice(1).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    "relative text-[15px] font-semibold tracking-wide transition-all duration-300",
+                    "relative px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
                     isActive(item.path)
-                      ? "text-primary after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full"
-                      : "text-foreground/80 hover:text-primary hover:after:content-[''] hover:after:absolute hover:after:-bottom-1 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-primary/50 hover:after:rounded-full"
+                      ? "text-primary bg-primary/8"
+                      : isScrolled
+                        ? "text-foreground/70 hover:text-primary hover:bg-muted/50"
+                        : "text-white/80 hover:text-white hover:bg-white/10"
                   )}
                 >
                   {t(item.labelKey)}
+                  {isActive(item.path) && (
+                    <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
+                  )}
                 </Link>
               ))}
             </div>
-
-            {/* Right - Spacer to balance layout */}
-            <div className="w-40" />
           </div>
         </div>
       </nav>
