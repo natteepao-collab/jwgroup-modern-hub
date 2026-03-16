@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const HERO_VIDEO_URL = 'https://storage.googleapis.com/nbcloudbucket/video/jw/JW%20PARK%20HOME%20OFFICE_Final_260623.mp4';
 
@@ -7,22 +8,32 @@ const Hero3DBackground = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const isMobile = useIsMobile();
+  const rafRef = useRef<number>();
 
-  // Parallax mouse effect
+  // Parallax mouse effect - skip on mobile for performance
   useEffect(() => {
+    if (isMobile) return;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      
-      setMousePosition({ x: x * 8, y: y * 5 });
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        setMousePosition({ x: x * 8, y: y * 5 });
+      });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [isMobile]);
+
+  const handleVideoLoaded = useCallback(() => setIsVideoLoaded(true), []);
 
   return (
     <div 
@@ -31,9 +42,11 @@ const Hero3DBackground = () => {
     >
       {/* Video Background */}
       <div
-        className="absolute inset-0 transition-transform duration-700 ease-out"
-        style={{
-          transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px) scale(1.05)`,
+        className="absolute inset-0"
+        style={isMobile ? undefined : {
+          transform: `translate3d(${-mousePosition.x}px, ${-mousePosition.y}px, 0) scale(1.05)`,
+          transition: 'transform 0.7s ease-out',
+          willChange: 'transform',
         }}
       >
         <video
@@ -42,8 +55,9 @@ const Hero3DBackground = () => {
           muted
           loop
           playsInline
-          onLoadedData={() => setIsVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${
+          preload="auto"
+          onLoadedData={handleVideoLoaded}
+          className={`w-full h-full object-cover transition-opacity duration-700 ${
             isVideoLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
@@ -55,7 +69,7 @@ const Hero3DBackground = () => {
         </video>
       </div>
 
-      {/* Subtle gradient overlay - only at very bottom for text readability */}
+      {/* Gradient overlay */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{

@@ -9,14 +9,12 @@ import i18n from './i18n/config';
 import { AuthProvider } from './contexts/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import FloatingActions from './components/FloatingActions';
-import Snowfall from './components/Snowfall';
-import ChristmasTheme from './components/ChristmasTheme';
 import { CookieConsentProvider } from './components/CookieConsent';
 import PageTransition from './components/PageTransition';
 import { lazy, Suspense } from 'react';
 import Loading from "./components/Loading";
 
+// Lazy load all pages
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
 const Business = lazy(() => import("./pages/Business"));
@@ -34,7 +32,22 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Awards = lazy(() => import("./pages/Awards"));
 const PremiumAnalysis = lazy(() => import("./pages/PremiumAnalysis"));
 const Sustainability = lazy(() => import("./pages/Sustainability"));
-const queryClient = new QueryClient();
+
+// Lazy load heavy non-critical components
+const FloatingActions = lazy(() => import('./components/FloatingActions'));
+const Snowfall = lazy(() => import('./components/Snowfall'));
+const ChristmasTheme = lazy(() => import('./components/ChristmasTheme'));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes - reduce refetching
+      gcTime: 10 * 60 * 1000, // 10 minutes cache
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 // Layout wrapper to conditionally show Navbar/Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -43,14 +56,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Snowfall />
-      <ChristmasTheme />
+      <Suspense fallback={null}>
+        <Snowfall />
+        <ChristmasTheme />
+      </Suspense>
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
         {children}
       </main>
       {!isAdminRoute && <Footer />}
-      {!isAdminRoute && <FloatingActions />}
+      {!isAdminRoute && (
+        <Suspense fallback={null}>
+          <FloatingActions />
+        </Suspense>
+      )}
     </div>
   );
 };
