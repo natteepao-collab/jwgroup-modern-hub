@@ -268,6 +268,8 @@ const VisionMission = () => {
                   <img
                     src={getImageUrl()}
                     alt={businessNames[activeTab]}
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                   <div className={cn(

@@ -190,6 +190,8 @@ const AwardDetailModal = ({
               <img
                 src={images[0]}
                 alt={getTitle()}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto max-h-[60vh] object-contain transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
