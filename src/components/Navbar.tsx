@@ -29,7 +29,9 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [aboutExpanded, setAboutExpanded] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const [isBottomBarVisible, setIsBottomBarVisible] = useState(true);
   const aboutDropdownRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
   // Get contact phone from database
   const phoneContent = getContent('contact_phone');
@@ -37,9 +39,18 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // Hide bottom bar on scroll down, show on scroll up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsBottomBarVisible(false);
+      } else {
+        setIsBottomBarVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -312,8 +323,9 @@ export const Navbar = () => {
 
       {/* Bottom Tab Bar - Mobile & Tablet Only */}
       <div className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 lg:hidden",
-        "bg-card/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
+        "fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-transform duration-300",
+        "bg-card/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]",
+        isBottomBarVisible ? "translate-y-0" : "translate-y-full"
       )}>
         <div className="max-w-md mx-auto px-1">
           <div className="flex items-center justify-between py-1.5">
