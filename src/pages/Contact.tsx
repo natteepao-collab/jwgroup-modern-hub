@@ -11,6 +11,7 @@ import { SEO } from '@/components/SEO';
 import { buildBreadcrumb, localBusinessSchema } from '@/lib/seoSchemas';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { trackEvent } from '@/lib/analytics';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -38,6 +39,7 @@ const Contact = () => {
         body: formData,
       });
       if (error) throw error;
+      trackEvent('contact_submit', { label: formData.subject || 'general', metadata: { has_phone: !!formData.phone } });
       toast({ title: t('common.sendSuccess'), description: t('common.sendSuccessDesc') });
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (error) {

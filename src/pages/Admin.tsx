@@ -53,6 +53,7 @@ import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagemen
 import CareersManagement from '@/components/admin/CareersManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ChatAnalytics from '@/components/admin/ChatAnalytics';
+import AnalyticsManagement from '@/components/admin/AnalyticsManagement';
 
 
 const Admin = () => {
@@ -201,6 +202,10 @@ const Admin = () => {
             <TabsTrigger value="chatai" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
               <Bot className="h-4 w-4 shrink-0" />
               <span className="truncate">AI Chat</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Target className="h-4 w-4 shrink-0" />
+              <span className="truncate">Analytics</span>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
               <FileText className="h-4 w-4 shrink-0" />

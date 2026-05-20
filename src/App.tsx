@@ -11,6 +11,8 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CookieConsentProvider } from './components/CookieConsent';
 import PageTransition from './components/PageTransition';
+import { useEffect } from 'react';
+import { trackEvent } from './lib/analytics';
 import { lazy, Suspense } from 'react';
 import Loading from "./components/Loading";
 
@@ -36,6 +38,7 @@ const Sustainability = lazy(() => import("./pages/Sustainability"));
 // Lazy load heavy non-critical components
 const FloatingActions = lazy(() => import('./components/FloatingActions'));
 const Snowfall = lazy(() => import('./components/Snowfall'));
+const GoogleAnalytics = lazy(() => import('./components/GoogleAnalytics'));
 const ChristmasTheme = lazy(() => import('./components/ChristmasTheme'));
 
 const queryClient = new QueryClient({
@@ -54,11 +57,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname === '/admin' || location.pathname === '/auth';
 
+  useEffect(() => {
+    if (!isAdminRoute) trackEvent('page_view', { label: location.pathname });
+  }, [location.pathname, isAdminRoute]);
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <Suspense fallback={null}>
         <Snowfall />
         <ChristmasTheme />
+        <GoogleAnalytics />
       </Suspense>
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
