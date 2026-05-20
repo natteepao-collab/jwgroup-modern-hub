@@ -70,18 +70,24 @@ const NewsletterManagement = () => {
   };
 
   const exportCSV = () => {
+    // Escape CSV field & prevent formula injection (CWE-1236)
+    const csvEscape = (val: string | null | undefined) => {
+      let s = String(val ?? '');
+      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+      return '"' + s.replace(/"/g, '""') + '"';
+    };
     const activeSubscribers = subscribers.filter(s => s.is_active);
     const csv = [
-      ['Email', 'Name', 'Subscribed At', 'Source'].join(','),
+      ['Email', 'Name', 'Subscribed At', 'Source'].map(csvEscape).join(','),
       ...activeSubscribers.map(s => [
-        s.email,
-        s.name || '',
-        s.subscribed_at,
-        s.source || 'website'
+        csvEscape(s.email),
+        csvEscape(s.name),
+        csvEscape(s.subscribed_at),
+        csvEscape(s.source || 'website'),
       ].join(','))
-    ].join('\n');
+    ].join('\r\n');
 
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
