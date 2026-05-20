@@ -1,0 +1,1 @@
+UPDATE public.site_content SET metadata = jsonb_set(metadata, '{url}', '"https://www.jwherbal.com"') WHERE section_key = 'business_wellness';
