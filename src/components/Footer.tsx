@@ -99,6 +99,7 @@ export const Footer = () => {
                   {emailContent.content || ''}
                 </a>
               </li>
+              <li className="opacity-90">LINE: @jwgroup</li>
             </ul>
           </div>
 
