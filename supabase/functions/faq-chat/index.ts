@@ -246,10 +246,25 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { messages, sessionId, language, pageUrl } = body as {
+    const { messages: rawMessages, sessionId, language, pageUrl } = body as {
       messages: { role: string; content: string }[];
       sessionId?: string; language?: string; pageUrl?: string;
     };
+
+    // Validate & sanitize messages (prevent role spoofing, cap size)
+    const MAX_MESSAGES = 20;
+    const ALLOWED_ROLES = new Set(['user', 'assistant']);
+    const messages = Array.isArray(rawMessages)
+      ? rawMessages
+          .filter((m) => m && ALLOWED_ROLES.has(m.role) && typeof m.content === 'string')
+          .slice(-MAX_MESSAGES)
+          .map((m) => ({ role: m.role, content: m.content.slice(0, 2000) }))
+      : [];
+
+    if (messages.length === 0) {
+      return new Response(JSON.stringify({ error: 'ไม่มีข้อความที่ถูกต้อง' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
