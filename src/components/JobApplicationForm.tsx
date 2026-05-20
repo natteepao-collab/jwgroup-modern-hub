@@ -101,6 +101,9 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
 
       if (error) throw error;
 
+      const { trackEvent } = await import('@/lib/analytics');
+      trackEvent('job_apply', { label: jobId, metadata: { has_resume: !!resumeUrl } });
+
       setSubmitted(true);
       form.reset();
       setResumeFile(null);
