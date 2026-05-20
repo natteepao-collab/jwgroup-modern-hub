@@ -516,20 +516,49 @@ const CompanyTimeline = () => {
             {/* Vertical Line */}
             <div className="absolute left-[18px] sm:left-[22px] md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent md:-translate-x-1/2" />
 
-            {/* Timeline Events */}
-            <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-12">
-              {events.map((event, index) => (
-                <div key={event.id} ref={(el) => setEventRef(event.id, el)}>
-                  <TimelineItem
-                    event={event}
-                    index={index}
-                    isLeft={index % 2 === 0}
-                    isExpanded={expandedItems.has(event.id)}
-                    onToggle={() => toggleItem(event.id)}
-                    isHighlighted={highlightedEventId === event.id}
-                  />
-                </div>
-              ))}
+            {/* Timeline Events grouped by Chapter */}
+            <div className="space-y-12 sm:space-y-16">
+              {eventsByChapter.map((chapter, chIdx) => {
+                // Index offset across chapters so isLeft alternates continuously
+                const offset = eventsByChapter.slice(0, chIdx).reduce((s, c) => s + c.events.length, 0);
+                return (
+                  <div key={chapter.key} className="relative">
+                    {/* Chapter divider */}
+                    <div className="relative mb-8 sm:mb-10 pl-14 sm:pl-16 md:pl-0 md:text-center">
+                      <div className="md:inline-block bg-card border-l-4 md:border-l-0 md:border-t-4 border-primary rounded-r-2xl md:rounded-b-2xl md:rounded-t-none px-5 py-4 shadow-md">
+                        <div className="text-[10px] sm:text-xs uppercase tracking-widest text-primary font-bold mb-1">
+                          {chapter.rangeLabel}
+                        </div>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+                          {chapter.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-md md:mx-auto">
+                          {chapter.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Events in chapter */}
+                    <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-12">
+                      {chapter.events.map((event, idx) => {
+                        const globalIndex = offset + idx;
+                        return (
+                          <div key={event.id} ref={(el) => setEventRef(event.id, el)}>
+                            <TimelineItem
+                              event={event}
+                              index={globalIndex}
+                              isLeft={globalIndex % 2 === 0}
+                              isExpanded={expandedItems.has(event.id)}
+                              onToggle={() => toggleItem(event.id)}
+                              isHighlighted={highlightedEventId === event.id}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
