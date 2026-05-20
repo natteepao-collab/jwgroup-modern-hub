@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Trophy, Award as AwardIcon, Medal, Star, ChevronLeft, ChevronRight, X, Image as ImageIcon, Calendar } from 'lucide-react';
+import { Trophy, Award as AwardIcon, Medal, Star, ChevronLeft, ChevronRight, X, Image as ImageIcon, Calendar, Building2, ShieldCheck, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
