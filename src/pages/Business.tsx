@@ -166,6 +166,7 @@ const Business = () => {
         title={seoTitle}
         description={seoDesc}
         canonicalUrl="/business"
+        structuredData={buildBreadcrumb([{ name: seoTitle || 'ธุรกิจของเรา', path: '/business' }])}
       />
       <div className="container mx-auto px-4 py-12">
         <div
