@@ -17,6 +17,7 @@ const News = () => {
         title={t('news.title')}
         description={t('news.subtitle')}
         canonicalUrl="/news"
+        structuredData={buildBreadcrumb([{ name: t('news.title'), path: '/news' }])}
       />
       <div className="container mx-auto px-4 py-12">
         <div
