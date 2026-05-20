@@ -147,7 +147,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-15 gap-1">
+          <TabsList className="flex flex-wrap h-auto w-full gap-1 p-1 justify-start">
             <TabsTrigger value="news" className="flex items-center gap-2">
               <Newspaper className="h-4 w-4" />
               <span className="hidden sm:inline">ข่าวสาร</span>
