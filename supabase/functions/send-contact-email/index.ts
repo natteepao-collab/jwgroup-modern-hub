@@ -6,23 +6,55 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+// Rate limiting (IP-based, 5 req/min)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 5;
+const WINDOW_MS = 60_000;
+
+const escapeHtml = (str: unknown) =>
+  String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { name, email, phone, subject, message } = await req.json();
+    // Rate limit
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
+    const now = Date.now();
+    const entry = rateLimitMap.get(clientIP);
+    if (entry && now < entry.resetTime) {
+      if (entry.count >= RATE_LIMIT) {
+        return new Response(JSON.stringify({ error: 'ส่งข้อความบ่อยเกินไป กรุณารอสักครู่' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+      entry.count++;
+    } else {
+      rateLimitMap.set(clientIP, { count: 1, resetTime: now + WINDOW_MS });
+    }
 
-    // Validate required fields
+    const body = await req.json();
+    let { name, email, phone, subject, message } = body ?? {};
+
+    // Validate required + length limits
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: 'กรุณากรอกชื่อ อีเมล และข้อความ' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    name = String(name).slice(0, 100);
+    email = String(email).slice(0, 255);
+    phone = phone ? String(phone).slice(0, 50) : '';
+    subject = subject ? String(subject).slice(0, 200) : '';
+    message = String(message).slice(0, 5000);
 
-    // Validate email format
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     if (!emailRegex.test(email)) {
       return new Response(
@@ -55,15 +87,15 @@ serve(async (req) => {
       body: JSON.stringify({
         from: 'JW Group Contact <onboarding@resend.dev>',
         to: ['jwgroupmkt@gmail.com'],
-        subject: `[ติดต่อเรา] ${subject || 'ข้อความใหม่จากเว็บไซต์'}`,
+        subject: `[ติดต่อเรา] ${escapeHtml(subject || 'ข้อความใหม่จากเว็บไซต์')}`,
         html: `
           <h2>ข้อความใหม่จากฟอร์มติดต่อ</h2>
           <table style="border-collapse:collapse;width:100%;max-width:600px;">
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ชื่อ</td><td style="padding:8px;border:1px solid #ddd;">${name}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">อีเมล</td><td style="padding:8px;border:1px solid #ddd;">${email}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">โทรศัพท์</td><td style="padding:8px;border:1px solid #ddd;">${phone || '-'}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">เรื่อง</td><td style="padding:8px;border:1px solid #ddd;">${subject || '-'}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ข้อความ</td><td style="padding:8px;border:1px solid #ddd;">${message}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ชื่อ</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(name)}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">อีเมล</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(email)}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">โทรศัพท์</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(phone || '-')}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">เรื่อง</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(subject || '-')}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ข้อความ</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(message).replace(/\n/g,'<br>')}</td></tr>
           </table>
           <p style="color:#888;margin-top:16px;">ส่งจากเว็บไซต์ JW Group</p>
         `,
