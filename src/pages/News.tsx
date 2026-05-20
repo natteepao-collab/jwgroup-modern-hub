@@ -4,6 +4,7 @@ import { BentoNewsSection } from '@/components/BentoNewsSection';
 import { useNews } from '@/hooks/useNews';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 const News = () => {
   const { t } = useTranslation();
