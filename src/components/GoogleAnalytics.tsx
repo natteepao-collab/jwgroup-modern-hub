@@ -20,14 +20,11 @@ export const GoogleAnalytics = () => {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
     document.head.appendChild(script);
 
-    // @ts-expect-error gtag dataLayer init
-    window.dataLayer = window.dataLayer || [];
-    // @ts-expect-error gtag fn
-    window.gtag = function gtag() { window.dataLayer.push(arguments); };
-    // @ts-expect-error gtag call
-    window.gtag('js', new Date());
-    // @ts-expect-error gtag config
-    window.gtag('config', measurementId, { anonymize_ip: true });
+    const w = window as unknown as { dataLayer: unknown[]; gtag: (...a: unknown[]) => void };
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = function gtag(...args: unknown[]) { w.dataLayer.push(args); };
+    w.gtag('js', new Date());
+    w.gtag('config', measurementId, { anonymize_ip: true });
   }, [measurementId]);
 
   return null;
