@@ -65,7 +65,7 @@ export function trackEvent(eventType: AnalyticsEvent, payload: TrackPayload = {}
   // 2) Persist to Supabase (async, non-blocking)
   supabase
     .from('analytics_events')
-    .insert({
+    .insert([{
       event_type: eventType,
       event_label: payload.label ?? null,
       business_key: payload.business ?? null,
@@ -73,8 +73,13 @@ export function trackEvent(eventType: AnalyticsEvent, payload: TrackPayload = {}
       referrer,
       session_id: sessionId,
       user_agent: navigator.userAgent.slice(0, 255),
-      metadata: payload.metadata ?? {},
-    })
+      metadata: (payload.metadata ?? {}) as never,
+    }])
+    .then(({ error }) => {
+      if (error && import.meta.env.DEV) {
+        console.warn('[analytics] insert failed:', error.message);
+      }
+    });
     .then(({ error }) => {
       if (error && import.meta.env.DEV) {
         console.warn('[analytics] insert failed:', error.message);
