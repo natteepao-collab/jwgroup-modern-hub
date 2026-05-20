@@ -53,6 +53,7 @@ import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagemen
 import CareersManagement from '@/components/admin/CareersManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ChatAnalytics from '@/components/admin/ChatAnalytics';
+import AnalyticsManagement from '@/components/admin/AnalyticsManagement';
 
 
 const Admin = () => {
