@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Cookie } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { useCookieConsent } from '@/components/CookieConsent';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 
@@ -15,6 +16,7 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 export const Footer = () => {
   const { t } = useTranslation();
   const { getContent } = useSiteContent();
+  const { links: social } = useSocialLinks();
   const { openCookieSettings } = useCookieConsent();
 
   // Get contact data from database
@@ -82,22 +84,21 @@ export const Footer = () => {
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary" />
                 <a
-                  href={`tel:${phoneContent.content?.replace(/\s/g, '') || '+6622345678'}`}
+                  href={`tel:${phoneContent.content?.replace(/[^\d+]/g, '') || ''}`}
                   className="hover:text-primary transition-colors opacity-90"
                 >
-                  {phoneContent.content || '+66 2 234 5678'}
+                  {phoneContent.content || ''}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary" />
                 <a
-                  href={`mailto:${emailContent.content || 'info@jwgroup.com'}`}
+                  href={`mailto:${emailContent.content || ''}`}
                   className="hover:text-primary transition-colors opacity-90"
                 >
-                  {emailContent.content || 'info@jwgroup.com'}
+                  {emailContent.content || ''}
                 </a>
               </li>
-              <li className="opacity-90">LINE: @jwgroup</li>
             </ul>
           </div>
 
@@ -105,42 +106,26 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">{t('footer.followUs')}</h3>
             <div className="flex space-x-4 mb-6">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-6 w-6" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-6 w-6" />
-              </a>
-              <a
-                href="https://tiktok.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-                aria-label="TikTok"
-              >
-                <TikTokIcon className="h-6 w-6" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-                aria-label="YouTube"
-              >
-                <Youtube className="h-6 w-6" />
-              </a>
+              {social.facebook && (
+                <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
+                  <Facebook className="h-6 w-6" />
+                </a>
+              )}
+              {social.instagram && (
+                <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Instagram">
+                  <Instagram className="h-6 w-6" />
+                </a>
+              )}
+              {social.tiktok && (
+                <a href={social.tiktok} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="TikTok">
+                  <TikTokIcon className="h-6 w-6" />
+                </a>
+              )}
+              {social.youtube && (
+                <a href={social.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="YouTube">
+                  <Youtube className="h-6 w-6" />
+                </a>
+              )}
             </div>
             <div className="text-sm opacity-90">
               <p className="mb-2 font-semibold">{t('footer.businessHours')}</p>
