@@ -629,6 +629,7 @@ const About = () => {
         title={seoTitle}
         description={seoDesc}
         canonicalUrl="/about"
+        structuredData={buildBreadcrumb([{ name: seoTitle || 'เกี่ยวกับเรา', path: '/about' }])}
       />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
