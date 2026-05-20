@@ -57,6 +57,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname === '/admin' || location.pathname === '/auth';
 
+  useEffect(() => {
+    if (!isAdminRoute) trackEvent('page_view', { label: location.pathname });
+  }, [location.pathname, isAdminRoute]);
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <Suspense fallback={null}>
