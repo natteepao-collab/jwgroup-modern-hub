@@ -4,6 +4,7 @@ import { BentoNewsSection } from '@/components/BentoNewsSection';
 import { useNews } from '@/hooks/useNews';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 const News = () => {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ const News = () => {
         title={t('news.title')}
         description={t('news.subtitle')}
         canonicalUrl="/news"
+        structuredData={buildBreadcrumb([{ name: t('news.title'), path: '/news' }])}
       />
       <div className="container mx-auto px-4 py-12">
         <div

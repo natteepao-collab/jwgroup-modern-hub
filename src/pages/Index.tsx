@@ -42,20 +42,50 @@ const Index = () => {
   const seoTitle = t('hero.title') || "กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ";
   const seoDesc = t('hero.subtitle') || "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า";
 
-  // Organization structured data for Google Knowledge Panel
+  // Organization + WebSite structured data for Google Knowledge Panel
   const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "JW Group",
-    "alternateName": "เจดับเบิ้ลยู กรุ๊ป",
-    "url": "https://www.jwgroupthailand.com",
-    "logo": "https://www.jwgroupthailand.com/og-image.png",
-    "description": "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า ธุรกิจอสังหาริมทรัพย์ โรงแรมหรู โรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "TH"
-    },
-    "sameAs": []
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.jwgroupthailand.com/#organization",
+        "name": "JW Group",
+        "alternateName": "เจดับเบิ้ลยู กรุ๊ป",
+        "url": "https://www.jwgroupthailand.com",
+        "logo": "https://www.jwgroupthailand.com/og-image.png",
+        "image": "https://www.jwgroupthailand.com/og-image.png",
+        "description": "JW Group - กลุ่มธุรกิจครบวงจร อสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ",
+        "foundingDate": "1990",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "เลขที่ 9 ซอยสรณคมน์ 12 ถนนสรณคมน์",
+          "addressLocality": "แขวงสีกัน เขตดอนเมือง",
+          "addressRegion": "กรุงเทพมหานคร",
+          "postalCode": "10210",
+          "addressCountry": "TH"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+66-2-566-1111",
+          "contactType": "customer service",
+          "email": "jwgroupmkt@gmail.com",
+          "areaServed": "TH",
+          "availableLanguage": ["Thai", "English"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/JwRealestateCoLtd/",
+          "https://www.youtube.com/@JWgroupthai"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.jwgroupthailand.com/#website",
+        "url": "https://www.jwgroupthailand.com",
+        "name": "JW Group",
+        "inLanguage": "th-TH",
+        "publisher": { "@id": "https://www.jwgroupthailand.com/#organization" }
+      }
+    ]
   };
 
   // Scroll reveal animations

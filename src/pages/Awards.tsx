@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import AwardsSection from '@/components/AwardsSection';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 const Awards = () => {
     const { t } = useTranslation();
@@ -10,6 +11,7 @@ const Awards = () => {
                 title={t('awards.title')}
                 description={t('awards.seoDesc')}
                 canonicalUrl="/awards"
+                structuredData={buildBreadcrumb([{ name: t('awards.title'), path: '/awards' }])}
             />
             <AwardsSection />
         </div>

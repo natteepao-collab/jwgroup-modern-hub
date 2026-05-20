@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Mail, Clock, Facebook, Linkedin, Loader2 } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb, localBusinessSchema } from '@/lib/seoSchemas';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -65,6 +66,13 @@ const Contact = () => {
         title={t('contact.title')}
         description={t('contact.subtitle')}
         canonicalUrl="/contact"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@graph": [
+            localBusinessSchema,
+            buildBreadcrumb([{ name: t('contact.title'), path: '/contact' }]),
+          ],
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         <div

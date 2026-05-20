@@ -9,6 +9,7 @@ import { MapPin, Briefcase, Clock, Gift, Shield, Calendar, Car, Percent, Trendin
 import { supabase } from '@/integrations/supabase/client';
 import JobApplicationForm from '@/components/JobApplicationForm';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 // Icon mapping for benefits
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -86,6 +87,7 @@ const Careers = () => {
         title={t('careers.title')}
         description={t('careers.description') || "ร่วมงานกับเรา JW Group"}
         canonicalUrl="/careers"
+        structuredData={buildBreadcrumb([{ name: t('careers.title'), path: '/careers' }])}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 // No hardcoded imports - all images from database
 
@@ -628,6 +629,7 @@ const About = () => {
         title={seoTitle}
         description={seoDesc}
         canonicalUrl="/about"
+        structuredData={buildBreadcrumb([{ name: seoTitle || 'เกี่ยวกับเรา', path: '/about' }])}
       />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">

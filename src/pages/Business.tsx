@@ -14,6 +14,7 @@ import wellness from '@/assets/business-wellness.jpg';
 import construction from '@/assets/business-construction.jpg';
 import thanabulLogo from '@/assets/thanabul-logo.png';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 // Default images fallback
 const defaultBusinessImages: Record<string, string> = {
@@ -165,6 +166,7 @@ const Business = () => {
         title={seoTitle}
         description={seoDesc}
         canonicalUrl="/business"
+        structuredData={buildBreadcrumb([{ name: seoTitle || 'ธุรกิจของเรา', path: '/business' }])}
       />
       <div className="container mx-auto px-4 py-12">
         <div
