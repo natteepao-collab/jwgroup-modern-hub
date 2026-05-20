@@ -11,6 +11,7 @@ const Awards = () => {
                 title={t('awards.title')}
                 description={t('awards.seoDesc')}
                 canonicalUrl="/awards"
+                structuredData={buildBreadcrumb([{ name: t('awards.title'), path: '/awards' }])}
             />
             <AwardsSection />
         </div>
