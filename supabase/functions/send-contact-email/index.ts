@@ -87,15 +87,15 @@ serve(async (req) => {
       body: JSON.stringify({
         from: 'JW Group Contact <onboarding@resend.dev>',
         to: ['jwgroupmkt@gmail.com'],
-        subject: `[ติดต่อเรา] ${subject || 'ข้อความใหม่จากเว็บไซต์'}`,
+        subject: `[ติดต่อเรา] ${escapeHtml(subject || 'ข้อความใหม่จากเว็บไซต์')}`,
         html: `
           <h2>ข้อความใหม่จากฟอร์มติดต่อ</h2>
           <table style="border-collapse:collapse;width:100%;max-width:600px;">
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ชื่อ</td><td style="padding:8px;border:1px solid #ddd;">${name}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">อีเมล</td><td style="padding:8px;border:1px solid #ddd;">${email}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">โทรศัพท์</td><td style="padding:8px;border:1px solid #ddd;">${phone || '-'}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">เรื่อง</td><td style="padding:8px;border:1px solid #ddd;">${subject || '-'}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ข้อความ</td><td style="padding:8px;border:1px solid #ddd;">${message}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ชื่อ</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(name)}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">อีเมล</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(email)}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">โทรศัพท์</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(phone || '-')}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">เรื่อง</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(subject || '-')}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">ข้อความ</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(message).replace(/\n/g,'<br>')}</td></tr>
           </table>
           <p style="color:#888;margin-top:16px;">ส่งจากเว็บไซต์ JW Group</p>
         `,
