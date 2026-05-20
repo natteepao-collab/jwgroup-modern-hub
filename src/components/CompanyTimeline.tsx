@@ -262,9 +262,34 @@ const TimelineItem = ({
   );
 };
 
+// Convert any year string (BE/AD/"ปัจจุบัน") to numeric BE for comparison
+const toBE = (yr: string): number => {
+  if (!yr) return 0;
+  if (yr.includes('ปัจจุบัน') || yr.toLowerCase().includes('present')) return 9999;
+  const n = parseInt(yr.replace(/\D/g, ''), 10);
+  if (Number.isNaN(n)) return 0;
+  // If 4-digit AD year (< 2400), convert to BE
+  return n < 2400 ? n + 543 : n;
+};
+
+interface Chapter {
+  key: string;
+  title: string;
+  subtitle: string;
+  rangeLabel: string;
+  min: number;
+  max: number;
+}
+
+const chapters: Chapter[] = [
+  { key: 'origin', title: 'บทที่ 1 · จุดเริ่มต้น', subtitle: 'รากฐานของกลุ่ม JW จากหนึ่งวิสัยทัศน์', rangeLabel: 'ก่อน 2550', min: 0, max: 2549 },
+  { key: 'growth', title: 'บทที่ 2 · เติบโตอย่างมั่นคง', subtitle: 'ขยายธุรกิจอสังหาฯ และวางรากฐานคุณภาพ', rangeLabel: '2550 – 2562', min: 2550, max: 2562 },
+  { key: 'expand', title: 'บทที่ 3 · ก้าวสู่หลายธุรกิจ', subtitle: 'โรงแรม สัตวแพทย์ สุขภาพ และนวัตกรรมใหม่', rangeLabel: '2563 – ปัจจุบัน', min: 2563, max: 9999 },
+];
+
 const CompanyTimeline = () => {
   const [events, setEvents] = useState<TimelineEvent[]>(mockTimelineEvents);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
@@ -278,6 +303,17 @@ const CompanyTimeline = () => {
   const uniqueYears = useMemo(() => {
     const years = [...new Set(events.map(e => e.year))];
     return years;
+  }, [events]);
+
+  // Group events into chapters
+  const eventsByChapter = useMemo(() => {
+    return chapters.map(ch => ({
+      ...ch,
+      events: events.filter(e => {
+        const y = toBE(e.year);
+        return y >= ch.min && y <= ch.max;
+      }),
+    })).filter(ch => ch.events.length > 0);
   }, [events]);
 
   useEffect(() => {
