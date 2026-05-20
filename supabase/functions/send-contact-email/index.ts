@@ -54,7 +54,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'JW Group Contact <onboarding@resend.dev>',
-        to: ['admin@jwgroupthailand.com'],
+        to: ['jwgroupmkt@gmail.com'],
         subject: `[ติดต่อเรา] ${subject || 'ข้อความใหม่จากเว็บไซต์'}`,
         html: `
           <h2>ข้อความใหม่จากฟอร์มติดต่อ</h2>
