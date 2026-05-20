@@ -52,6 +52,8 @@ import VisionMissionManagement from '@/components/admin/VisionMissionManagement'
 import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagement';
 import CareersManagement from '@/components/admin/CareersManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
+import ChatAnalytics from '@/components/admin/ChatAnalytics';
+
 
 const Admin = () => {
   const navigate = useNavigate();
