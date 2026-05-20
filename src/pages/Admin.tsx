@@ -26,7 +26,9 @@ import {
   Target,
   Info,
   Briefcase,
-  MessageSquare
+  MessageSquare,
+  Bot
+
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
