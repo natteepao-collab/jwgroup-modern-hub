@@ -11,6 +11,7 @@ import { SEO } from '@/components/SEO';
 import { buildBreadcrumb, localBusinessSchema } from '@/lib/seoSchemas';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { trackEvent } from '@/lib/analytics';
 
 const Contact = () => {
   const { t } = useTranslation();
