@@ -417,6 +417,7 @@ const YearSection = ({
 const AwardsSection = () => {
   const [awards, setAwards] = useState<Award[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'award' | 'certification'>('all');
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
   // Lightbox state
@@ -445,10 +446,32 @@ const AwardsSection = () => {
     fetchAwards();
   }, []);
 
+  // Stats
+  const stats = useMemo(() => {
+    const awardCount = awards.filter(a => a.category === 'award').length;
+    const certCount = awards.filter(a => a.category === 'certification').length;
+    const years = awards.map(a => a.award_year).filter((y): y is number => !!y);
+    const minY = years.length ? Math.min(...years) : null;
+    const maxY = years.length ? Math.max(...years) : null;
+    return { awardCount, certCount, minY, maxY };
+  }, [awards]);
+
+  // Trust organizations (unique awarding orgs)
+  const trustOrgs = useMemo(() => {
+    const set = new Set<string>();
+    awards.forEach(a => { if (a.awarding_organization) set.add(a.awarding_organization); });
+    return Array.from(set);
+  }, [awards]);
+
+  const filteredAwards = useMemo(() => {
+    if (filter === 'all') return awards;
+    return awards.filter(a => a.category === filter);
+  }, [awards, filter]);
+
   const awardsByYear = useMemo(() => {
     const groups: { [key: string]: Award[] } = {};
 
-    awards.forEach(award => {
+    filteredAwards.forEach(award => {
       const year = award.award_year ? award.award_year.toString() : 'Other';
       if (!groups[year]) groups[year] = [];
       groups[year].push(award);
@@ -459,7 +482,7 @@ const AwardsSection = () => {
       if (b[0] === 'Other') return -1;
       return Number(b[0]) - Number(a[0]);
     });
-  }, [awards]);
+  }, [filteredAwards]);
 
   const handleImageClick = (images: string[], startIndex: number, title: string) => {
     setLightboxImages(images);
@@ -476,32 +499,81 @@ const AwardsSection = () => {
     return <div className="py-20 text-center text-muted-foreground animate-pulse">Loading Awards...</div>;
   }
 
+  const filterTabs: { key: typeof filter; label: string; icon: React.ReactNode; count: number }[] = [
+    { key: 'all', label: 'ทั้งหมด', icon: <Sparkles className="w-4 h-4" />, count: awards.length },
+    { key: 'award', label: 'รางวัล', icon: <Trophy className="w-4 h-4" />, count: stats.awardCount },
+    { key: 'certification', label: 'ใบรับรอง', icon: <ShieldCheck className="w-4 h-4" />, count: stats.certCount },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header Banner */}
-      <section className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
-
-        {/* Abstract shapes */}
-        <div className="absolute top-10 right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
+      <section className="relative pt-16 pb-12 md:pt-24 md:pb-16 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
+        <div className="absolute top-10 right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
 
         <div className="relative container mx-auto px-4 text-center z-10 animate-fade-in-up">
           <Badge variant="outline" className="mb-6 px-4 py-1 border-primary/30 text-primary text-sm uppercase tracking-widest bg-background/50 backdrop-blur-sm">
             Hall of Fame
           </Badge>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground drop-shadow-sm">
-            รางวัลและความสำเร็จ
+            รางวัลและการรับรอง
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
             เครื่องยืนยันคุณภาพและความมุ่งมั่นในการสร้างสรรค์สิ่งที่ดีที่สุด
             เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับลูกค้าและสังคม
           </p>
+
+          {/* Stat Tiles */}
+          <div className="grid grid-cols-3 gap-3 md:gap-6 max-w-3xl mx-auto">
+            <div className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6 shadow-sm hover:shadow-md transition-all">
+              <Trophy className="w-6 h-6 md:w-8 md:h-8 text-amber-500 mx-auto mb-2" />
+              <div className="text-2xl md:text-4xl font-bold text-foreground">{stats.awardCount}</div>
+              <div className="text-xs md:text-sm text-muted-foreground mt-1">รางวัล</div>
+            </div>
+            <div className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6 shadow-sm hover:shadow-md transition-all">
+              <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 text-emerald-500 mx-auto mb-2" />
+              <div className="text-2xl md:text-4xl font-bold text-foreground">{stats.certCount}</div>
+              <div className="text-xs md:text-sm text-muted-foreground mt-1">ใบรับรอง</div>
+            </div>
+            <div className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6 shadow-sm hover:shadow-md transition-all">
+              <Calendar className="w-6 h-6 md:w-8 md:h-8 text-primary mx-auto mb-2" />
+              <div className="text-2xl md:text-4xl font-bold text-foreground">
+                {stats.minY && stats.maxY ? (stats.minY === stats.maxY ? stats.minY : `${stats.minY}-${stats.maxY}`) : '—'}
+              </div>
+              <div className="text-xs md:text-sm text-muted-foreground mt-1">ช่วงปีที่ได้รับ</div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section ref={ref} className="pb-20 md:pb-32">
+      {/* Filter Tabs */}
+      <section className="sticky top-16 z-30 bg-background/85 backdrop-blur-lg border-y border-border/40">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
+            {filterTabs.map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setFilter(tab.key)}
+                className={`group inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  filter === tab.key
+                    ? 'bg-primary text-primary-foreground shadow-md shadow-primary/30 scale-105'
+                    : 'bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                }`}
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                  filter === tab.key ? 'bg-primary-foreground/20' : 'bg-background/80 text-foreground/70'
+                }`}>{tab.count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section ref={ref} className="py-12 md:py-20">
         <div className="container mx-auto px-4 max-w-5xl">
           {awardsByYear.map(([year, groupAwards]) => (
             <YearSection
@@ -513,14 +585,41 @@ const AwardsSection = () => {
             />
           ))}
 
-          {awards.length === 0 && (
+          {filteredAwards.length === 0 && (
             <div className="text-center py-20 bg-muted/30 rounded-3xl border border-dashed border-muted-foreground/20">
               <Trophy className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground text-lg">ยังไม่มีข้อมูลรางวัล</p>
+              <p className="text-muted-foreground text-lg">ยังไม่มีข้อมูลในหมวดนี้</p>
             </div>
           )}
         </div>
       </section>
+
+      {/* Trust Strip */}
+      {trustOrgs.length > 0 && (
+        <section className="py-12 md:py-16 bg-muted/30 border-t border-border/40">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 text-primary mb-3">
+                <Building2 className="w-5 h-5" />
+                <span className="text-sm font-semibold uppercase tracking-wider">รับรองโดย</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+                หน่วยงานที่มอบรางวัลและรับรองคุณภาพ
+              </h3>
+            </div>
+            <div className="flex flex-wrap justify-center gap-3">
+              {trustOrgs.map(org => (
+                <div
+                  key={org}
+                  className="px-4 py-2.5 bg-card border border-border/50 rounded-xl text-sm text-foreground/80 font-medium shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
+                >
+                  {org}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Lightbox */}
       <ImageLightbox
