@@ -60,6 +60,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Suspense fallback={null}>
         <Snowfall />
         <ChristmasTheme />
+        <GoogleAnalytics />
       </Suspense>
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
