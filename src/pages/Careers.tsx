@@ -87,6 +87,7 @@ const Careers = () => {
         title={t('careers.title')}
         description={t('careers.description') || "ร่วมงานกับเรา JW Group"}
         canonicalUrl="/careers"
+        structuredData={buildBreadcrumb([{ name: t('careers.title'), path: '/careers' }])}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
