@@ -148,7 +148,7 @@ const Index = () => {
         <Hero3DBackground />
 
         {/* Hero CTA buttons only - positioned near bottom to not cover the visual */}
-        <div className="absolute inset-x-0 top-[58%] sm:top-[55%] md:top-[52%] z-10 flex justify-center px-4">
+        <div className="absolute inset-x-0 top-[72%] sm:top-[70%] md:top-[68%] z-10 flex justify-center px-4">
           <div
             className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center transition-all duration-1000 ${
               heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
