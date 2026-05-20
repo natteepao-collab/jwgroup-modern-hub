@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Quote, ChevronDown, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Quote, Briefcase } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import chairmanDefault from '@/assets/chairman-portrait.jpg';
-import chalisaImg from '@/assets/executives/chalisa-koworakul.jpg';
-import pornnatchaImg from '@/assets/executives/pornnatcha-koworakul.jpg';
 
 interface Executive {
   id: string;
@@ -25,30 +23,26 @@ interface ChairmanQuoteProps {
   title?: string;
 }
 
-// Department display names and colors
-const departmentInfo: Record<string, { name: string; color: string; icon: string }> = {
-  real_estate: { name: 'อสังหาริมทรัพย์', color: 'from-orange-500 to-amber-500', icon: '🏢' },
-  hotel: { name: 'โรงแรม', color: 'from-blue-500 to-cyan-500', icon: '🏨' },
-  veterinary: { name: 'สัตวแพทย์', color: 'from-green-500 to-emerald-500', icon: '🐾' },
-  wellness: { name: 'สุขภาพ', color: 'from-purple-500 to-pink-500', icon: '🌿' },
-  finance: { name: 'การเงิน', color: 'from-yellow-500 to-orange-500', icon: '💰' },
-  hr: { name: 'ทรัพยากรบุคคล', color: 'from-rose-500 to-red-500', icon: '👥' },
-  marketing: { name: 'การตลาด', color: 'from-indigo-500 to-purple-500', icon: '📣' },
-  it: { name: 'เทคโนโลยี', color: 'from-teal-500 to-cyan-500', icon: '💻' },
+// Department display names + brand-aligned accent classes
+const departmentInfo: Record<string, { name: string; accent: string; dot: string }> = {
+  real_estate: { name: 'อสังหาริมทรัพย์', accent: 'text-amber-700 bg-amber-50 border-amber-200', dot: 'bg-amber-500' },
+  hotel: { name: 'โรงแรม', accent: 'text-sky-700 bg-sky-50 border-sky-200', dot: 'bg-sky-500' },
+  veterinary: { name: 'สัตวแพทย์', accent: 'text-emerald-700 bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
+  wellness: { name: 'สุขภาพ', accent: 'text-rose-700 bg-rose-50 border-rose-200', dot: 'bg-rose-500' },
+  finance: { name: 'การเงิน', accent: 'text-yellow-700 bg-yellow-50 border-yellow-200', dot: 'bg-yellow-500' },
+  hr: { name: 'ทรัพยากรบุคคล', accent: 'text-pink-700 bg-pink-50 border-pink-200', dot: 'bg-pink-500' },
+  marketing: { name: 'การตลาด', accent: 'text-indigo-700 bg-indigo-50 border-indigo-200', dot: 'bg-indigo-500' },
+  it: { name: 'เทคโนโลยี', accent: 'text-teal-700 bg-teal-50 border-teal-200', dot: 'bg-teal-500' },
 };
 
-export const ChairmanQuote = ({ 
-  quote: defaultQuote, 
-  name: defaultName, 
-  title: defaultTitle
+export const ChairmanQuote = ({
+  quote: defaultQuote,
+  name: defaultName,
+  title: defaultTitle,
 }: ChairmanQuoteProps) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [hoveredMember, setHoveredMember] = useState<string | null>(null);
-  const [showDirectors, setShowDirectors] = useState(false);
-  const [showManagers, setShowManagers] = useState(false);
   const [executives, setExecutives] = useState<Executive[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const managersScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchExecutives = async () => {
@@ -59,7 +53,12 @@ export const ChairmanQuote = ({
           .order('position_order', { ascending: true });
 
         if (!error && data) {
-          setExecutives(data as Executive[]);
+          // Defensive filter: hide any leftover placeholder rows
+          setExecutives(
+            (data as Executive[]).filter(
+              (e) => e.name && e.name !== 'ผู้จัดการใหม่' && e.title !== 'ตำแหน่ง'
+            )
+          );
         }
       } catch (error) {
         console.error('Error fetching executives:', error);
@@ -71,46 +70,21 @@ export const ChairmanQuote = ({
     fetchExecutives();
   }, []);
 
-  // Get chairman, directors, and managers from database
-  const chairman = executives.find(e => e.is_chairman);
-  const directors = executives.filter(e => !e.is_chairman && e.level !== 'manager');
-  const managers = executives.filter(e => e.level === 'manager');
+  const chairman = executives.find((e) => e.is_chairman);
+  const directors = executives.filter((e) => !e.is_chairman && e.level !== 'manager');
+  const managers = executives.filter((e) => e.level === 'manager');
 
-  // Use database data or fallback to props/defaults
-  const chairmanName = chairman?.name || defaultName || 'คุณวิสิทธิ์ กอวรกุล';
+  const chairmanName = chairman?.name || defaultName || 'คุณวิสิษฐ กอวรกุล';
   const chairmanTitle = chairman?.title || defaultTitle || 'ประธานกรรมการบริษัท';
-  const chairmanQuote = chairman?.quote || defaultQuote || 'เราเชื่อมั่นในการสร้างธุรกิจที่ยั่งยืน ควบคู่ไปกับการพัฒนาคุณภาพชีวิตของสังคม';
+  const chairmanQuote =
+    chairman?.quote ||
+    defaultQuote ||
+    'เราเชื่อมั่นในการสร้างธุรกิจที่ยั่งยืน ควบคู่ไปกับการพัฒนาคุณภาพชีวิตของสังคม';
   const chairmanImage = chairman?.image_url || chairmanDefault;
-
-  // Get director image from database with fallback
-  const getDirectorImage = (director: Executive) => {
-    return director.image_url || null;
-  };
-
-  const handleChairmanClick = () => {
-    setShowDirectors(!showDirectors);
-    if (showDirectors) {
-      setShowManagers(false);
-    }
-  };
-
-  const handleShowManagers = () => {
-    setShowManagers(!showManagers);
-  };
-
-  const scrollManagers = (direction: 'left' | 'right') => {
-    if (managersScrollRef.current) {
-      const scrollAmount = 320;
-      managersScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   if (isLoading) {
     return (
-      <section className="py-20 bg-accent/10">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -123,526 +97,186 @@ export const ChairmanQuote = ({
   return (
     <section
       ref={ref}
-      className={`py-20 bg-accent/10 transition-all duration-1000 ${
+      className={`py-16 md:py-24 bg-gradient-to-b from-background via-muted/20 to-background transition-all duration-1000 ${
         inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Section Title */}
-          <div className={`text-center mb-12 transition-all duration-700 ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">ทีมผู้บริหาร</h2>
-            <p className="text-muted-foreground">ครอบครัว กอวรกุล</p>
+          {/* Section Intro */}
+          <div className="text-center mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest mb-4">
+              <Briefcase className="w-4 h-4" />
+              Leadership
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
+              คณะผู้บริหาร JW Group
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+              ทีมผู้นำที่มีประสบการณ์และวิสัยทัศน์ ขับเคลื่อนทุกธุรกิจในกลุ่ม
+            </p>
           </div>
 
-          {/* Family Tree Container */}
-          <div className="relative">
-            {/* Chairman Section */}
-            <div 
-              className={`flex flex-col items-center transition-all duration-700 delay-200 ${
-                inView ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
-              }`}
-            >
-              {/* Chairman - Top of Tree */}
-              <div 
-                className={`relative cursor-pointer group ${
-                  hoveredMember === 'chairman' ? 'z-10' : ''
-                }`}
-                onClick={handleChairmanClick}
-                onMouseEnter={() => setHoveredMember('chairman')}
-                onMouseLeave={() => setHoveredMember(null)}
-              >
-                {/* Glow effect on hover */}
-                <div className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 ${
-                  showDirectors 
-                    ? 'bg-primary/30 opacity-100 scale-125' 
-                    : hoveredMember === 'chairman' 
-                      ? 'bg-primary/20 opacity-100 scale-125' 
-                      : 'opacity-0'
-                }`} />
-                
-                {/* Image container */}
-                <div className={`relative w-40 h-40 md:w-52 md:h-52 rounded-full overflow-hidden border-4 shadow-2xl transition-all duration-500 ${
-                  showDirectors
-                    ? 'border-primary scale-110 shadow-primary/40'
-                    : hoveredMember === 'chairman' 
-                      ? 'border-primary scale-110 shadow-primary/30' 
-                      : 'border-primary/20'
-                }`}>
-                  <img 
-                    src={chairmanImage} 
+          {/* Chairman — Editorial Layout */}
+          <div className="grid md:grid-cols-5 gap-8 md:gap-12 items-center bg-card border border-border/50 rounded-3xl p-6 md:p-10 shadow-lg mb-16">
+            {/* Portrait */}
+            <div className="md:col-span-2 flex justify-center">
+              <div className="relative">
+                <div className="absolute -inset-3 rounded-2xl bg-primary/10" />
+                <div className="relative w-48 h-60 md:w-64 md:h-80 rounded-2xl overflow-hidden shadow-xl border border-border/30">
+                  <img
+                    src={chairmanImage}
                     alt={chairmanName}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover"
                   />
-                  
-                  {/* Click indicator overlay */}
-                  {directors.length > 0 && (
-                    <div className={`absolute inset-0 bg-primary/10 flex items-center justify-center transition-opacity duration-300 ${
-                      !showDirectors && hoveredMember === 'chairman' ? 'opacity-100' : 'opacity-0'
-                    }`}>
-                      <div className="bg-background/90 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-2 shadow-lg">
-                        <Users className="w-4 h-4 text-primary" />
-                        <span className="text-xs font-medium text-foreground">ดูทีมผู้บริหาร</span>
-                      </div>
-                    </div>
-                  )}
                 </div>
-                
-                {/* Decorative rings */}
-                <div className={`absolute inset-0 rounded-full border-2 transition-all duration-500 ${
-                  showDirectors || hoveredMember === 'chairman' ? 'border-primary/50 scale-[1.15]' : 'border-primary/20 scale-110'
-                }`} />
-                <div className={`absolute inset-0 rounded-full border transition-all duration-500 ${
-                  showDirectors || hoveredMember === 'chairman' ? 'border-primary/30 scale-[1.3]' : 'border-primary/10 scale-125'
-                }`} />
-                
-                {/* Pulse animation when not expanded - TEMPORARILY DISABLED */}
-                {/* {!showDirectors && directors.length > 0 && (
-                  <div className="absolute inset-0 rounded-full border-2 border-primary/40 animate-ping" style={{ animationDuration: '2s' }} />
-                )} */}
-              </div>
-              
-              {/* Chairman Info */}
-              <div className={`mt-4 text-center transition-all duration-300 ${
-                hoveredMember === 'chairman' || showDirectors ? 'transform scale-105' : ''
-              }`}>
-                <div className="text-xl font-bold text-foreground">{chairmanName}</div>
-                <div className="text-primary font-medium">{chairmanTitle}</div>
-                {/* TEMPORARILY DISABLED - Executive team button */}
-                {/* {!showDirectors && directors.length > 0 && (
-                  <p className="text-sm text-muted-foreground mt-2 animate-pulse">คลิกเพื่อดูทีมผู้บริหาร</p>
-                )} */}
-              </div>
-
-              {/* Triangle Button for Managers - Below Chairman - TEMPORARILY DISABLED */}
-              {/* {managers.length > 0 && (
-                <div className="flex items-center gap-3 mt-4">
-                  <button
-                    onClick={handleShowManagers}
-                    className={`group relative flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
-                      showManagers 
-                        ? 'bg-primary/10 border border-primary/40' 
-                        : 'bg-muted/30 border border-muted-foreground/20 hover:bg-primary/5 hover:border-primary/30'
-                    }`}
-                    aria-label="ดูทีมผู้จัดการ"
-                  >
-                    <div className={`flex items-center justify-center transition-all duration-300 ${
-                      showManagers ? 'rotate-90' : ''
-                    }`}>
-                      <ChevronRight className={`w-4 h-4 transition-all duration-300 ${
-                        showManagers 
-                          ? 'text-primary' 
-                          : 'text-muted-foreground group-hover:text-primary'
-                      }`} />
-                    </div>
-                    <span className={`text-sm transition-all duration-300 ${
-                      showManagers 
-                        ? 'text-primary' 
-                        : 'text-muted-foreground group-hover:text-primary'
-                    }`}>
-                      {showManagers ? 'ซ่อนทีมผู้จัดการ' : 'ดูทีมผู้จัดการแผนก'}
-                    </span>
-                  </button>
-                </div>
-              )} */}
-            </div>
-
-            {/* Quote */}
-            <div className={`max-w-2xl mx-auto mt-6 transition-all duration-500 ${
-              hoveredMember === 'chairman' ? 'opacity-100 translate-y-0' : 'opacity-80'
-            }`}>
-              <div className="relative bg-card/50 backdrop-blur-sm rounded-2xl p-6 border border-border/50">
-                <Quote className="absolute -top-3 -left-3 w-8 h-8 text-primary/40" />
-                <blockquote className="text-lg text-foreground/90 font-light leading-relaxed italic text-center">
-                  "{chairmanQuote}"
-                </blockquote>
               </div>
             </div>
 
-            {/* Only show directors section if there are directors */}
-            {directors.length > 0 && (
-              <>
-                {/* Connecting Lines SVG - Toggle visibility */}
-                <div className={`relative h-20 md:h-24 transition-all duration-700 overflow-hidden ${
-                  showDirectors ? 'opacity-100 max-h-24' : 'opacity-0 max-h-0'
-                }`}>
-                  <svg 
-                    className="absolute inset-0 w-full h-full" 
-                    viewBox="0 0 400 80" 
-                    preserveAspectRatio="xMidYMid meet"
-                  >
-                    {/* Vertical line from chairman */}
-                    <line 
-                      x1="200" y1="0" x2="200" y2="30" 
-                      className="stroke-primary/40" 
-                      strokeWidth="2"
-                      strokeDasharray="4 2"
-                      style={{
-                        strokeDashoffset: showDirectors ? 0 : 20,
-                        transition: 'stroke-dashoffset 0.5s ease-out'
-                      }}
-                    />
-                    
-                    {/* Horizontal line */}
-                    <line 
-                      x1="100" y1="30" x2="300" y2="30" 
-                      className="stroke-primary/40" 
-                      strokeWidth="2"
-                      strokeDasharray="4 2"
-                      style={{
-                        strokeDashoffset: showDirectors ? 0 : 200,
-                        transition: 'stroke-dashoffset 0.8s ease-out 0.3s'
-                      }}
-                    />
-                    
-                    {/* Left vertical line to director 1 */}
-                    <line 
-                      x1="100" y1="30" x2="100" y2="80" 
-                      className="stroke-primary/40" 
-                      strokeWidth="2"
-                      strokeDasharray="4 2"
-                      style={{
-                        strokeDashoffset: showDirectors ? 0 : 50,
-                        transition: 'stroke-dashoffset 0.5s ease-out 0.6s'
-                      }}
-                    />
-                    
-                    {/* Right vertical line to director 2 */}
-                    <line 
-                      x1="300" y1="30" x2="300" y2="80" 
-                      className="stroke-primary/40" 
-                      strokeWidth="2"
-                      strokeDasharray="4 2"
-                      style={{
-                        strokeDashoffset: showDirectors ? 0 : 50,
-                        transition: 'stroke-dashoffset 0.5s ease-out 0.6s'
-                      }}
-                    />
-
-                    {/* Connection points */}
-                    <circle cx="200" cy="30" r="4" className="fill-primary/60" style={{
-                      opacity: showDirectors ? 1 : 0,
-                      transition: 'opacity 0.3s ease-out 0.2s'
-                    }} />
-                    <circle cx="100" cy="30" r="4" className="fill-primary/60" style={{
-                      opacity: showDirectors ? 1 : 0,
-                      transition: 'opacity 0.3s ease-out 0.5s'
-                    }} />
-                    <circle cx="300" cy="30" r="4" className="fill-primary/60" style={{
-                      opacity: showDirectors ? 1 : 0,
-                      transition: 'opacity 0.3s ease-out 0.5s'
-                    }} />
-                  </svg>
+            {/* Quote + Credentials */}
+            <div className="md:col-span-3">
+              <div className="text-xs uppercase tracking-widest text-primary font-bold mb-3">
+                Chairman's Message
+              </div>
+              <Quote className="w-10 h-10 text-primary/20 mb-2" />
+              <blockquote className="text-lg md:text-2xl text-foreground/90 font-light leading-relaxed italic mb-6">
+                "{chairmanQuote}"
+              </blockquote>
+              <div className="border-t border-border/40 pt-5">
+                <div className="text-xl md:text-2xl font-bold text-foreground">
+                  {chairmanName}
                 </div>
+                <div className="text-primary font-semibold mt-1">{chairmanTitle}</div>
+                {chairman?.description && (
+                  <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                    {chairman.description}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
 
-                {/* Managing Directors - Toggle visibility */}
-                <div className={`flex justify-center gap-8 md:gap-24 lg:gap-32 transition-all duration-700 overflow-hidden ${
-                  showDirectors 
-                    ? 'opacity-100 translate-y-0 max-h-[500px]' 
-                    : 'opacity-0 -translate-y-10 max-h-0'
-                }`}>
-                  {directors.map((director, index) => (
-                    <div 
-                      key={director.id}
-                      className={`text-center group transition-all duration-500 ${
-                        hoveredMember === director.id ? 'z-10' : ''
-                      }`}
-                      style={{ 
-                        transitionDelay: showDirectors ? `${0.3 + index * 0.15}s` : '0s',
-                        transform: showDirectors ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.9)',
-                        opacity: showDirectors ? 1 : 0
-                      }}
-                      onMouseEnter={() => setHoveredMember(director.id)}
-                      onMouseLeave={() => setHoveredMember(null)}
-                    >
-                      <div className="relative">
-                        {/* Glow effect */}
-                        <div className={`absolute inset-0 rounded-full bg-primary/20 blur-xl transition-all duration-300 ${
-                          hoveredMember === director.id ? 'opacity-100 scale-125' : 'opacity-0'
-                        }`} />
-                        
-                        {/* Image container */}
-                        <div className={`relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-3 shadow-lg mx-auto transition-all duration-500 ${
-                          hoveredMember === director.id 
-                            ? 'border-primary scale-110 shadow-primary/30 shadow-xl' 
-                            : 'border-primary/15'
-                        }`}>
-                          {getDirectorImage(director) ? (
-                            <img 
-                              src={getDirectorImage(director)!} 
+          {/* Managing Directors */}
+          {directors.length > 0 && (
+            <div className="mb-16">
+              <div className="text-center mb-8">
+                <div className="text-xs uppercase tracking-widest text-primary font-bold mb-2">
+                  Managing Directors
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+                  กรรมการผู้จัดการ
+                </h3>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                {directors.map((director) => (
+                  <div
+                    key={director.id}
+                    className="group bg-card border border-border/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="flex items-center gap-5">
+                      <div className="relative flex-shrink-0">
+                        <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border border-border/40 shadow-sm">
+                          {director.image_url ? (
+                            <img
+                              src={director.image_url}
                               alt={director.name}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                           ) : (
-                            <div className="w-full h-full bg-muted flex items-center justify-center">
-                              <span className="text-2xl md:text-3xl font-bold text-muted-foreground">
-                                {director.name.charAt(0)}
-                              </span>
+                            <div className="w-full h-full bg-muted flex items-center justify-center text-2xl font-bold text-muted-foreground">
+                              {director.name.charAt(0)}
                             </div>
                           )}
                         </div>
-                        
-                        {/* Decorative ring */}
-                        <div className={`absolute inset-0 rounded-full border transition-all duration-500 mx-auto w-32 h-32 md:w-40 md:h-40 left-1/2 -translate-x-1/2 ${
-                          hoveredMember === director.id ? 'border-primary/40 scale-[1.15]' : 'border-primary/15 scale-110'
-                        }`} />
                       </div>
-                      
-                      {/* Info - Always Visible when shown */}
-                      <div className={`mt-4 transition-all duration-300 ${
-                        hoveredMember === director.id ? 'transform scale-105' : ''
-                      }`}>
-                        <div className="text-lg font-bold text-foreground">{director.name}</div>
-                        <div className="text-primary font-medium text-sm">{director.title}</div>
-                        
-                        {/* Description - Always visible when shown */}
+                      <div className="min-w-0">
+                        <div className="text-lg font-bold text-foreground truncate">
+                          {director.name}
+                        </div>
+                        <div className="text-sm text-primary font-medium mt-0.5">
+                          {director.title}
+                        </div>
                         {director.description && (
-                          <div className="mt-2 text-sm text-muted-foreground max-w-[200px] mx-auto">
+                          <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
                             {director.description}
-                          </div>
+                          </p>
                         )}
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {/* Toggle hint */}
-                <div className="text-center mt-6">
-                  <p className="text-sm text-muted-foreground">
-                    {showDirectors ? 'คลิกที่รูปประธานเพื่อซ่อน' : 'คลิกที่รูปประธานเพื่อดูทีมผู้บริหาร'}
-                  </p>
-                </div>
-              </>
-            )}
-
-            {/* Managers Interactive Section - Always below directors */}
-            {managers.length > 0 && (
-              <div className={`transition-all duration-700 overflow-hidden ${
-                showManagers ? 'opacity-100 max-h-[600px]' : 'opacity-0 max-h-0'
-              }`}>
-                {/* Connecting Lines from Directors to Managers */}
-                {showDirectors && directors.length > 0 && (
-                  <div className={`relative h-16 md:h-20 transition-all duration-500 ${
-                    showManagers ? 'opacity-100' : 'opacity-0'
-                  }`}>
-                    <svg 
-                      className="absolute inset-0 w-full h-full" 
-                      viewBox="0 0 400 60" 
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <defs>
-                        {/* Flowing gradient animation */}
-                        <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
-                            <animate attributeName="offset" values="-1;1" dur="2s" repeatCount="indefinite" />
-                          </stop>
-                          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.6">
-                            <animate attributeName="offset" values="-0.5;1.5" dur="2s" repeatCount="indefinite" />
-                          </stop>
-                          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
-                            <animate attributeName="offset" values="0;2" dur="2s" repeatCount="indefinite" />
-                          </stop>
-                        </linearGradient>
-                        <linearGradient id="flowGradientV" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
-                            <animate attributeName="offset" values="-1;1" dur="1.5s" repeatCount="indefinite" />
-                          </stop>
-                          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.6">
-                            <animate attributeName="offset" values="-0.5;1.5" dur="1.5s" repeatCount="indefinite" />
-                          </stop>
-                          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2">
-                            <animate attributeName="offset" values="0;2" dur="1.5s" repeatCount="indefinite" />
-                          </stop>
-                        </linearGradient>
-                      </defs>
-
-                      {/* Left director vertical line down */}
-                      <line 
-                        x1="100" y1="0" x2="100" y2="25" 
-                        stroke="url(#flowGradientV)" 
-                        strokeWidth="2"
-                        style={{
-                          opacity: showManagers ? 1 : 0,
-                          transition: 'opacity 0.4s ease-out'
-                        }}
-                      />
-                      
-                      {/* Right director vertical line down */}
-                      <line 
-                        x1="300" y1="0" x2="300" y2="25" 
-                        stroke="url(#flowGradientV)" 
-                        strokeWidth="2"
-                        style={{
-                          opacity: showManagers ? 1 : 0,
-                          transition: 'opacity 0.4s ease-out 0.1s'
-                        }}
-                      />
-                      
-                      {/* Horizontal line connecting both */}
-                      <line 
-                        x1="100" y1="25" x2="300" y2="25" 
-                        stroke="url(#flowGradient)" 
-                        strokeWidth="2"
-                        style={{
-                          opacity: showManagers ? 1 : 0,
-                          transition: 'opacity 0.5s ease-out 0.2s'
-                        }}
-                      />
-                      
-                      {/* Center vertical line down to managers */}
-                      <line 
-                        x1="200" y1="25" x2="200" y2="60" 
-                        stroke="url(#flowGradientV)" 
-                        strokeWidth="2"
-                        style={{
-                          opacity: showManagers ? 1 : 0,
-                          transition: 'opacity 0.4s ease-out 0.4s'
-                        }}
-                      />
-
-                      {/* Connection points with pulse */}
-                      <circle cx="100" cy="25" r="4" className="fill-primary/50" style={{
-                        opacity: showManagers ? 1 : 0,
-                        transition: 'opacity 0.3s ease-out 0.3s'
-                      }}>
-                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="300" cy="25" r="4" className="fill-primary/50" style={{
-                        opacity: showManagers ? 1 : 0,
-                        transition: 'opacity 0.3s ease-out 0.3s'
-                      }}>
-                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" begin="0.3s" />
-                        <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite" begin="0.3s" />
-                      </circle>
-                      <circle cx="200" cy="25" r="4" className="fill-primary/60" style={{
-                        opacity: showManagers ? 1 : 0,
-                        transition: 'opacity 0.3s ease-out 0.4s'
-                      }}>
-                        <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="0.5s" />
-                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.5s" />
-                      </circle>
-                      
-                      {/* Flowing particles */}
-                      <circle r="2" className="fill-primary">
-                        <animateMotion dur="3s" repeatCount="indefinite" path="M100,0 L100,25 L200,25 L200,60" />
-                        <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" />
-                      </circle>
-                      <circle r="2" className="fill-primary">
-                        <animateMotion dur="3s" repeatCount="indefinite" path="M300,0 L300,25 L200,25 L200,60" begin="1.5s" />
-                        <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1.5s" />
-                      </circle>
-                    </svg>
                   </div>
-                )}
-
-                {/* Section Header */}
-                <div className="text-center mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold text-foreground">ทีมผู้จัดการแผนก</h3>
-                  <p className="text-muted-foreground text-sm">เลื่อนเพื่อดูทั้งหมด</p>
-                </div>
-
-                {/* Scroll Navigation */}
-                <div className="relative">
-                  {/* Left Arrow */}
-                  <button
-                    onClick={() => scrollManagers('left')}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background/90 backdrop-blur-sm border border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                    aria-label="เลื่อนไปทางซ้าย"
-                  >
-                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-                  </button>
-
-                  {/* Managers Horizontal Scroll */}
-                  <div 
-                    ref={managersScrollRef}
-                    className="flex gap-6 overflow-x-auto scrollbar-hide px-14 py-4 scroll-smooth"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  >
-                    {managers.map((manager, index) => {
-                      const dept = departmentInfo[manager.department || ''] || { 
-                        name: 'แผนกอื่นๆ', 
-                        color: 'from-gray-500 to-slate-500',
-                        icon: '📋'
-                      };
-                      
-                      return (
-                        <div
-                          key={manager.id}
-                          className="flex-shrink-0 w-64 md:w-72 group"
-                          style={{
-                            animationDelay: `${index * 0.1}s`
-                          }}
-                        >
-                          <div className="bg-card border border-border rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 h-full">
-                            {/* Department Badge */}
-                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${dept.color} text-white text-xs font-medium mb-4`}>
-                              <span>{dept.icon}</span>
-                              <span>{dept.name}</span>
-                            </div>
-
-                            {/* Profile Image */}
-                            <div className="relative w-24 h-24 mx-auto mb-4">
-                              <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${dept.color} opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-300`} />
-                              <div className="relative w-full h-full rounded-full overflow-hidden border-3 border-border group-hover:border-primary transition-colors duration-300">
-                                {manager.image_url ? (
-                                  <img 
-                                    src={manager.image_url} 
-                                    alt={manager.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                  />
-                                ) : (
-                                  <div className={`w-full h-full bg-gradient-to-br ${dept.color} flex items-center justify-center text-white text-3xl`}>
-                                    {manager.name.charAt(0)}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Info */}
-                            <div className="text-center">
-                              <h4 className="font-bold text-foreground text-lg group-hover:text-primary transition-colors duration-300">
-                                {manager.name}
-                              </h4>
-                              <p className="text-primary text-sm font-medium mt-1">
-                                {manager.title}
-                              </p>
-                              {manager.description && (
-                                <p className="text-muted-foreground text-xs mt-3 line-clamp-2">
-                                  {manager.description}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Right Arrow */}
-                  <button
-                    onClick={() => scrollManagers('right')}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-background/90 backdrop-blur-sm border border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                    aria-label="เลื่อนไปทางขวา"
-                  >
-                    <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-                  </button>
-                </div>
-
-                {/* Scroll Indicator Dots */}
-                <div className="flex justify-center gap-2 mt-4">
-                  {managers.map((_, index) => (
-                    <div 
-                      key={index}
-                      className="w-2 h-2 rounded-full bg-primary/30"
-                    />
-                  ))}
-                </div>
+                ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* Department Managers — Clean Grid */}
+          {managers.length > 0 && (
+            <div>
+              <div className="text-center mb-8">
+                <div className="text-xs uppercase tracking-widest text-primary font-bold mb-2">
+                  Department Heads
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+                  ผู้จัดการแผนก
+                </h3>
+                <p className="text-sm text-muted-foreground mt-2">
+                  ผู้นำในแต่ละสายงานของกลุ่ม
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {managers.map((manager) => {
+                  const dept =
+                    departmentInfo[manager.department || ''] || {
+                      name: 'แผนกอื่นๆ',
+                      accent: 'text-muted-foreground bg-muted border-border',
+                      dot: 'bg-muted-foreground',
+                    };
+
+                  return (
+                    <div
+                      key={manager.id}
+                      className="group bg-card border border-border/50 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                    >
+                      {/* Department badge */}
+                      <div
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] md:text-xs font-semibold mb-4 ${dept.accent}`}
+                      >
+                        <span className={`w-1.5 h-1.5 rounded-full ${dept.dot}`} />
+                        {dept.name}
+                      </div>
+
+                      {/* Avatar */}
+                      <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full overflow-hidden border border-border/40 shadow-sm bg-muted">
+                        {manager.image_url ? (
+                          <img
+                            src={manager.image_url}
+                            alt={manager.name}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-muted-foreground">
+                            {manager.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Info */}
+                      <div className="text-center">
+                        <div className="text-sm md:text-base font-bold text-foreground leading-tight">
+                          {manager.name}
+                        </div>
+                        <div className="text-[11px] md:text-xs text-muted-foreground mt-1 line-clamp-2">
+                          {manager.title}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

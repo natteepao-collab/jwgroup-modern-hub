@@ -262,9 +262,34 @@ const TimelineItem = ({
   );
 };
 
+// Convert any year string (BE/AD/"ปัจจุบัน") to numeric BE for comparison
+const toBE = (yr: string): number => {
+  if (!yr) return 0;
+  if (yr.includes('ปัจจุบัน') || yr.toLowerCase().includes('present')) return 9999;
+  const n = parseInt(yr.replace(/\D/g, ''), 10);
+  if (Number.isNaN(n)) return 0;
+  // If 4-digit AD year (< 2400), convert to BE
+  return n < 2400 ? n + 543 : n;
+};
+
+interface Chapter {
+  key: string;
+  title: string;
+  subtitle: string;
+  rangeLabel: string;
+  min: number;
+  max: number;
+}
+
+const chapters: Chapter[] = [
+  { key: 'origin', title: 'บทที่ 1 · จุดเริ่มต้น', subtitle: 'รากฐานของกลุ่ม JW จากหนึ่งวิสัยทัศน์', rangeLabel: 'ก่อน 2550', min: 0, max: 2549 },
+  { key: 'growth', title: 'บทที่ 2 · เติบโตอย่างมั่นคง', subtitle: 'ขยายธุรกิจอสังหาฯ และวางรากฐานคุณภาพ', rangeLabel: '2550 – 2562', min: 2550, max: 2562 },
+  { key: 'expand', title: 'บทที่ 3 · ก้าวสู่หลายธุรกิจ', subtitle: 'โรงแรม สัตวแพทย์ สุขภาพ และนวัตกรรมใหม่', rangeLabel: '2563 – ปัจจุบัน', min: 2563, max: 9999 },
+];
+
 const CompanyTimeline = () => {
   const [events, setEvents] = useState<TimelineEvent[]>(mockTimelineEvents);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
@@ -278,6 +303,17 @@ const CompanyTimeline = () => {
   const uniqueYears = useMemo(() => {
     const years = [...new Set(events.map(e => e.year))];
     return years;
+  }, [events]);
+
+  // Group events into chapters
+  const eventsByChapter = useMemo(() => {
+    return chapters.map(ch => ({
+      ...ch,
+      events: events.filter(e => {
+        const y = toBE(e.year);
+        return y >= ch.min && y <= ch.max;
+      }),
+    })).filter(ch => ch.events.length > 0);
   }, [events]);
 
   useEffect(() => {
@@ -358,28 +394,45 @@ const CompanyTimeline = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-muted/30">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
       <div className="container mx-auto px-3 sm:px-4">
-        {/* Section Header - Clickable */}
-        <div 
+        {/* Section Intro */}
+        <div
           ref={headerRef}
-          onClick={toggleAll}
-          className={`text-center mb-6 sm:mb-8 cursor-pointer group transition-all duration-700 ${
+          className={`text-center mb-8 sm:mb-10 transition-all duration-700 ${
             headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-              เส้นทางแห่งความสำเร็จ
-            </h2>
-            <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-              <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-            </div>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest mb-4">
+            <Calendar className="w-4 h-4" />
+            Our Journey
           </div>
-          <p className="text-sm sm:text-base text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto px-2">
-            {isOpen ? 'คลิกที่แต่ละเหตุการณ์เพื่อดูรายละเอียด' : 'คลิกเพื่อดูเส้นทางการเติบโตของ JW Group'}
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
+            เส้นทาง 30+ ปีของ JW Group
+          </h2>
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
+            จากจุดเริ่มต้นเล็ก ๆ สู่กลุ่มธุรกิจหลายแขนงที่เติบโตอย่างมั่นคงในแต่ละช่วงเวลา
           </p>
+
+          {/* Milestone badges */}
+          <div className="grid grid-cols-3 gap-3 max-w-2xl mx-auto mt-8">
+            {eventsByChapter.map(ch => (
+              <div key={ch.key} className="bg-card border border-border/50 rounded-2xl p-3 sm:p-4 shadow-sm">
+                <div className="text-[10px] sm:text-xs uppercase tracking-wider text-primary font-bold">{ch.rangeLabel}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-foreground mt-1">{ch.events.length}</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">เหตุการณ์</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Toggle Button */}
+          <button
+            onClick={toggleAll}
+            className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-card border border-border/50 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold text-foreground"
+          >
+            {isOpen ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4 text-primary" />}
+            {isOpen ? 'ย่อ Timeline' : 'แสดง Timeline เต็ม'}
+          </button>
         </div>
 
         {/* Jump to Year - Improved Mobile Layout */}
@@ -463,20 +516,49 @@ const CompanyTimeline = () => {
             {/* Vertical Line */}
             <div className="absolute left-[18px] sm:left-[22px] md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent md:-translate-x-1/2" />
 
-            {/* Timeline Events */}
-            <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-12">
-              {events.map((event, index) => (
-                <div key={event.id} ref={(el) => setEventRef(event.id, el)}>
-                  <TimelineItem
-                    event={event}
-                    index={index}
-                    isLeft={index % 2 === 0}
-                    isExpanded={expandedItems.has(event.id)}
-                    onToggle={() => toggleItem(event.id)}
-                    isHighlighted={highlightedEventId === event.id}
-                  />
-                </div>
-              ))}
+            {/* Timeline Events grouped by Chapter */}
+            <div className="space-y-12 sm:space-y-16">
+              {eventsByChapter.map((chapter, chIdx) => {
+                // Index offset across chapters so isLeft alternates continuously
+                const offset = eventsByChapter.slice(0, chIdx).reduce((s, c) => s + c.events.length, 0);
+                return (
+                  <div key={chapter.key} className="relative">
+                    {/* Chapter divider */}
+                    <div className="relative mb-8 sm:mb-10 pl-14 sm:pl-16 md:pl-0 md:text-center">
+                      <div className="md:inline-block bg-card border-l-4 md:border-l-0 md:border-t-4 border-primary rounded-r-2xl md:rounded-b-2xl md:rounded-t-none px-5 py-4 shadow-md">
+                        <div className="text-[10px] sm:text-xs uppercase tracking-widest text-primary font-bold mb-1">
+                          {chapter.rangeLabel}
+                        </div>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+                          {chapter.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-md md:mx-auto">
+                          {chapter.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Events in chapter */}
+                    <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-12">
+                      {chapter.events.map((event, idx) => {
+                        const globalIndex = offset + idx;
+                        return (
+                          <div key={event.id} ref={(el) => setEventRef(event.id, el)}>
+                            <TimelineItem
+                              event={event}
+                              index={globalIndex}
+                              isLeft={globalIndex % 2 === 0}
+                              isExpanded={expandedItems.has(event.id)}
+                              onToggle={() => toggleItem(event.id)}
+                              isHighlighted={highlightedEventId === event.id}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
