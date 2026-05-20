@@ -9,6 +9,7 @@ import { MapPin, Briefcase, Clock, Gift, Shield, Calendar, Car, Percent, Trendin
 import { supabase } from '@/integrations/supabase/client';
 import JobApplicationForm from '@/components/JobApplicationForm';
 import { SEO } from '@/components/SEO';
+import { buildBreadcrumb } from '@/lib/seoSchemas';
 
 // Icon mapping for benefits
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
