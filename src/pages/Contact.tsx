@@ -66,6 +66,13 @@ const Contact = () => {
         title={t('contact.title')}
         description={t('contact.subtitle')}
         canonicalUrl="/contact"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@graph": [
+            localBusinessSchema,
+            buildBreadcrumb([{ name: t('contact.title'), path: '/contact' }]),
+          ],
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         <div
