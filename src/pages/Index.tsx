@@ -39,8 +39,8 @@ const Index = () => {
   const { news: dbNews, isLoading: newsLoading } = useNews();
 
   // Basic SEO setup for home page
-  const seoTitle = t('hero.title') || "กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ";
-  const seoDesc = t('hero.subtitle') || "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า";
+  const seoTitle = "กลุ่มธุรกิจชั้นนำ | อสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ";
+  const seoDesc = "JW Group - กลุ่มธุรกิจครบวงจรที่มุ่งมั่นสร้างสรรค์นวัตกรรมและคุณภาพชีวิตที่ดีกว่า ธุรกิจอสังหาริมทรัพย์ โรงแรมหรู โรงพยาบาลสัตว์ และผลิตภัณฑ์เพื่อสุขภาพ";
 
   // Organization + WebSite structured data for Google Knowledge Panel
   const organizationSchema = {
