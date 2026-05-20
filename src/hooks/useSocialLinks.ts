@@ -9,10 +9,10 @@ interface SocialLinks {
 }
 
 const defaultLinks: SocialLinks = {
-  facebook: 'https://facebook.com',
-  instagram: 'https://instagram.com',
-  tiktok: 'https://tiktok.com',
-  youtube: 'https://youtube.com'
+  facebook: '',
+  instagram: '',
+  tiktok: '',
+  youtube: ''
 };
 
 export const useSocialLinks = () => {
