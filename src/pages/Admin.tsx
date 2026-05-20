@@ -267,6 +267,11 @@ const Admin = () => {
             <ContactManagement />
           </TabsContent>
 
+          <TabsContent value="chatai">
+            <ChatAnalytics />
+          </TabsContent>
+
+
           <TabsContent value="content">
             <ContentManagement />
           </TabsContent>
