@@ -141,7 +141,7 @@ const Index = () => {
     {
       name: wellnessContent.title || t('business.wellness.name'),
       description: wellnessContent.content || t('business.wellness.description'),
-      url: getBusinessUrl(wellnessContent, 'https://jwherbal-roots-and-remedies.lovable.app'),
+      url: getBusinessUrl(wellnessContent, 'https://www.jwherbal.com'),
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
       logoStyle: { scale: 1.4 },
