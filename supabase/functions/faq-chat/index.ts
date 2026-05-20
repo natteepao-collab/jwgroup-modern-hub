@@ -340,7 +340,7 @@ serve(async (req) => {
     return new Response(clientStream, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
   } catch (error) {
     console.error("FAQ chat error:", error);
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }), {
+    return new Response(JSON.stringify({ error: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
