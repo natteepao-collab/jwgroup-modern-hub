@@ -136,15 +136,68 @@ const Index = () => {
         canonicalUrl="/"
         structuredData={organizationSchema}
       />
-      <AnnouncementModal autoShow delay={1500} />
+      {/* Welcome modal disabled to reduce intrusion on first impression. 
+          Trigger manually via state if ever needed. */}
+      {/* <AnnouncementModal autoShow delay={1500} /> */}
 
-      {/* Hero Section - Cinematic Video Only - Responsive height */}
+      {/* Hero Section - Cinematic Video + Headline overlay */}
       <section
         ref={heroRef}
-        className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen overflow-hidden"
+        className="relative h-[70vh] sm:h-[75vh] md:h-[85vh] lg:h-screen overflow-hidden"
       >
         <Hero3DBackground />
+
+        {/* Hero content overlay */}
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div
+            className={`max-w-4xl text-center transition-all duration-1000 ${
+              heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
+            <span className="inline-block mb-3 sm:mb-4 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-xs sm:text-sm font-medium tracking-wider uppercase shadow-lg">
+              {t('hero.welcome')} JW Group
+            </span>
+
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+              style={{ textShadow: '0 4px 24px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4)' }}
+            >
+              {t('hero.tagline')}
+            </h1>
+
+            <p
+              className="text-base sm:text-lg md:text-xl text-white/95 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed"
+              style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+            >
+              {t('hero.subheadline')}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+              <Button
+                asChild
+                size="lg"
+                className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl text-base px-6 sm:px-8 h-12 sm:h-14 font-semibold"
+              >
+                <Link to="/business">
+                  {t('hero.ctaBusiness')}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto bg-white/10 backdrop-blur-md border-2 border-white/70 text-white hover:bg-white hover:text-foreground shadow-xl text-base px-6 sm:px-8 h-12 sm:h-14 font-semibold"
+              >
+                <Link to="/contact">
+                  {t('nav.contact')}
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
       </section>
+
 
       {/* About Section with Stats */}
       <section
