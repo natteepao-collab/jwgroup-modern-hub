@@ -208,10 +208,10 @@ const AnimatedStats = () => {
           </p>
         </div>
 
-        {/* Stats Grid - 2 stat cards */}
+        {/* Stats Grid - 3 stat cards */}
         <div
           ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-3xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto"
         >
           {/* Years of Experience */}
           <StatCard
@@ -268,7 +268,62 @@ const AnimatedStats = () => {
               </div>
             </div>
           </StatCard>
+
+          {/* Awards - Clickable */}
+          <StatCard
+            icon={<Award className="w-8 h-8" />}
+            value={awards.length || 1}
+            suffix="+"
+            label="รางวัลที่ได้รับ"
+            index={2}
+            inView={inView}
+            isClickable={awards.length > 0}
+            isExpanded={expandedSection === 'awards'}
+            onClick={() => awards.length > 0 && toggleSection('awards')}
+          >
+            <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[400px] overflow-y-auto">
+              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
+                <Trophy className="w-5 h-5 text-primary" />
+                <h4 className="font-bold text-foreground">รางวัลที่ได้รับทั้งหมด</h4>
+              </div>
+              <div className="space-y-3">
+                {awards.map((award) => {
+                  const awardImageUrl = parseAwardImage(award.image_url);
+                  return (
+                    <Link
+                      to="/awards"
+                      key={award.id}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-primary/10 transition-colors group cursor-pointer"
+                    >
+                      {awardImageUrl ? (
+                        <img
+                          src={awardImageUrl}
+                          alt={getTitle(award)}
+                          className="w-12 h-12 rounded-lg object-cover"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <Trophy className="w-6 h-6 text-primary" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-foreground truncate group-hover:text-primary transition-colors">
+                          {getTitle(award)}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {award.award_year && `ปี ${award.award_year}`}
+                          {award.awarding_organization && ` • ${award.awarding_organization}`}
+                        </p>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </StatCard>
         </div>
+
 
       </div>
     </section>
