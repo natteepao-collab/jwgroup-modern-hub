@@ -149,75 +149,74 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="flex flex-wrap h-auto w-full gap-1 p-1 justify-start">
-            <TabsTrigger value="news" className="flex items-center gap-2">
-              <Newspaper className="h-4 w-4" />
-              <span className="hidden sm:inline">ข่าวสาร</span>
+          <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-9 h-auto w-full gap-1.5 p-2 bg-muted/60 rounded-xl">
+            <TabsTrigger value="news" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Newspaper className="h-4 w-4 shrink-0" />
+              <span className="truncate">ข่าวสาร</span>
             </TabsTrigger>
-            <TabsTrigger value="projects" className="flex items-center gap-2">
-              <Building className="h-4 w-4" />
-              <span className="hidden sm:inline">โครงการ</span>
+            <TabsTrigger value="projects" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Building className="h-4 w-4 shrink-0" />
+              <span className="truncate">โครงการ</span>
             </TabsTrigger>
-            <TabsTrigger value="abouthistory" className="flex items-center gap-2">
-              <Info className="h-4 w-4" />
-              <span className="hidden sm:inline">ประวัติ</span>
+            <TabsTrigger value="abouthistory" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Info className="h-4 w-4 shrink-0" />
+              <span className="truncate">ประวัติ</span>
             </TabsTrigger>
-            <TabsTrigger value="executives" className="flex items-center gap-2">
-              <UserCircle className="h-4 w-4" />
-              <span className="hidden sm:inline">ผู้บริหาร</span>
+            <TabsTrigger value="executives" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <UserCircle className="h-4 w-4 shrink-0" />
+              <span className="truncate">ผู้บริหาร</span>
             </TabsTrigger>
-            <TabsTrigger value="orgchart" className="flex items-center gap-2">
-              <GitBranch className="h-4 w-4" />
-              <span className="hidden sm:inline">โครงสร้าง</span>
+            <TabsTrigger value="orgchart" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <GitBranch className="h-4 w-4 shrink-0" />
+              <span className="truncate">โครงสร้าง</span>
             </TabsTrigger>
-            <TabsTrigger value="visionmission" className="flex items-center gap-2">
-              <Target className="h-4 w-4" />
-              <span className="hidden sm:inline">วิสัยทัศน์</span>
+            <TabsTrigger value="visionmission" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Target className="h-4 w-4 shrink-0" />
+              <span className="truncate">วิสัยทัศน์</span>
             </TabsTrigger>
-            <TabsTrigger value="careers" className="flex items-center gap-2">
-              <Briefcase className="h-4 w-4" />
-              <span className="hidden sm:inline">ร่วมงาน</span>
+            <TabsTrigger value="careers" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Briefcase className="h-4 w-4 shrink-0" />
+              <span className="truncate">ร่วมงาน</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span className="hidden sm:inline">Timeline</span>
+            <TabsTrigger value="timeline" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Calendar className="h-4 w-4 shrink-0" />
+              <span className="truncate">Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="testimonials" className="flex items-center gap-2">
-              <Star className="h-4 w-4" />
-              <span className="hidden sm:inline">รีวิว</span>
+            <TabsTrigger value="testimonials" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Star className="h-4 w-4 shrink-0" />
+              <span className="truncate">รีวิว</span>
             </TabsTrigger>
-            <TabsTrigger value="awards" className="flex items-center gap-2">
-              <Trophy className="h-4 w-4" />
-              <span className="hidden sm:inline">รางวัล</span>
+            <TabsTrigger value="awards" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Trophy className="h-4 w-4 shrink-0" />
+              <span className="truncate">รางวัล</span>
             </TabsTrigger>
-            <TabsTrigger value="newsletter" className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              <span className="hidden sm:inline">Newsletter</span>
+            <TabsTrigger value="newsletter" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Mail className="h-4 w-4 shrink-0" />
+              <span className="truncate">Newsletter</span>
             </TabsTrigger>
-            <TabsTrigger value="contacts" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
-              <span className="hidden sm:inline">ติดต่อ</span>
+            <TabsTrigger value="contacts" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <MessageSquare className="h-4 w-4 shrink-0" />
+              <span className="truncate">ติดต่อ</span>
             </TabsTrigger>
-            <TabsTrigger value="chatai" className="flex items-center gap-2">
-              <Bot className="h-4 w-4" />
-              <span className="hidden sm:inline">AI Chat</span>
+            <TabsTrigger value="chatai" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Bot className="h-4 w-4 shrink-0" />
+              <span className="truncate">AI Chat</span>
             </TabsTrigger>
-
-            <TabsTrigger value="content" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">เนื้อหา</span>
+            <TabsTrigger value="content" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <FileText className="h-4 w-4 shrink-0" />
+              <span className="truncate">เนื้อหา</span>
             </TabsTrigger>
-            <TabsTrigger value="images" className="flex items-center gap-2">
-              <ImageIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">รูปภาพ</span>
+            <TabsTrigger value="images" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <ImageIcon className="h-4 w-4 shrink-0" />
+              <span className="truncate">รูปภาพ</span>
             </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">ผู้ใช้</span>
+            <TabsTrigger value="users" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Users className="h-4 w-4 shrink-0" />
+              <span className="truncate">ผู้ใช้</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">ตั้งค่า</span>
+            <TabsTrigger value="settings" className="flex items-center justify-center gap-2 px-2 py-2 text-xs sm:text-sm whitespace-nowrap min-w-0">
+              <Settings className="h-4 w-4 shrink-0" />
+              <span className="truncate">ตั้งค่า</span>
             </TabsTrigger>
           </TabsList>
 
