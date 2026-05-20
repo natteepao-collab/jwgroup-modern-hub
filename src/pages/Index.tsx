@@ -189,7 +189,7 @@ const Index = () => {
               size="lg"
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl text-base px-6 sm:px-8 h-12 sm:h-14 font-semibold"
             >
-              <Link to="/business">
+              <Link to="/business" onClick={() => trackEvent('cta_click', { label: 'hero_explore_business' })}>
                 {t('hero.ctaBusiness')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
@@ -200,7 +200,7 @@ const Index = () => {
               variant="outline"
               className="w-full sm:w-auto bg-white/10 backdrop-blur-md border-2 border-white/70 text-white hover:bg-white hover:text-foreground shadow-xl text-base px-6 sm:px-8 h-12 sm:h-14 font-semibold"
             >
-              <Link to="/contact">
+              <Link to="/contact" onClick={() => trackEvent('cta_click', { label: 'hero_contact' })}>
                 {t('nav.contact')}
               </Link>
             </Button>
