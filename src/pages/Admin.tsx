@@ -196,6 +196,11 @@ const Admin = () => {
               <MessageSquare className="h-4 w-4" />
               <span className="hidden sm:inline">ติดต่อ</span>
             </TabsTrigger>
+            <TabsTrigger value="chatai" className="flex items-center gap-2">
+              <Bot className="h-4 w-4" />
+              <span className="hidden sm:inline">AI Chat</span>
+            </TabsTrigger>
+
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">เนื้อหา</span>
