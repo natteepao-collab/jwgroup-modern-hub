@@ -36,6 +36,7 @@ const Sustainability = lazy(() => import("./pages/Sustainability"));
 // Lazy load heavy non-critical components
 const FloatingActions = lazy(() => import('./components/FloatingActions'));
 const Snowfall = lazy(() => import('./components/Snowfall'));
+const GoogleAnalytics = lazy(() => import('./components/GoogleAnalytics'));
 const ChristmasTheme = lazy(() => import('./components/ChristmasTheme'));
 
 const queryClient = new QueryClient({
