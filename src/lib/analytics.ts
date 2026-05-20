@@ -80,9 +80,4 @@ export function trackEvent(eventType: AnalyticsEvent, payload: TrackPayload = {}
         console.warn('[analytics] insert failed:', error.message);
       }
     });
-    .then(({ error }) => {
-      if (error && import.meta.env.DEV) {
-        console.warn('[analytics] insert failed:', error.message);
-      }
-    });
 }
