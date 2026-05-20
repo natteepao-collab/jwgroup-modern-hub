@@ -146,6 +146,83 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_conversations: {
+        Row: {
+          id: string
+          language: string | null
+          last_activity_at: string
+          last_user_message: string | null
+          message_count: number
+          metadata: Json | null
+          page_url: string | null
+          referrer: string | null
+          session_id: string
+          started_at: string
+          topics: string[] | null
+          user_agent: string | null
+        }
+        Insert: {
+          id?: string
+          language?: string | null
+          last_activity_at?: string
+          last_user_message?: string | null
+          message_count?: number
+          metadata?: Json | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id: string
+          started_at?: string
+          topics?: string[] | null
+          user_agent?: string | null
+        }
+        Update: {
+          id?: string
+          language?: string | null
+          last_activity_at?: string
+          last_user_message?: string | null
+          message_count?: number
+          metadata?: Json | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id?: string
+          started_at?: string
+          topics?: string[] | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          role: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string
