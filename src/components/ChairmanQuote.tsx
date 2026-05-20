@@ -210,73 +210,7 @@ export const ChairmanQuote = ({
             </div>
           )}
 
-          {/* Department Managers — Clean Grid */}
-          {managers.length > 0 && (
-            <div>
-              <div className="text-center mb-8">
-                <div className="text-xs uppercase tracking-widest text-primary font-bold mb-2">
-                  Department Heads
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-foreground">
-                  ผู้จัดการแผนก
-                </h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  ผู้นำในแต่ละสายงานของกลุ่ม
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {managers.map((manager) => {
-                  const dept =
-                    departmentInfo[manager.department || ''] || {
-                      name: 'แผนกอื่นๆ',
-                      accent: 'text-muted-foreground bg-muted border-border',
-                      dot: 'bg-muted-foreground',
-                    };
-
-                  return (
-                    <div
-                      key={manager.id}
-                      className="group bg-card border border-border/50 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
-                    >
-                      {/* Department badge */}
-                      <div
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] md:text-xs font-semibold mb-4 ${dept.accent}`}
-                      >
-                        <span className={`w-1.5 h-1.5 rounded-full ${dept.dot}`} />
-                        {dept.name}
-                      </div>
-
-                      {/* Avatar */}
-                      <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full overflow-hidden border border-border/40 shadow-sm bg-muted">
-                        {manager.image_url ? (
-                          <img
-                            src={manager.image_url}
-                            alt={manager.name}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-muted-foreground">
-                            {manager.name.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Info */}
-                      <div className="text-center">
-                        <div className="text-sm md:text-base font-bold text-foreground leading-tight">
-                          {manager.name}
-                        </div>
-                        <div className="text-[11px] md:text-xs text-muted-foreground mt-1 line-clamp-2">
-                          {manager.title}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* Department Managers — hidden until real data is available */}
         </div>
       </div>
     </section>
