@@ -45,18 +45,26 @@ export const SEO = ({
     return (
         <Helmet>
             {/* Standard Metadata */}
+            <html lang="th" />
             <title>{fullTitle}</title>
             <meta name="description" content={metaDescription} />
-            {noindex && <meta name="robots" content="noindex" />}
+            {noindex && <meta name="robots" content="noindex, nofollow" />}
+            {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
             {metaKeywords && <meta name="keywords" content={metaKeywords} />}
             <link rel="canonical" href={finalCanonicalUrl} />
 
-            {/* Open Graph / Facebook */}
+            {/* Open Graph / Facebook / LINE */}
+            <meta property="og:site_name" content={siteTitle} />
+            <meta property="og:locale" content="th_TH" />
+            <meta property="og:locale:alternate" content="en_US" />
             <meta property="og:type" content={ogType} />
             <meta property="og:url" content={finalCanonicalUrl} />
             <meta property="og:title" content={fullTitle} />
             <meta property="og:description" content={metaDescription} />
             <meta property="og:image" content={metaImage} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:image:alt" content={fullTitle} />
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
