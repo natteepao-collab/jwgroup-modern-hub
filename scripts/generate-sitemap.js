@@ -16,10 +16,6 @@ const BASE_URL = 'https://www.jwgroupthailand.com';
 const staticRoutes = [
     '',
     '/about',
-    '/about/history',
-    '/about/vision',
-    '/about/structure',
-    '/about/team',
     '/about/awards',
     '/business',
     '/awards',
@@ -27,11 +23,11 @@ const staticRoutes = [
     '/news',
     '/careers',
     '/contact',
+    '/vision-mission',
+    '/sustainability',
     '/privacy',
     '/terms',
     '/pdpa',
-    '/sustainability',
-    '/vision-mission',
 ];
 
 async function generateSitemap() {

@@ -13,30 +13,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.jwgroupthailand.com/about/history</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/about/vision</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/about/structure</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/about/team</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.jwgroupthailand.com/about/awards</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -79,6 +55,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.jwgroupthailand.com/vision-mission</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.jwgroupthailand.com/sustainability</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.jwgroupthailand.com/privacy</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -92,18 +80,6 @@
   </url>
   <url>
     <loc>https://www.jwgroupthailand.com/pdpa</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/sustainability</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.jwgroupthailand.com/vision-mission</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -211,14 +187,14 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.jwgroupthailand.com/news/d4d1c6a5-28a9-41f7-8621-b5f0a90970bf</loc>
-    <lastmod>2026-02-14T04:40:36.788Z</lastmod>
+    <loc>https://www.jwgroupthailand.com/news/f03fb227-7572-4163-af3d-32cb152f1ad7</loc>
+    <lastmod>2026-01-05T07:30:59.845Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.jwgroupthailand.com/news/f03fb227-7572-4163-af3d-32cb152f1ad7</loc>
-    <lastmod>2026-01-05T07:30:59.845Z</lastmod>
+    <loc>https://www.jwgroupthailand.com/news/d4d1c6a5-28a9-41f7-8621-b5f0a90970bf</loc>
+    <lastmod>2026-03-25T09:28:49.980Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
