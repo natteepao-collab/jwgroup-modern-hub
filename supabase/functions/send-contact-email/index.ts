@@ -25,17 +25,36 @@ serve(async (req) => {
   }
 
   try {
-    const { name, email, phone, subject, message } = await req.json();
+    // Rate limit
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
+    const now = Date.now();
+    const entry = rateLimitMap.get(clientIP);
+    if (entry && now < entry.resetTime) {
+      if (entry.count >= RATE_LIMIT) {
+        return new Response(JSON.stringify({ error: 'ส่งข้อความบ่อยเกินไป กรุณารอสักครู่' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+      entry.count++;
+    } else {
+      rateLimitMap.set(clientIP, { count: 1, resetTime: now + WINDOW_MS });
+    }
 
-    // Validate required fields
+    const body = await req.json();
+    let { name, email, phone, subject, message } = body ?? {};
+
+    // Validate required + length limits
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: 'กรุณากรอกชื่อ อีเมล และข้อความ' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    name = String(name).slice(0, 100);
+    email = String(email).slice(0, 255);
+    phone = phone ? String(phone).slice(0, 50) : '';
+    subject = subject ? String(subject).slice(0, 200) : '';
+    message = String(message).slice(0, 5000);
 
-    // Validate email format
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     if (!emailRegex.test(email)) {
       return new Response(
