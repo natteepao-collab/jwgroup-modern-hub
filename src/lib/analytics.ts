@@ -40,9 +40,19 @@ export interface TrackPayload {
   metadata?: Record<string, unknown>;
 }
 
-/** Fire-and-forget analytics call. Never blocks UI. */
+/** Fire-and-forget analytics call. Never blocks UI. Respects cookie consent. */
 export function trackEvent(eventType: AnalyticsEvent, payload: TrackPayload = {}) {
   if (typeof window === 'undefined') return;
+
+  // Respect user's cookie consent choice (PDPA/GDPR)
+  try {
+    const raw = localStorage.getItem('cookie-consent');
+    if (!raw) return; // No consent decision yet — do not track
+    const consent = JSON.parse(raw);
+    if (!consent?.analytics) return;
+  } catch {
+    return;
+  }
 
   const path = window.location.pathname;
   const referrer = document.referrer || null;

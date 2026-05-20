@@ -67,11 +67,8 @@ const Auth = () => {
     setIsLoading(false);
     
     if (error) {
-      if (error.message.includes('User already registered')) {
-        toast.error('อีเมลนี้ถูกใช้งานแล้ว');
-      } else {
-        toast.error(error.message);
-      }
+      // Generic message to prevent email enumeration
+      toast.error('ไม่สามารถสมัครสมาชิกได้ กรุณาติดต่อผู้ดูแลระบบ');
     } else {
       toast.success('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
     }
