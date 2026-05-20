@@ -23,6 +23,7 @@ import construction from '@/assets/business-construction.jpg';
 import thanabulLogo from '@/assets/thanabul-logo.png';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { SEO } from '@/components/SEO';
+import { trackEvent } from '@/lib/analytics';
 
 // Default images fallback
 const defaultBusinessImages: Record<string, string> = {
