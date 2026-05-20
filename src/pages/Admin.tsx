@@ -26,7 +26,9 @@ import {
   Target,
   Info,
   Briefcase,
-  MessageSquare
+  MessageSquare,
+  Bot
+
 } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -50,6 +52,8 @@ import VisionMissionManagement from '@/components/admin/VisionMissionManagement'
 import { AboutHistoryManagement } from '@/components/admin/AboutHistoryManagement';
 import CareersManagement from '@/components/admin/CareersManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
+import ChatAnalytics from '@/components/admin/ChatAnalytics';
+
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -192,6 +196,11 @@ const Admin = () => {
               <MessageSquare className="h-4 w-4" />
               <span className="hidden sm:inline">ติดต่อ</span>
             </TabsTrigger>
+            <TabsTrigger value="chatai" className="flex items-center gap-2">
+              <Bot className="h-4 w-4" />
+              <span className="hidden sm:inline">AI Chat</span>
+            </TabsTrigger>
+
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">เนื้อหา</span>
@@ -257,6 +266,11 @@ const Admin = () => {
           <TabsContent value="contacts">
             <ContactManagement />
           </TabsContent>
+
+          <TabsContent value="chatai">
+            <ChatAnalytics />
+          </TabsContent>
+
 
           <TabsContent value="content">
             <ContentManagement />

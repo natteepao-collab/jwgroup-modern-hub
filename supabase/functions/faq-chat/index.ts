@@ -6,463 +6,327 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Rate limiting configuration
+// Rate limiting
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 10;
+const RATE_LIMIT = 15;
 const WINDOW_MS = 60000;
-
-const cleanupRateLimitMap = () => {
+setInterval(() => {
   const now = Date.now();
-  for (const [key, value] of rateLimitMap.entries()) {
-    if (now >= value.resetTime) {
-      rateLimitMap.delete(key);
-    }
-  }
-};
-
-setInterval(cleanupRateLimitMap, 5 * 60 * 1000);
-
-const BASE_SYSTEM_PROMPT = `คุณคือผู้ช่วย FAQ ของ JW Group ตอบคำถามเป็นภาษาไทยอย่างสุภาพและเป็นมิตร
-
-═══════════════════════════════════════
-⚡ กฎการตอบที่สำคัญมาก
-═══════════════════════════════════════
-1. ตอบสั้นกระชับ ไม่เกิน 2-3 ประโยค ไม่ต้องใส่รายละเอียดมากเกินไป
-2. หลังตอบเสร็จ ให้คาดการณ์ว่าผู้ใช้อาจต้องการรู้อะไรเพิ่มเติม
-3. จบด้วยการถามว่า "อยากทราบเพิ่มเติมไหมครับ?" พร้อมแนะนำ 2-3 ตัวเลือก
-4. ใช้ emoji ให้พอดี ไม่มากเกินไป
-
-ตัวอย่างการตอบที่ดี:
-❌ ไม่ดี: (ตอบยาว 10+ บรรทัด พร้อมรายละเอียดทุกอย่าง)
-✅ ดี: "โครงการบ้านเริ่มต้น 3-15 ล้านบาท ตามทำเลและขนาดครับ 🏠
-
-อยากทราบเพิ่มเติมไหมครับ?
-• ดูทำเลที่ตั้งแต่ละโครงการ
-• วิธีผ่อนชำระและโปรโมชั่น
-• นัดชมโครงการ"
-
-═══════════════════════════════════════
-📍 ข้อมูลบริษัท JW GROUP (ใช้อ้างอิง)
-═══════════════════════════════════════
-
-🏢 JW REAL ESTATES - อสังหาริมทรัพย์
-• บ้านเดี่ยว: 5-15 ล้านบาท | ทาวน์โฮม: 3-8 ล้านบาท
-• คอนโด: 2-10 ล้านบาท | โฮมออฟฟิศ: 8-20 ล้านบาท
-• ทำเล: รามอินทรา, ลาดพร้าว, บางนา, พระราม 9
-
-🏨 12 THE RESIDENCE HOTEL
-• Deluxe: 2,500/คืน | Superior: 3,500/คืน | Suite: 5,500-12,000/คืน
-• เว็บ: 12theresidence.com
-
-🐾 3DPET HOSPITAL & HOTEL
-• ตรวจสุขภาพ: 500-1,500 | วัคซีน: 300-800/เข็ม
-• โรงแรมสัตว์: 400-1,500/คืน | เปิด 24 ชม.
-• เว็บ: 3dpethospital.com
-
-🌿 JW HERBAL & WELLNESS
-• อาหารเสริม: 590-1,990 | ดูแลผิว: 490-1,590
-• มาตรฐาน อย. 100%
-
-📞 ติดต่อ: 02-234-5678 | info@jwgroup.com
-🕐 จันทร์-ศุกร์ 9:00-18:00 น.
-
-ถ้าไม่ทราบคำตอบ แนะนำให้ติดต่อโดยตรงแทน`;
-
-// Types for database records
-interface NewsRecord {
-  title_th: string;
-  excerpt_th: string | null;
-  content_th: string | null;
-  category: string;
-  business_type: string | null;
-  published_at: string;
-}
-
-interface JobRecord {
-  title_th: string;
-  department_th: string | null;
-  location_th: string | null;
-  job_type: string | null;
-  description_th: string | null;
-  requirements_th: string | null;
-}
-
-interface ContactRecord {
-  section_key: string;
-  content_th: string | null;
-}
-
-interface AwardRecord {
-  title_th: string;
-  description_th: string | null;
-  award_year: number | null;
-  awarding_organization: string | null;
-  category: string | null;
-}
+  for (const [k, v] of rateLimitMap.entries()) if (now >= v.resetTime) rateLimitMap.delete(k);
+}, 5 * 60 * 1000);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnySupabaseClient = SupabaseClient<any, any, any>;
 
-// Initialize Supabase client
-function getSupabaseClient(): AnySupabaseClient | null {
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  
-  if (!supabaseUrl || !supabaseKey) {
-    console.error("Supabase credentials not configured");
+function getSupabase(): AnySupabaseClient | null {
+  const url = Deno.env.get("SUPABASE_URL");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
+
+const truncate = (s: string | null | undefined, n = 220) =>
+  s ? (s.length > n ? s.substring(0, n).replace(/<[^>]+>/g, "") + "…" : s.replace(/<[^>]+>/g, "")) : "";
+
+// Pull a comprehensive knowledge base from the database
+async function buildKnowledgeBase(supabase: AnySupabaseClient): Promise<string> {
+  const [
+    siteContentRes, businessTypesRes, newsRes, jobsRes,
+    benefitsRes, awardsRes, projectsRes, testimonialsRes,
+    executivesRes, timelineRes, visionRes,
+  ] = await Promise.all([
+    supabase.from("site_content").select("section_key,title_th,content_th,metadata"),
+    supabase.from("business_types").select("business_key,name_th,name_en").eq("is_active", true).order("position_order"),
+    supabase.from("news").select("title_th,excerpt_th,content_th,category,business_type,published_at")
+      .eq("is_published", true).order("published_at", { ascending: false }).limit(15),
+    supabase.from("jobs").select("title_th,department_th,location_th,job_type,description_th,requirements_th")
+      .eq("is_published", true).order("position_order"),
+    supabase.from("career_benefits").select("title_th,description_th").eq("is_published", true).order("position_order"),
+    supabase.from("awards").select("title_th,description_th,award_year,awarding_organization,category")
+      .eq("is_published", true).order("award_year", { ascending: false }).limit(20),
+    supabase.from("projects").select("name_th,description_th,location_th,year_completed,business_type,is_featured")
+      .eq("is_published", true).order("position_order").limit(30),
+    supabase.from("testimonials").select("client_name,client_title,client_company,content_th,rating")
+      .eq("is_published", true).order("position_order").limit(15),
+    supabase.from("executives").select("name,title,department,level,is_chairman,quote,description").order("position_order"),
+    supabase.from("timeline_events").select("year,title_th,description_th,is_highlight")
+      .eq("is_published", true).order("year").limit(40),
+    supabase.from("vision_missions").select("business_type,vision_th,vision_sub_th,missions,core_concept")
+      .eq("is_published", true).order("position_order"),
+  ]);
+
+  const sections: string[] = [];
+
+  // Site content (about, contact, hero, etc.)
+  if (siteContentRes.data?.length) {
+    const sc: Record<string, { title?: string; content?: string; metadata?: Record<string, unknown> }> = {};
+    for (const r of siteContentRes.data) sc[r.section_key] = { title: r.title_th, content: r.content_th, metadata: r.metadata };
+
+    sections.push(`## เกี่ยวกับบริษัท JW GROUP
+${sc.about_section?.content || sc.hero?.content || "กลุ่มบริษัท JW Group ครอบคลุมธุรกิจอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ สมุนไพร และก่อสร้าง"}
+
+## ข้อมูลติดต่อ
+- ที่อยู่: ${sc.contact_address?.content || "123 ถนนสุขุมวิท กรุงเทพฯ 10110"}
+- โทร: ${sc.contact_phone?.content || "02-234-5678"}
+- อีเมล: ${sc.contact_email?.content || "info@jwgroup.com"}
+- เวลาทำการ: ${sc.contact_hours?.content || "จันทร์-ศุกร์ 9:00-18:00 น."}`);
+
+    // Business descriptions from site_content
+    const bizKeys = ["business_realestate", "business_hotel", "business_pet", "business_wellness", "business_construction"];
+    const bizBlock = bizKeys
+      .map((k) => sc[k] ? `- **${sc[k].title}**: ${truncate(sc[k].content, 200)}` : null)
+      .filter(Boolean).join("\n");
+    if (bizBlock) sections.push(`## ธุรกิจในเครือ JW Group\n${bizBlock}`);
+  }
+
+  if (businessTypesRes.data?.length) {
+    sections.push(`## หน่วยธุรกิจที่เปิดให้บริการ\n${businessTypesRes.data.map(b => `- ${b.name_th} (${b.business_key})`).join("\n")}`);
+  }
+
+  if (visionRes.data?.length) {
+    sections.push(`## วิสัยทัศน์และพันธกิจ
+${visionRes.data.map(v => `**${v.business_type}**: ${truncate(v.vision_th, 200)}${v.vision_sub_th ? ` — ${truncate(v.vision_sub_th, 150)}` : ""}`).join("\n")}`);
+  }
+
+  if (executivesRes.data?.length) {
+    const chairman = executivesRes.data.find((e) => e.is_chairman);
+    const others = executivesRes.data.filter((e) => !e.is_chairman).slice(0, 8);
+    sections.push(`## ผู้บริหาร
+${chairman ? `- 👑 **${chairman.name}** — ${chairman.title} ${chairman.quote ? `("${truncate(chairman.quote, 120)}")` : ""}` : ""}
+${others.map(e => `- ${e.name} — ${e.title}${e.department ? ` (${e.department})` : ""}`).join("\n")}`);
+  }
+
+  if (timelineRes.data?.length) {
+    sections.push(`## ประวัติและเหตุการณ์สำคัญ\n${timelineRes.data.slice(0, 15).map(t => `- ${t.year}: ${t.title_th}${t.description_th ? ` — ${truncate(t.description_th, 120)}` : ""}`).join("\n")}`);
+  }
+
+  if (projectsRes.data?.length) {
+    sections.push(`## โครงการ/ผลงาน (${projectsRes.data.length} โครงการ)
+${projectsRes.data.slice(0, 15).map(p => `- 🏗️ **${p.name_th}** (${p.business_type})${p.location_th ? ` 📍${p.location_th}` : ""}${p.year_completed ? ` | สร้างเสร็จ ${p.year_completed}` : ""}${p.description_th ? `\n   ${truncate(p.description_th, 150)}` : ""}`).join("\n")}`);
+  }
+
+  if (newsRes.data?.length) {
+    sections.push(`## ข่าวสารล่าสุด
+${newsRes.data.slice(0, 8).map(n => `- 📰 **${n.title_th}** (${new Date(n.published_at).toLocaleDateString("th-TH")}) — ${truncate(n.excerpt_th || n.content_th, 180)}`).join("\n")}`);
+  }
+
+  if (jobsRes.data?.length) {
+    sections.push(`## ตำแหน่งงานว่าง (${jobsRes.data.length} ตำแหน่ง)
+${jobsRes.data.map(j => `- 💼 **${j.title_th}** | ${j.department_th || "-"} | ${j.location_th || "กรุงเทพฯ"} | ${j.job_type || "full-time"}`).join("\n")}
+สมัครผ่านหน้า "ร่วมงานกับเรา" บนเว็บไซต์`);
+  }
+
+  if (benefitsRes.data?.length) {
+    sections.push(`## สวัสดิการพนักงาน\n${benefitsRes.data.map(b => `- ${b.title_th}${b.description_th ? `: ${truncate(b.description_th, 100)}` : ""}`).join("\n")}`);
+  }
+
+  if (awardsRes.data?.length) {
+    sections.push(`## รางวัลและผลงาน (${awardsRes.data.length} รางวัล)
+${awardsRes.data.slice(0, 10).map(a => `- 🏆 ${a.title_th} (${a.award_year || "-"})${a.awarding_organization ? ` โดย ${a.awarding_organization}` : ""}`).join("\n")}`);
+  }
+
+  if (testimonialsRes.data?.length) {
+    sections.push(`## รีวิวจากลูกค้า
+${testimonialsRes.data.slice(0, 5).map(t => `- ⭐${t.rating || 5} **${t.client_name}** (${t.client_title || ""}${t.client_company ? `, ${t.client_company}` : ""}): "${truncate(t.content_th, 150)}"`).join("\n")}`);
+  }
+
+  return sections.join("\n\n");
+}
+
+// Heuristic topic extraction for marketing analytics
+function extractTopics(text: string): string[] {
+  const topics: string[] = [];
+  const t = text.toLowerCase();
+  const map: Record<string, string[]> = {
+    "อสังหา": ["บ้าน", "คอนโด", "ทาวน์โฮม", "โครงการ", "อสังหา", "real estate", "townhome"],
+    "โรงแรม": ["โรงแรม", "ห้องพัก", "residence", "hotel", "ที่พัก"],
+    "สัตวแพทย์": ["หมา", "แมว", "สัตว์", "pet", "3dpet", "วัคซีน", "โรงพยาบาลสัตว์"],
+    "สมุนไพร": ["สมุนไพร", "herbal", "wellness", "สุขภาพ", "อาหารเสริม"],
+    "ก่อสร้าง": ["ก่อสร้าง", "ธนบูลย์", "thanabul", "รับเหมา"],
+    "ราคา": ["ราคา", "เท่าไหร่", "กี่บาท", "ค่า"],
+    "สมัครงาน": ["สมัครงาน", "งาน", "ตำแหน่ง", "career", "job"],
+    "ติดต่อ": ["ติดต่อ", "เบอร์", "โทร", "อีเมล", "contact"],
+    "โปรโมชั่น": ["โปรโมชั่น", "ส่วนลด", "promotion"],
+    "นัดชม": ["นัด", "เยี่ยมชม", "ดูโครงการ", "visit"],
+  };
+  for (const [topic, kws] of Object.entries(map)) if (kws.some(k => t.includes(k))) topics.push(topic);
+  return topics;
+}
+
+async function logConversation(
+  supabase: AnySupabaseClient,
+  sessionId: string,
+  userMessage: string,
+  meta: { userAgent?: string; language?: string; pageUrl?: string; referrer?: string }
+) {
+  try {
+    const topics = extractTopics(userMessage);
+    // Upsert conversation
+    const { data: existing } = await supabase.from("chat_conversations").select("id,message_count,topics").eq("session_id", sessionId).maybeSingle();
+    let conversationId: string;
+    if (existing) {
+      const mergedTopics = Array.from(new Set([...(existing.topics || []), ...topics]));
+      await supabase.from("chat_conversations").update({
+        message_count: (existing.message_count || 0) + 1,
+        last_user_message: userMessage.substring(0, 500),
+        last_activity_at: new Date().toISOString(),
+        topics: mergedTopics,
+      }).eq("id", existing.id);
+      conversationId = existing.id;
+    } else {
+      const { data: inserted } = await supabase.from("chat_conversations").insert({
+        session_id: sessionId,
+        user_agent: meta.userAgent?.substring(0, 500),
+        language: meta.language || "th",
+        page_url: meta.pageUrl?.substring(0, 500),
+        referrer: meta.referrer?.substring(0, 500),
+        topics,
+        message_count: 1,
+        last_user_message: userMessage.substring(0, 500),
+      }).select("id").single();
+      conversationId = inserted!.id;
+    }
+    await supabase.from("chat_messages").insert({ conversation_id: conversationId, role: "user", content: userMessage });
+    return conversationId;
+  } catch (e) {
+    console.error("logConversation failed:", e);
     return null;
   }
-
-  return createClient(supabaseUrl, supabaseKey);
 }
 
-// Function to fetch news from database
-async function fetchLatestNews(supabase: AnySupabaseClient): Promise<string> {
+async function logAssistantReply(supabase: AnySupabaseClient, conversationId: string, content: string) {
   try {
-    const { data, error } = await supabase
-      .from('news')
-      .select('title_th, excerpt_th, content_th, category, business_type, published_at')
-      .eq('is_published', true)
-      .order('published_at', { ascending: false })
-      .limit(10);
-
-    if (error) {
-      console.error("Error fetching news:", error);
-      return "";
-    }
-
-    const news = data as NewsRecord[] | null;
-    if (!news || news.length === 0) {
-      return "";
-    }
-
-    const formatDate = (dateStr: string) => {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('th-TH', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    };
-
-    const getCategoryName = (category: string) => {
-      const categories: Record<string, string> = {
-        'company': 'ข่าวบริษัท',
-        'press': 'ข่าวประชาสัมพันธ์',
-        'csr': 'กิจกรรม CSR',
-        'all': 'ข่าวทั่วไป'
-      };
-      return categories[category] || 'ข่าวทั่วไป';
-    };
-
-    const newsContent = news.map((item, index) => {
-      const excerpt = item.excerpt_th || (item.content_th ? item.content_th.substring(0, 150) + '...' : '');
-      return `${index + 1}. 📰 ${item.title_th}
-   📅 ${formatDate(item.published_at)} | 🏷️ ${getCategoryName(item.category)}
-   📝 ${excerpt}`;
-    }).join('\n\n');
-
-    return `
-
-═══════════════════════════════════════
-📰 ข่าวสารล่าสุดของบริษัท
-═══════════════════════════════════════
-${newsContent}
-
-📌 อ่านข่าวฉบับเต็มได้ที่หน้า "ข่าวสาร" บนเว็บไซต์`;
-  } catch (error) {
-    console.error("Error in fetchLatestNews:", error);
-    return "";
+    await supabase.from("chat_messages").insert({ conversation_id: conversationId, role: "assistant", content });
+  } catch (e) {
+    console.error("logAssistantReply failed:", e);
   }
 }
 
-// Function to fetch job listings from database
-async function fetchJobListings(supabase: AnySupabaseClient): Promise<string> {
-  try {
-    const { data, error } = await supabase
-      .from('jobs')
-      .select('title_th, department_th, location_th, job_type, description_th, requirements_th')
-      .eq('is_published', true)
-      .order('position_order', { ascending: true });
-
-    if (error) {
-      console.error("Error fetching jobs:", error);
-      return "";
-    }
-
-    const jobs = data as JobRecord[] | null;
-    if (!jobs || jobs.length === 0) {
-      return `
-
-═══════════════════════════════════════
-💼 ร่วมงานกับเรา
-═══════════════════════════════════════
-ขณะนี้ยังไม่มีตำแหน่งงานว่าง แต่สามารถฝากประวัติไว้ได้ที่หน้า "ร่วมงานกับเรา" บนเว็บไซต์
-เราจะติดต่อกลับเมื่อมีตำแหน่งที่เหมาะสม`;
-    }
-
-    const getJobType = (type: string | null) => {
-      const types: Record<string, string> = {
-        'full-time': 'พนักงานประจำ',
-        'part-time': 'พนักงานพาร์ทไทม์',
-        'contract': 'สัญญาจ้าง',
-        'internship': 'ฝึกงาน'
-      };
-      return types[type || ''] || 'พนักงานประจำ';
-    };
-
-    const jobsContent = jobs.map((job, index) => {
-      const requirements = job.requirements_th ? `\n   📋 คุณสมบัติ: ${job.requirements_th.substring(0, 100)}...` : '';
-      return `${index + 1}. 💼 ${job.title_th}
-   🏢 แผนก: ${job.department_th || 'ไม่ระบุ'}
-   📍 สถานที่: ${job.location_th || 'กรุงเทพฯ'}
-   ⏰ ประเภท: ${getJobType(job.job_type)}${requirements}`;
-    }).join('\n\n');
-
-    return `
-
-═══════════════════════════════════════
-💼 ตำแหน่งงานว่าง (${jobs.length} ตำแหน่ง)
-═══════════════════════════════════════
-${jobsContent}
-
-📌 วิธีการสมัคร:
-• เข้าไปที่หน้า "ร่วมงานกับเรา" บนเว็บไซต์
-• เลือกตำแหน่งที่สนใจและกดปุ่ม "สมัครงาน"
-• กรอกข้อมูลและแนบ Resume (PDF หรือ Word)
-• ฝ่ายบุคคลจะติดต่อกลับภายใน 3-5 วันทำการ`;
-  } catch (error) {
-    console.error("Error in fetchJobListings:", error);
-    return "";
-  }
+// Cache knowledge base in module scope (refresh every 5 min)
+let cachedKB: { text: string; expiresAt: number } | null = null;
+async function getKnowledgeBase(supabase: AnySupabaseClient | null): Promise<string> {
+  if (cachedKB && Date.now() < cachedKB.expiresAt) return cachedKB.text;
+  if (!supabase) return "";
+  const text = await buildKnowledgeBase(supabase);
+  cachedKB = { text, expiresAt: Date.now() + 5 * 60 * 1000 };
+  return text;
 }
 
-// Function to fetch contact information from database
-async function fetchContactInfo(supabase: AnySupabaseClient): Promise<string> {
-  try {
-    const { data, error } = await supabase
-      .from('site_content')
-      .select('section_key, content_th')
-      .in('section_key', ['contact_address', 'contact_phone', 'contact_email', 'contact_hours']);
+const BASE_PROMPT = `คุณคือ "JW Group Assistant" ผู้ช่วย AI อัจฉริยะของกลุ่มบริษัท JW Group
+บทบาท: ตอบคำถามลูกค้าเกี่ยวกับสินค้า บริการ โครงการ และข้อมูลบริษัทอย่างถูกต้องและเป็นมิตร
 
-    if (error) {
-      console.error("Error fetching contact info:", error);
-      return getDefaultContactInfo();
-    }
-
-    const contactData = data as ContactRecord[] | null;
-    if (!contactData || contactData.length === 0) {
-      return getDefaultContactInfo();
-    }
-
-    const contactMap: Record<string, string> = {};
-    contactData.forEach(item => {
-      contactMap[item.section_key] = item.content_th || '';
-    });
-
-    const address = contactMap['contact_address'] || '123 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110';
-    const phone = contactMap['contact_phone'] || '02-234-5678';
-    const email = contactMap['contact_email'] || 'info@jwgroup.com';
-    const hours = contactMap['contact_hours'] || 'จันทร์-ศุกร์ 9:00-18:00 น.';
-
-    return `
-
-═══════════════════════════════════════
-📞 ข้อมูลติดต่อ
-═══════════════════════════════════════
-🏢 สำนักงานใหญ่: ${address}
-📞 โทรศัพท์: ${phone}
-📧 อีเมล: ${email}
-🕐 เวลาทำการ: ${hours}
-
-🌐 ช่องทางออนไลน์:
-• Facebook: JW Group Thailand
-• LINE Official: @jwgroup
-• เว็บไซต์: jwgroup.com
-
-📌 สามารถส่งข้อความผ่านแบบฟอร์มติดต่อบนเว็บไซต์ได้ที่หน้า "ติดต่อเรา"`;
-  } catch (error) {
-    console.error("Error in fetchContactInfo:", error);
-    return getDefaultContactInfo();
-  }
-}
-
-function getDefaultContactInfo(): string {
-  return `
-
-═══════════════════════════════════════
-📞 ข้อมูลติดต่อ
-═══════════════════════════════════════
-🏢 สำนักงานใหญ่: 123 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110
-📞 โทรศัพท์: 02-234-5678
-📧 อีเมล: info@jwgroup.com
-🕐 เวลาทำการ: จันทร์-ศุกร์ 9:00-18:00 น.
-
-🌐 ช่องทางออนไลน์:
-• Facebook: JW Group Thailand
-• LINE Official: @jwgroup
-
-📌 สามารถส่งข้อความผ่านแบบฟอร์มติดต่อบนเว็บไซต์ได้ที่หน้า "ติดต่อเรา"`;
-}
-
-// Function to fetch awards from database
-async function fetchAwards(supabase: AnySupabaseClient): Promise<string> {
-  try {
-    const { data, error } = await supabase
-      .from('awards')
-      .select('title_th, description_th, award_year, awarding_organization, category')
-      .eq('is_published', true)
-      .order('award_year', { ascending: false })
-      .limit(15);
-
-    if (error) {
-      console.error("Error fetching awards:", error);
-      return "";
-    }
-
-    const awards = data as AwardRecord[] | null;
-    if (!awards || awards.length === 0) {
-      return "";
-    }
-
-    const getCategoryName = (category: string | null) => {
-      const categories: Record<string, string> = {
-        'excellence': 'รางวัลความเป็นเลิศ',
-        'innovation': 'รางวัลนวัตกรรม',
-        'sustainability': 'รางวัลความยั่งยืน',
-        'service': 'รางวัลการบริการ',
-        'design': 'รางวัลการออกแบบ',
-        'csr': 'รางวัล CSR'
-      };
-      return categories[category || ''] || 'รางวัลทั่วไป';
-    };
-
-    const awardsContent = awards.map((award, index) => {
-      const description = award.description_th ? `\n   📝 ${award.description_th.substring(0, 150)}...` : '';
-      const org = award.awarding_organization ? ` | 🏛️ ${award.awarding_organization}` : '';
-      return `${index + 1}. 🏆 ${award.title_th}
-   📅 ปี ${award.award_year || 'ไม่ระบุ'} | 🏷️ ${getCategoryName(award.category)}${org}${description}`;
-    }).join('\n\n');
-
-    return `
-
-═══════════════════════════════════════
-🏆 รางวัลและผลงานของบริษัท (${awards.length} รางวัล)
-═══════════════════════════════════════
-${awardsContent}
-
-📌 ดูรายละเอียดรางวัลทั้งหมดได้ที่หน้า "รางวัลและผลงาน" บนเว็บไซต์`;
-  } catch (error) {
-    console.error("Error in fetchAwards:", error);
-    return "";
-  }
-}
+⚡ กฎสำคัญ:
+1. ตอบเป็นภาษาเดียวกับที่ลูกค้าใช้ (ไทย/อังกฤษ/จีน) — เริ่มต้นด้วยภาษาไทย
+2. ตอบกระชับ 2-4 ประโยค ตรงประเด็น ใช้ markdown bullet ได้
+3. ใช้ "ข้อมูลจากระบบ" ด้านล่างเป็นความจริง — อย่าแต่งข้อมูลที่ไม่มี
+4. ถ้าไม่มีคำตอบในข้อมูล ให้แนะนำติดต่อทีมงานโดยตรง พร้อมเบอร์/อีเมล
+5. หลังตอบ เสนอ 2-3 ตัวเลือกถัดไปเป็น bullet เพื่อชวนคุยต่อ
+6. ใช้ emoji พอประมาณ (1-2 ตัวต่อข้อความ)
+7. โทนสุภาพ มืออาชีพ น่าเชื่อถือ แต่อบอุ่นเหมือนเพื่อน
+8. ถ้าลูกค้าสนใจซื้อ/นัดชม → ขอช่องทางติดต่อกลับ (ชื่อ, เบอร์โทร, LINE ID) เพื่อให้เจ้าหน้าที่ติดต่อกลับ`;
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                     req.headers.get('x-real-ip') || 
-                     'unknown';
-    
+    const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
     const now = Date.now();
     const userLimit = rateLimitMap.get(clientIP);
-    
     if (userLimit) {
       if (now < userLimit.resetTime) {
         if (userLimit.count >= RATE_LIMIT) {
-          console.log(`Rate limit exceeded for IP: ${clientIP}`);
-          return new Response(
-            JSON.stringify({ error: "คุณส่งข้อความบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่" }),
-            { 
-              status: 429, 
-              headers: { ...corsHeaders, "Content-Type": "application/json" } 
-            }
-          );
+          return new Response(JSON.stringify({ error: "คุณส่งข้อความบ่อยเกินไป กรุณารอสักครู่" }), {
+            status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
         }
         userLimit.count++;
-      } else {
-        userLimit.count = 1;
-        userLimit.resetTime = now + WINDOW_MS;
-      }
+      } else { userLimit.count = 1; userLimit.resetTime = now + WINDOW_MS; }
     } else {
       rateLimitMap.set(clientIP, { count: 1, resetTime: now + WINDOW_MS });
     }
 
-    const { messages } = await req.json();
+    const body = await req.json();
+    const { messages, sessionId, language, pageUrl } = body as {
+      messages: { role: string; content: string }[];
+      sessionId?: string; language?: string; pageUrl?: string;
+    };
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    const supabase = getSupabase();
+    const kb = await getKnowledgeBase(supabase);
+
+    // Log inbound user message
+    let conversationId: string | null = null;
+    if (supabase && sessionId) {
+      const lastUserMsg = [...messages].reverse().find(m => m.role === "user")?.content || "";
+      if (lastUserMsg) {
+        conversationId = await logConversation(supabase, sessionId, lastUserMsg, {
+          userAgent: req.headers.get("user-agent") || undefined,
+          language, pageUrl,
+          referrer: req.headers.get("referer") || undefined,
+        });
+      }
     }
 
-    const supabase = getSupabaseClient();
-    let dynamicContext = "";
+    const fullSystemPrompt = `${BASE_PROMPT}\n\n═══ ข้อมูลจากระบบ JW Group (real-time) ═══\n${kb}`;
 
-    if (supabase) {
-      const [newsContext, jobsContext, contactContext, awardsContext] = await Promise.all([
-        fetchLatestNews(supabase),
-        fetchJobListings(supabase),
-        fetchContactInfo(supabase),
-        fetchAwards(supabase)
-      ]);
-
-      dynamicContext = newsContext + jobsContext + contactContext + awardsContext;
-      console.log("Dynamic context loaded - News:", !!newsContext, "Jobs:", !!jobsContext, "Contact:", !!contactContext, "Awards:", !!awardsContext);
-    } else {
-      dynamicContext = getDefaultContactInfo();
-    }
-
-    const fullSystemPrompt = BASE_SYSTEM_PROMPT + dynamicContext;
-
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: fullSystemPrompt },
-          ...messages,
-        ],
+        model: "openai/gpt-5",
+        messages: [{ role: "system", content: fullSystemPrompt }, ...messages],
         stream: true,
       }),
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "ระบบไม่ว่าง กรุณาลองใหม่อีกครั้ง" }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "ระบบไม่พร้อมใช้งาน กรุณาติดต่อเจ้าหน้าที่" }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      return new Response(JSON.stringify({ error: "เกิดข้อผิดพลาด กรุณาลองใหม่" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!aiResp.ok) {
+      if (aiResp.status === 429) return new Response(JSON.stringify({ error: "ระบบไม่ว่าง กรุณาลองใหม่อีกครั้ง" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (aiResp.status === 402) return new Response(JSON.stringify({ error: "ระบบไม่พร้อมใช้งาน กรุณาติดต่อเจ้าหน้าที่" }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      console.error("AI gateway error:", aiResp.status, await aiResp.text());
+      return new Response(JSON.stringify({ error: "เกิดข้อผิดพลาด กรุณาลองใหม่" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
+    // Tee the stream: send to client AND capture text for logging
+    if (!aiResp.body || !supabase || !conversationId) {
+      return new Response(aiResp.body, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
+    }
+
+    const [clientStream, logStream] = aiResp.body.tee();
+    // Background log
+    (async () => {
+      try {
+        const reader = logStream.getReader();
+        const decoder = new TextDecoder();
+        let buf = "", full = "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          let idx: number;
+          while ((idx = buf.indexOf("\n")) !== -1) {
+            const line = buf.slice(0, idx).trim();
+            buf = buf.slice(idx + 1);
+            if (!line.startsWith("data: ")) continue;
+            const j = line.slice(6).trim();
+            if (j === "[DONE]") continue;
+            try {
+              const p = JSON.parse(j);
+              const c = p.choices?.[0]?.delta?.content;
+              if (c) full += c;
+            } catch { /* ignore */ }
+          }
+        }
+        if (full && conversationId) await logAssistantReply(supabase, conversationId, full);
+      } catch (e) { console.error("stream log error:", e); }
+    })();
+
+    return new Response(clientStream, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
   } catch (error) {
     console.error("FAQ chat error:", error);
     return new Response(JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

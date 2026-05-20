@@ -13,15 +13,30 @@ interface Message {
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/faq-chat`;
 
+// Persistent session id per browser (for marketing analytics)
+const getSessionId = (): string => {
+  try {
+    let sid = localStorage.getItem('jw_chat_session_id');
+    if (!sid) {
+      sid = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      localStorage.setItem('jw_chat_session_id', sid);
+    }
+    return sid;
+  } catch {
+    return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  }
+};
+
 const FAQChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'สวัสดีครับ! ผมเป็นผู้ช่วย FAQ ของ JW Group ยินดีให้บริการครับ มีอะไรให้ช่วยไหมครับ?' }
+    { role: 'assistant', content: 'สวัสดีครับ! ผมเป็น **JW Group Assistant** ผู้ช่วย AI ของกลุ่มบริษัท JW Group ยินดีตอบทุกคำถามเกี่ยวกับโครงการ บริการ และข้อมูลบริษัทครับ มีอะไรให้ช่วยไหมครับ? 🙌' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sessionIdRef = useRef<string>(getSessionId());
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -36,8 +51,14 @@ const FAQChatbot = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
       },
-      body: JSON.stringify({ messages: userMessages }),
+      body: JSON.stringify({
+        messages: userMessages,
+        sessionId: sessionIdRef.current,
+        language: typeof navigator !== 'undefined' ? navigator.language : 'th',
+        pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+      }),
     });
+
 
     if (!resp.ok || !resp.body) {
       const errorData = await resp.json().catch(() => ({}));
