@@ -109,7 +109,9 @@ const Admin = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img src={jwLogo} alt="JW Group" className="h-10" />
+              <button onClick={() => navigate('/')} className="hover:opacity-80 transition-opacity" aria-label="กลับหน้าแรก">
+                <img src={jwLogo} alt="JW Group" className="h-10" />
+              </button>
               <div className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
                 <span className="font-semibold text-lg">Admin Panel</span>
