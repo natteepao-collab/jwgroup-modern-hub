@@ -208,17 +208,17 @@ const AnimatedStats = () => {
           </p>
         </div>
 
-        {/* Stats Grid - 2 columns on mobile */}
+        {/* Stats Grid - 2 stat cards */}
         <div
           ref={ref}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-3xl mx-auto"
         >
-          {/* Year Founded */}
+          {/* Years of Experience */}
           <StatCard
-            icon={<Building2 className="w-8 h-8" />}
-            value={2550}
-            suffix=""
-            label="ปีที่ก่อตั้ง"
+            icon={<Calendar className="w-8 h-8" />}
+            value={30}
+            suffix="+"
+            label="ปีแห่งประสบการณ์"
             index={0}
             inView={inView}
           />
@@ -226,14 +226,14 @@ const AnimatedStats = () => {
           {/* Completed Projects - Clickable */}
           <StatCard
             icon={<Briefcase className="w-8 h-8" />}
-            value={projects.length || 50}
+            value={Math.max(projects.length, 17)}
             suffix="+"
             label="โครงการที่สำเร็จ"
             index={1}
             inView={inView}
-            isClickable={true}
+            isClickable={projects.length > 0}
             isExpanded={expandedSection === 'projects'}
-            onClick={() => toggleSection('projects')}
+            onClick={() => projects.length > 0 && toggleSection('projects')}
           >
             <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[400px] overflow-y-auto">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
@@ -242,13 +242,13 @@ const AnimatedStats = () => {
               </div>
               <div className="space-y-3">
                 {projects.map((project) => (
-                  <div 
+                  <div
                     key={project.id}
                     className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
                   >
                     {project.image_url ? (
-                      <img 
-                        src={project.image_url} 
+                      <img
+                        src={project.image_url}
                         alt={getTitle(project)}
                         className="w-12 h-12 rounded-lg object-cover"
                       />
@@ -265,80 +265,11 @@ const AnimatedStats = () => {
                     </div>
                   </div>
                 ))}
-                {projects.length === 0 && (
-                  <p className="text-center text-muted-foreground py-4">กำลังโหลดข้อมูล...</p>
-                )}
-              </div>
-            </div>
-          </StatCard>
-
-          {/* Happy Customers */}
-          <StatCard
-            icon={<Users className="w-8 h-8" />}
-            value={10000}
-            suffix="+"
-            label="ลูกค้าที่ไว้วางใจ"
-            index={2}
-            inView={inView}
-          />
-
-          {/* Awards - Clickable */}
-          <StatCard
-            icon={<Award className="w-8 h-8" />}
-            value={awards.length || 15}
-            suffix="+"
-            label="รางวัลที่ได้รับ"
-            index={3}
-            inView={inView}
-            isClickable={true}
-            isExpanded={expandedSection === 'awards'}
-            onClick={() => toggleSection('awards')}
-          >
-            <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[400px] overflow-y-auto">
-              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
-                <Trophy className="w-5 h-5 text-primary" />
-                <h4 className="font-bold text-foreground">รางวัลที่ได้รับทั้งหมด</h4>
-              </div>
-              <div className="space-y-3">
-                  {awards.map((award) => {
-                    const awardImageUrl = parseAwardImage(award.image_url);
-                    return (
-                    <Link 
-                      to="/awards"
-                      key={award.id}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-primary/10 transition-colors group cursor-pointer"
-                    >
-                      {awardImageUrl ? (
-                        <img 
-                          src={awardImageUrl} 
-                          alt={getTitle(award)}
-                          className="w-12 h-12 rounded-lg object-cover"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Trophy className="w-6 h-6 text-primary" />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-foreground truncate group-hover:text-primary transition-colors">
-                          {getTitle(award)}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {award.award_year && `ปี ${award.award_year}`}
-                          {award.awarding_organization && ` • ${award.awarding_organization}`}
-                        </p>
-                      </div>
-                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </Link>
-                    );
-                  })}
-                {awards.length === 0 && (
-                  <p className="text-center text-muted-foreground py-4">กำลังโหลดข้อมูล...</p>
-                )}
               </div>
             </div>
           </StatCard>
         </div>
+
       </div>
     </section>
   );
