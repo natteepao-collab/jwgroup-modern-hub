@@ -239,7 +239,7 @@ export const Navbar = () => {
                       ? "text-primary bg-primary/8"
                       : isScrolled
                         ? "text-foreground/70 hover:text-primary hover:bg-muted/50"
-                        : "text-white/80 hover:text-white hover:bg-white/10"
+                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]"
                   )}
                 >
                   {t('nav.about')}
