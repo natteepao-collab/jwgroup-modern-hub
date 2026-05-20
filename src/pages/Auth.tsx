@@ -6,19 +6,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { Shield, Mail, Lock, User } from 'lucide-react';
+import { Shield, Mail, Lock } from 'lucide-react';
 import jwLogo from '@/assets/jw-group-logo-full.png';
 
 const Auth = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, signIn, signUp, loading } = useAuth();
-  
+  const { user, signIn, loading } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -33,46 +31,20 @@ const Auth = () => {
       toast.error('กรุณากรอกอีเมลและรหัสผ่าน');
       return;
     }
-    
+
     setIsLoading(true);
     const { error } = await signIn(email, password);
     setIsLoading(false);
-    
+
     if (error) {
-      if (error.message.includes('Invalid login credentials')) {
-        toast.error('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-      } else {
-        toast.error(error.message);
-      }
+      // Generic message to avoid leaking which emails are registered
+      toast.error('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
     } else {
       toast.success('เข้าสู่ระบบสำเร็จ');
       navigate('/admin');
     }
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      toast.error('กรุณากรอกอีเมลและรหัสผ่าน');
-      return;
-    }
-    
-    if (password.length < 6) {
-      toast.error('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
-      return;
-    }
-    
-    setIsLoading(true);
-    const { error } = await signUp(email, password, fullName);
-    setIsLoading(false);
-    
-    if (error) {
-      // Generic message to prevent email enumeration
-      toast.error('ไม่สามารถสมัครสมาชิกได้ กรุณาติดต่อผู้ดูแลระบบ');
-    } else {
-      toast.success('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
-    }
-  };
 
   if (loading) {
     return (
