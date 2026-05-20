@@ -135,7 +135,7 @@ const Business = () => {
     {
       name: t('business.wellness.name'),
       description: t('business.wellness.description'),
-      url: 'https://jwherbal-roots-and-remedies.lovable.app',
+      url: 'https://www.jwherbal.com',
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
       brandColor: {
