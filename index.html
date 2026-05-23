@@ -53,21 +53,89 @@
   <style>
     #root { min-height: 100vh; }
     body { margin: 0; font-family: 'Noto Sans Thai', 'Noto Sans', sans-serif; }
-    .initial-loader { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .initial-loader svg { width: 40px; height: 40px; animation: spin 1s linear infinite; color: #f97316; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .initial-loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 28px;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .initial-loader::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 520px; height: 520px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(212,129,42,0.28) 0%, transparent 70%);
+      animation: glowPulse 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .initial-loader img {
+      position: relative;
+      height: 88px;
+      width: auto;
+      filter: drop-shadow(0 0 30px rgba(212,129,42,0.35)) drop-shadow(0 4px 20px rgba(0,0,0,0.4));
+      animation: logoIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .initial-loader .tagline {
+      position: relative;
+      color: #D4812A;
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out 0.4s forwards;
+    }
+    .initial-loader .bar {
+      position: relative;
+      width: 180px; height: 2px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out 0.6s forwards;
+    }
+    .initial-loader .bar::after {
+      content: '';
+      display: block;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, #D4812A, transparent);
+      animation: slide 1.4s ease-in-out infinite;
+    }
+    @keyframes logoIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
   </style>
 </head>
 
 <body>
   <div id="root">
-    <!-- Inline loading skeleton for instant feedback before JS loads -->
+    <!-- Inline premium loader shown before React mounts -->
     <div class="initial-loader" aria-label="Loading">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-      </svg>
+      <img src="/jw-group-logo.png" alt="JW Group" />
+      <span class="tagline">Excellence in Every Detail</span>
+      <div class="bar"></div>
     </div>
   </div>
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
