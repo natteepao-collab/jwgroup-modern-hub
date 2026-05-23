@@ -8,7 +8,7 @@ const NotFound = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="app-page-safe min-h-screen flex items-center justify-center bg-gray-50 px-4 pb-12 sm:px-6 lg:px-8">
       <SEO
         title="404 - Page Not Found"
         noindex={true}
