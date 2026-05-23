@@ -210,7 +210,7 @@ const resources = {
       chatbot: {
         title: 'JW Assistant',
         subtitle: 'ผู้ช่วยตอบคำถาม',
-        greeting: 'สวัสดีครับคุณลูกค้า 🙌 มีอะไรให้ **JW Group Assistant** ช่วยไหมครับ?',',
+        greeting: 'สวัสดีครับคุณลูกค้า 🙌 มีอะไรให้ **JW Group Assistant** ช่วยไหมครับ?',
         error: 'ขออภัยครับ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
         placeholder: 'พิมพ์คำถามของคุณ...',
         popular: 'คำถามยอดนิยม:',
