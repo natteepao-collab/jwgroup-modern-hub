@@ -382,7 +382,7 @@ const NewsDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="pt-24 min-h-screen bg-background">
+      <div className="app-page-safe min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
           <Skeleton className="h-10 w-24 mb-6" />
           <div className="max-w-4xl mx-auto">
@@ -403,7 +403,7 @@ const NewsDetail = () => {
 
   if (error || !newsItem) {
     return (
-      <div className="pt-24 min-h-screen bg-background">
+      <div className="app-page-safe min-h-screen bg-background">
         <SEO title="News Not Found" noindex={true} />
         <div className="container mx-auto px-4 py-8">
           <Button asChild variant="ghost" className="mb-6">
@@ -473,7 +473,7 @@ const NewsDetail = () => {
   };
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={title}
         description={getLocalizedContent().excerpt}
