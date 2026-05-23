@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import jwLogo from '@/assets/jw-group-logo.png';
+
 
 interface Message {
   role: 'user' | 'assistant';
@@ -28,12 +30,14 @@ const getSessionId = (): string => {
 };
 
 const FAQChatbot = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'สวัสดีครับ! ผมเป็น **JW Group Assistant** ผู้ช่วย AI ของกลุ่มบริษัท JW Group ยินดีตอบทุกคำถามเกี่ยวกับโครงการ บริการ และข้อมูลบริษัทครับ มีอะไรให้ช่วยไหมครับ? 🙌' }
+    { role: 'assistant', content: t('chatbot.greeting') }
   ]);
   const [input, setInput] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(getSessionId());
@@ -126,7 +130,7 @@ const FAQChatbot = () => {
       console.error('Chat error:', error);
       setMessages(prev => [
         ...prev,
-        { role: 'assistant', content: 'ขออภัยครับ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง หรือติดต่อ 02-234-5678' }
+        { role: 'assistant', content: t('chatbot.error') }
       ]);
     } finally {
       setIsLoading(false);
@@ -134,11 +138,12 @@ const FAQChatbot = () => {
   };
 
   const quickQuestions = [
-    'มีข่าวสารอะไรใหม่บ้าง?',
-    'มีตำแหน่งงานว่างอะไรบ้าง?',
-    'บริษัทได้รับรางวัลอะไรบ้าง?',
-    'ติดต่อบริษัทได้อย่างไร?',
+    t('chatbot.qNews'),
+    t('chatbot.qJobs'),
+    t('chatbot.qAwards'),
+    t('chatbot.qContact'),
   ];
+
 
   const handleToggleButton = () => {
     if (isButtonVisible) {
@@ -168,9 +173,10 @@ const FAQChatbot = () => {
               <Bot className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-sm">JW Group FAQ</h3>
-              <p className="text-xs text-primary-foreground/80">ผู้ช่วยตอบคำถาม</p>
+              <h3 className="font-bold text-sm">{t('chatbot.title')}</h3>
+              <p className="text-xs text-primary-foreground/80">{t('chatbot.subtitle')}</p>
             </div>
+
           </div>
           <button
             onClick={() => setIsOpen(false)}
@@ -228,7 +234,8 @@ const FAQChatbot = () => {
           {/* Quick Questions */}
           {messages.length === 1 && (
             <div className="mt-4 space-y-2">
-              <p className="text-xs text-muted-foreground">คำถามยอดนิยม:</p>
+              <p className="text-xs text-muted-foreground">{t('chatbot.popular')}</p>
+
               {quickQuestions.map((q, idx) => (
                 <button
                   key={idx}
@@ -256,7 +263,7 @@ const FAQChatbot = () => {
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="พิมพ์คำถามของคุณ..."
+              placeholder={t('chatbot.placeholder')}
               className="flex-1"
               disabled={isLoading}
             />

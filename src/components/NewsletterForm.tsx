@@ -7,8 +7,6 @@ import { toast } from 'sonner';
 import { Mail, Send, Check, Loader2 } from 'lucide-react';
 import { z } from 'zod';
 
-const emailSchema = z.string().email({ message: "กรุณากรอก email ที่ถูกต้อง" }).max(255);
-
 const NewsletterForm = () => {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
@@ -17,8 +15,8 @@ const NewsletterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate email
+
+    const emailSchema = z.string().email({ message: t('newsletter.invalidEmail') }).max(255);
     const result = emailSchema.safeParse(email);
     if (!result.success) {
       toast.error(result.error.errors[0].message);
@@ -34,18 +32,18 @@ const NewsletterForm = () => {
 
       if (error) {
         if (error.code === '23505') {
-          toast.info('Email นี้ลงทะเบียนรับข่าวสารแล้ว');
+          toast.info(t('newsletter.already'));
         } else {
           throw error;
         }
       } else {
         setSubscribed(true);
-        toast.success('ลงทะเบียนรับข่าวสารเรียบร้อยแล้ว!');
+        toast.success(t('newsletter.success'));
         setEmail('');
       }
     } catch (error) {
       console.error('Newsletter subscription error:', error);
-      toast.error('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+      toast.error(t('newsletter.error'));
     } finally {
       setLoading(false);
     }
@@ -57,16 +55,16 @@ const NewsletterForm = () => {
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
           <Check className="w-8 h-8 text-primary" />
         </div>
-        <h3 className="text-xl font-bold text-foreground mb-2">ขอบคุณที่ลงทะเบียน!</h3>
+        <h3 className="text-xl font-bold text-foreground mb-2">{t('newsletter.thanks')}</h3>
         <p className="text-muted-foreground">
-          คุณจะได้รับข่าวสารและโปรโมชั่นล่าสุดจาก JW Group
+          {t('newsletter.thanksDesc')}
         </p>
         <Button
           variant="ghost"
           className="mt-4"
           onClick={() => setSubscribed(false)}
         >
-          ลงทะเบียน email อื่น
+          {t('newsletter.registerAnother')}
         </Button>
       </div>
     );
@@ -79,8 +77,8 @@ const NewsletterForm = () => {
           <Mail className="w-6 h-6 text-primary" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-foreground">รับข่าวสารจากเรา</h3>
-          <p className="text-sm text-muted-foreground">ข่าวสาร โปรโมชั่น และโครงการใหม่</p>
+          <h3 className="text-xl font-bold text-foreground">{t('newsletter.title')}</h3>
+          <p className="text-sm text-muted-foreground">{t('newsletter.desc')}</p>
         </div>
       </div>
 
@@ -89,7 +87,7 @@ const NewsletterForm = () => {
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <Input
             type="email"
-            placeholder="กรอก email ของคุณ"
+            placeholder={t('newsletter.placeholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="pl-10 h-12"
@@ -97,27 +95,27 @@ const NewsletterForm = () => {
             disabled={loading}
           />
         </div>
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className="h-12 px-6 gap-2"
           disabled={loading || !email}
         >
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              กำลังส่ง...
+              {t('newsletter.sending')}
             </>
           ) : (
             <>
               <Send className="w-4 h-4" />
-              ลงทะเบียน
+              {t('newsletter.submit')}
             </>
           )}
         </Button>
       </form>
 
       <p className="text-xs text-muted-foreground mt-3">
-        เราจะไม่เปิดเผยข้อมูลของคุณกับบุคคลภายนอก
+        {t('newsletter.privacyNote')}
       </p>
     </div>
   );

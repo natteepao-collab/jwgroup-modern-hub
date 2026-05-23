@@ -433,8 +433,9 @@ const VisionMission = () => {
                       <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">แนวคิดหลัก</h2>
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMissionExtras.coreConcept')}</h2>
                       <p className="text-muted-foreground text-xs sm:text-sm">Core Concept</p>
+
                     </div>
                   </div>
 
@@ -482,7 +483,7 @@ const VisionMission = () => {
       {!currentData && !isLoading && (
         <section className="py-12 px-4">
           <div className="max-w-6xl mx-auto text-center">
-            <p className="text-muted-foreground">ไม่พบข้อมูลวิสัยทัศน์และพันธกิจ</p>
+            <p className="text-muted-foreground">{t('visionMissionExtras.noData')}</p>
           </div>
         </section>
       )}

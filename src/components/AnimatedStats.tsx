@@ -201,10 +201,10 @@ const AnimatedStats = () => {
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            ความสำเร็จของเรา
+            {t('stats.sectionTitle')}
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
-            ตัวเลขที่บ่งบอกถึงความมุ่งมั่นและความสำเร็จของ JW Group ตลอดระยะเวลาที่ผ่านมา
+            {t('stats.sectionDesc')}
           </p>
         </div>
 
@@ -218,7 +218,7 @@ const AnimatedStats = () => {
             icon={<Calendar className="w-8 h-8" />}
             value={30}
             suffix="+"
-            label="ปีแห่งประสบการณ์"
+            label={t('stats.years')}
             index={0}
             inView={inView}
           />
@@ -228,7 +228,7 @@ const AnimatedStats = () => {
             icon={<Briefcase className="w-8 h-8" />}
             value={Math.max(projects.length, 17)}
             suffix="+"
-            label="โครงการที่สำเร็จ"
+            label={t('stats.projects')}
             index={1}
             inView={inView}
             isClickable={projects.length > 0}
@@ -241,7 +241,7 @@ const AnimatedStats = () => {
             icon={<Award className="w-8 h-8" />}
             value={awards.length || 1}
             suffix="+"
-            label="รางวัลที่ได้รับ"
+            label={t('stats.awards')}
             index={2}
             inView={inView}
             isClickable={awards.length > 0}
@@ -249,6 +249,7 @@ const AnimatedStats = () => {
             onClick={() => awards.length > 0 && toggleSection('awards')}
           />
         </div>
+
 
         {/* Expandable Dropdown Panel - full-width on all screens */}
         <div
@@ -260,7 +261,7 @@ const AnimatedStats = () => {
             <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[500px] overflow-y-auto">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
                 <Calendar className="w-5 h-5 text-primary" />
-                <h4 className="font-bold text-foreground">รายการโครงการทั้งหมด</h4>
+                <h4 className="font-bold text-foreground">{t('stats.allProjects')}</h4>
               </div>
               <div className="space-y-3">
                 {projects.map((project) => (
@@ -283,7 +284,7 @@ const AnimatedStats = () => {
                       <p className="font-medium text-foreground truncate">
                         {getTitle(project)}
                       </p>
-                      <p className="text-sm text-muted-foreground">ปี {project.year}</p>
+                      <p className="text-sm text-muted-foreground">{t('stats.year')} {project.year}</p>
                     </div>
                   </div>
                 ))}
@@ -295,7 +296,7 @@ const AnimatedStats = () => {
             <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[500px] overflow-y-auto">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
                 <Trophy className="w-5 h-5 text-primary" />
-                <h4 className="font-bold text-foreground">รางวัลที่ได้รับทั้งหมด</h4>
+                <h4 className="font-bold text-foreground">{t('stats.allAwards')}</h4>
               </div>
               <div className="space-y-3">
                 {awards.map((award) => {
@@ -322,7 +323,7 @@ const AnimatedStats = () => {
                           {getTitle(award)}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {award.award_year && `ปี ${award.award_year}`}
+                          {award.award_year && `${t('stats.year')} ${award.award_year}`}
                           {award.awarding_organization && ` • ${award.awarding_organization}`}
                         </p>
                       </div>

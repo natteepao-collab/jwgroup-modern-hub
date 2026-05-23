@@ -48,13 +48,8 @@ const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: bool
         )}>
           JW GROUP
         </p>
-        <p className={cn(
-          "text-white/60 mt-1",
-          isLarge ? "text-sm" : "text-xs"
-        )}>
-          รอการอัพโหลดรูปภาพ
-        </p>
       </div>
+
 
       <div
         className="absolute inset-0 opacity-10"
@@ -652,10 +647,11 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
           <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-muted/50 flex items-center justify-center">
             <ImageIcon className="h-10 w-10 text-muted-foreground/50" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">ไม่พบข่าวสาร</h3>
-          <p className="text-muted-foreground">ยังไม่มีข่าวสารในหมวดหมู่นี้</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">{useTranslation().t('bento.noNews')}</h3>
+          <p className="text-muted-foreground">{useTranslation().t('bento.noNewsDesc')}</p>
         </div>
       )}
+
     </div>
   );
 };
