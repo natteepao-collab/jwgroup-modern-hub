@@ -377,3 +377,32 @@ All colors MUST be HSL.
   animation: shimmer 3s ease-in-out infinite;
   pointer-events: none;
 }
+
+/* Reduce Motion: respect user accessibility setting */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-gentle-pulse,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin,
+  .btn-shimmer::before {
+    animation: none !important;
+  }
+
+  /* Disable hover transforms that imply motion */
+  .hover-scale:hover,
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .hover\:-translate-y-0\.5:hover,
+  .hover\:-translate-y-1:hover {
+    transform: none !important;
+  }
+}
