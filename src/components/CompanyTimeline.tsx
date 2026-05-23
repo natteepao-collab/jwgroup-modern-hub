@@ -608,7 +608,7 @@ const CompanyTimeline = () => {
         </div>
 
         {/* Preview when collapsed */}
-        {!isOpen && (
+        {!showFull && (
           <div className="mt-4">
             {/* Mini horizontal timeline preview */}
             <div className="relative max-w-4xl mx-auto">
