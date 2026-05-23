@@ -86,7 +86,7 @@ const StatCard = ({
     <div className="relative">
       <div
         onClick={onClick}
-        className={`relative group p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${
+        className={`relative group p-3 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${
           inView ? 'animate-fade-in opacity-100' : 'opacity-0'
         } ${isClickable ? 'cursor-pointer' : ''} ${isExpanded ? 'ring-2 ring-primary/30' : ''}`}
         style={{ animationDelay: `${index * 150}ms` }}
@@ -95,31 +95,31 @@ const StatCard = ({
         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Icon */}
-        <div className="relative mb-3 sm:mb-4 inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+        <div className="relative mb-2 sm:mb-4 inline-flex items-center justify-center w-9 h-9 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 [&_svg]:w-5 [&_svg]:h-5 sm:[&_svg]:w-7 sm:[&_svg]:h-7 md:[&_svg]:w-8 md:[&_svg]:h-8">
           {icon}
         </div>
 
         {/* Value */}
-        <div className="relative flex items-center gap-1 sm:gap-2">
-          <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+        <div className="relative flex items-center gap-0.5 sm:gap-2 flex-wrap">
+          <span className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-none">
             {value === 2550 ? count : count.toLocaleString()}
           </span>
-          <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+          <span className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary leading-none">
             {suffix}
           </span>
           {isClickable && (
             <div className="ml-auto">
               {isExpanded ? (
-                <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+                <ChevronUp className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+                <ChevronDown className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground" />
               )}
             </div>
           )}
         </div>
 
         {/* Label */}
-        <p className="relative mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-muted-foreground font-medium">
+        <p className="relative mt-1 sm:mt-2 text-[11px] leading-tight sm:text-sm md:text-base text-muted-foreground font-medium">
           {label}
         </p>
       </div>
@@ -211,7 +211,7 @@ const AnimatedStats = () => {
         {/* Stats Grid - 3 stat cards */}
         <div
           ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto"
+          className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 max-w-5xl mx-auto"
         >
           {/* Years of Experience */}
           <StatCard
