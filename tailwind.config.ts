@@ -80,11 +80,22 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'gentle-pulse': {
+					'0%, 100%': {
+						transform: 'scale(1)',
+						boxShadow: '0 10px 25px -5px hsl(222 47% 11% / 0.12), 0 8px 10px -6px hsl(222 47% 11% / 0.08)'
+					},
+					'50%': {
+						transform: 'scale(1.03)',
+						boxShadow: '0 20px 40px -10px hsl(222 47% 11% / 0.2), 0 10px 20px -8px hsl(222 47% 11% / 0.15)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'gentle-pulse': 'gentle-pulse 2.5s ease-in-out infinite'
 			},
 			fontFamily: {
 				sans: [
