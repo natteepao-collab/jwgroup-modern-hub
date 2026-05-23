@@ -61,23 +61,26 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                       "w-full h-full object-cover transition-all duration-700",
                       isActive 
                         ? "opacity-100 scale-110" 
-                        : "opacity-90 scale-100"
+                        : "opacity-100 scale-105"
                     )}
                     style={{
-                      filter: isActive ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.85) saturate(0.9)'
+                      filter: isActive 
+                        ? 'brightness(1.05) saturate(1.15) contrast(1.05)' 
+                        : 'brightness(1) saturate(1.1) contrast(1.05)'
                     }}
                   />
                 </div>
                 
-                {/* Gradient overlay - lighter for collapsed, gradient for expanded */}
+                {/* Gradient overlay - subtle for collapsed (keeps image clear), white for expanded */}
                 <div 
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
                     isActive 
                       ? "bg-gradient-to-t from-white/95 via-white/70 to-white/40 dark:from-stone-900/95 dark:via-stone-900/70 dark:to-stone-900/40" 
-                      : "bg-stone-500/40 dark:bg-stone-700/50"
+                      : "bg-gradient-to-t from-black/55 via-black/15 to-black/5 dark:from-black/70 dark:via-black/25 dark:to-black/10"
                   )}
                 />
+
               </div>
               
               {/* Collapsed State - Logo + Vertical Text */}
