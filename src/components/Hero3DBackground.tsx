@@ -69,7 +69,9 @@ const Hero3DBackground = () => {
         aria-hidden="true"
         fetchPriority="high"
         decoding="async"
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+          isVideoLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
         style={{
           objectPosition: 'center 30%',
           filter: 'saturate(1.2) contrast(1.1) brightness(1.15)',
@@ -93,6 +95,7 @@ const Hero3DBackground = () => {
             loop
             playsInline
             preload="metadata"
+            poster={heroPoster}
             onLoadedData={handleVideoLoaded}
             className={`w-full h-full object-cover transition-opacity duration-700 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
