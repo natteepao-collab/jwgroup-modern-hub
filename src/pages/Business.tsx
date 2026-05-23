@@ -66,8 +66,8 @@ const businessTabs = [
 const Business = () => {
   const { t } = useTranslation();
 
-  const seoTitle = t('business.title') || "กลุ่มธุรกิจของเรา";
-  const seoDesc = t('business.subtitle') || "JW Group ดำเนินธุรกิจหลากหลายประเภท ทั้งอสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ และก่อสร้าง";
+  const seoTitle = "ธุรกิจในเครือ JW Group | อสังหา โรงแรม โรงพยาบาลสัตว์ สุขภาพ";
+  const seoDesc = "รวมธุรกิจในเครือ JW Group: JW Real Estates อสังหาริมทรัพย์ดอนเมือง, 12 The Residence โรงแรมใกล้สนามบินดอนเมือง, 3DPet Hospital โรงพยาบาลสัตว์, JW Herbal ผลิตภัณฑ์สุขภาพ และ ธนบูลย์ พร็อพเพอร์ตี้ รับเหมาก่อสร้าง";
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const { getImage, getContent } = useSiteContent();
