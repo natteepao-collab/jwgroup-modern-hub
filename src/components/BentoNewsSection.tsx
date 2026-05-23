@@ -380,11 +380,14 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
     setIsHovered(false);
   };
 
+  const isFeatured = (news as NewsItem & { isFeatured?: boolean }).isFeatured;
+
   return (
     <Link
       to={`/news/${news.id}`}
       className={cn(
-        "relative overflow-hidden rounded-2xl cursor-pointer group block h-[320px] transition-all duration-500",
+        "relative overflow-hidden rounded-2xl cursor-pointer group block transition-all duration-500",
+        isFeatured ? "h-[240px] col-span-2 sm:col-span-1 sm:h-[320px]" : "h-[200px] sm:h-[320px]",
         inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       )}
       style={{
