@@ -297,10 +297,10 @@ export const ChairmanQuote = ({
                               Managing Director
                             </div>
                             <div className="text-xl md:text-2xl font-bold text-foreground truncate tracking-tight">
-                              {director.name}
+                              {tr(director.name)}
                             </div>
                             <div className="text-sm text-accent font-medium mt-1">
-                              {director.title}
+                              {tr(director.title)}
                             </div>
                           </div>
 
