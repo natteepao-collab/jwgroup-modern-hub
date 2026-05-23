@@ -417,10 +417,10 @@ const CompanyTimeline = () => {
     }
   };
 
-  // Hide timeline section if visibility is off (admin toggle)
-  if (!isLoadingVisibility && !isVisible) {
-    return null;
-  }
+  // When admin disables full timeline, force compact-only mode (no images, no expand)
+  const fullTimelineEnabled = isVisible;
+  const showFull = fullTimelineEnabled && isOpen;
+
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
@@ -454,22 +454,25 @@ const CompanyTimeline = () => {
             ))}
           </div>
 
-          {/* Toggle Button */}
-          <button
-            onClick={toggleAll}
-            className={`mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold ${
-              isOpen
-                ? 'bg-card border border-border/50 text-foreground hover:shadow-md'
-                : 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:scale-105 animate-gentle-pulse'
-            }`}
-          >
-            {isOpen ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4" />}
-            {isOpen ? 'ย่อ Timeline' : 'แสดง Timeline เต็ม'}
-          </button>
+          {/* Toggle Button - only when admin enabled full timeline */}
+          {fullTimelineEnabled && (
+            <button
+              onClick={toggleAll}
+              className={`mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold ${
+                isOpen
+                  ? 'bg-card border border-border/50 text-foreground hover:shadow-md'
+                  : 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:scale-105 animate-gentle-pulse'
+              }`}
+            >
+              {isOpen ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4" />}
+              {isOpen ? 'ย่อ Timeline' : 'แสดง Timeline เต็ม'}
+            </button>
+          )}
         </div>
 
+
         {/* Jump to Year - Improved Mobile Layout */}
-        {isOpen && (
+        {showFull && (
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center justify-center gap-2 mb-3">
               <MapPin className="w-4 h-4 text-primary" />
@@ -543,7 +546,7 @@ const CompanyTimeline = () => {
         )}
 
         {/* Timeline Content - Collapsible */}
-        <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[8000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`overflow-hidden transition-all duration-700 ease-in-out ${showFull ? 'max-h-[8000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           {/* Timeline */}
           <div className="relative pt-4 sm:pt-6 md:pt-8">
             {/* Vertical Line */}
@@ -605,7 +608,7 @@ const CompanyTimeline = () => {
         </div>
 
         {/* Preview when collapsed */}
-        {!isOpen && (
+        {!showFull && (
           <div className="mt-4">
             {/* Mini horizontal timeline preview */}
             <div className="relative max-w-4xl mx-auto">
@@ -675,22 +678,25 @@ const CompanyTimeline = () => {
               </div>
             </div>
 
-            {/* CTA to expand */}
-            <div className="text-center mt-8">
-              <button
-                onClick={toggleAll}
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-primary/90 text-primary-foreground text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-gentle-pulse"
-              >
-                <ChevronDown className="w-5 h-5" />
-                คลิกเพื่อดูรายละเอียดทั้งหมด
-                <ChevronDown className="w-5 h-5" />
-              </button>
-              <p className="mt-3 text-xs text-muted-foreground">
-                สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน
-              </p>
-            </div>
+            {/* CTA to expand - only when full timeline enabled */}
+            {fullTimelineEnabled && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={toggleAll}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-primary/90 text-primary-foreground text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-gentle-pulse"
+                >
+                  <ChevronDown className="w-5 h-5" />
+                  คลิกเพื่อดูรายละเอียดทั้งหมด
+                  <ChevronDown className="w-5 h-5" />
+                </button>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน
+                </p>
+              </div>
+            )}
           </div>
         )}
+
       </div>
     </section>
   );
