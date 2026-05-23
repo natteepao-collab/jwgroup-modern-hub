@@ -211,7 +211,7 @@ const VisionMission = () => {
       </section>
 
       {/* Business Selector - Horizontal Cards */}
-      <section className="py-8 px-4 bg-muted/30 sticky top-16 z-40 backdrop-blur-lg border-b border-border/50">
+      <section className="py-6 px-4 bg-background/80 sticky top-16 lg:top-20 z-30 backdrop-blur-lg border-b border-border/50 shadow-sm">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap justify-center gap-3">
             {Object.keys(businessStyles).filter(key => availableBusinessTypes.includes(key)).map((businessKey) => {
