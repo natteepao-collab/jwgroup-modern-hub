@@ -142,6 +142,7 @@ const TimelineManagement = () => {
   const [formData, setFormData] = useState<Omit<TimelineEvent, 'id'>>(emptyEvent);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [timelineVisible, setTimelineVisible] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -149,6 +150,44 @@ const TimelineManagement = () => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+
+  const fetchVisibility = useCallback(async () => {
+    const { data } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('section_key', 'timeline_visibility')
+      .maybeSingle();
+    if (data) {
+      const metadata = (data.metadata as Record<string, unknown>) || {};
+      setTimelineVisible(metadata.visible === true);
+    } else {
+      setTimelineVisible(true);
+    }
+  }, []);
+
+  const toggleVisibility = async (visible: boolean) => {
+    setTimelineVisible(visible);
+    const { data: existing } = await supabase
+      .from('site_content')
+      .select('id')
+      .eq('section_key', 'timeline_visibility')
+      .maybeSingle();
+
+    if (existing) {
+      await supabase
+        .from('site_content')
+        .update({ metadata: { visible } })
+        .eq('id', existing.id);
+    } else {
+      await supabase.from('site_content').insert({
+        section_key: 'timeline_visibility',
+        title_th: 'Timeline Visibility',
+        content_th: visible ? 'visible' : 'hidden',
+        metadata: { visible },
+      });
+    }
+    toast({ title: 'สำเร็จ', description: visible ? 'เปิดการแสดง Timeline แล้ว' : 'ปิดการแสดง Timeline แล้ว' });
+  };
 
   const fetchEvents = useCallback(async () => {
     const { data, error } = await supabase
@@ -165,7 +204,8 @@ const TimelineManagement = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents]);
+    fetchVisibility();
+  }, [fetchEvents, fetchVisibility]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
