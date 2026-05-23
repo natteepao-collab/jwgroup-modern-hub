@@ -10,13 +10,14 @@ interface BusinessItem {
   url: string;
   image: string; // Logo image
   backgroundImage?: string; // Optional separate background image
+  ctaText?: string; // Optional meaningful CTA anchor text (overrides default "Visit website")
   brandColor?: {
-    collapsed: string; // Collapsed state bg color
-    expanded: string; // Expanded state gradient
-    expandedDark: string; // Expanded state gradient for dark mode
+    collapsed: string;
+    expanded: string;
+    expandedDark: string;
   };
   logoStyle?: {
-    scale?: number; // Scale factor for logo (1 = normal, 1.2 = 20% larger)
+    scale?: number;
     objectFit?: 'contain' | 'cover' | 'fill';
   };
 }
@@ -154,9 +155,10 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                     href={business.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
+                    aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
                     className="flex items-center gap-2"
                   >
-                    {t('business.viewWebsite')}
+                    {business.ctaText || t('business.viewWebsite')}
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 </Button>
@@ -185,6 +187,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               href={business.url}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
               className="group relative overflow-hidden rounded-xl h-[280px] transition-all duration-500 hover:shadow-xl hover:scale-[1.02]"
             >
               {/* Background Image */}
@@ -226,7 +229,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   
                   {/* CTA */}
                   <div className="flex items-center gap-2 text-primary font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                    <span>{t('business.viewWebsite')}</span>
+                    <span>{business.ctaText || t('business.viewWebsite')}</span>
                     <ExternalLink className="h-4 w-4" />
                   </div>
                 </div>
@@ -324,9 +327,10 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                       href={business.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
+                      aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
                       className="flex items-center justify-center gap-2"
                     >
-                      {t('business.viewWebsite')}
+                      {business.ctaText || t('business.viewWebsite')}
                       <ExternalLink className="h-4 w-4" />
                     </a>
                   </Button>
