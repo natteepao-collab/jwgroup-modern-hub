@@ -15,6 +15,7 @@ import AnimatedStats from '@/components/AnimatedStats';
 import CompanyTimeline from '@/components/CompanyTimeline';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import NewsletterForm from '@/components/NewsletterForm';
+import HomeSkeleton from '@/components/HomeSkeleton';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
