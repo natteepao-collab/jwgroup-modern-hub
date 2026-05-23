@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, Crown, Sparkles, Award, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import chairmanDefault from '@/assets/chairman-portrait.jpg';
 
 interface Executive {
@@ -62,13 +63,28 @@ export const ChairmanQuote = ({
   const chairman = executives.find((e) => e.is_chairman);
   const directors = executives.filter((e) => !e.is_chairman && e.level !== 'manager');
 
-  const chairmanName = chairman?.name || defaultName || 'คุณวิสิษฐ กอวรกุล';
-  const chairmanTitle = chairman?.title || defaultTitle || 'ประธานกรรมการบริษัท';
-  const chairmanQuote =
+  const rawName = chairman?.name || defaultName || 'คุณวิสิษฐ กอวรกุล';
+  const rawTitle = chairman?.title || defaultTitle || 'ประธานกรรมการบริษัท';
+  const rawQuote =
     chairman?.quote ||
     defaultQuote ||
     'เราเชื่อมั่นในการสร้างธุรกิจที่ยั่งยืน ควบคู่ไปกับการพัฒนาคุณภาพชีวิตของสังคม';
+  const rawDescription = chairman?.description || '';
   const chairmanImage = chairman?.image_url || chairmanDefault;
+
+  // Auto-translate Thai DB content into current UI language
+  const textsToTranslate = useMemo(() => {
+    const arr: string[] = [rawName, rawTitle, rawQuote, rawDescription];
+    directors.forEach((d) => {
+      arr.push(d.name, d.title, d.description || '');
+    });
+    return arr;
+  }, [rawName, rawTitle, rawQuote, rawDescription, directors]);
+  const { tr } = useAutoTranslate(textsToTranslate);
+
+  const chairmanName = tr(rawName);
+  const chairmanTitle = tr(rawTitle);
+  const chairmanQuote = tr(rawQuote);
 
   if (isLoading) {
     return (
@@ -206,7 +222,7 @@ export const ChairmanQuote = ({
                   </div>
                   {chairman?.description && (
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-xl font-light">
-                      {chairman.description}
+                      {tr(chairman.description)}
                     </p>
                   )}
                 </div>
@@ -281,10 +297,10 @@ export const ChairmanQuote = ({
                               Managing Director
                             </div>
                             <div className="text-xl md:text-2xl font-bold text-foreground truncate tracking-tight">
-                              {director.name}
+                              {tr(director.name)}
                             </div>
                             <div className="text-sm text-accent font-medium mt-1">
-                              {director.title}
+                              {tr(director.title)}
                             </div>
                           </div>
 
@@ -307,7 +323,7 @@ export const ChairmanQuote = ({
                               <div className="px-6 pb-6">
                                 <div className="h-px w-full bg-gradient-to-r from-transparent via-accent/30 to-transparent mb-4" />
                                 <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                                  {director.description}
+                                  {tr(director.description)}
                                 </p>
                               </div>
                             </motion.div>

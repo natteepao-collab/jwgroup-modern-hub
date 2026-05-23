@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { useAutoTranslate } from './useAutoTranslate';
 
 interface NewsItem {
   id: string;
@@ -45,6 +46,8 @@ export const useNews = (featuredOnly: boolean = true) => {
   const { i18n, t } = useTranslation();
   const queryClient = useQueryClient();
 
+  // Returns the best pre-translated DB field; falls back to Thai when missing.
+  // Auto-translation (for kr/jp/ru, or missing en/cn) is layered on AFTER this.
   const getLocalizedField = (item: NewsItem, field: 'title' | 'excerpt' | 'content') => {
     const lang = i18n.language;
     const thField = `${field}_th` as keyof NewsItem;
@@ -53,7 +56,7 @@ export const useNews = (featuredOnly: boolean = true) => {
 
     if (lang === 'en' && item[enField]) return item[enField] as string;
     if (lang === 'cn' && item[cnField]) return item[cnField] as string;
-    return item[thField] as string || '';
+    return (item[thField] as string) || '';
   };
 
   const getCategoryLabel = () => {
@@ -145,7 +148,7 @@ export const useNews = (featuredOnly: boolean = true) => {
     return { isVideo: true, gallery: [] };
   };
 
-  const formattedNews: FormattedNewsItem[] = (newsItems || []).map((item) => {
+  const baseFormatted: FormattedNewsItem[] = (newsItems || []).map((item) => {
     const { isVideo, gallery } = parseGalleryOrVideo(item.video_url);
 
     return {
@@ -163,6 +166,21 @@ export const useNews = (featuredOnly: boolean = true) => {
       isFeatured: item.is_featured,
     };
   });
+
+  // Collect all visible Thai-source strings for AI auto-translation
+  // (triggered only when current language != 'th')
+  const textsToTranslate = useMemo(
+    () =>
+      baseFormatted.flatMap((n) => [n.title, n.excerpt]).filter((t) => t && t.length > 0),
+    [baseFormatted]
+  );
+  const { tr } = useAutoTranslate(textsToTranslate);
+
+  const formattedNews: FormattedNewsItem[] = baseFormatted.map((n) => ({
+    ...n,
+    title: tr(n.title),
+    excerpt: tr(n.excerpt),
+  }));
 
   return {
     news: formattedNews,
