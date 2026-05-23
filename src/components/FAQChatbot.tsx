@@ -191,7 +191,7 @@ const FAQChatbot = () => {
         </div>
 
         {/* Messages */}
-        <ScrollArea className="h-[350px] p-4" ref={scrollRef}>
+        <ScrollArea className="h-[350px] p-4 overscroll-contain" ref={scrollRef}>
           <div className="space-y-4">
             {messages.map((msg, idx) => (
               <div
