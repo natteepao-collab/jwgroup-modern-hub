@@ -82,7 +82,7 @@ const Careers = () => {
   };
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={t('careers.title')}
         description={t('careers.description') || "ร่วมงานกับเรา JW Group"}

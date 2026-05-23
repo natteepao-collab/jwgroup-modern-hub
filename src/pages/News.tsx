@@ -12,7 +12,7 @@ const News = () => {
   const { news, isLoading } = useNews(false);
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={t('news.title')}
         description={t('news.subtitle')}

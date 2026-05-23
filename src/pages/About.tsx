@@ -624,7 +624,7 @@ const About = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={seoTitle}
         description={seoDesc}
@@ -635,7 +635,7 @@ const About = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Navigation */}
           <aside className="w-full lg:w-72 shrink-0">
-            <div className="sticky top-28">
+            <div className="sticky app-sticky-below-navbar">
               {/* Header */}
               <div className="mb-6 relative">
                 <div className="absolute -left-2 top-0 w-1 h-full bg-gradient-to-b from-primary to-primary/30 rounded-full" />

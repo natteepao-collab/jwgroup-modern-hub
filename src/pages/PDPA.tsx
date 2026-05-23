@@ -9,7 +9,7 @@ const PDPA = () => {
   const { openCookieSettings } = useCookieConsent();
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={t('footer.pdpa') || "PDPA นโยบายคุ้มครองข้อมูลส่วนบุคคล"}
         description="นโยบายการคุ้มครองข้อมูลส่วนบุคคล (PDPA) ของ JW Group"

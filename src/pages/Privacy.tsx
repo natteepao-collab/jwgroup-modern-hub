@@ -9,7 +9,7 @@ const Privacy = () => {
   const { openCookieSettings } = useCookieConsent();
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={t('footer.privacy') || "นโยบายความเป็นส่วนตัว"}
         description="นโยบายความเป็นส่วนตัวของ JW Group การเก็บรวบรวม การใช้ และการเปิดเผยข้อมูลส่วนบุคคล"
