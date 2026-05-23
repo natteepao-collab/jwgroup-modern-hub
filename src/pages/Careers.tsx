@@ -84,8 +84,8 @@ const Careers = () => {
   return (
     <div className="app-page-safe min-h-screen bg-background">
       <SEO
-        title={t('careers.title')}
-        description={t('careers.description') || "ร่วมงานกับเรา JW Group"}
+        title="ร่วมงานกับ JW Group | สมัครงาน ตำแหน่งว่าง สวัสดิการพนักงาน"
+        description="ร่วมเป็นส่วนหนึ่งของ JW Group กลุ่มธุรกิจชั้นนำในไทย ดูตำแหน่งงานว่างประจำสำนักงานใหญ่ดอนเมือง พร้อมสวัสดิการครบครันและโอกาสเติบโตในสายอาชีพ"
         canonicalUrl="/careers"
         structuredData={buildBreadcrumb([{ name: t('careers.title'), path: '/careers' }])}
       />

@@ -177,11 +177,17 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <SEO
-        title={seoTitle}
-        description={seoDesc}
+        title="JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม สุขภาพ และบริการครบวงจร"
+        description="JW Group กลุ่มธุรกิจชั้นนำในประเทศไทย ครอบคลุมอสังหาริมทรัพย์ โรงแรม 12 The Residence โรงพยาบาลสัตว์ 3DPet ผลิตภัณฑ์สุขภาพ JW Herbal และรับเหมาก่อสร้าง ธนบูลย์ พร็อพเพอร์ตี้"
         canonicalUrl="/"
         structuredData={organizationSchema}
       />
+
+      {/* Accessible H1 for SEO — visually hidden so the cinematic hero stays intact */}
+      <h1 className="sr-only">
+        JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม สุขภาพ และบริการครบวงจร
+      </h1>
+
       {/* Welcome modal disabled to reduce intrusion on first impression. 
           Trigger manually via state if ever needed. */}
       {/* <AnnouncementModal autoShow delay={1500} /> */}
@@ -189,6 +195,7 @@ const Index = () => {
       {/* Hero Section - Cinematic Video + Headline overlay */}
       <section
         ref={heroRef}
+        aria-label="JW Group hero"
         className="relative h-[70vh] sm:h-[75vh] md:h-[85vh] lg:h-screen overflow-hidden"
       >
         <Hero3DBackground />

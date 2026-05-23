@@ -607,12 +607,38 @@ const AboutTeam = () => {
 
 
 
+const aboutSeoByPath: Record<string, { title: string; desc: string; breadcrumb: string }> = {
+  '/about/history': {
+    title: 'ประวัติความเป็นมา JW Group | กลุ่มธุรกิจไทยมายาวนาน',
+    desc: 'เรื่องราวการก่อตั้งและพัฒนาการของ JW Group กลุ่มธุรกิจไทยที่เติบโตอย่างต่อเนื่องในด้านอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ และผลิตภัณฑ์สุขภาพ',
+    breadcrumb: 'ประวัติความเป็นมา',
+  },
+  '/about/structure': {
+    title: 'โครงสร้างองค์กร JW Group | หน่วยงานและธุรกิจในเครือ',
+    desc: 'โครงสร้างองค์กรและธุรกิจในเครือ JW Group ครอบคลุมอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ และผลิตภัณฑ์สุขภาพ',
+    breadcrumb: 'โครงสร้างองค์กร',
+  },
+  '/about/team': {
+    title: 'คณะผู้บริหาร JW Group | ทีมงานและผู้นำองค์กร',
+    desc: 'รู้จักคณะผู้บริหารและทีมงานหลักของ JW Group ผู้ขับเคลื่อนกลุ่มธุรกิจไทยให้เติบโตอย่างยั่งยืน',
+    breadcrumb: 'คณะผู้บริหาร',
+  },
+  '/about/awards': {
+    title: 'รางวัลและความสำเร็จ JW Group | เครื่องการันตีคุณภาพ',
+    desc: 'รวมรางวัลและการรับรองมาตรฐานที่ JW Group ได้รับ เครื่องหมายการันตีคุณภาพและความมุ่งมั่นของกลุ่มธุรกิจในเครือ',
+    breadcrumb: 'รางวัล',
+  },
+};
+
 const About = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
-  const seoTitle = "เกี่ยวกับเรา";
-  const seoDesc = "JW Group - ความเป็นมา วิสัยทัศน์ และโครงสร้างองค์กร";
+  const seo = aboutSeoByPath[location.pathname] || {
+    title: 'เกี่ยวกับ JW Group | ประวัติ วิสัยทัศน์ โครงสร้างองค์กร',
+    desc: 'รู้จัก JW Group กลุ่มธุรกิจไทยครบวงจร ประวัติความเป็นมา วิสัยทัศน์ โครงสร้างองค์กร คณะผู้บริหาร และรางวัลความสำเร็จ',
+    breadcrumb: 'เกี่ยวกับเรา',
+  };
 
   const navItems = [
     { path: '/about/history', labelKey: 'about.history', icon: Info },
@@ -626,10 +652,10 @@ const About = () => {
   return (
     <div className="app-page-safe min-h-screen bg-background">
       <SEO
-        title={seoTitle}
-        description={seoDesc}
-        canonicalUrl="/about"
-        structuredData={buildBreadcrumb([{ name: seoTitle || 'เกี่ยวกับเรา', path: '/about' }])}
+        title={seo.title}
+        description={seo.desc}
+        canonicalUrl={location.pathname.startsWith('/about') ? location.pathname : '/about'}
+        structuredData={buildBreadcrumb([{ name: seo.breadcrumb, path: location.pathname }])}
       />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">

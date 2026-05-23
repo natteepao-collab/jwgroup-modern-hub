@@ -14,8 +14,8 @@ const News = () => {
   return (
     <div className="app-page-safe min-h-screen bg-background">
       <SEO
-        title={t('news.title')}
-        description={t('news.subtitle')}
+        title="ข่าวสารและกิจกรรม JW Group | อัปเดตธุรกิจในเครือ"
+        description="ติดตามข่าวสาร ข่าวประชาสัมพันธ์ และกิจกรรม CSR ของ JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ และผลิตภัณฑ์สุขภาพ"
         canonicalUrl="/news"
         structuredData={buildBreadcrumb([{ name: t('news.title'), path: '/news' }])}
       />

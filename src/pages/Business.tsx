@@ -66,8 +66,8 @@ const businessTabs = [
 const Business = () => {
   const { t } = useTranslation();
 
-  const seoTitle = t('business.title') || "กลุ่มธุรกิจของเรา";
-  const seoDesc = t('business.subtitle') || "JW Group ดำเนินธุรกิจหลากหลายประเภท ทั้งอสังหาริมทรัพย์ โรงแรม สัตวแพทย์ สุขภาพ และก่อสร้าง";
+  const seoTitle = "ธุรกิจในเครือ JW Group | อสังหา โรงแรม โรงพยาบาลสัตว์ สุขภาพ";
+  const seoDesc = "รวมธุรกิจในเครือ JW Group: JW Real Estates อสังหาริมทรัพย์ดอนเมือง, 12 The Residence โรงแรมใกล้สนามบินดอนเมือง, 3DPet Hospital โรงพยาบาลสัตว์, JW Herbal ผลิตภัณฑ์สุขภาพ และ ธนบูลย์ พร็อพเพอร์ตี้ รับเหมาก่อสร้าง";
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const { getImage, getContent } = useSiteContent();
@@ -99,6 +99,7 @@ const Business = () => {
       name: t('business.realEstate.name'),
       description: t('business.realEstate.description'),
       url: 'https://jwrealestate.com',
+      ctaText: 'ดูโครงการของ JW Real Estates',
       image: getBusinessImage('business_realestate_image'),
       backgroundImage: getBusinessImage('business_realestate_bg'),
       brandColor: {
@@ -111,6 +112,7 @@ const Business = () => {
       name: t('business.hotel.name'),
       description: t('business.hotel.description'),
       url: 'https://12theresidence.com/th-th/',
+      ctaText: 'จองห้องพักที่ 12 The Residence',
       image: getBusinessImage('business_hotel_image'),
       backgroundImage: getBusinessImage('business_hotel_bg'),
       brandColor: {
@@ -123,6 +125,7 @@ const Business = () => {
       name: t('business.pet.name'),
       description: t('business.pet.description'),
       url: 'https://www.3dpethospital.com/',
+      ctaText: 'ดูบริการของ 3DPet Hospital',
       image: getBusinessImage('business_pet_image'),
       backgroundImage: getBusinessImage('business_pet_bg'),
       brandColor: {
@@ -136,6 +139,7 @@ const Business = () => {
       name: t('business.wellness.name'),
       description: t('business.wellness.description'),
       url: 'https://www.jwherbal.com',
+      ctaText: 'เลือกซื้อผลิตภัณฑ์ JW Herbal',
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
       brandColor: {
@@ -149,6 +153,7 @@ const Business = () => {
       name: constructionContent.title || 'ธนบูลย์ พร็อพเพอร์ตี้',
       description: constructionContent.content || 'บริษัท ธนบูลย์ พร็อพเพอร์ตี้ จำกัด ผู้เชี่ยวชาญด้านการรับเหมาก่อสร้าง และพัฒนาอสังหาริมทรัพย์คุณภาพสูง ด้วยประสบการณ์และความชำนาญในการสร้างสรรค์โครงการที่ได้มาตรฐาน',
       url: '#',
+      ctaText: 'ดูผลงานรับเหมาก่อสร้าง ธนบูลย์ พร็อพเพอร์ตี้',
       image: thanabulLogo,
       backgroundImage: getBusinessImage('business_construction_image'),
       brandColor: {
@@ -187,6 +192,35 @@ const Business = () => {
         >
           <InteractiveSplitBusiness businesses={businesses} />
         </div>
+
+        {/* SEO content — short, keyword-aware overview of each business unit */}
+        <section aria-labelledby="business-overview-heading" className="mt-20 max-w-4xl mx-auto">
+          <h2 id="business-overview-heading" className="text-2xl md:text-3xl font-bold text-foreground mb-6 text-center">
+            ภาพรวมกลุ่มธุรกิจในเครือ JW Group
+          </h2>
+          <div className="space-y-6 text-foreground/85 leading-relaxed text-base">
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">JW Real Estates — อสังหาริมทรัพย์ดอนเมือง</h3>
+              <p>พัฒนาโครงการที่อยู่อาศัยและพื้นที่เชิงพาณิชย์ในย่านดอนเมืองและกรุงเทพฯ ตอนเหนือ เน้นทำเลที่ใกล้สนามบินและการเดินทางสะดวก</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">12 The Residence — โรงแรมใกล้ดอนเมือง</h3>
+              <p>โรงแรมและที่พักระดับพรีเมียมใกล้สนามบินดอนเมือง เหมาะสำหรับนักเดินทางและนักธุรกิจที่ต้องการความสะดวกและบริการที่อบอุ่น</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">3DPet Hospital — โรงพยาบาลสัตว์</h3>
+              <p>โรงพยาบาลสัตว์ที่ให้บริการตรวจรักษาด้วยทีมสัตวแพทย์เฉพาะทาง พร้อมอุปกรณ์ทันสมัย ดูแลสัตว์เลี้ยงทุกช่วงวัยอย่างใส่ใจ</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">JW Herbal — ผลิตภัณฑ์เพื่อสุขภาพ</h3>
+              <p>ผลิตภัณฑ์สุขภาพและสมุนไพรที่พัฒนาบนหลักวิจัย เพื่อยกระดับคุณภาพชีวิตและส่งเสริมสุขภาพแบบองค์รวมในชีวิตประจำวัน</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">ธนบูลย์ พร็อพเพอร์ตี้ — รับเหมาก่อสร้าง</h3>
+              <p>ผู้เชี่ยวชาญงานรับเหมาก่อสร้างและพัฒนาอสังหาริมทรัพย์ ด้วยประสบการณ์และมาตรฐานคุณภาพในทุกขั้นตอนการก่อสร้าง</p>
+            </div>
+          </div>
+        </section>
 
         {/* Project Gallery Section */}
         <div
