@@ -84,14 +84,22 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  const [initialLoading, setInitialLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !sessionStorage.getItem('jw_initial_loaded');
+  });
 
   useEffect(() => {
-    const timer = setTimeout(() => setInitialLoading(false), 3000);
+    if (!initialLoading) return;
+    const timer = setTimeout(() => {
+      sessionStorage.setItem('jw_initial_loaded', '1');
+      setInitialLoading(false);
+    }, 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [initialLoading]);
 
   if (initialLoading) return <Loading />;
+
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -105,7 +113,7 @@ const App = () => {
                 <CookieConsentProvider>
                   <Layout>
                     <PageTransition>
-                      <Suspense fallback={<Loading />}>
+                      <Suspense fallback={null}>
                         <Routes>
                           <Route path="/" element={<Index />} />
                           <Route path="/about/*" element={<About />} />
