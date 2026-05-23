@@ -580,36 +580,69 @@ const CompanyTimeline = () => {
           <div className="mt-4">
             {/* Mini horizontal timeline preview */}
             <div className="relative max-w-4xl mx-auto">
-              {/* Connecting line */}
-              <div className="absolute top-7 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30 hidden md:block" />
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-                {events.map((event, index) => (
-                  <div
-                    key={event.id}
-                    className={`relative flex flex-col items-center text-center transition-all duration-500 ${
-                      headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-                    }`}
-                    style={{ transitionDelay: `${index * 100 + 300}ms` }}
-                  >
-                    {/* Icon circle */}
-                    <div className={`relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:scale-110 ${
-                      event.is_highlight
-                        ? 'bg-primary text-primary-foreground shadow-primary/30'
-                        : 'bg-card border-2 border-primary/30 text-primary'
-                    }`}>
-                      {iconMap[event.icon_name] || <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />}
-                    </div>
-                    {/* Year badge */}
-                    <span className="mt-2 inline-block px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] sm:text-xs font-bold">
-                      {event.year}
-                    </span>
-                    {/* Title */}
-                    <p className="mt-1.5 text-xs sm:text-sm font-semibold text-foreground line-clamp-2 leading-tight">
-                      {event.title_th}
-                    </p>
+              {/* Mobile: Horizontal scroll */}
+              <div className="md:hidden -mx-3 px-3">
+                <ScrollArea className="w-full whitespace-nowrap">
+                  <div className="relative inline-flex gap-5 pb-4 pt-2 px-1">
+                    {/* Connecting line */}
+                    <div className="absolute top-8 left-6 right-6 h-0.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30" />
+                    {events.map((event, index) => (
+                      <div
+                        key={event.id}
+                        className={`relative flex flex-col items-center text-center w-[110px] shrink-0 transition-all duration-500 ${
+                          headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+                        }`}
+                        style={{ transitionDelay: `${index * 80 + 200}ms` }}
+                      >
+                        <div className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center shadow-md transition-all duration-300 ${
+                          event.is_highlight
+                            ? 'bg-primary text-primary-foreground shadow-primary/30'
+                            : 'bg-card border-2 border-primary/30 text-primary'
+                        }`}>
+                          {iconMap[event.icon_name] || <Calendar className="w-5 h-5" />}
+                        </div>
+                        <span className="mt-2 inline-block px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
+                          {event.year}
+                        </span>
+                        <p className="mt-1.5 text-[11px] font-semibold text-foreground line-clamp-2 leading-tight whitespace-normal">
+                          {event.title_th}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+                <p className="text-center text-[10px] text-muted-foreground mt-1">← เลื่อนเพื่อดูปีอื่น →</p>
+              </div>
+
+              {/* Tablet & Desktop: Grid */}
+              <div className="hidden md:block">
+                <div className="absolute top-7 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30" />
+                <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
+                  {events.map((event, index) => (
+                    <div
+                      key={event.id}
+                      className={`relative flex flex-col items-center text-center transition-all duration-500 ${
+                        headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+                      }`}
+                      style={{ transitionDelay: `${index * 100 + 300}ms` }}
+                    >
+                      <div className={`relative z-10 w-14 h-14 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:scale-110 ${
+                        event.is_highlight
+                          ? 'bg-primary text-primary-foreground shadow-primary/30'
+                          : 'bg-card border-2 border-primary/30 text-primary'
+                      }`}>
+                        {iconMap[event.icon_name] || <Calendar className="w-6 h-6" />}
+                      </div>
+                      <span className="mt-2 inline-block px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold">
+                        {event.year}
+                      </span>
+                      <p className="mt-1.5 text-sm font-semibold text-foreground line-clamp-2 leading-tight">
+                        {event.title_th}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
