@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, Crown, Sparkles, Award, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import chairmanDefault from '@/assets/chairman-portrait.jpg';
 
 interface Executive {
