@@ -55,13 +55,15 @@ const iconOptions = [
   { value: 'calendar', label: 'ปฏิทิน', icon: Calendar },
 ];
 
-const SortableItem = ({ event, onEdit, onDelete }: {
+const SortableItem = ({ event, onEdit, onDelete, onImageChange }: {
   event: TimelineEvent;
   onEdit: (e: TimelineEvent) => void;
   onDelete: (id: string) => void;
+  onImageChange: (id: string, file: File) => void;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: event.id });
   const IconComponent = iconOptions.find(i => i.value === event.icon_name)?.icon || Calendar;
+  const inlineInputRef = useRef<HTMLInputElement>(null);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -76,8 +78,8 @@ const SortableItem = ({ event, onEdit, onDelete }: {
       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${event.is_highlight ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'}`}>
         <IconComponent className="h-5 w-5" />
       </div>
-      <div className="flex-1">
-        <div className="flex items-center gap-2">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="font-bold text-primary">{event.year}</span>
           <span className="font-medium">{event.title_th}</span>
           {!event.is_published && (
@@ -89,9 +91,37 @@ const SortableItem = ({ event, onEdit, onDelete }: {
         </div>
         <p className="text-sm text-muted-foreground line-clamp-1">{event.description_th}</p>
       </div>
-      {event.image_url && (
-        <img src={event.image_url} alt="" className="w-12 h-12 rounded object-cover" />
-      )}
+
+      {/* Inline image preview + quick change */}
+      <div className="relative group">
+        {event.image_url ? (
+          <img src={event.image_url} alt="" className="w-16 h-16 rounded object-cover border" />
+        ) : (
+          <div className="w-16 h-16 rounded border border-dashed flex items-center justify-center text-muted-foreground text-[10px] text-center px-1">
+            ไม่มีรูป
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => inlineInputRef.current?.click()}
+          className="absolute inset-0 rounded bg-black/60 text-white text-[11px] font-medium opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-1"
+          title="เปลี่ยนรูป"
+        >
+          <Upload className="h-3.5 w-3.5" /> เปลี่ยน
+        </button>
+        <input
+          ref={inlineInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) onImageChange(event.id, f);
+            e.target.value = '';
+          }}
+        />
+      </div>
+
       <div className="flex gap-2">
         <Button variant="outline" size="icon" onClick={() => onEdit(event)}>
           <Pencil className="h-4 w-4" />
@@ -103,6 +133,7 @@ const SortableItem = ({ event, onEdit, onDelete }: {
     </div>
   );
 };
+
 
 const TimelineManagement = () => {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
