@@ -616,10 +616,11 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
       })
     : news;
 
-  // ใช้ uniform size สำหรับ grid layout
-  const displayNews: NewsItem[] = (maxItems ? filteredNews.slice(0, maxItems) : filteredNews).map(item => ({
+  // ใช้ uniform size สำหรับ grid layout (item แรก เป็น featured บน mobile)
+  const displayNews = (maxItems ? filteredNews.slice(0, maxItems) : filteredNews).map((item, idx) => ({
     ...item,
-    size: 'small' as const
+    size: 'small' as const,
+    isFeatured: idx === 0,
   }));
 
   return (
@@ -632,8 +633,8 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
         />
       )}
 
-      {/* Grid 2x3 Layout - 3 columns, 2 rows */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Compact grid: 2-col on mobile (first item spans both), 3-col on desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
         {displayNews.map((newsItem, index) => (
           <UniformNewsCard
             key={newsItem.id}
@@ -644,6 +645,7 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
           />
         ))}
       </div>
+
 
       {displayNews.length === 0 && (
         <div className="text-center py-16">
