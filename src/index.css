@@ -428,3 +428,21 @@ All colors MUST be HSL.
     transform: none !important;
   }
 }
+/* Skeleton shimmer overlay */
+.shimmer-overlay {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--foreground) / 0.06) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-slide 1.6s ease-in-out infinite;
+}
+@keyframes shimmer-slide {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-overlay { animation: none !important; }
+}
