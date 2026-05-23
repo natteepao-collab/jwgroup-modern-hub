@@ -549,7 +549,7 @@ const AwardsSection = () => {
       </section>
 
       {/* Filter Tabs */}
-      <section className="sticky top-16 z-30 bg-background/85 backdrop-blur-lg border-y border-border/40">
+      <section className="sticky app-sticky-below-navbar z-30 bg-background/85 backdrop-blur-lg border-y border-border/40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
             {filterTabs.map(tab => (
