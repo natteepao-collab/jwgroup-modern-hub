@@ -238,10 +238,10 @@ export const Navbar = () => {
                     aboutDropdownOpen || isAboutActive
                       ? isScrolled
                         ? "text-primary bg-primary/8"
-                        : "text-white bg-white/15 backdrop-blur-sm"
+                        : "bg-white/15 backdrop-blur-sm text-white [mix-blend-mode:difference]"
                       : isScrolled
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
+                        : "text-white [mix-blend-mode:difference] hover:bg-white/10"
                   )}
                 >
                   {t('nav.about')}
@@ -250,6 +250,7 @@ export const Navbar = () => {
                     aboutDropdownOpen && "rotate-180"
                   )} />
                 </button>
+
 
 
                 {/* Dropdown Menu */}
@@ -308,16 +309,17 @@ export const Navbar = () => {
                     isActive(item.path)
                       ? isScrolled
                         ? "text-primary bg-primary/8"
-                        : "text-white bg-white/15 backdrop-blur-sm"
+                        : "bg-white/15 backdrop-blur-sm text-white [mix-blend-mode:difference]"
                       : isScrolled
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
+                        : "text-white [mix-blend-mode:difference] hover:bg-white/10"
                   )}
                 >
                   {t(item.labelKey)}
                   {isActive(item.path) && (
                     <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
                   )}
+
                 </Link>
               ))}
 
