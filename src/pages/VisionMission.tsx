@@ -211,10 +211,10 @@ const VisionMission = () => {
       </section>
 
 
-      {/* Business Selector - Horizontal Cards */}
-      <section className="py-2 sm:py-6 px-2 sm:px-4 bg-background/80 sticky app-sticky-below-navbar z-30 backdrop-blur-lg border-b border-border/50 shadow-sm">
+      {/* Business Selector - Premium Pill Icons */}
+      <section className="py-3 sm:py-6 px-3 sm:px-4 bg-background/85 sticky app-sticky-below-navbar z-30 backdrop-blur-xl border-b border-border/40 shadow-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-nowrap sm:flex-wrap justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto custom-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
+          <div className="flex justify-center gap-3 sm:gap-4 overflow-x-auto custom-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
             {Object.keys(businessStyles).filter(key => availableBusinessTypes.includes(key)).map((businessKey) => {
               const bStyle = businessStyles[businessKey];
               const BIcon = bStyle.icon;
@@ -228,23 +228,52 @@ const VisionMission = () => {
                   }}
                   aria-label={businessNames[businessKey]}
                   title={businessNames[businessKey]}
-                  className={cn(
-                    "group flex items-center justify-center sm:justify-start gap-0 sm:gap-2.5 shrink-0 p-2 sm:px-5 sm:py-3 rounded-full sm:rounded-xl border-2 transition-all duration-300",
-                    "sm:hover:shadow-lg sm:hover:-translate-y-0.5",
-                    isActive
-                      ? `bg-gradient-to-r ${bStyle.color} text-white border-transparent shadow-md sm:shadow-lg`
-                      : "bg-card border-border/50 hover:border-primary/30"
-                  )}
+                  className="group flex flex-col items-center gap-1.5 sm:gap-2 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-2xl"
                 >
+                  {/* Icon ring */}
                   <div className={cn(
-                    "w-9 h-9 sm:w-8 sm:h-8 rounded-full sm:rounded-lg flex items-center justify-center transition-all duration-300",
-                    isActive ? "bg-white/20" : `bg-gradient-to-br ${bStyle.lightColor}`
-                  )}>
-                    <BIcon className="w-4 h-4 text-white" />
+                    "relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300",
+                    isActive
+                      ? "scale-110"
+                      : "bg-card border border-border/60 shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 group-active:scale-95"
+                  )}
+                  style={isActive ? {
+                    background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
+                  } : undefined}
+                  >
+                    {/* Active gradient layer */}
+                    {isActive && (
+                      <span className={cn(
+                        "absolute inset-0 rounded-full bg-gradient-to-br shadow-lg",
+                        bStyle.color
+                      )}
+                      style={{ boxShadow: `0 10px 30px -8px hsl(var(--foreground) / 0.25)` }}
+                      />
+                    )}
+                    {/* Inactive gradient ring around icon */}
+                    {!isActive && (
+                      <span className={cn(
+                        "absolute inset-1.5 rounded-full bg-gradient-to-br opacity-90",
+                        bStyle.lightColor
+                      )} />
+                    )}
+                    <BIcon className={cn(
+                      "relative z-10 transition-all duration-300 text-white drop-shadow",
+                      isActive ? "w-7 h-7 sm:w-8 sm:h-8" : "w-5 h-5 sm:w-6 sm:h-6"
+                    )} />
+                    {/* Active outer halo */}
+                    {isActive && (
+                      <span className={cn(
+                        "absolute -inset-1 rounded-full ring-2 ring-offset-2 ring-offset-background animate-pulse",
+                      )}
+                      style={{ ['--tw-ring-color' as never]: 'currentColor' }}
+                      />
+                    )}
                   </div>
+                  {/* Label */}
                   <span className={cn(
-                    "hidden sm:inline font-semibold text-sm",
-                    isActive ? "text-white" : "text-foreground"
+                    "text-[10px] sm:text-xs font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 max-w-[72px] sm:max-w-none truncate",
+                    isActive ? style.accentColor : "text-muted-foreground group-hover:text-foreground"
                   )}>
                     {businessNames[businessKey]}
                   </span>
@@ -254,6 +283,7 @@ const VisionMission = () => {
           </div>
         </div>
       </section>
+
 
       {/* Main Content */}
       {currentData && (
