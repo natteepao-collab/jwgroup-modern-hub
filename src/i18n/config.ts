@@ -515,7 +515,7 @@ const resources = {
       chatbot: {
         title: 'JW Assistant',
         subtitle: 'Customer Support',
-        greeting: "Hello! I'm **JW Group Assistant**, the AI helper for JW Group. I'm happy to answer any questions about our projects, services, and company. How can I help you? 🙌",
+        greeting: "Hello, dear customer 🙌 How can **JW Group Assistant** help you today?",
         error: 'Sorry, an error occurred. Please try again.',
         placeholder: 'Type your question...',
         popular: 'Popular questions:',
