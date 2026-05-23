@@ -577,24 +577,56 @@ const CompanyTimeline = () => {
 
         {/* Preview when collapsed */}
         {!isOpen && (
-          <div className="flex justify-center gap-4 flex-wrap mt-4">
-            {events.slice(0, 4).map((event, index) => (
-              <div 
-                key={event.id}
-                className={`px-4 py-2 rounded-full bg-card border border-border/50 shadow-sm transition-all duration-300 ${
-                  headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-                }`}
-                style={{ transitionDelay: `${index * 100 + 300}ms` }}
+          <div className="mt-4">
+            {/* Mini horizontal timeline preview */}
+            <div className="relative max-w-4xl mx-auto">
+              {/* Connecting line */}
+              <div className="absolute top-7 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30 hidden md:block" />
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+                {events.map((event, index) => (
+                  <div
+                    key={event.id}
+                    className={`relative flex flex-col items-center text-center transition-all duration-500 ${
+                      headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+                    }`}
+                    style={{ transitionDelay: `${index * 100 + 300}ms` }}
+                  >
+                    {/* Icon circle */}
+                    <div className={`relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:scale-110 ${
+                      event.is_highlight
+                        ? 'bg-primary text-primary-foreground shadow-primary/30'
+                        : 'bg-card border-2 border-primary/30 text-primary'
+                    }`}>
+                      {iconMap[event.icon_name] || <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />}
+                    </div>
+                    {/* Year badge */}
+                    <span className="mt-2 inline-block px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] sm:text-xs font-bold">
+                      {event.year}
+                    </span>
+                    {/* Title */}
+                    <p className="mt-1.5 text-xs sm:text-sm font-semibold text-foreground line-clamp-2 leading-tight">
+                      {event.title_th}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA to expand */}
+            <div className="text-center mt-8">
+              <button
+                onClick={toggleAll}
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-primary/90 text-primary-foreground text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-gentle-pulse"
               >
-                <span className="text-sm font-medium text-primary">{event.year}</span>
-                <span className="text-sm text-muted-foreground ml-2">{event.title_th.slice(0, 15)}...</span>
-              </div>
-            ))}
-            {events.length > 4 && (
-              <div className="px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                +{events.length - 4} เหตุการณ์
-              </div>
-            )}
+                <ChevronDown className="w-5 h-5" />
+                คลิกเพื่อดูรายละเอียดทั้งหมด
+                <ChevronDown className="w-5 h-5" />
+              </button>
+              <p className="mt-3 text-xs text-muted-foreground">
+                สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน
+              </p>
+            </div>
           </div>
         )}
       </div>
