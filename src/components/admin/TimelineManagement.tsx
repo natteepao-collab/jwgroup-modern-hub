@@ -142,6 +142,7 @@ const TimelineManagement = () => {
   const [formData, setFormData] = useState<Omit<TimelineEvent, 'id'>>(emptyEvent);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [timelineVisible, setTimelineVisible] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -149,6 +150,44 @@ const TimelineManagement = () => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+
+  const fetchVisibility = useCallback(async () => {
+    const { data } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('section_key', 'timeline_visibility')
+      .maybeSingle();
+    if (data) {
+      const metadata = (data.metadata as Record<string, unknown>) || {};
+      setTimelineVisible(metadata.visible === true);
+    } else {
+      setTimelineVisible(true);
+    }
+  }, []);
+
+  const toggleVisibility = async (visible: boolean) => {
+    setTimelineVisible(visible);
+    const { data: existing } = await supabase
+      .from('site_content')
+      .select('id')
+      .eq('section_key', 'timeline_visibility')
+      .maybeSingle();
+
+    if (existing) {
+      await supabase
+        .from('site_content')
+        .update({ metadata: { visible } })
+        .eq('id', existing.id);
+    } else {
+      await supabase.from('site_content').insert({
+        section_key: 'timeline_visibility',
+        title_th: 'Timeline Visibility',
+        content_th: visible ? 'visible' : 'hidden',
+        metadata: { visible },
+      });
+    }
+    toast({ title: 'สำเร็จ', description: visible ? 'เปิดการแสดง Timeline แล้ว' : 'ปิดการแสดง Timeline แล้ว' });
+  };
 
   const fetchEvents = useCallback(async () => {
     const { data, error } = await supabase
@@ -165,7 +204,8 @@ const TimelineManagement = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents]);
+    fetchVisibility();
+  }, [fetchEvents, fetchVisibility]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -324,150 +364,171 @@ const TimelineManagement = () => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>จัดการ Timeline</CardTitle>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={openNewDialog}>
-              <Plus className="h-4 w-4 mr-2" /> เพิ่มเหตุการณ์
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{editingEvent ? 'แก้ไขเหตุการณ์' : 'เพิ่มเหตุการณ์ใหม่'}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>ปี *</Label>
-                  <Input
-                    value={formData.year}
-                    onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                    placeholder="2024"
-                  />
-                </div>
-                <div>
-                  <Label>ไอคอน</Label>
-                  <Select value={formData.icon_name} onValueChange={(value) => setFormData({ ...formData, icon_name: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {iconOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          <div className="flex items-center gap-2">
-                            <opt.icon className="h-4 w-4" />
-                            {opt.label}
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div>
-                <Label>หัวข้อ (ไทย) *</Label>
-                <Input
-                  value={formData.title_th}
-                  onChange={(e) => setFormData({ ...formData, title_th: e.target.value })}
-                  placeholder="ก่อตั้งบริษัท"
-                />
-              </div>
-
-              <div>
-                <Label>หัวข้อ (English)</Label>
-                <Input
-                  value={formData.title_en || ''}
-                  onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
-                  placeholder="Company Founded"
-                />
-              </div>
-
-              <div>
-                <Label>รายละเอียด (ไทย)</Label>
-                <Textarea
-                  value={formData.description_th || ''}
-                  onChange={(e) => setFormData({ ...formData, description_th: e.target.value })}
-                  rows={3}
-                  placeholder="รายละเอียดเหตุการณ์"
-                />
-              </div>
-
-              <div>
-                <Label>รายละเอียด (English)</Label>
-                <Textarea
-                  value={formData.description_en || ''}
-                  onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
-                  rows={3}
-                  placeholder="Event description"
-                />
-              </div>
-
-              {/* Image Upload */}
-              <div>
-                <Label>รูปภาพประกอบ</Label>
-                <div className="mt-2">
-                  {formData.image_url ? (
-                    <div className="relative inline-block">
-                      <img
-                        src={formData.image_url}
-                        alt="Preview"
-                        className="w-40 h-40 object-cover rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setFormData({ ...formData, image_url: '' })}
-                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
-                    >
-                      <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">
-                        {uploadingImage ? 'กำลังอัปโหลด...' : 'คลิกเพื่ออัปโหลดรูปภาพ'}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WebP (สูงสุด 10MB)</p>
-                    </div>
-                  )}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={formData.is_published}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_published: checked })}
-                  />
-                  <Label>เผยแพร่</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={formData.is_highlight}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_highlight: checked })}
-                  />
-                  <Label>ไฮไลท์</Label>
-                </div>
-              </div>
-
-              <Button onClick={handleSubmit} disabled={isLoading || !formData.year || !formData.title_th} className="w-full">
-                {isLoading ? 'กำลังบันทึก...' : editingEvent ? 'อัปเดต' : 'เพิ่มเหตุการณ์'}
+      <CardHeader className="flex flex-col gap-4">
+        <div className="flex flex-row items-center justify-between">
+          <CardTitle>จัดการ Timeline</CardTitle>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={openNewDialog}>
+                <Plus className="h-4 w-4 mr-2" /> เพิ่มเหตุการณ์
               </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{editingEvent ? 'แก้ไขเหตุการณ์' : 'เพิ่มเหตุการณ์ใหม่'}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>ปี *</Label>
+                    <Input
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                      placeholder="2024"
+                    />
+                  </div>
+                  <div>
+                    <Label>ไอคอน</Label>
+                    <Select value={formData.icon_name} onValueChange={(value) => setFormData({ ...formData, icon_name: value })}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {iconOptions.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            <div className="flex items-center gap-2">
+                              <opt.icon className="h-4 w-4" />
+                              {opt.label}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label>หัวข้อ (ไทย) *</Label>
+                  <Input
+                    value={formData.title_th}
+                    onChange={(e) => setFormData({ ...formData, title_th: e.target.value })}
+                    placeholder="ก่อตั้งบริษัท"
+                  />
+                </div>
+
+                <div>
+                  <Label>หัวข้อ (English)</Label>
+                  <Input
+                    value={formData.title_en || ''}
+                    onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
+                    placeholder="Company Founded"
+                  />
+                </div>
+
+                <div>
+                  <Label>รายละเอียด (ไทย)</Label>
+                  <Textarea
+                    value={formData.description_th || ''}
+                    onChange={(e) => setFormData({ ...formData, description_th: e.target.value })}
+                    rows={3}
+                    placeholder="รายละเอียดเหตุการณ์"
+                  />
+                </div>
+
+                <div>
+                  <Label>รายละเอียด (English)</Label>
+                  <Textarea
+                    value={formData.description_en || ''}
+                    onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
+                    rows={3}
+                    placeholder="Event description"
+                  />
+                </div>
+
+                {/* Image Upload */}
+                <div>
+                  <Label>รูปภาพประกอบ</Label>
+                  <div className="mt-2">
+                    {formData.image_url ? (
+                      <div className="relative inline-block">
+                        <img
+                          src={formData.image_url}
+                          alt="Preview"
+                          className="w-40 h-40 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, image_url: '' })}
+                          className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
+                      >
+                        <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground">
+                          {uploadingImage ? 'กำลังอัปโหลด...' : 'คลิกเพื่ออัปโหลดรูปภาพ'}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WebP (สูงสุด 10MB)</p>
+                      </div>
+                    )}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={formData.is_published}
+                      onCheckedChange={(checked) => setFormData({ ...formData, is_published: checked })}
+                    />
+                    <Label>เผยแพร่</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={formData.is_highlight}
+                      onCheckedChange={(checked) => setFormData({ ...formData, is_highlight: checked })}
+                    />
+                    <Label>ไฮไลท์</Label>
+                  </div>
+                </div>
+
+                <Button onClick={handleSubmit} disabled={isLoading || !formData.year || !formData.title_th} className="w-full">
+                  {isLoading ? 'กำลังบันทึก...' : editingEvent ? 'อัปเดต' : 'เพิ่มเหตุการณ์'}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+        {/* Visibility toggle */}
+        <div className="flex items-center justify-between bg-muted/40 rounded-xl px-4 py-3 border border-border/50">
+          <div className="flex items-center gap-3">
+            <div className={`w-2 h-2 rounded-full ${timelineVisible ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+            <div>
+              <p className="text-sm font-medium">การแสดง Timeline บนหน้าเว็บ</p>
+              <p className="text-xs text-muted-foreground">
+                {timelineVisible ? 'กำลังแสดงให้ผู้ใช้เห็น' : 'ซ่อนอยู่ (รอตรวจสอบรูปภาพ)'}
+              </p>
             </div>
-          </DialogContent>
-        </Dialog>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">{timelineVisible ? 'เปิด' : 'ปิด'}</span>
+            <Switch
+              checked={timelineVisible}
+              onCheckedChange={(checked) => toggleVisibility(checked)}
+            />
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {events.length === 0 ? (
