@@ -328,21 +328,21 @@ const VisionMission = () => {
 
             {/* Missions Section */}
             {currentData.missions.length > 0 && (
-              <div className="mb-12">
-                <div className="flex items-center gap-3 mb-8">
+              <div className="mb-6 sm:mb-12">
+                <div className="flex items-center gap-3 mb-4 sm:mb-8">
                   <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center",
+                    "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
                     `bg-gradient-to-br ${style.color}`
                   )}>
-                    <ListChecks className="w-6 h-6 text-white" />
+                    <ListChecks className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground font-display">{t('visionMission.mission')}</h2>
-                    <p className="text-muted-foreground text-sm">Mission ({currentData.missions.length} {t('visionMission.missionCount')})</p>
+                    <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMission.mission')}</h2>
+                    <p className="text-muted-foreground text-xs sm:text-sm">Mission ({currentData.missions.length} {t('visionMission.missionCount')})</p>
                   </div>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid gap-2.5 sm:gap-4">
                   {currentData.missions.map((mission, idx) => {
                     const isExpanded = expandedMission === idx;
                     return (
@@ -354,26 +354,26 @@ const VisionMission = () => {
                         )}
                         onClick={() => setExpandedMission(isExpanded ? null : idx)}
                       >
-                        <CardContent className="p-5">
-                          <div className="flex items-start gap-4">
+                        <CardContent className="p-3.5 sm:p-5">
+                          <div className="flex items-start gap-3 sm:gap-4">
                             <div className={cn(
-                              "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
+                              "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0",
                               `bg-gradient-to-br ${style.color}`
                             )}>
-                              <span className="text-white font-bold">{idx + 1}</span>
+                              <span className="text-white font-bold text-sm sm:text-base">{idx + 1}</span>
                             </div>
-                            <div className="flex-1">
-                              <div className="flex items-center justify-between">
-                                <h3 className="font-semibold text-lg text-foreground">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-2">
+                                <h3 className="font-semibold text-sm sm:text-lg text-foreground leading-snug">
                                   {getLocalizedText(mission.title_th, mission.title_en, mission.title_cn)}
                                 </h3>
                                 <ChevronDown className={cn(
-                                  "w-5 h-5 text-muted-foreground transition-transform",
+                                  "w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground transition-transform shrink-0",
                                   isExpanded && "rotate-180"
                                 )} />
                               </div>
                               {isExpanded && mission.description_th && (
-                                <p className="mt-3 text-muted-foreground leading-relaxed">
+                                <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
                                   {getLocalizedText(mission.description_th, mission.description_en, mission.description_cn)}
                                 </p>
                               )}
@@ -386,6 +386,7 @@ const VisionMission = () => {
                 </div>
               </div>
             )}
+
 
             {/* Core Concept Section */}
             {currentData.core_concept && (
