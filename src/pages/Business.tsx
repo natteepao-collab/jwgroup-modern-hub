@@ -99,6 +99,7 @@ const Business = () => {
       name: t('business.realEstate.name'),
       description: t('business.realEstate.description'),
       url: 'https://jwrealestate.com',
+      ctaText: 'ดูโครงการของ JW Real Estates',
       image: getBusinessImage('business_realestate_image'),
       backgroundImage: getBusinessImage('business_realestate_bg'),
       brandColor: {
@@ -111,6 +112,7 @@ const Business = () => {
       name: t('business.hotel.name'),
       description: t('business.hotel.description'),
       url: 'https://12theresidence.com/th-th/',
+      ctaText: 'จองห้องพักที่ 12 The Residence',
       image: getBusinessImage('business_hotel_image'),
       backgroundImage: getBusinessImage('business_hotel_bg'),
       brandColor: {
@@ -123,6 +125,7 @@ const Business = () => {
       name: t('business.pet.name'),
       description: t('business.pet.description'),
       url: 'https://www.3dpethospital.com/',
+      ctaText: 'ดูบริการของ 3DPet Hospital',
       image: getBusinessImage('business_pet_image'),
       backgroundImage: getBusinessImage('business_pet_bg'),
       brandColor: {
@@ -136,6 +139,7 @@ const Business = () => {
       name: t('business.wellness.name'),
       description: t('business.wellness.description'),
       url: 'https://www.jwherbal.com',
+      ctaText: 'เลือกซื้อผลิตภัณฑ์ JW Herbal',
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
       brandColor: {
@@ -149,6 +153,7 @@ const Business = () => {
       name: constructionContent.title || 'ธนบูลย์ พร็อพเพอร์ตี้',
       description: constructionContent.content || 'บริษัท ธนบูลย์ พร็อพเพอร์ตี้ จำกัด ผู้เชี่ยวชาญด้านการรับเหมาก่อสร้าง และพัฒนาอสังหาริมทรัพย์คุณภาพสูง ด้วยประสบการณ์และความชำนาญในการสร้างสรรค์โครงการที่ได้มาตรฐาน',
       url: '#',
+      ctaText: 'ดูผลงานรับเหมาก่อสร้าง ธนบูลย์ พร็อพเพอร์ตี้',
       image: thanabulLogo,
       backgroundImage: getBusinessImage('business_construction_image'),
       brandColor: {
