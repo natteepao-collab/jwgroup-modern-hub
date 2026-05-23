@@ -1125,7 +1125,7 @@ const resources = {
       chatbot: {
         title: 'JW 어시스턴트',
         subtitle: '고객 지원',
-        greeting: '안녕하세요! 저는 JW 그룹의 AI 도우미 **JW Group Assistant**입니다. 프로젝트, 서비스 및 회사에 대한 모든 질문에 답변해 드립니다. 무엇을 도와드릴까요? 🙌',
+        greeting: '고객님 안녕하세요 🙌 **JW Group Assistant**가 무엇을 도와드릴까요?',
         error: '죄송합니다. 오류가 발생했습니다. 다시 시도해 주세요.',
         placeholder: '질문을 입력하세요...',
         popular: '인기 질문:',
