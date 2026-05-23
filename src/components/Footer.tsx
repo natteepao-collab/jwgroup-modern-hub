@@ -31,8 +31,8 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <Link to="/" className="inline-block mb-4 bg-background/95 p-3 rounded-xl shadow-sm">
-              <img src={jwLogo} alt="JW Group" width="1754" height="1241" className="h-10 w-auto" />
+            <Link to="/" aria-label="JW Group หน้าแรก" className="inline-block mb-4 bg-background/95 p-3 rounded-xl shadow-sm">
+              <img src={jwLogo} alt="โลโก้ JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม สุขภาพ" width="1754" height="1241" className="h-10 w-auto" loading="lazy" decoding="async" />
             </Link>
             <p className="text-sm opacity-90 mb-4 leading-relaxed">
               {t('footer.companyDescription')}
@@ -77,26 +77,28 @@ export const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
-                <span className="opacity-90">
-                  {addressContent.content || t('footer.address')}
-                </span>
+                <address className="not-italic opacity-90">
+                  {addressContent.content || 'เลขที่ 9 ซอยสรณคมน์ 12 ถนนสรณคมน์ แขวงสีกัน เขตดอนเมือง กรุงเทพฯ 10210'}
+                </address>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary" />
                 <a
-                  href={`tel:${phoneContent.content?.replace(/[^\d+]/g, '') || ''}`}
+                  href={`tel:${(phoneContent.content || '025661111').replace(/[^\d+]/g, '')}`}
                   className="hover:text-primary transition-colors opacity-90"
+                  aria-label="โทรหา JW Group สำนักงานใหญ่"
                 >
-                  {phoneContent.content || ''}
+                  {phoneContent.content || '02-566-1111'}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary" />
                 <a
-                  href={`mailto:${emailContent.content || ''}`}
+                  href={`mailto:${emailContent.content || 'jwgroupmkt@gmail.com'}`}
                   className="hover:text-primary transition-colors opacity-90"
+                  aria-label="ส่งอีเมลถึง JW Group"
                 >
-                  {emailContent.content || ''}
+                  {emailContent.content || 'jwgroupmkt@gmail.com'}
                 </a>
               </li>
               <li className="opacity-90">LINE: @jwgroup</li>
