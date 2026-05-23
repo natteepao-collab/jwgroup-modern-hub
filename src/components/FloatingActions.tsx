@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ArrowUp, MessageCircle } from 'lucide-react';
 import FAQChatbot from './FAQChatbot';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { trackEvent } from '@/lib/analytics';
 
 const FloatingActions = () => {
+  const { t } = useTranslation();
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { getContent } = useSiteContent();
   const lineUrl = (getContent('social_line').content || '').trim();
+
 
   useEffect(() => {
     const toggleVisibility = () => setShowBackToTop(window.scrollY > 300);
@@ -29,10 +32,11 @@ const FloatingActions = () => {
           rel="noopener noreferrer"
           onClick={() => trackEvent('line_click', { label: 'fab' })}
           className="w-12 h-12 rounded-full bg-gradient-to-br from-[#06C755] to-[#00B900] text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-green-500/40 hover:-translate-y-1"
-          aria-label="Add LINE Official"
-          title="แอด LINE Official"
+          aria-label={t('floating.line')}
+          title={t('floating.line')}
         >
           <MessageCircle className="w-5 h-5" />
+
         </a>
       )}
 
