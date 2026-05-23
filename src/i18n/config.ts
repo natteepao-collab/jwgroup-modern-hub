@@ -210,7 +210,7 @@ const resources = {
       chatbot: {
         title: 'JW Assistant',
         subtitle: 'ผู้ช่วยตอบคำถาม',
-        greeting: 'สวัสดีครับ! ผมเป็น **JW Group Assistant** ผู้ช่วย AI ของกลุ่มบริษัท JW Group ยินดีตอบทุกคำถามเกี่ยวกับโครงการ บริการ และข้อมูลบริษัทครับ มีอะไรให้ช่วยไหมครับ? 🙌',
+        greeting: 'สวัสดีครับคุณลูกค้า 🙌 มีอะไรให้ **JW Group Assistant** ช่วยไหมครับ?',
         error: 'ขออภัยครับ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
         placeholder: 'พิมพ์คำถามของคุณ...',
         popular: 'คำถามยอดนิยม:',
@@ -515,7 +515,7 @@ const resources = {
       chatbot: {
         title: 'JW Assistant',
         subtitle: 'Customer Support',
-        greeting: "Hello! I'm **JW Group Assistant**, the AI helper for JW Group. I'm happy to answer any questions about our projects, services, and company. How can I help you? 🙌",
+        greeting: "Hello, dear customer 🙌 How can **JW Group Assistant** help you today?",
         error: 'Sorry, an error occurred. Please try again.',
         placeholder: 'Type your question...',
         popular: 'Popular questions:',
@@ -820,7 +820,7 @@ const resources = {
       chatbot: {
         title: 'JW 助手',
         subtitle: '客户支持',
-        greeting: '您好！我是 **JW Group 助手**，JW集团的AI助手。我很乐意回答有关我们的项目、服务和公司的任何问题。我能为您做什么？🙌',
+        greeting: '尊贵的客户您好 🙌 请问 **JW Group 助手** 能为您做什么？',
         error: '抱歉，发生错误。请再试一次。',
         placeholder: '输入您的问题...',
         popular: '热门问题：',
@@ -1125,7 +1125,7 @@ const resources = {
       chatbot: {
         title: 'JW 어시스턴트',
         subtitle: '고객 지원',
-        greeting: '안녕하세요! 저는 JW 그룹의 AI 도우미 **JW Group Assistant**입니다. 프로젝트, 서비스 및 회사에 대한 모든 질문에 답변해 드립니다. 무엇을 도와드릴까요? 🙌',
+        greeting: '고객님 안녕하세요 🙌 **JW Group Assistant**가 무엇을 도와드릴까요?',
         error: '죄송합니다. 오류가 발생했습니다. 다시 시도해 주세요.',
         placeholder: '질문을 입력하세요...',
         popular: '인기 질문:',
@@ -1430,7 +1430,7 @@ const resources = {
       chatbot: {
         title: 'JWアシスタント',
         subtitle: 'カスタマーサポート',
-        greeting: 'こんにちは！私はJWグループのAIアシスタント **JW Group Assistant** です。プロジェクト、サービス、会社情報に関するあらゆるご質問にお答えします。何かお手伝いできることはありますか？🙌',
+        greeting: 'お客様、こんにちは 🙌 **JW Group Assistant** が何かお手伝いできますか？',
         error: '申し訳ありません。エラーが発生しました。もう一度お試しください。',
         placeholder: '質問を入力してください...',
         popular: 'よくある質問：',
@@ -1735,7 +1735,7 @@ const resources = {
       chatbot: {
         title: 'JW Ассистент',
         subtitle: 'Поддержка клиентов',
-        greeting: 'Здравствуйте! Я **JW Group Assistant** — AI-помощник JW Group. С радостью отвечу на любые вопросы о наших проектах, услугах и компании. Чем могу помочь? 🙌',
+        greeting: 'Здравствуйте, уважаемый клиент 🙌 Чем **JW Group Assistant** может Вам помочь?',
         error: 'Извините, произошла ошибка. Пожалуйста, попробуйте снова.',
         placeholder: 'Введите ваш вопрос...',
         popular: 'Популярные вопросы:',
