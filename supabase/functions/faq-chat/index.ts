@@ -33,81 +33,105 @@ async function buildKnowledgeBase(supabase: AnySupabaseClient): Promise<string> 
   const [
     siteContentRes, businessTypesRes, newsRes, jobsRes,
     benefitsRes, awardsRes, projectsRes, testimonialsRes,
-    executivesRes, timelineRes, visionRes,
+    executivesRes, timelineRes, visionRes, orgRes,
   ] = await Promise.all([
     supabase.from("site_content").select("section_key,title_th,content_th,metadata"),
     supabase.from("business_types").select("business_key,name_th,name_en").eq("is_active", true).order("position_order"),
     supabase.from("news").select("title_th,excerpt_th,content_th,category,business_type,published_at")
-      .eq("is_published", true).order("published_at", { ascending: false }).limit(15),
+      .eq("is_published", true).order("published_at", { ascending: false }).limit(20),
     supabase.from("jobs").select("title_th,department_th,location_th,job_type,description_th,requirements_th")
       .eq("is_published", true).order("position_order"),
     supabase.from("career_benefits").select("title_th,description_th").eq("is_published", true).order("position_order"),
     supabase.from("awards").select("title_th,description_th,award_year,awarding_organization,category")
-      .eq("is_published", true).order("award_year", { ascending: false }).limit(20),
+      .eq("is_published", true).order("award_year", { ascending: false }).limit(25),
     supabase.from("projects").select("name_th,description_th,location_th,year_completed,business_type,is_featured")
-      .eq("is_published", true).order("position_order").limit(30),
+      .eq("is_published", true).order("position_order").limit(40),
     supabase.from("testimonials").select("client_name,client_title,client_company,content_th,rating")
       .eq("is_published", true).order("position_order").limit(15),
     supabase.from("executives").select("name,title,department,level,is_chairman,quote,description").order("position_order"),
     supabase.from("timeline_events").select("year,title_th,description_th,is_highlight")
-      .eq("is_published", true).order("year").limit(40),
+      .eq("is_published", true).order("year").limit(50),
     supabase.from("vision_missions").select("business_type,vision_th,vision_sub_th,missions,core_concept")
       .eq("is_published", true).order("position_order"),
+    supabase.from("org_departments").select("name_th,description_th,business_type,level,parent_level,sub_items")
+      .eq("is_published", true).order("position_order").limit(60),
   ]);
 
   const sections: string[] = [];
 
-  // Site content (about, contact, hero, etc.)
   if (siteContentRes.data?.length) {
     const sc: Record<string, { title?: string; content?: string; metadata?: Record<string, unknown> }> = {};
     for (const r of siteContentRes.data) sc[r.section_key] = { title: r.title_th, content: r.content_th, metadata: r.metadata };
 
-    sections.push(`## เกี่ยวกับบริษัท JW GROUP
+    sections.push(`## เกี่ยวกับ JW GROUP
 ${sc.about_section?.content || sc.hero?.content || "กลุ่มบริษัท JW Group ครอบคลุมธุรกิจอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ สมุนไพร และก่อสร้าง"}
 
-## ข้อมูลติดต่อ
+## ติดต่อ
 - ที่อยู่: ${sc.contact_address?.content || "123 ถนนสุขุมวิท กรุงเทพฯ 10110"}
 - โทร: ${sc.contact_phone?.content || "02-234-5678"}
 - อีเมล: ${sc.contact_email?.content || "info@jwgroup.com"}
-- เวลาทำการ: ${sc.contact_hours?.content || "จันทร์-ศุกร์ 9:00-18:00 น."}`);
+- เวลาทำการ: ${sc.contact_hours?.content || "จันทร์-ศุกร์ 9:00-18:00 น."}
+- ช่องทาง Social: LINE / Facebook / IG / TikTok / YouTube (ดูที่ท้ายเว็บไซต์)`);
 
-    // Business descriptions from site_content
     const bizKeys = ["business_realestate", "business_hotel", "business_pet", "business_wellness", "business_construction"];
     const bizBlock = bizKeys
-      .map((k) => sc[k] ? `- **${sc[k].title}**: ${truncate(sc[k].content, 200)}` : null)
+      .map((k) => sc[k] ? `- **${sc[k].title}**: ${truncate(sc[k].content, 260)}` : null)
       .filter(Boolean).join("\n");
     if (bizBlock) sections.push(`## ธุรกิจในเครือ JW Group\n${bizBlock}`);
   }
 
   if (businessTypesRes.data?.length) {
-    sections.push(`## หน่วยธุรกิจที่เปิดให้บริการ\n${businessTypesRes.data.map(b => `- ${b.name_th} (${b.business_key})`).join("\n")}`);
+    sections.push(`## หน่วยธุรกิจหลัก\n${businessTypesRes.data.map(b => `- ${b.name_th}${b.name_en ? ` (${b.name_en})` : ""} — key: ${b.business_key}`).join("\n")}`);
   }
 
   if (visionRes.data?.length) {
-    sections.push(`## วิสัยทัศน์และพันธกิจ
-${visionRes.data.map(v => `**${v.business_type}**: ${truncate(v.vision_th, 200)}${v.vision_sub_th ? ` — ${truncate(v.vision_sub_th, 150)}` : ""}`).join("\n")}`);
+    const vmBlock = visionRes.data.map(v => {
+      const missions = Array.isArray(v.missions)
+        ? v.missions.slice(0, 3).map((m: { title_th?: string; title?: string }) => m.title_th || m.title).filter(Boolean).join(", ")
+        : "";
+      return `**${v.business_type}** — วิสัยทัศน์: ${truncate(v.vision_th, 180)}${missions ? `\n  พันธกิจหลัก: ${missions}` : ""}`;
+    }).join("\n");
+    sections.push(`## วิสัยทัศน์และพันธกิจแต่ละธุรกิจ\n${vmBlock}`);
   }
 
   if (executivesRes.data?.length) {
     const chairman = executivesRes.data.find((e) => e.is_chairman);
-    const others = executivesRes.data.filter((e) => !e.is_chairman).slice(0, 8);
-    sections.push(`## ผู้บริหาร
-${chairman ? `- 👑 **${chairman.name}** — ${chairman.title} ${chairman.quote ? `("${truncate(chairman.quote, 120)}")` : ""}` : ""}
-${others.map(e => `- ${e.name} — ${e.title}${e.department ? ` (${e.department})` : ""}`).join("\n")}`);
+    const md = executivesRes.data.filter((e) => !e.is_chairman && e.level === "managing_director");
+    const execs = executivesRes.data.filter((e) => !e.is_chairman && e.level !== "managing_director").slice(0, 12);
+    sections.push(`## ผู้บริหารและทีมงาน
+${chairman ? `- 👑 **${chairman.name}** — ${chairman.title}${chairman.quote ? ` คำขวัญ: "${truncate(chairman.quote, 140)}"` : ""}` : ""}
+${md.map(e => `- 🎯 **${e.name}** — ${e.title}${e.department ? ` (${e.department})` : ""}`).join("\n")}
+${execs.map(e => `- ${e.name} — ${e.title}${e.department ? ` (${e.department})` : ""}`).join("\n")}`);
+  }
+
+  if (orgRes.data?.length) {
+    const byBiz: Record<string, string[]> = {};
+    for (const d of orgRes.data) {
+      const k = d.business_type || "jw_group";
+      if (!byBiz[k]) byBiz[k] = [];
+      const subs = Array.isArray(d.sub_items) && d.sub_items.length
+        ? ` → ${d.sub_items.slice(0, 4).map((s: { name_th?: string; name?: string } | string) => typeof s === "string" ? s : (s.name_th || s.name)).filter(Boolean).join(", ")}`
+        : "";
+      byBiz[k].push(`  - ${d.name_th}${subs}`);
+    }
+    const orgBlock = Object.entries(byBiz).map(([k, arr]) => `**${k}**:\n${arr.slice(0, 12).join("\n")}`).join("\n");
+    sections.push(`## โครงสร้างองค์กร / หน่วยงาน\n${orgBlock}`);
   }
 
   if (timelineRes.data?.length) {
-    sections.push(`## ประวัติและเหตุการณ์สำคัญ\n${timelineRes.data.slice(0, 15).map(t => `- ${t.year}: ${t.title_th}${t.description_th ? ` — ${truncate(t.description_th, 120)}` : ""}`).join("\n")}`);
+    sections.push(`## ประวัติและเหตุการณ์สำคัญ\n${timelineRes.data.slice(0, 20).map(t => `- ${t.year}: ${t.title_th}${t.description_th ? ` — ${truncate(t.description_th, 120)}` : ""}`).join("\n")}`);
   }
 
   if (projectsRes.data?.length) {
-    sections.push(`## โครงการ/ผลงาน (${projectsRes.data.length} โครงการ)
-${projectsRes.data.slice(0, 15).map(p => `- 🏗️ **${p.name_th}** (${p.business_type})${p.location_th ? ` 📍${p.location_th}` : ""}${p.year_completed ? ` | สร้างเสร็จ ${p.year_completed}` : ""}${p.description_th ? `\n   ${truncate(p.description_th, 150)}` : ""}`).join("\n")}`);
+    const featured = projectsRes.data.filter(p => p.is_featured).slice(0, 6);
+    const others = projectsRes.data.filter(p => !p.is_featured).slice(0, 18);
+    sections.push(`## โครงการ/ผลงาน (รวม ${projectsRes.data.length} โครงการ)
+${featured.length ? `**ไฮไลต์:**\n${featured.map(p => `- ⭐ **${p.name_th}** (${p.business_type})${p.location_th ? ` 📍${p.location_th}` : ""}${p.year_completed ? ` | ${p.year_completed}` : ""}${p.description_th ? `\n   ${truncate(p.description_th, 140)}` : ""}`).join("\n")}\n` : ""}${others.map(p => `- ${p.name_th} (${p.business_type})${p.location_th ? ` 📍${p.location_th}` : ""}${p.year_completed ? ` | ${p.year_completed}` : ""}`).join("\n")}`);
   }
 
   if (newsRes.data?.length) {
     sections.push(`## ข่าวสารล่าสุด
-${newsRes.data.slice(0, 8).map(n => `- 📰 **${n.title_th}** (${new Date(n.published_at).toLocaleDateString("th-TH")}) — ${truncate(n.excerpt_th || n.content_th, 180)}`).join("\n")}`);
+${newsRes.data.slice(0, 10).map(n => `- 📰 **${n.title_th}** (${new Date(n.published_at).toLocaleDateString("th-TH")}) — ${truncate(n.excerpt_th || n.content_th, 160)}`).join("\n")}`);
   }
 
   if (jobsRes.data?.length) {
@@ -122,12 +146,12 @@ ${jobsRes.data.map(j => `- 💼 **${j.title_th}** | ${j.department_th || "-"} | 
 
   if (awardsRes.data?.length) {
     sections.push(`## รางวัลและผลงาน (${awardsRes.data.length} รางวัล)
-${awardsRes.data.slice(0, 10).map(a => `- 🏆 ${a.title_th} (${a.award_year || "-"})${a.awarding_organization ? ` โดย ${a.awarding_organization}` : ""}`).join("\n")}`);
+${awardsRes.data.slice(0, 12).map(a => `- 🏆 ${a.title_th} (${a.award_year || "-"})${a.awarding_organization ? ` โดย ${a.awarding_organization}` : ""}`).join("\n")}`);
   }
 
   if (testimonialsRes.data?.length) {
     sections.push(`## รีวิวจากลูกค้า
-${testimonialsRes.data.slice(0, 5).map(t => `- ⭐${t.rating || 5} **${t.client_name}** (${t.client_title || ""}${t.client_company ? `, ${t.client_company}` : ""}): "${truncate(t.content_th, 150)}"`).join("\n")}`);
+${testimonialsRes.data.slice(0, 6).map(t => `- ⭐${t.rating || 5} **${t.client_name}** (${t.client_title || ""}${t.client_company ? `, ${t.client_company}` : ""}): "${truncate(t.content_th, 140)}"`).join("\n")}`);
   }
 
   return sections.join("\n\n");
@@ -212,18 +236,21 @@ async function getKnowledgeBase(supabase: AnySupabaseClient | null): Promise<str
   return text;
 }
 
-const BASE_PROMPT = `คุณคือ "JW Group Assistant" ผู้ช่วย AI อัจฉริยะของกลุ่มบริษัท JW Group
-บทบาท: ตอบคำถามลูกค้าเกี่ยวกับสินค้า บริการ โครงการ และข้อมูลบริษัทอย่างถูกต้องและเป็นมิตร
+const BASE_PROMPT = `คุณคือ "JW Group Assistant" ผู้ช่วยอัจฉริยะของกลุ่มบริษัท JW Group
+คุณรู้ข้อมูลทุกอย่างเกี่ยวกับบริษัทในเครือ — อสังหาริมทรัพย์, โรงแรม/รีสอร์ท, โรงพยาบาลสัตว์ 3DPet, สมุนไพร Herbal Wellness, และก่อสร้าง Thanabul Property
 
-⚡ กฎสำคัญ:
-1. ตอบเป็นภาษาเดียวกับที่ลูกค้าใช้ (ไทย/อังกฤษ/จีน) — เริ่มต้นด้วยภาษาไทย
-2. ตอบกระชับ 2-4 ประโยค ตรงประเด็น ใช้ markdown bullet ได้
-3. ใช้ "ข้อมูลจากระบบ" ด้านล่างเป็นความจริง — อย่าแต่งข้อมูลที่ไม่มี
-4. ถ้าไม่มีคำตอบในข้อมูล ให้แนะนำติดต่อทีมงานโดยตรง พร้อมเบอร์/อีเมล
-5. หลังตอบ เสนอ 2-3 ตัวเลือกถัดไปเป็น bullet เพื่อชวนคุยต่อ
-6. ใช้ emoji พอประมาณ (1-2 ตัวต่อข้อความ)
-7. โทนสุภาพ มืออาชีพ น่าเชื่อถือ แต่อบอุ่นเหมือนเพื่อน
-8. ถ้าลูกค้าสนใจซื้อ/นัดชม → ขอช่องทางติดต่อกลับ (ชื่อ, เบอร์โทร, LINE ID) เพื่อให้เจ้าหน้าที่ติดต่อกลับ`;
+🎭 บุคลิก: เหมือนพนักงานต้อนรับมืออาชีพที่อบอุ่น เป็นกันเอง พูดคุยเหมือนเพื่อนสนิทแต่ยังคงความสุภาพ ไม่เป็นทางการจัด ไม่หุ่นยนต์
+
+✍️ วิธีตอบ:
+1. **ภาษา**: ตอบเป็นภาษาเดียวกับลูกค้า (ไทย/อังกฤษ/จีน/เกาหลี/ญี่ปุ่น/รัสเซีย) อัตโนมัติ
+2. **ความยาวพอดี**: ทักทาย/คำถามสั้น → 1-2 ประโยค | คำถามทั่วไป → 2-4 ประโยค | คำถามเชิงลึก → 4-7 ประโยค หรือ bullet 3-5 ข้อ — ไม่ยาวเป็นพรืด ไม่สั้นจนห้วน
+3. **น้ำเสียงเหมือนมนุษย์**: ใช้คำเชื่อมธรรมชาติ ("จริงๆ แล้ว...", "ที่ JW Group เรา..."), สลับ "ค่ะ/ครับ" ตามบริบท, หลีกเลี่ยงประโยคซ้ำซากแบบเทมเพลต
+4. **ใช้ข้อมูลจริง**: อ้างจาก "ข้อมูลจากระบบ" เท่านั้น ห้ามแต่งตัวเลข ชื่อโครงการ ราคา หรือชื่อบุคคล
+5. **เมื่อไม่รู้**: ยอมรับตรงๆ อย่างเป็นมิตร แล้วเสนอช่องทางติดต่อทีมงาน (โทร/อีเมล/LINE)
+6. **Emoji**: ใช้ 0-2 ตัวเท่านั้น ใช้ให้สื่อความหมาย ไม่ใช่ทุกประโยค
+7. **เชิญชวนต่อ**: เฉพาะคำถามที่ต่อยอดได้ ค่อยเสนอ 2 ตัวเลือกถัดไปแบบสั้น — ไม่ต้องเสนอทุกครั้ง
+8. **Lead capture**: ถ้าลูกค้าสนใจซื้อ/นัดชม/ขอใบเสนอราคา ค่อยขอชื่อ + เบอร์/LINE อย่างเป็นธรรมชาติ
+9. **Markdown**: ใช้ **bold** กับชื่อโครงการ/บริษัท, ใช้ bullet เมื่อมีรายการ 3+ ข้อ, อย่าใช้หัวข้อ ## ในคำตอบ`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -244,6 +271,7 @@ serve(async (req) => {
     } else {
       rateLimitMap.set(clientIP, { count: 1, resetTime: now + WINDOW_MS });
     }
+
 
     const body = await req.json();
     const { messages: rawMessages, sessionId, language, pageUrl } = body as {
