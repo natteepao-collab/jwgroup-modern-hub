@@ -323,7 +323,7 @@ export const ChairmanQuote = ({
                               <div className="px-6 pb-6">
                                 <div className="h-px w-full bg-gradient-to-r from-transparent via-accent/30 to-transparent mb-4" />
                                 <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                                  {director.description}
+                                  {tr(director.description)}
                                 </p>
                               </div>
                             </motion.div>
