@@ -256,7 +256,7 @@ export const Navbar = () => {
                     aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
                   )}
                 >
-                  <div className="relative bg-card/98 backdrop-blur-2xl border border-border/30 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] min-w-[260px] py-2 overflow-hidden">
+                  <div className="relative bg-card backdrop-blur-2xl border border-border/40 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] min-w-[260px] py-2 overflow-hidden">
                     {/* Top accent line */}
                     <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
 
