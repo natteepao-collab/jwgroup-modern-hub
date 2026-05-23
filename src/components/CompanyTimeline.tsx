@@ -428,9 +428,13 @@ const CompanyTimeline = () => {
           {/* Toggle Button */}
           <button
             onClick={toggleAll}
-            className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-card border border-border/50 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold text-foreground"
+            className={`mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold ${
+              isOpen
+                ? 'bg-card border border-border/50 text-foreground hover:shadow-md'
+                : 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:scale-105 animate-gentle-pulse'
+            }`}
           >
-            {isOpen ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4 text-primary" />}
+            {isOpen ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4" />}
             {isOpen ? 'ย่อ Timeline' : 'แสดง Timeline เต็ม'}
           </button>
         </div>
