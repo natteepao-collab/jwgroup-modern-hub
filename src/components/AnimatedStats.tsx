@@ -149,7 +149,7 @@ const parseAwardImage = (imageUrl: string | null): string | null => {
 };
 
 const AnimatedStats = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [projects, setProjects] = useState<TimelineEvent[]>([]);
   const [awards, setAwards] = useState<AwardItem[]>([]);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);

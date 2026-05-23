@@ -592,9 +592,11 @@ interface BentoNewsSectionProps {
 }
 
 export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNewsSectionProps) => {
+  const { t } = useTranslation();
   const { data: businessTypesData = [] } = useBusinessTypes();
   const [activeBusinessType, setActiveBusinessType] = useState<string>('');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
 
   // Set default active business type when data loads
   React.useEffect(() => {
