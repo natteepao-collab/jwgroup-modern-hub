@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { LazyMotion, domAnimation } from "framer-motion";
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/config';
@@ -107,6 +107,8 @@ const App = () => (
                         <Route path="/news/:id" element={<NewsDetail />} />
                         <Route path="/careers" element={<Careers />} />
                         <Route path="/contact" element={<Contact />} />
+                        <Route path="/contact-us" element={<Navigate to="/contact" replace />} />
+                        <Route path="/contact-us/" element={<Navigate to="/contact" replace />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
                         <Route path="/pdpa" element={<PDPA />} />

@@ -56,17 +56,17 @@ const Contact = () => {
   const hoursContent = getContent('contact_hours');
   const mapContent = getContent('contact_map');
 
-  const address = addressContent.content || t('footer.address');
-  const phone = phoneContent.content || '+66 2 XXX XXXX';
-  const email = emailContent.content || 'info@jwgroup.com';
+  const address = addressContent.content || 'เลขที่ 9 ซอยสรณคมน์ 12 ถนนสรณคมน์ แขวงสีกัน เขตดอนเมือง กรุงเทพมหานคร 10210';
+  const phone = phoneContent.content || '02-566-1111';
+  const email = emailContent.content || 'jwgroupmkt@gmail.com';
   const hours = hoursContent.content || t('footer.hours');
   const mapSrc = mapContent.content || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5!3d13.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ1JzAwLjAiTiAxMDDCsDMwJzAwLjAiRQ!5e0!3m2!1sen!2sth!4v1234567890';
 
   return (
     <div className="app-page-safe min-h-screen bg-background">
       <SEO
-        title={t('contact.title')}
-        description={t('contact.subtitle')}
+        title="ติดต่อ JW Group | ที่อยู่ เบอร์โทร อีเมล สำนักงานใหญ่ดอนเมือง"
+        description="ติดต่อ JW Group สำนักงานใหญ่ ดอนเมือง กรุงเทพฯ โทร 02-566-1111 อีเมล jwgroupmkt@gmail.com หรือทักผ่าน LINE @jwgroup สอบถามธุรกิจในเครือและร่วมงานกับเรา"
         canonicalUrl="/contact"
         structuredData={{
           "@context": "https://schema.org",
