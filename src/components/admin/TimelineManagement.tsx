@@ -222,6 +222,37 @@ const TimelineManagement = () => {
     }
   };
 
+  const handleInlineImageChange = async (id: string, file: File) => {
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Error', description: 'กรุณาเลือกไฟล์รูปภาพเท่านั้น', variant: 'destructive' });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: 'Error', description: 'ไฟล์ต้องไม่เกิน 10MB', variant: 'destructive' });
+      return;
+    }
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('timeline-images')
+        .upload(fileName, file);
+      if (uploadError) throw uploadError;
+      const { data: { publicUrl } } = supabase.storage
+        .from('timeline-images')
+        .getPublicUrl(fileName);
+      const { error: updateError } = await supabase
+        .from('timeline_events')
+        .update({ image_url: publicUrl })
+        .eq('id', id);
+      if (updateError) throw updateError;
+      toast({ title: 'สำเร็จ', description: 'เปลี่ยนรูปเรียบร้อยแล้ว' });
+      fetchEvents();
+    } catch (error: unknown) {
+      toast({ title: 'Error', description: (error as Error).message, variant: 'destructive' });
+    }
+  };
+
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
