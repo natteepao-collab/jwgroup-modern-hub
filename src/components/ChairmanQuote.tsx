@@ -180,8 +180,8 @@ export const ChairmanQuote = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent" />
 
-                    {/* Chairman badge */}
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 md:top-4 md:left-4 md:translate-x-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-md border border-accent/40 shadow-lg whitespace-nowrap z-10">
+                    {/* Chairman badge — hidden on mobile to avoid overlapping the portrait */}
+                    <div className="hidden md:flex absolute top-4 left-4 items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-md border border-accent/40 shadow-lg whitespace-nowrap z-10">
                       <Crown className="w-3 h-3 text-accent" />
                       <span className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground">
                         Chairman
