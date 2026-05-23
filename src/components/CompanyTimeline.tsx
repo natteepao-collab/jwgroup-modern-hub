@@ -347,10 +347,8 @@ const CompanyTimeline = () => {
   const toggleAll = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
-      // Expand first item when opening
-      if (events.length > 0) {
-        setExpandedItems(new Set([events[0].id]));
-      }
+      // Expand ALL items when opening so images show immediately
+      setExpandedItems(new Set(events.map((e) => e.id)));
     } else {
       setExpandedItems(new Set());
       setSelectedYear(null);
