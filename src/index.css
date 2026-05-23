@@ -29,6 +29,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    --app-navbar-safe: 7.5rem;
+    --app-sticky-top: 4.5rem;
+
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
 
@@ -91,6 +94,13 @@ All colors MUST be HSL.
 
     --tracking-normal: 0em;
     --spacing: 0.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --app-navbar-safe: 7.75rem;
+      --app-sticky-top: 7.25rem;
+    }
   }
 
   .dark {
