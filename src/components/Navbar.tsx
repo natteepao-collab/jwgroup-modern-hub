@@ -238,10 +238,10 @@ export const Navbar = () => {
                     aboutDropdownOpen || isAboutActive
                       ? isScrolled
                         ? "text-primary bg-primary/8"
-                        : "bg-white/15 backdrop-blur-sm text-white [mix-blend-mode:difference]"
+                        : "bg-black/35 backdrop-blur-md text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] ring-1 ring-white/20"
                       : isScrolled
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white [mix-blend-mode:difference] hover:bg-white/10"
+                        : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] bg-black/20 backdrop-blur-md hover:bg-black/35 ring-1 ring-white/15"
                   )}
                 >
                   {t('nav.about')}
@@ -309,10 +309,10 @@ export const Navbar = () => {
                     isActive(item.path)
                       ? isScrolled
                         ? "text-primary bg-primary/8"
-                        : "bg-white/15 backdrop-blur-sm text-white [mix-blend-mode:difference]"
+                        : "bg-black/35 backdrop-blur-md text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] ring-1 ring-white/20"
                       : isScrolled
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white [mix-blend-mode:difference] hover:bg-white/10"
+                        : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] bg-black/20 backdrop-blur-md hover:bg-black/35 ring-1 ring-white/15"
                   )}
                 >
                   {t(item.labelKey)}
