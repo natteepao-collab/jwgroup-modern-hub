@@ -44,8 +44,18 @@ const FAQChatbot = () => {
   const [input, setInput] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(getSessionId());
+
+  // Respect prefers-reduced-motion for accessibility
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
