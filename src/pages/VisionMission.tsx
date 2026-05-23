@@ -196,7 +196,9 @@ const VisionMission = () => {
       {/* Hero Section */}
       <section className="relative app-page-safe h-[28vh] sm:h-[40vh] min-h-[200px] sm:min-h-[350px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-primary/95" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-15" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-[0.06]" />
+        <div className="absolute inset-0 bg-white/30" />
+
 
         {/* Decorative Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
