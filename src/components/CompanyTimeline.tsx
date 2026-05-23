@@ -289,7 +289,7 @@ const chapters: Chapter[] = [
 
 const CompanyTimeline = () => {
   const [events, setEvents] = useState<TimelineEvent[]>(mockTimelineEvents);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
