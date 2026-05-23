@@ -186,7 +186,7 @@ const VisionMission = () => {
         canonicalUrl="/vision-mission"
       />
       {/* Hero Section */}
-      <section className="relative app-page-safe h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
+      <section className="relative app-page-safe h-[28vh] sm:h-[40vh] min-h-[200px] sm:min-h-[350px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-primary/95" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-15" />
 
@@ -197,18 +197,19 @@ const VisionMission = () => {
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 mb-5">
-            <Target className="w-4 h-4 text-white" />
-            <span className="text-white/90 text-sm font-medium">{t('nav.visionMission')}</span>
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3.5 py-1.5 sm:px-5 sm:py-2 mb-3 sm:mb-5">
+            <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+            <span className="text-white/90 text-xs sm:text-sm font-medium">{t('nav.visionMission')}</span>
           </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-display">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-4 font-display">
             {t('visionMission.title')}
           </h1>
-          <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto line-clamp-2 sm:line-clamp-none">
             {t('visionMission.subtitle')}
           </p>
         </div>
       </section>
+
 
       {/* Business Selector - Horizontal Cards */}
       <section className="py-2 sm:py-6 px-2 sm:px-4 bg-background/80 sticky app-sticky-below-navbar z-30 backdrop-blur-lg border-b border-border/50 shadow-sm">
@@ -256,17 +257,17 @@ const VisionMission = () => {
 
       {/* Main Content */}
       {currentData && (
-        <section className="py-12 px-4">
+        <section className="py-6 sm:py-12 px-3 sm:px-4">
           <div className="max-w-6xl mx-auto">
             {/* Business Hero Card */}
             <div className={cn(
-              "relative rounded-3xl overflow-hidden mb-12 transition-all duration-500",
+              "relative rounded-2xl sm:rounded-3xl overflow-hidden mb-6 sm:mb-12 transition-all duration-500",
               `bg-gradient-to-br ${style.bgGradient}`
             )}>
               {/* Business Image + Info */}
               <div className="grid lg:grid-cols-2 gap-0">
                 {/* Image Side */}
-                <div className="relative h-64 lg:h-auto lg:min-h-[400px]">
+                <div className="relative h-40 sm:h-64 lg:h-auto lg:min-h-[400px]">
                   <img
                     src={getImageUrl()}
                     alt={businessNames[activeTab]}
@@ -279,36 +280,36 @@ const VisionMission = () => {
                   )} />
                   {/* Floating Badge */}
                   <div className={cn(
-                    "absolute bottom-6 left-6 flex items-center gap-3 px-5 py-3 rounded-xl backdrop-blur-md",
+                    "absolute bottom-3 left-3 sm:bottom-6 sm:left-6 flex items-center gap-2 sm:gap-3 px-3 py-2 sm:px-5 sm:py-3 rounded-lg sm:rounded-xl backdrop-blur-md",
                     `bg-gradient-to-r ${style.color}`
                   )}>
-                    <Icon className="w-6 h-6 text-white" />
-                    <span className="text-white font-bold text-lg">{businessNames[activeTab]}</span>
+                    <Icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+                    <span className="text-white font-bold text-sm sm:text-lg">{businessNames[activeTab]}</span>
                   </div>
                 </div>
 
                 {/* Vision Side */}
-                <div className="p-8 lg:p-10 flex flex-col justify-center">
-                  <div className="flex items-center gap-3 mb-6">
+                <div className="p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
                     <div className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center",
+                      "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
                       `bg-gradient-to-br ${style.color}`
                     )}>
-                      <Eye className="w-6 h-6 text-white" />
+                      <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
                     <div>
-                     <h2 className="text-2xl font-bold text-foreground font-display">{t('visionMission.vision')}</h2>
-                      <p className="text-muted-foreground text-sm">Vision</p>
+                     <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMission.vision')}</h2>
+                      <p className="text-muted-foreground text-xs sm:text-sm">Vision</p>
                     </div>
                   </div>
 
                   <div className="relative">
                     <Quote className={cn(
-                      "absolute -top-2 -left-2 w-8 h-8 opacity-20",
+                      "absolute -top-2 -left-2 w-6 h-6 sm:w-8 sm:h-8 opacity-20",
                       style.accentColor
                     )} />
                     <p className={cn(
-                      "text-lg md:text-xl leading-relaxed font-medium pl-6",
+                      "text-base sm:text-lg md:text-xl leading-relaxed font-medium pl-5 sm:pl-6",
                       style.accentColor
                     )}>
                       "{getLocalizedText(currentData.vision_th, currentData.vision_en, currentData.vision_cn)}"
@@ -316,7 +317,7 @@ const VisionMission = () => {
                   </div>
 
                   {(currentData.vision_sub_th || currentData.vision_sub_en) && (
-                    <p className="mt-4 text-muted-foreground leading-relaxed pl-6">
+                    <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed pl-5 sm:pl-6">
                       {getLocalizedText(currentData.vision_sub_th || '', currentData.vision_sub_en, currentData.vision_sub_cn)}
                     </p>
                   )}
@@ -324,23 +325,24 @@ const VisionMission = () => {
               </div>
             </div>
 
+
             {/* Missions Section */}
             {currentData.missions.length > 0 && (
-              <div className="mb-12">
-                <div className="flex items-center gap-3 mb-8">
+              <div className="mb-6 sm:mb-12">
+                <div className="flex items-center gap-3 mb-4 sm:mb-8">
                   <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center",
+                    "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
                     `bg-gradient-to-br ${style.color}`
                   )}>
-                    <ListChecks className="w-6 h-6 text-white" />
+                    <ListChecks className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground font-display">{t('visionMission.mission')}</h2>
-                    <p className="text-muted-foreground text-sm">Mission ({currentData.missions.length} {t('visionMission.missionCount')})</p>
+                    <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMission.mission')}</h2>
+                    <p className="text-muted-foreground text-xs sm:text-sm">Mission ({currentData.missions.length} {t('visionMission.missionCount')})</p>
                   </div>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid gap-2.5 sm:gap-4">
                   {currentData.missions.map((mission, idx) => {
                     const isExpanded = expandedMission === idx;
                     return (
@@ -352,26 +354,26 @@ const VisionMission = () => {
                         )}
                         onClick={() => setExpandedMission(isExpanded ? null : idx)}
                       >
-                        <CardContent className="p-5">
-                          <div className="flex items-start gap-4">
+                        <CardContent className="p-3.5 sm:p-5">
+                          <div className="flex items-start gap-3 sm:gap-4">
                             <div className={cn(
-                              "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
+                              "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0",
                               `bg-gradient-to-br ${style.color}`
                             )}>
-                              <span className="text-white font-bold">{idx + 1}</span>
+                              <span className="text-white font-bold text-sm sm:text-base">{idx + 1}</span>
                             </div>
-                            <div className="flex-1">
-                              <div className="flex items-center justify-between">
-                                <h3 className="font-semibold text-lg text-foreground">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-2">
+                                <h3 className="font-semibold text-sm sm:text-lg text-foreground leading-snug">
                                   {getLocalizedText(mission.title_th, mission.title_en, mission.title_cn)}
                                 </h3>
                                 <ChevronDown className={cn(
-                                  "w-5 h-5 text-muted-foreground transition-transform",
+                                  "w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground transition-transform shrink-0",
                                   isExpanded && "rotate-180"
                                 )} />
                               </div>
                               {isExpanded && mission.description_th && (
-                                <p className="mt-3 text-muted-foreground leading-relaxed">
+                                <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
                                   {getLocalizedText(mission.description_th, mission.description_en, mission.description_cn)}
                                 </p>
                               )}
@@ -385,29 +387,30 @@ const VisionMission = () => {
               </div>
             )}
 
+
             {/* Core Concept Section */}
             {currentData.core_concept && (
               <div className={cn(
-                "relative rounded-3xl overflow-hidden p-8 lg:p-12",
+                "relative rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-8 lg:p-12",
                 `bg-gradient-to-br ${style.bgGradient}`
               )}>
                 <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
                     <div className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center",
+                      "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
                       `bg-gradient-to-br ${style.color}`
                     )}>
-                      <Sparkles className="w-6 h-6 text-white" />
+                      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-foreground font-display">แนวคิดหลัก</h2>
-                      <p className="text-muted-foreground text-sm">Core Concept</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">แนวคิดหลัก</h2>
+                      <p className="text-muted-foreground text-xs sm:text-sm">Core Concept</p>
                     </div>
                   </div>
 
                   <div className="text-center max-w-2xl mx-auto">
                     <h3 className={cn(
-                      "text-3xl md:text-4xl font-bold mb-3 font-display",
+                      "text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 font-display",
                       style.accentColor
                     )}>
                       {getLocalizedText(
@@ -416,7 +419,7 @@ const VisionMission = () => {
                         currentData.core_concept.title_cn
                       )}
                     </h3>
-                    <p className="text-lg text-muted-foreground mb-4">
+                    <p className="text-base sm:text-lg text-muted-foreground mb-3 sm:mb-4">
                       {getLocalizedText(
                         currentData.core_concept.subtitle_th,
                         currentData.core_concept.subtitle_en,
@@ -424,7 +427,7 @@ const VisionMission = () => {
                       )}
                     </p>
                     {currentData.core_concept.description_th && (
-                      <p className="text-muted-foreground">
+                      <p className="text-sm sm:text-base text-muted-foreground">
                         {getLocalizedText(
                           currentData.core_concept.description_th,
                           currentData.core_concept.description_en,
@@ -440,6 +443,7 @@ const VisionMission = () => {
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
               </div>
             )}
+
           </div>
         </section>
       )}
