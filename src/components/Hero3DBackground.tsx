@@ -95,6 +95,7 @@ const Hero3DBackground = () => {
             loop
             playsInline
             preload="metadata"
+            poster={heroPoster}
             onLoadedData={handleVideoLoaded}
             className={`w-full h-full object-cover transition-opacity duration-700 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
