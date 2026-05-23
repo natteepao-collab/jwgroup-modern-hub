@@ -649,8 +649,9 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
           <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-muted/50 flex items-center justify-center">
             <ImageIcon className="h-10 w-10 text-muted-foreground/50" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">{useTranslation().t('bento.noNews')}</h3>
-          <p className="text-muted-foreground">{useTranslation().t('bento.noNewsDesc')}</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">{t('bento.noNews')}</h3>
+          <p className="text-muted-foreground">{t('bento.noNewsDesc')}</p>
+
         </div>
       )}
 
