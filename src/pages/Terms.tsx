@@ -5,7 +5,7 @@ const Terms = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="app-page-safe min-h-screen bg-background">
       <SEO
         title={t('footer.terms') || "ข้อกำหนดและเงื่อนไข"}
         description="ข้อกำหนดและเงื่อนไขการใช้งานเว็บไซต์ JW Group"
