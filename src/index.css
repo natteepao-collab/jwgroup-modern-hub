@@ -168,6 +168,18 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  html {
+    scroll-padding-top: var(--app-navbar-safe);
+  }
+
+  .app-page-safe {
+    padding-top: var(--app-navbar-safe);
+  }
+
+  .app-sticky-below-navbar {
+    top: var(--app-sticky-top);
+  }
 }
 
 /* Particle Animation */
