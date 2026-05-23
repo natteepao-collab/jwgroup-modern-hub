@@ -222,7 +222,7 @@ export const ChairmanQuote = ({
                   </div>
                   {chairman?.description && (
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-xl font-light">
-                      {chairman.description}
+                      {tr(chairman.description)}
                     </p>
                   )}
                 </div>
