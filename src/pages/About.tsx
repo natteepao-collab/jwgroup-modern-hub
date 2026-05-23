@@ -611,8 +611,8 @@ const About = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
-  const seoTitle = t('about.title') || "เกี่ยวกับเรา";
-  const seoDesc = t('about.subtitle') || "JW Group - ความเป็นมา วิสัยทัศน์ และโครงสร้างองค์กร";
+  const seoTitle = "เกี่ยวกับเรา";
+  const seoDesc = "JW Group - ความเป็นมา วิสัยทัศน์ และโครงสร้างองค์กร";
 
   const navItems = [
     { path: '/about/history', labelKey: 'about.history', icon: Info },
