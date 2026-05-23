@@ -160,6 +160,20 @@ const Index = () => {
   // Use database news or empty array while loading
   const displayNews = dbNews.length > 0 ? dbNews : [];
 
+  if (isLoading || newsLoading) {
+    return (
+      <div className="min-h-screen">
+        <SEO
+          title={seoTitle}
+          description={seoDesc}
+          canonicalUrl="/"
+          structuredData={organizationSchema}
+        />
+        <HomeSkeleton />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <SEO
