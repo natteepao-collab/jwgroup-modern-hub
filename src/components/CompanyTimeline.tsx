@@ -293,6 +293,8 @@ const CompanyTimeline = () => {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isLoadingVisibility, setIsLoadingVisibility] = useState(true);
   const eventRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const { ref: headerRef, inView: headerInView } = useInView({
     threshold: 0.3,
@@ -315,6 +317,30 @@ const CompanyTimeline = () => {
       }),
     })).filter(ch => ch.events.length > 0);
   }, [events]);
+
+  useEffect(() => {
+    const fetchVisibility = async () => {
+      try {
+        const { data } = await supabase
+          .from('site_content')
+          .select('*')
+          .eq('section_key', 'timeline_visibility')
+          .maybeSingle();
+        if (data) {
+          const metadata = (data.metadata as Record<string, unknown>) || {};
+          setIsVisible(metadata.visible === true);
+        } else {
+          setIsVisible(true);
+        }
+      } catch {
+        setIsVisible(true);
+      } finally {
+        setIsLoadingVisibility(false);
+      }
+    };
+
+    fetchVisibility();
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
