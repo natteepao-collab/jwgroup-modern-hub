@@ -451,6 +451,7 @@ const TimelineManagement = () => {
                     event={event}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
+                    onImageChange={handleInlineImageChange}
                   />
                 ))}
               </div>
