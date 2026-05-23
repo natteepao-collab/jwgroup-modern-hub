@@ -678,22 +678,25 @@ const CompanyTimeline = () => {
               </div>
             </div>
 
-            {/* CTA to expand */}
-            <div className="text-center mt-8">
-              <button
-                onClick={toggleAll}
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-primary/90 text-primary-foreground text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-gentle-pulse"
-              >
-                <ChevronDown className="w-5 h-5" />
-                คลิกเพื่อดูรายละเอียดทั้งหมด
-                <ChevronDown className="w-5 h-5" />
-              </button>
-              <p className="mt-3 text-xs text-muted-foreground">
-                สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน
-              </p>
-            </div>
+            {/* CTA to expand - only when full timeline enabled */}
+            {fullTimelineEnabled && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={toggleAll}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-primary/90 text-primary-foreground text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-gentle-pulse"
+                >
+                  <ChevronDown className="w-5 h-5" />
+                  คลิกเพื่อดูรายละเอียดทั้งหมด
+                  <ChevronDown className="w-5 h-5" />
+                </button>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน
+                </p>
+              </div>
+            )}
           </div>
         )}
+
       </div>
     </section>
   );
