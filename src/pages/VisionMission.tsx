@@ -391,26 +391,26 @@ const VisionMission = () => {
             {/* Core Concept Section */}
             {currentData.core_concept && (
               <div className={cn(
-                "relative rounded-3xl overflow-hidden p-8 lg:p-12",
+                "relative rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-8 lg:p-12",
                 `bg-gradient-to-br ${style.bgGradient}`
               )}>
                 <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
                     <div className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center",
+                      "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
                       `bg-gradient-to-br ${style.color}`
                     )}>
-                      <Sparkles className="w-6 h-6 text-white" />
+                      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-foreground font-display">แนวคิดหลัก</h2>
-                      <p className="text-muted-foreground text-sm">Core Concept</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">แนวคิดหลัก</h2>
+                      <p className="text-muted-foreground text-xs sm:text-sm">Core Concept</p>
                     </div>
                   </div>
 
                   <div className="text-center max-w-2xl mx-auto">
                     <h3 className={cn(
-                      "text-3xl md:text-4xl font-bold mb-3 font-display",
+                      "text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 font-display",
                       style.accentColor
                     )}>
                       {getLocalizedText(
@@ -419,7 +419,7 @@ const VisionMission = () => {
                         currentData.core_concept.title_cn
                       )}
                     </h3>
-                    <p className="text-lg text-muted-foreground mb-4">
+                    <p className="text-base sm:text-lg text-muted-foreground mb-3 sm:mb-4">
                       {getLocalizedText(
                         currentData.core_concept.subtitle_th,
                         currentData.core_concept.subtitle_en,
@@ -427,7 +427,7 @@ const VisionMission = () => {
                       )}
                     </p>
                     {currentData.core_concept.description_th && (
-                      <p className="text-muted-foreground">
+                      <p className="text-sm sm:text-base text-muted-foreground">
                         {getLocalizedText(
                           currentData.core_concept.description_th,
                           currentData.core_concept.description_en,
@@ -443,6 +443,7 @@ const VisionMission = () => {
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
               </div>
             )}
+
           </div>
         </section>
       )}
