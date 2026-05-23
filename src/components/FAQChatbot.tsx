@@ -177,7 +177,7 @@ const FAQChatbot = () => {
       {/* Chat Window */}
       <div
         className={cn(
-          "fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] bg-card rounded-2xl shadow-2xl border border-border overflow-hidden transition-all duration-300",
+          "fixed bottom-24 right-6 z-[70] w-[360px] max-w-[calc(100vw-3rem)] bg-card rounded-2xl shadow-2xl border border-border overflow-hidden transition-all duration-300",
           isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95 pointer-events-none"
         )}
       >
@@ -296,7 +296,7 @@ const FAQChatbot = () => {
       </div>
 
       {/* Slide-out Assistant Tab - Premium Luxury Style */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[70]">
         <div
           className={cn(
             "flex items-center transition-all duration-500 ease-out",
