@@ -472,7 +472,7 @@ const CompanyTimeline = () => {
 
 
         {/* Jump to Year - Improved Mobile Layout */}
-        {isOpen && (
+        {showFull && (
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center justify-center gap-2 mb-3">
               <MapPin className="w-4 h-4 text-primary" />
