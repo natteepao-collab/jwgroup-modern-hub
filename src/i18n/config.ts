@@ -1430,7 +1430,7 @@ const resources = {
       chatbot: {
         title: 'JWアシスタント',
         subtitle: 'カスタマーサポート',
-        greeting: 'こんにちは！私はJWグループのAIアシスタント **JW Group Assistant** です。プロジェクト、サービス、会社情報に関するあらゆるご質問にお答えします。何かお手伝いできることはありますか？🙌',
+        greeting: 'お客様、こんにちは 🙌 **JW Group Assistant** が何かお手伝いできますか？',
         error: '申し訳ありません。エラーが発生しました。もう一度お試しください。',
         placeholder: '質問を入力してください...',
         popular: 'よくある質問：',
