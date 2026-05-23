@@ -238,8 +238,8 @@ export const Navbar = () => {
                     aboutDropdownOpen || isAboutActive
                       ? "text-primary bg-primary/8"
                       : isScrolled
-                        ? "text-foreground/70 hover:text-primary hover:bg-muted/50"
-                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]"
+                        ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
+                        : "text-foreground hover:text-primary hover:bg-foreground/5"
                   )}
                 >
                   {t('nav.about')}
