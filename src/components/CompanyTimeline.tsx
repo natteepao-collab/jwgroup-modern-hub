@@ -417,10 +417,10 @@ const CompanyTimeline = () => {
     }
   };
 
-  // Hide timeline section if visibility is off (admin toggle)
-  if (!isLoadingVisibility && !isVisible) {
-    return null;
-  }
+  // When admin disables full timeline, force compact-only mode (no images, no expand)
+  const fullTimelineEnabled = isVisible;
+  const showFull = fullTimelineEnabled && isOpen;
+
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
