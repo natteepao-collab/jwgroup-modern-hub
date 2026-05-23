@@ -95,7 +95,8 @@ const App = () => (
               <CookieConsentProvider>
                 <Layout>
                   <PageTransition>
-                    <Suspense fallback={null}>
+                    <Suspense fallback={<Loading />}>
+
                       <Routes>
                         <Route path="/" element={<Index />} />
                         <Route path="/about/*" element={<About />} />
