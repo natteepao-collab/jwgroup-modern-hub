@@ -63,13 +63,28 @@ export const ChairmanQuote = ({
   const chairman = executives.find((e) => e.is_chairman);
   const directors = executives.filter((e) => !e.is_chairman && e.level !== 'manager');
 
-  const chairmanName = chairman?.name || defaultName || 'คุณวิสิษฐ กอวรกุล';
-  const chairmanTitle = chairman?.title || defaultTitle || 'ประธานกรรมการบริษัท';
-  const chairmanQuote =
+  const rawName = chairman?.name || defaultName || 'คุณวิสิษฐ กอวรกุล';
+  const rawTitle = chairman?.title || defaultTitle || 'ประธานกรรมการบริษัท';
+  const rawQuote =
     chairman?.quote ||
     defaultQuote ||
     'เราเชื่อมั่นในการสร้างธุรกิจที่ยั่งยืน ควบคู่ไปกับการพัฒนาคุณภาพชีวิตของสังคม';
+  const rawDescription = chairman?.description || '';
   const chairmanImage = chairman?.image_url || chairmanDefault;
+
+  // Auto-translate Thai DB content into current UI language
+  const textsToTranslate = useMemo(() => {
+    const arr: string[] = [rawName, rawTitle, rawQuote, rawDescription];
+    directors.forEach((d) => {
+      arr.push(d.name, d.title, d.description || '');
+    });
+    return arr;
+  }, [rawName, rawTitle, rawQuote, rawDescription, directors]);
+  const { tr } = useAutoTranslate(textsToTranslate);
+
+  const chairmanName = tr(rawName);
+  const chairmanTitle = tr(rawTitle);
+  const chairmanQuote = tr(rawQuote);
 
   if (isLoading) {
     return (
