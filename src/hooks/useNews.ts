@@ -46,6 +46,8 @@ export const useNews = (featuredOnly: boolean = true) => {
   const { i18n, t } = useTranslation();
   const queryClient = useQueryClient();
 
+  // Returns the best pre-translated DB field; falls back to Thai when missing.
+  // Auto-translation (for kr/jp/ru, or missing en/cn) is layered on AFTER this.
   const getLocalizedField = (item: NewsItem, field: 'title' | 'excerpt' | 'content') => {
     const lang = i18n.language;
     const thField = `${field}_th` as keyof NewsItem;
@@ -54,7 +56,7 @@ export const useNews = (featuredOnly: boolean = true) => {
 
     if (lang === 'en' && item[enField]) return item[enField] as string;
     if (lang === 'cn' && item[cnField]) return item[cnField] as string;
-    return item[thField] as string || '';
+    return (item[thField] as string) || '';
   };
 
   const getCategoryLabel = () => {
