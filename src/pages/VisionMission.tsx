@@ -186,7 +186,7 @@ const VisionMission = () => {
         canonicalUrl="/vision-mission"
       />
       {/* Hero Section */}
-      <section className="relative app-page-safe h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
+      <section className="relative app-page-safe h-[28vh] sm:h-[40vh] min-h-[200px] sm:min-h-[350px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-primary/95" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920')] bg-cover bg-center opacity-15" />
 
@@ -197,18 +197,19 @@ const VisionMission = () => {
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 mb-5">
-            <Target className="w-4 h-4 text-white" />
-            <span className="text-white/90 text-sm font-medium">{t('nav.visionMission')}</span>
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3.5 py-1.5 sm:px-5 sm:py-2 mb-3 sm:mb-5">
+            <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+            <span className="text-white/90 text-xs sm:text-sm font-medium">{t('nav.visionMission')}</span>
           </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-display">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-4 font-display">
             {t('visionMission.title')}
           </h1>
-          <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto line-clamp-2 sm:line-clamp-none">
             {t('visionMission.subtitle')}
           </p>
         </div>
       </section>
+
 
       {/* Business Selector - Horizontal Cards */}
       <section className="py-2 sm:py-6 px-2 sm:px-4 bg-background/80 sticky app-sticky-below-navbar z-30 backdrop-blur-lg border-b border-border/50 shadow-sm">
