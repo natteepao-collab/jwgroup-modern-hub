@@ -277,6 +277,10 @@ const Admin = () => {
             <ChatAnalytics />
           </TabsContent>
 
+          <TabsContent value="analytics">
+            <AnalyticsManagement />
+          </TabsContent>
+
 
           <TabsContent value="content">
             <ContentManagement />
