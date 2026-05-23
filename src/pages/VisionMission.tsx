@@ -211,9 +211,9 @@ const VisionMission = () => {
       </section>
 
       {/* Business Selector - Horizontal Cards */}
-      <section className="py-6 px-4 bg-background/80 sticky app-sticky-below-navbar z-30 backdrop-blur-lg border-b border-border/50 shadow-sm">
+      <section className="py-2 sm:py-6 px-2 sm:px-4 bg-background/80 sticky app-sticky-below-navbar z-30 backdrop-blur-lg border-b border-border/50 shadow-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-nowrap sm:flex-wrap justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto custom-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
             {Object.keys(businessStyles).filter(key => availableBusinessTypes.includes(key)).map((businessKey) => {
               const bStyle = businessStyles[businessKey];
               const BIcon = bStyle.icon;
@@ -225,22 +225,24 @@ const VisionMission = () => {
                     setActiveTab(businessKey);
                     setExpandedMission(null);
                   }}
+                  aria-label={businessNames[businessKey]}
+                  title={businessNames[businessKey]}
                   className={cn(
-                    "group flex items-center gap-2.5 px-5 py-3 rounded-xl border-2 transition-all duration-300",
-                    "hover:shadow-lg hover:-translate-y-0.5",
+                    "group flex items-center justify-center sm:justify-start gap-0 sm:gap-2.5 shrink-0 p-2 sm:px-5 sm:py-3 rounded-full sm:rounded-xl border-2 transition-all duration-300",
+                    "sm:hover:shadow-lg sm:hover:-translate-y-0.5",
                     isActive
-                      ? `bg-gradient-to-r ${bStyle.color} text-white border-transparent shadow-lg`
+                      ? `bg-gradient-to-r ${bStyle.color} text-white border-transparent shadow-md sm:shadow-lg`
                       : "bg-card border-border/50 hover:border-primary/30"
                   )}
                 >
                   <div className={cn(
-                    "w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300",
+                    "w-9 h-9 sm:w-8 sm:h-8 rounded-full sm:rounded-lg flex items-center justify-center transition-all duration-300",
                     isActive ? "bg-white/20" : `bg-gradient-to-br ${bStyle.lightColor}`
                   )}>
                     <BIcon className="w-4 h-4 text-white" />
                   </div>
                   <span className={cn(
-                    "font-semibold text-sm",
+                    "hidden sm:inline font-semibold text-sm",
                     isActive ? "text-white" : "text-foreground"
                   )}>
                     {businessNames[businessKey]}
