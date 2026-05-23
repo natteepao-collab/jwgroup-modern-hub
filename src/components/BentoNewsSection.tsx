@@ -440,13 +440,17 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
           )}
         />
 
-        <div className="absolute top-4 left-4 z-10 flex gap-2">
+        <div className={cn(
+          "absolute z-10 flex gap-2",
+          isFeatured ? "top-4 left-4" : "top-2 left-2 sm:top-4 sm:left-4"
+        )}>
           {(() => {
             const badge = getBusinessTypeBadge(news.businessType, businessTypes);
             return (
               <Badge
                 className={cn(
-                  "text-white shadow-lg transition-all duration-300 text-xs",
+                  "text-white shadow-lg transition-all duration-300",
+                  isFeatured ? "text-xs" : "text-[10px] px-1.5 py-0 sm:text-xs sm:px-2.5 sm:py-0.5",
                   badge.className,
                   isHovered ? "scale-105" : ""
                 )}
@@ -457,6 +461,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
             );
           })()}
         </div>
+
 
         <div
           className={cn(
