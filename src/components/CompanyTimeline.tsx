@@ -417,6 +417,11 @@ const CompanyTimeline = () => {
     }
   };
 
+  // Hide timeline section if visibility is off (admin toggle)
+  if (!isLoadingVisibility && !isVisible) {
+    return null;
+  }
+
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
       <div className="container mx-auto px-3 sm:px-4">
