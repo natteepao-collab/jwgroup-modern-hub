@@ -181,9 +181,17 @@ const VisionMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title={t('visionMission.title')}
-        description={t('visionMission.seoDesc')}
+        title="วิสัยทัศน์และพันธกิจ JW Group | ทิศทางธุรกิจกลุ่มในเครือ"
+        description="วิสัยทัศน์ พันธกิจ และแนวคิดหลักของกลุ่มธุรกิจในเครือ JW Group ทั้ง JW Real Estates, 12 The Residence, 3DPet Hospital และ JW Herbal"
         canonicalUrl="/vision-mission"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "หน้าแรก", item: "https://www.jwgroupthailand.com" },
+            { "@type": "ListItem", position: 2, name: "วิสัยทัศน์และพันธกิจ", item: "https://www.jwgroupthailand.com/vision-mission" },
+          ],
+        }}
       />
       {/* Hero Section */}
       <section className="relative app-page-safe h-[28vh] sm:h-[40vh] min-h-[200px] sm:min-h-[350px] flex items-center justify-center overflow-hidden">
