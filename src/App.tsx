@@ -11,7 +11,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CookieConsentProvider } from './components/CookieConsent';
 import PageTransition from './components/PageTransition';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { trackEvent } from './lib/analytics';
 import { lazy, Suspense } from 'react';
 import Loading from "./components/Loading";
