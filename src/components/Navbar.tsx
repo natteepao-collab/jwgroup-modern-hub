@@ -238,8 +238,8 @@ export const Navbar = () => {
                     aboutDropdownOpen || isAboutActive
                       ? "text-primary bg-primary/8"
                       : isScrolled
-                        ? "text-foreground/70 hover:text-primary hover:bg-muted/50"
-                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]"
+                        ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
+                        : "text-foreground hover:text-primary hover:bg-foreground/5"
                   )}
                 >
                   {t('nav.about')}
@@ -256,7 +256,7 @@ export const Navbar = () => {
                     aboutDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
                   )}
                 >
-                  <div className="relative bg-card/98 backdrop-blur-2xl border border-border/30 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] min-w-[260px] py-2 overflow-hidden">
+                  <div className="relative bg-card backdrop-blur-2xl border border-border/40 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] min-w-[260px] py-2 overflow-hidden">
                     {/* Top accent line */}
                     <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
 
@@ -305,8 +305,8 @@ export const Navbar = () => {
                     isActive(item.path)
                       ? "text-primary bg-primary/8"
                       : isScrolled
-                        ? "text-foreground/70 hover:text-primary hover:bg-muted/50"
-                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]"
+                        ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
+                        : "text-foreground hover:text-primary hover:bg-foreground/5"
                   )}
                 >
                   {t(item.labelKey)}
