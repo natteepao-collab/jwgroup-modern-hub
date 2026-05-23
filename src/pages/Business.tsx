@@ -193,6 +193,35 @@ const Business = () => {
           <InteractiveSplitBusiness businesses={businesses} />
         </div>
 
+        {/* SEO content — short, keyword-aware overview of each business unit */}
+        <section aria-labelledby="business-overview-heading" className="mt-20 max-w-4xl mx-auto">
+          <h2 id="business-overview-heading" className="text-2xl md:text-3xl font-bold text-foreground mb-6 text-center">
+            ภาพรวมกลุ่มธุรกิจในเครือ JW Group
+          </h2>
+          <div className="space-y-6 text-foreground/85 leading-relaxed text-base">
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">JW Real Estates — อสังหาริมทรัพย์ดอนเมือง</h3>
+              <p>พัฒนาโครงการที่อยู่อาศัยและพื้นที่เชิงพาณิชย์ในย่านดอนเมืองและกรุงเทพฯ ตอนเหนือ เน้นทำเลที่ใกล้สนามบินและการเดินทางสะดวก</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">12 The Residence — โรงแรมใกล้ดอนเมือง</h3>
+              <p>โรงแรมและที่พักระดับพรีเมียมใกล้สนามบินดอนเมือง เหมาะสำหรับนักเดินทางและนักธุรกิจที่ต้องการความสะดวกและบริการที่อบอุ่น</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">3DPet Hospital — โรงพยาบาลสัตว์</h3>
+              <p>โรงพยาบาลสัตว์ที่ให้บริการตรวจรักษาด้วยทีมสัตวแพทย์เฉพาะทาง พร้อมอุปกรณ์ทันสมัย ดูแลสัตว์เลี้ยงทุกช่วงวัยอย่างใส่ใจ</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">JW Herbal — ผลิตภัณฑ์เพื่อสุขภาพ</h3>
+              <p>ผลิตภัณฑ์สุขภาพและสมุนไพรที่พัฒนาบนหลักวิจัย เพื่อยกระดับคุณภาพชีวิตและส่งเสริมสุขภาพแบบองค์รวมในชีวิตประจำวัน</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">ธนบูลย์ พร็อพเพอร์ตี้ — รับเหมาก่อสร้าง</h3>
+              <p>ผู้เชี่ยวชาญงานรับเหมาก่อสร้างและพัฒนาอสังหาริมทรัพย์ ด้วยประสบการณ์และมาตรฐานคุณภาพในทุกขั้นตอนการก่อสร้าง</p>
+            </div>
+          </div>
+        </section>
+
         {/* Project Gallery Section */}
         <div
           ref={galleryRef}
