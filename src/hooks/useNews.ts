@@ -148,7 +148,7 @@ export const useNews = (featuredOnly: boolean = true) => {
     return { isVideo: true, gallery: [] };
   };
 
-  const formattedNews: FormattedNewsItem[] = (newsItems || []).map((item) => {
+  const baseFormatted: FormattedNewsItem[] = (newsItems || []).map((item) => {
     const { isVideo, gallery } = parseGalleryOrVideo(item.video_url);
 
     return {
@@ -166,6 +166,21 @@ export const useNews = (featuredOnly: boolean = true) => {
       isFeatured: item.is_featured,
     };
   });
+
+  // Collect all visible Thai-source strings for AI auto-translation
+  // (triggered only when current language != 'th')
+  const textsToTranslate = useMemo(
+    () =>
+      baseFormatted.flatMap((n) => [n.title, n.excerpt]).filter((t) => t && t.length > 0),
+    [baseFormatted]
+  );
+  const { tr } = useAutoTranslate(textsToTranslate);
+
+  const formattedNews: FormattedNewsItem[] = baseFormatted.map((n) => ({
+    ...n,
+    title: tr(n.title),
+    excerpt: tr(n.excerpt),
+  }));
 
   return {
     news: formattedNews,
