@@ -234,8 +234,30 @@ const AnimatedStats = () => {
             isClickable={projects.length > 0}
             isExpanded={expandedSection === 'projects'}
             onClick={() => projects.length > 0 && toggleSection('projects')}
-          >
-            <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[400px] overflow-y-auto">
+          />
+
+          {/* Awards - Clickable */}
+          <StatCard
+            icon={<Award className="w-8 h-8" />}
+            value={awards.length || 1}
+            suffix="+"
+            label="รางวัลที่ได้รับ"
+            index={2}
+            inView={inView}
+            isClickable={awards.length > 0}
+            isExpanded={expandedSection === 'awards'}
+            onClick={() => awards.length > 0 && toggleSection('awards')}
+          />
+        </div>
+
+        {/* Expandable Dropdown Panel - full-width on all screens */}
+        <div
+          className={`max-w-5xl mx-auto overflow-hidden transition-all duration-500 ${
+            expandedSection ? 'max-h-[600px] opacity-100 mt-4 sm:mt-6' : 'max-h-0 opacity-0'
+          }`}
+        >
+          {expandedSection === 'projects' && (
+            <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[500px] overflow-y-auto">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
                 <Calendar className="w-5 h-5 text-primary" />
                 <h4 className="font-bold text-foreground">รายการโครงการทั้งหมด</h4>
@@ -250,10 +272,10 @@ const AnimatedStats = () => {
                       <img
                         src={project.image_url}
                         alt={getTitle(project)}
-                        className="w-12 h-12 rounded-lg object-cover"
+                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                       />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <Building2 className="w-6 h-6 text-primary" />
                       </div>
                     )}
@@ -267,21 +289,10 @@ const AnimatedStats = () => {
                 ))}
               </div>
             </div>
-          </StatCard>
+          )}
 
-          {/* Awards - Clickable */}
-          <StatCard
-            icon={<Award className="w-8 h-8" />}
-            value={awards.length || 1}
-            suffix="+"
-            label="รางวัลที่ได้รับ"
-            index={2}
-            inView={inView}
-            isClickable={awards.length > 0}
-            isExpanded={expandedSection === 'awards'}
-            onClick={() => awards.length > 0 && toggleSection('awards')}
-          >
-            <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[400px] overflow-y-auto">
+          {expandedSection === 'awards' && (
+            <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[500px] overflow-y-auto">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
                 <Trophy className="w-5 h-5 text-primary" />
                 <h4 className="font-bold text-foreground">รางวัลที่ได้รับทั้งหมด</h4>
@@ -299,10 +310,10 @@ const AnimatedStats = () => {
                         <img
                           src={awardImageUrl}
                           alt={getTitle(award)}
-                          className="w-12 h-12 rounded-lg object-cover"
+                          className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <Trophy className="w-6 h-6 text-primary" />
                         </div>
                       )}
@@ -321,8 +332,9 @@ const AnimatedStats = () => {
                 })}
               </div>
             </div>
-          </StatCard>
+          )}
         </div>
+
 
 
       </div>
