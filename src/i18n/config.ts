@@ -820,7 +820,7 @@ const resources = {
       chatbot: {
         title: 'JW 助手',
         subtitle: '客户支持',
-        greeting: '您好！我是 **JW Group 助手**，JW集团的AI助手。我很乐意回答有关我们的项目、服务和公司的任何问题。我能为您做什么？🙌',
+        greeting: '尊贵的客户您好 🙌 请问 **JW Group 助手** 能为您做什么？',
         error: '抱歉，发生错误。请再试一次。',
         placeholder: '输入您的问题...',
         popular: '热门问题：',
