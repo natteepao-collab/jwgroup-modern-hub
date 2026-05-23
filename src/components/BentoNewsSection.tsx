@@ -460,22 +460,29 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
 
         <div
           className={cn(
-            "absolute bottom-0 left-0 right-0 p-5 transition-all duration-500",
+            "absolute bottom-0 left-0 right-0 transition-all duration-500",
+            isFeatured ? "p-4 sm:p-5" : "p-3 sm:p-5",
             isHovered ? "translate-y-0" : "translate-y-2"
           )}
         >
-          <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
-            <Calendar className="h-3.5 w-3.5" />
+          <div className={cn(
+            "flex items-center gap-1.5 text-white/80 mb-1.5",
+            isFeatured ? "text-xs sm:text-sm" : "text-[10px] sm:text-sm"
+          )}>
+            <Calendar className={isFeatured ? "h-3 w-3 sm:h-3.5 sm:w-3.5" : "h-3 w-3"} />
             <span>{news.date}</span>
           </div>
 
-          <h3 className="font-bold text-white text-lg mb-2 line-clamp-2 transition-all duration-300">
+          <h3 className={cn(
+            "font-bold text-white line-clamp-2 transition-all duration-300",
+            isFeatured ? "text-base sm:text-lg mb-2" : "text-sm sm:text-lg mb-1 sm:mb-2 leading-snug"
+          )}>
             {news.title}
           </h3>
 
           <div
             className={cn(
-              "transition-all duration-500",
+              "hidden sm:block transition-all duration-500",
               isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
@@ -489,6 +496,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
             </Button>
           </div>
         </div>
+
 
         <div
           className={cn(
