@@ -321,7 +321,14 @@ const FAQChatbot = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                  if (isOpen) {
+                    setIsOpen(false);
+                  } else {
+                    setIsOpen(true);
+                    setIsButtonVisible(false);
+                  }
+                }}
                 className={cn(
                   "group relative flex items-center max-sm:gap-2 max-sm:pl-2.5 max-sm:pr-3 max-sm:py-2 sm:gap-3 sm:pl-4 sm:pr-5 sm:py-3.5 rounded-l-2xl transition-all duration-500 overflow-hidden",
                   "bg-gradient-to-br from-white/95 via-white/90 to-white/85 dark:from-card/95 dark:via-card/90 dark:to-card/85",
