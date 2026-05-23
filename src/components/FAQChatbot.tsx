@@ -284,11 +284,11 @@ const FAQChatbot = () => {
         </div>
       </div>
 
-      {/* Slide-out Assistant Tab - Reference design style */}
+      {/* Slide-out Assistant Tab - Premium Luxury Style */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
         <div
           className={cn(
-            "flex items-center transition-all duration-300 ease-out",
+            "flex items-center transition-all duration-500 ease-out",
             isButtonVisible
               ? "translate-x-0"
               : "translate-x-[calc(100%-24px)]"
@@ -296,48 +296,69 @@ const FAQChatbot = () => {
         >
           {/* Toggle Handle - Chevron */}
           <button
-          onClick={() => setIsButtonVisible(!isButtonVisible)}
-            className={cn(
-              "flex items-center justify-center w-6 h-16 rounded-l-lg shadow-lg transition-all duration-300 bg-background border border-r-0 border-border hover:bg-muted backdrop-blur-none"
-            )}
+            onClick={() => setIsButtonVisible(!isButtonVisible)}
+            className="group flex items-center justify-center w-6 h-20 rounded-l-xl transition-all duration-300 bg-gradient-to-b from-primary to-primary/90 hover:from-accent hover:to-accent/90 shadow-[−4px_0_12px_rgba(15,23,42,0.15)]"
             aria-label={isButtonVisible ? 'ซ่อนช่วยเหลือ' : 'แสดงช่วยเหลือ'}
           >
             <ChevronLeft className={cn(
-              "w-4 h-4 text-muted-foreground transition-transform duration-300",
+              "w-4 h-4 text-primary-foreground transition-transform duration-300 group-hover:scale-110",
               isButtonVisible ? "" : "rotate-180"
             )} />
           </button>
 
-          {/* Main Assistant Panel */}
+          {/* Main Assistant Panel - Luxury Glass Card */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              "flex items-center gap-3 px-4 py-3 rounded-l-xl shadow-lg transition-all duration-300 bg-background border border-r-0 border-border",
-              isOpen
-                ? "bg-muted"
-                : "hover:bg-muted/50"
+              "group relative flex items-center gap-3 pl-4 pr-5 py-3.5 rounded-l-2xl transition-all duration-500 overflow-hidden",
+              "bg-gradient-to-br from-white/95 via-white/90 to-white/85 dark:from-card/95 dark:via-card/90 dark:to-card/85",
+              "backdrop-blur-xl border border-r-0 border-white/40 dark:border-white/10",
+              "shadow-[-8px_0_30px_-8px_rgba(15,23,42,0.25)] hover:shadow-[-12px_0_40px_-8px_rgba(212,129,42,0.35)]",
+              "hover:-translate-x-0.5",
+              isOpen && "shadow-[-12px_0_40px_-8px_rgba(212,129,42,0.45)]"
             )}
             aria-label={isOpen ? 'ปิดแชท' : 'เปิดแชท FAQ'}
           >
-            {/* Logo */}
-            <img 
-              src={jwLogo} 
-              alt="JW Group" 
-              className="w-10 h-10 object-contain"
-            />
+            {/* Animated gradient sheen */}
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-accent/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            
+            {/* Top accent line */}
+            <span className="pointer-events-none absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+
+            {/* Logo with glow ring */}
+            <div className="relative flex-shrink-0">
+              <span className="absolute inset-0 rounded-full bg-accent/20 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-white to-muted/30 flex items-center justify-center ring-1 ring-primary/10 shadow-inner">
+                <img 
+                  src={jwLogo} 
+                  alt="JW Group" 
+                  className="w-9 h-9 object-contain transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              {/* Pulse status dot */}
+              <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-background" />
+              </span>
+            </div>
             
             {/* Text */}
-            <div className="flex flex-col items-start">
-              <span className="text-sm font-bold text-foreground tracking-wide">
+            <div className="relative flex flex-col items-start leading-tight">
+              <span className="text-[13px] font-extrabold tracking-[0.15em]">
                 <span className="text-primary">JW</span>
-                <span className="text-muted-foreground">GROUP</span>
+                <span className="text-muted-foreground/80">GROUP</span>
               </span>
-              <span className="text-xs font-semibold text-primary tracking-widest">
+              <span className="text-[10px] font-bold text-accent tracking-[0.28em] mt-0.5">
                 ASSISTANT
+              </span>
+              <span className="flex items-center gap-1 mt-0.5">
+                <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[8px] font-medium text-muted-foreground tracking-wider uppercase">Online</span>
               </span>
             </div>
           </button>
         </div>
+
       </div>
     </>
   );
