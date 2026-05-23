@@ -236,10 +236,12 @@ export const Navbar = () => {
                   className={cn(
                     "relative flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
                     aboutDropdownOpen || isAboutActive
-                      ? "text-primary bg-primary/8"
+                      ? isScrolled
+                        ? "text-primary bg-primary/8"
+                        : "text-white bg-white/15 backdrop-blur-sm"
                       : isScrolled
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
                   )}
                 >
                   {t('nav.about')}
@@ -248,6 +250,7 @@ export const Navbar = () => {
                     aboutDropdownOpen && "rotate-180"
                   )} />
                 </button>
+
 
                 {/* Dropdown Menu */}
                 <div
@@ -303,10 +306,12 @@ export const Navbar = () => {
                   className={cn(
                     "relative px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
                     isActive(item.path)
-                      ? "text-primary bg-primary/8"
+                      ? isScrolled
+                        ? "text-primary bg-primary/8"
+                        : "text-white bg-white/15 backdrop-blur-sm"
                       : isScrolled
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        : "text-white hover:text-white hover:bg-white/15 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
                   )}
                 >
                   {t(item.labelKey)}
@@ -315,6 +320,7 @@ export const Navbar = () => {
                   )}
                 </Link>
               ))}
+
             </div>
           </div>
         </div>
