@@ -3,6 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { Building, Hotel, Heart, Leaf, Star, Rocket, ChevronDown, ChevronUp, Calendar, MapPin, EyeOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
+import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
@@ -296,6 +297,13 @@ const CompanyTimeline = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isLoadingVisibility, setIsLoadingVisibility] = useState(true);
   const eventRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const { tr } = useAutoTranslate([
+    'เส้นทาง 30+ ปีของ JW Group',
+    'จากจุดเริ่มต้นเล็ก ๆ สู่กลุ่มธุรกิจหลายแขนงที่เติบโตอย่างมั่นคงในแต่ละช่วงเวลา',
+    'เหตุการณ์',
+    'คลิกเพื่อดูรายละเอียดทั้งหมด',
+    'สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน',
+  ]);
   const { ref: headerRef, inView: headerInView } = useInView({
     threshold: 0.3,
     triggerOnce: true,
@@ -437,10 +445,10 @@ const CompanyTimeline = () => {
             Our Journey
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
-            เส้นทาง 30+ ปีของ JW Group
+            {tr('เส้นทาง 30+ ปีของ JW Group')}
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
-            จากจุดเริ่มต้นเล็ก ๆ สู่กลุ่มธุรกิจหลายแขนงที่เติบโตอย่างมั่นคงในแต่ละช่วงเวลา
+            {tr('จากจุดเริ่มต้นเล็ก ๆ สู่กลุ่มธุรกิจหลายแขนงที่เติบโตอย่างมั่นคงในแต่ละช่วงเวลา')}
           </p>
 
           {/* Milestone badges */}
@@ -449,7 +457,7 @@ const CompanyTimeline = () => {
               <div key={ch.key} className="bg-card border border-border/50 rounded-2xl p-3 sm:p-4 shadow-sm">
                 <div className="text-[10px] sm:text-xs uppercase tracking-wider text-primary font-bold">{ch.rangeLabel}</div>
                 <div className="text-2xl sm:text-3xl font-bold text-foreground mt-1">{ch.events.length}</div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">เหตุการณ์</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{tr('เหตุการณ์')}</div>
               </div>
             ))}
           </div>
@@ -686,11 +694,11 @@ const CompanyTimeline = () => {
                   className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-primary/90 text-primary-foreground text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-gentle-pulse"
                 >
                   <ChevronDown className="w-5 h-5" />
-                  คลิกเพื่อดูรายละเอียดทั้งหมด
+                  {tr('คลิกเพื่อดูรายละเอียดทั้งหมด')}
                   <ChevronDown className="w-5 h-5" />
                 </button>
                 <p className="mt-3 text-xs text-muted-foreground">
-                  สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน
+                  {tr('สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน')}
                 </p>
               </div>
             )}
