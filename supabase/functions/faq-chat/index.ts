@@ -272,7 +272,7 @@ function buildFallbackAnswer(userMessage: string, kb: string): string {
     }
   }
 
-  const greeting = "สวัสดีค่ะคุณลูกค้า 🙏 ขณะนี้ผู้ช่วย AI อัจฉริยะใช้งานครบโควต้าชั่วคราว ดิฉันรวบรวมข้อมูลที่เกี่ยวข้องจากระบบมาให้แล้วค่ะ:\n\n";
+  const greeting = "สวัสดีค่ะคุณลูกค้า 🙏 ดิฉันรวบรวมข้อมูลที่เกี่ยวข้องจากระบบมาให้แล้วค่ะ:\n\n";
   const footer = "\n\n━━━━━━━━━━━━━━━\n💬 หากต้องการรายละเอียดเพิ่มเติม กรุณาติดต่อ:\n- 📞 02-234-5678\n- ✉️ jwgroupmkt@gmail.com";
 
   if (matched.size > 0) {
