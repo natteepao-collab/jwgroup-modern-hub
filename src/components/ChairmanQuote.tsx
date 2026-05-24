@@ -245,10 +245,10 @@ export const ChairmanQuote = ({
                   <div className="h-px w-10 bg-gradient-to-l from-transparent to-accent/60" />
                 </div>
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
-                  กรรมการผู้จัดการ
+                  {tr('กรรมการผู้จัดการ')}
                 </h3>
                 <p className="text-muted-foreground text-sm md:text-base mt-3 font-light">
-                  คลิกที่การ์ดเพื่อดูรายละเอียดเพิ่มเติม
+                  {tr('คลิกที่การ์ดเพื่อดูรายละเอียดเพิ่มเติม')}
                 </p>
               </div>
 
