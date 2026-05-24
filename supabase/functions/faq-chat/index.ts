@@ -236,6 +236,79 @@ async function getKnowledgeBase(supabase: AnySupabaseClient | null): Promise<str
   return text;
 }
 
+// ──────────────────────────────────────────────────────────────────────
+// Fallback responder (used when AI credits exhausted or rate limited)
+// ──────────────────────────────────────────────────────────────────────
+function buildFallbackAnswer(userMessage: string, kb: string): string {
+  if (!kb) {
+    return "ขออภัยค่ะคุณลูกค้า ระบบผู้ช่วยอัจฉริยะกำลังปรับปรุง 🙏\n\nกรุณาติดต่อเจ้าหน้าที่โดยตรงที่:\n- 📞 02-234-5678\n- ✉️ jwgroupmkt@gmail.com\n- 🕐 จันทร์-ศุกร์ 9:00-18:00 น.";
+  }
+
+  const msg = userMessage.toLowerCase();
+  const intentMap: { keywords: string[]; sectionMatch: RegExp }[] = [
+    { keywords: ["ติดต่อ", "เบอร์", "โทร", "อีเมล", "email", "phone", "contact", "address", "ที่อยู่"], sectionMatch: /## ติดต่อ|## เกี่ยวกับ JW GROUP/i },
+    { keywords: ["งาน", "สมัคร", "ตำแหน่ง", "career", "job", "recruit", "อาชีพ"], sectionMatch: /## ตำแหน่งงาน|## สวัสดิการ/i },
+    { keywords: ["สวัสดิการ", "benefit", "ประกัน", "โบนัส"], sectionMatch: /## สวัสดิการ/i },
+    { keywords: ["ข่าว", "news", "ประกาศ", "อัพเดท", "update"], sectionMatch: /## ข่าวสาร/i },
+    { keywords: ["โครงการ", "ผลงาน", "project", "บ้าน", "คอนโด", "ทาวน์โฮม"], sectionMatch: /## โครงการ/i },
+    { keywords: ["รางวัล", "award", "ได้รับ"], sectionMatch: /## รางวัล/i },
+    { keywords: ["ผู้บริหาร", "ceo", "ประธาน", "chairman", "director", "เจ้าของ"], sectionMatch: /## ผู้บริหาร/i },
+    { keywords: ["วิสัยทัศน์", "พันธกิจ", "vision", "mission"], sectionMatch: /## วิสัยทัศน์/i },
+    { keywords: ["ประวัติ", "history", "ก่อตั้ง", "timeline"], sectionMatch: /## ประวัติ/i },
+    { keywords: ["ธุรกิจ", "business", "เกี่ยวกับ", "about", "บริษัท"], sectionMatch: /## เกี่ยวกับ JW GROUP|## ธุรกิจในเครือ|## หน่วยธุรกิจ/i },
+    { keywords: ["รีวิว", "ความเห็น", "testimonial"], sectionMatch: /## รีวิว/i },
+    { keywords: ["องค์กร", "แผนก", "หน่วยงาน", "organization"], sectionMatch: /## โครงสร้าง/i },
+    { keywords: ["โรงแรม", "hotel", "ที่พัก", "residence"], sectionMatch: /## ธุรกิจในเครือ|## โครงการ/i },
+    { keywords: ["สัตว์", "หมา", "แมว", "pet", "3dpet", "สัตวแพทย์"], sectionMatch: /## ธุรกิจในเครือ/i },
+    { keywords: ["สมุนไพร", "herbal", "wellness", "สุขภาพ"], sectionMatch: /## ธุรกิจในเครือ/i },
+    { keywords: ["ก่อสร้าง", "thanabul", "ธนบูลย์", "รับเหมา"], sectionMatch: /## ธุรกิจในเครือ/i },
+  ];
+
+  const blocks = kb.split(/\n(?=## )/);
+  const matched = new Set<string>();
+  for (const intent of intentMap) {
+    if (intent.keywords.some(k => msg.includes(k))) {
+      for (const b of blocks) if (intent.sectionMatch.test(b)) matched.add(b);
+    }
+  }
+
+  const greeting = "สวัสดีค่ะคุณลูกค้า 🙏 ขณะนี้ผู้ช่วย AI อัจฉริยะใช้งานครบโควต้าชั่วคราว ดิฉันรวบรวมข้อมูลที่เกี่ยวข้องจากระบบมาให้แล้วค่ะ:\n\n";
+  const footer = "\n\n━━━━━━━━━━━━━━━\n💬 หากต้องการรายละเอียดเพิ่มเติม กรุณาติดต่อ:\n- 📞 02-234-5678\n- ✉️ jwgroupmkt@gmail.com";
+
+  if (matched.size > 0) {
+    const body = Array.from(matched).slice(0, 3).map(b => b.trim()).join("\n\n").slice(0, 2500);
+    return greeting + body + footer;
+  }
+
+  const summary = blocks
+    .filter(b => /## เกี่ยวกับ JW GROUP|## ธุรกิจในเครือ|## ติดต่อ/i.test(b))
+    .map(b => b.trim()).join("\n\n").slice(0, 2000);
+  return greeting + (summary || "JW Group เป็นกลุ่มบริษัทครอบคลุมธุรกิจอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ สมุนไพร และก่อสร้าง") + footer;
+}
+
+// Convert plain text into an SSE stream matching the gateway's delta format
+function textToSSEStream(text: string): ReadableStream<Uint8Array> {
+  const encoder = new TextEncoder();
+  const chunks: string[] = [];
+  let buf = "";
+  for (const w of text.split(/(\s+)/)) {
+    buf += w;
+    if (buf.length >= 8) { chunks.push(buf); buf = ""; }
+  }
+  if (buf) chunks.push(buf);
+
+  return new ReadableStream({
+    async start(controller) {
+      for (const chunk of chunks) {
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: chunk } }] })}\n\n`));
+        await new Promise(r => setTimeout(r, 12));
+      }
+      controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+      controller.close();
+    },
+  });
+}
+
 const BASE_PROMPT = `คุณคือ "JW Group Assistant" ผู้ช่วยของกลุ่มบริษัท JW Group (อสังหาฯ, โรงแรม/รีสอร์ท, 3DPet, Herbal Wellness, Thanabul Property)
 
 บุคลิก: สุภาพ ใจดี อบอุ่น เหมือนพนักงานต้อนรับมืออาชีพ
@@ -324,8 +397,17 @@ serve(async (req) => {
     });
 
     if (!aiResp.ok) {
-      if (aiResp.status === 429) return new Response(JSON.stringify({ error: "ระบบไม่ว่าง กรุณาลองใหม่อีกครั้ง" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (aiResp.status === 402) return new Response(JSON.stringify({ error: "ระบบไม่พร้อมใช้งาน กรุณาติดต่อเจ้าหน้าที่" }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      // 402 (credits exhausted) or 429 (rate limited) → graceful fallback using DB knowledge base
+      if (aiResp.status === 402 || aiResp.status === 429) {
+        const lastUserMsg = [...messages].reverse().find(m => m.role === "user")?.content || "";
+        const fallbackText = buildFallbackAnswer(lastUserMsg, kb);
+        if (supabase && conversationId) {
+          logAssistantReply(supabase, conversationId, fallbackText).catch(() => {});
+        }
+        return new Response(textToSSEStream(fallbackText), {
+          headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+        });
+      }
       console.error("AI gateway error:", aiResp.status, await aiResp.text());
       return new Response(JSON.stringify({ error: "เกิดข้อผิดพลาด กรุณาลองใหม่" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
