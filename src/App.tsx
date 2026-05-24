@@ -40,6 +40,7 @@ const FloatingActions = lazy(() => import('./components/FloatingActions'));
 const Snowfall = lazy(() => import('./components/Snowfall'));
 const GoogleAnalytics = lazy(() => import('./components/GoogleAnalytics'));
 const ChristmasTheme = lazy(() => import('./components/ChristmasTheme'));
+const GlobalAutoTranslator = lazy(() => import('./components/GlobalAutoTranslator'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +69,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Snowfall />
         <ChristmasTheme />
         <GoogleAnalytics />
+        <GlobalAutoTranslator />
       </Suspense>
       {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
