@@ -3,6 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
+import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -129,10 +130,10 @@ const TestimonialsSection = () => {
           }`}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            เสียงจากลูกค้าของเรา
+            {tr('เสียงจากลูกค้าของเรา')}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            ความไว้วางใจจากลูกค้าคือความภาคภูมิใจของเรา
+            {tr('ความไว้วางใจจากลูกค้าคือความภาคภูมิใจของเรา')}
           </p>
         </div>
 
