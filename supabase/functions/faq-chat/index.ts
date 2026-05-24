@@ -397,8 +397,17 @@ serve(async (req) => {
     });
 
     if (!aiResp.ok) {
-      if (aiResp.status === 429) return new Response(JSON.stringify({ error: "ระบบไม่ว่าง กรุณาลองใหม่อีกครั้ง" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (aiResp.status === 402) return new Response(JSON.stringify({ error: "ระบบไม่พร้อมใช้งาน กรุณาติดต่อเจ้าหน้าที่" }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      // 402 (credits exhausted) or 429 (rate limited) → graceful fallback using DB knowledge base
+      if (aiResp.status === 402 || aiResp.status === 429) {
+        const lastUserMsg = [...messages].reverse().find(m => m.role === "user")?.content || "";
+        const fallbackText = buildFallbackAnswer(lastUserMsg, kb);
+        if (supabase && conversationId) {
+          logAssistantReply(supabase, conversationId, fallbackText).catch(() => {});
+        }
+        return new Response(textToSSEStream(fallbackText), {
+          headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+        });
+      }
       console.error("AI gateway error:", aiResp.status, await aiResp.text());
       return new Response(JSON.stringify({ error: "เกิดข้อผิดพลาด กรุณาลองใหม่" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
