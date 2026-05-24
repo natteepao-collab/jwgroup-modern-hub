@@ -74,7 +74,13 @@ export const ChairmanQuote = ({
 
   // Auto-translate Thai DB content into current UI language
   const textsToTranslate = useMemo(() => {
-    const arr: string[] = [rawName, rawTitle, rawQuote, rawDescription];
+    const arr: string[] = [
+      rawName, rawTitle, rawQuote, rawDescription,
+      'คณะผู้บริหาร',
+      'วิสัยทัศน์ ประสบการณ์ และความมุ่งมั่น — สามเสาหลักที่ขับเคลื่อน JW Group สู่อนาคต',
+      'กรรมการผู้จัดการ',
+      'คลิกที่การ์ดเพื่อดูรายละเอียดเพิ่มเติม',
+    ];
     directors.forEach((d) => {
       arr.push(d.name, d.title, d.description || '');
     });
@@ -134,7 +140,7 @@ export const ChairmanQuote = ({
               <Sparkles className="w-3.5 h-3.5 text-accent" />
             </div>
             <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-foreground">
-              คณะผู้บริหาร{' '}
+              {tr('คณะผู้บริหาร')}{' '}
               <span className="text-accent">JW Group</span>
             </h2>
             <div className="flex items-center justify-center gap-3 mb-5">
@@ -143,7 +149,7 @@ export const ChairmanQuote = ({
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-accent/60" />
             </div>
             <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto font-light">
-              วิสัยทัศน์ ประสบการณ์ และความมุ่งมั่น — สามเสาหลักที่ขับเคลื่อน JW Group สู่อนาคต
+              {tr('วิสัยทัศน์ ประสบการณ์ และความมุ่งมั่น — สามเสาหลักที่ขับเคลื่อน JW Group สู่อนาคต')}
             </p>
           </motion.div>
 

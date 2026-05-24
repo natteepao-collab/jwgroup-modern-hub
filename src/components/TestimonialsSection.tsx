@@ -69,6 +69,10 @@ const mockTestimonials: Testimonial[] = [
 
 const TestimonialsSection = () => {
   const { i18n } = useTranslation();
+  const { tr } = useAutoTranslate([
+    'เสียงจากลูกค้าของเรา',
+    'ความไว้วางใจจากลูกค้าคือความภาคภูมิใจของเรา',
+  ]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>(mockTestimonials);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
