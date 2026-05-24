@@ -116,23 +116,20 @@ Return ONLY a JSON object mapping the source text to its translation. No comment
       });
 
       if (!aiRes.ok) {
-        if (aiRes.status === 429) {
-          return new Response(
-            JSON.stringify({ error: "Rate limit. Please retry shortly.", translations: result }),
-            { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
-        if (aiRes.status === 402) {
-          return new Response(
-            JSON.stringify({ error: "AI credits exhausted.", translations: result }),
-            { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
-        const errText = await aiRes.text();
-        console.error("AI gateway error:", aiRes.status, errText);
+        // Fill misses with originals so client still gets full mapping
+        missTexts.forEach((text) => {
+          if (!(text in result)) result[text] = text;
+        });
+        const reason =
+          aiRes.status === 429
+            ? "rate_limited"
+            : aiRes.status === 402
+            ? "credits_exhausted"
+            : "ai_error";
+        console.warn(`AI gateway returned ${aiRes.status} (${reason}); returning partial translations.`);
         return new Response(
-          JSON.stringify({ error: "AI gateway error", translations: result }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({ translations: result, partial: true, reason }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
