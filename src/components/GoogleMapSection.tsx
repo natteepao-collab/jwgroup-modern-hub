@@ -80,8 +80,8 @@ export const GoogleMapSection = () => {
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t('contact.emailTitle', 'อีเมล')}</div>
-                    <a href={`mailto:${emailContent.content || 'info@jwgroup.com'}`} className="font-medium hover:text-primary transition-colors">
-                      {emailContent.content || 'info@jwgroup.com'}
+                    <a href={`mailto:${emailContent.content || 'jwgroupmkt@gmail.com'}`} className="font-medium hover:text-primary transition-colors">
+                      {emailContent.content || 'jwgroupmkt@gmail.com'}
                     </a>
                   </div>
                 </div>

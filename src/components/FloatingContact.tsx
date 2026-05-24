@@ -31,7 +31,7 @@ const FloatingContact = () => {
     {
       icon: Mail,
       label: 'Email',
-      href: 'mailto:info@jwgroup.com',
+      href: 'mailto:jwgroupmkt@gmail.com',
       bgColor: 'bg-primary',
       hoverColor: 'hover:bg-primary/90'
     }
