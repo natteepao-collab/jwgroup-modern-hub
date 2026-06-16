@@ -276,15 +276,15 @@ export const Navbar = () => {
                         )}
                       >
                         <div className={cn(
-                          "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-300",
+                          "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 group-hover:scale-110",
                           isActive(item.path)
                             ? "bg-primary-foreground/20"
-                            : "bg-primary/10 group-hover:bg-primary/15"
+                            : "bg-accent/15 group-hover:bg-accent/25 ring-1 ring-accent/20"
                         )}>
                           <item.icon className={cn(
-                            "h-4 w-4 transition-colors",
-                            isActive(item.path) ? "text-primary-foreground" : "text-primary"
-                          )} strokeWidth={1.8} />
+                            "h-[18px] w-[18px] transition-colors",
+                            isActive(item.path) ? "text-primary-foreground" : "text-accent"
+                          )} strokeWidth={1.6} />
                         </div>
                         <span className={cn(
                           "text-[13px] font-semibold tracking-wide",
