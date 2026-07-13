@@ -138,17 +138,21 @@ const OrganizationChart = ({ businessKey, hideSelector, hideHeader }: Organizati
     <>
       <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display text-foreground">
-            {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            {isEnglish 
-              ? 'Select a business unit to view its organizational structure'
-              : 'เลือกหน่วยธุรกิจเพื่อดูโครงสร้างองค์กร'}
-          </p>
+        {!hideHeader && (
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display text-foreground">
+              {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              {isEnglish 
+                ? 'Select a business unit to view its organizational structure'
+                : 'เลือกหน่วยธุรกิจเพื่อดูโครงสร้างองค์กร'}
+            </p>
+          </div>
+        )}
 
-          {/* Business Selector Dropdown */}
+        {/* Business Selector Dropdown */}
+        {!hideSelector && (
           <div className="flex justify-center mb-8">
             <Select value={selectedBusiness} onValueChange={setSelectedBusiness}>
               <SelectTrigger className="w-[320px] h-14 text-lg font-medium border-2 border-primary/20 bg-card shadow-lg hover:border-primary/40 transition-all">
@@ -180,7 +184,7 @@ const OrganizationChart = ({ businessKey, hideSelector, hideHeader }: Organizati
               </SelectContent>
             </Select>
           </div>
-        </div>
+        )}
 
         {/* Organization Chart or Empty State */}
         {hasData ? (
