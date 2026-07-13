@@ -1,0 +1,84 @@
+/* Corporate org chart – pure CSS connectors, robust across zoom & responsive */
+.org-tree,
+.org-tree ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  position: relative;
+}
+
+.org-tree ul {
+  display: flex;
+  padding-top: 28px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.org-tree li {
+  position: relative;
+  padding: 28px 12px 0 12px;
+  text-align: center;
+}
+
+/* horizontal connectors from parent -> children row */
+.org-tree li::before,
+.org-tree li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 50%;
+  width: 50%;
+  height: 28px;
+  border-top: 2px solid hsl(var(--border));
+}
+
+.org-tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid hsl(var(--border));
+}
+
+.org-tree li:only-child::before,
+.org-tree li:only-child::after {
+  display: none;
+}
+
+.org-tree li:only-child {
+  padding-top: 28px;
+}
+
+.org-tree li:first-child::before,
+.org-tree li:last-child::after {
+  border: 0 none;
+}
+
+.org-tree li:last-child::before {
+  border-right: 2px solid hsl(var(--border));
+  border-radius: 0 6px 0 0;
+}
+
+.org-tree li:first-child::after {
+  border-radius: 6px 0 0 0;
+}
+
+/* vertical connector from card to horizontal line */
+.org-tree ul ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid hsl(var(--border));
+  width: 0;
+  height: 28px;
+}
+
+/* dashed lines for advisory / executive-support children */
+.org-tree li[data-relationship="advisory"]::before,
+.org-tree li[data-relationship="advisory"]::after,
+.org-tree li[data-relationship="executive-support"]::before,
+.org-tree li[data-relationship="executive-support"]::after {
+  border-top-style: dashed;
+  border-left-style: dashed;
+  border-right-style: dashed;
+  border-color: hsl(var(--accent));
+}
