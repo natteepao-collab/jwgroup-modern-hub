@@ -9,14 +9,14 @@
 
 .org-tree ul {
   display: flex;
-  padding-top: 22px;
+  padding-top: 14px;
   justify-content: center;
   flex-wrap: nowrap;
 }
 
 .org-tree li {
   position: relative;
-  padding: 22px 6px 0 6px;
+  padding: 14px 3px 0 3px;
   text-align: center;
 }
 
@@ -28,7 +28,7 @@
   top: 0;
   right: 50%;
   width: 50%;
-  height: 22px;
+  height: 14px;
   border-top: 1px solid hsl(var(--border));
 }
 
@@ -44,7 +44,7 @@
 }
 
 .org-tree li:only-child {
-  padding-top: 22px;
+  padding-top: 14px;
 }
 
 .org-tree li:first-child::before,
@@ -69,7 +69,7 @@
   left: 50%;
   border-left: 1px solid hsl(var(--border));
   width: 0;
-  height: 22px;
+  height: 14px;
 }
 
 
