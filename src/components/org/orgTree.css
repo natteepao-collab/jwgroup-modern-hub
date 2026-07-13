@@ -84,6 +84,31 @@
   border-color: hsl(var(--accent) / 0.7);
 }
 
+/* highlighted branch from CEO -> selected node */
+.org-tree li[data-on-path="true"]::before,
+.org-tree li[data-on-path="true"]::after {
+  border-top-color: hsl(var(--primary));
+  border-left-color: hsl(var(--primary));
+  border-right-color: hsl(var(--primary));
+  border-top-width: 2px;
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.org-tree li[data-on-path="true"] > ul::before {
+  border-left-color: hsl(var(--primary));
+  border-left-width: 2px;
+}
+/* dim non-path branches slightly when a path is active */
+.org-tree:has(li[data-on-path="true"]) li:not([data-on-path="true"]) > div > button,
+.org-tree:has(li[data-on-path="true"]) li:not([data-on-path="true"]) > button {
+  opacity: 0.55;
+  transition: opacity 200ms ease;
+}
+.org-tree:has(li[data-on-path="true"]) li:not([data-on-path="true"]) > div > button:hover,
+.org-tree:has(li[data-on-path="true"]) li:not([data-on-path="true"]) > button:hover {
+  opacity: 1;
+}
+
 /* subtle blueprint grid background for chart canvas */
 .org-canvas {
   background-image:
