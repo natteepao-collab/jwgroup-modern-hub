@@ -490,6 +490,51 @@ export default function OrgChartPage() {
         </div>
       </div>
 
+      {/* Breadcrumb: CEO -> selected node */}
+      {selectedPath.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-4 py-2.5 shadow-sm animate-fade-in">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+            เส้นทาง
+          </span>
+          <div className="flex flex-wrap items-center gap-1 text-sm">
+            {selectedPath.map((p, i) => {
+              const isLast = i === selectedPath.length - 1;
+              return (
+                <span key={p.id} className="flex items-center gap-1">
+                  {i > 0 && (
+                    <ChevronRight className="h-3.5 w-3.5 text-primary/60" />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleSelect(p)}
+                    className={cn(
+                      "rounded-md px-2 py-0.5 transition-colors",
+                      isLast
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "text-foreground hover:bg-primary/10",
+                    )}
+                  >
+                    {p.position_th}
+                    {p.employee_name && (
+                      <span className={cn("ml-1 text-[11px]", isLast ? "opacity-80" : "text-muted-foreground")}>
+                        · {p.employee_name}
+                      </span>
+                    )}
+                  </button>
+                </span>
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            onClick={() => { setSelected(null); setPanelOpen(false); }}
+            className="ml-auto text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+          >
+            ล้างเส้นทาง
+          </button>
+        </div>
+      )}
+
       {/* Chart */}
       {isMobile ? (
         <div className="space-y-2">
