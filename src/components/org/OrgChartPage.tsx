@@ -206,9 +206,12 @@ export default function OrgChartPage() {
     return s;
   }, [roots]);
 
-  // auto-expand all by default when tree loads
+  // auto-expand only the CEO (level 1) by default so level-2 cards sit close together
   useMemo(() => {
-    if (roots && expandedIds.size === 0) setExpandedIds(new Set(allIds));
+    if (roots && expandedIds.size === 0) {
+      const rootIds = new Set(roots.map((r) => r.id));
+      setExpandedIds(rootIds);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roots]);
 
@@ -453,9 +456,9 @@ export default function OrgChartPage() {
         </div>
       ) : (
         <TransformWrapper
-          minScale={0.4}
+          minScale={0.3}
           maxScale={2}
-          initialScale={0.9}
+          initialScale={0.85}
           centerOnInit
           limitToBounds={false}
           wheel={{ step: 0.1 }}
@@ -466,15 +469,15 @@ export default function OrgChartPage() {
               <div className="absolute right-3 top-3 z-10 flex flex-col gap-1 rounded-xl border bg-card/95 p-1 shadow-md">
                 <Button variant="ghost" size="icon" onClick={() => zoomIn()} title="Zoom in"><Plus className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => zoomOut()} title="Zoom out"><Minus className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => centerView(0.9)} title="Fit"><Maximize className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => centerView(0.85)} title="Fit"><Maximize className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => resetTransform()} title="Reset"><RotateCcw className="h-4 w-4" /></Button>
               </div>
               <div className="min-h-[600px] cursor-grab overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 to-background dark:from-muted/30 active:cursor-grabbing org-canvas">
                 <TransformComponent
-                  wrapperStyle={{ width: "100%", height: "700px" }}
+                  wrapperStyle={{ width: "100%", height: "750px" }}
                   contentStyle={{ width: "100%" }}
                 >
-                  <div ref={captureRef} className="w-max min-w-full p-10">
+                  <div ref={captureRef} className="w-max min-w-full p-6">
                     <ul className="org-tree">
                       {filteredRoots.map((r) => (
                         <TreeNode

@@ -100,8 +100,8 @@ export function OrgNodeCard({
 
   // ============ Level 2+ — editorial white card ============
   const widthCls = isLevel2
-    ? "w-[190px]"
-    : "w-[170px]";
+    ? "w-[150px]"
+    : "w-[120px]";
 
   return (
     <div className="inline-block">
@@ -109,7 +109,7 @@ export function OrgNodeCard({
         type="button"
         onClick={() => onClick?.(node)}
         className={cn(
-          "group relative rounded-xl bg-card p-3 md:p-3.5 text-left transition-all duration-300",
+          "group relative rounded-xl bg-card p-2 md:p-2.5 text-left transition-all duration-300",
           "border border-border shadow-sm",
           "hover:-translate-y-0.5 hover:shadow-lg hover:border-secondary/40",
           "focus:outline-none focus:ring-2 focus:ring-secondary/40",
@@ -119,18 +119,18 @@ export function OrgNodeCard({
           highlight && "ring-2 ring-primary/60 shadow-lg",
         )}
       >
-        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <div className="text-[9px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
           {node.position_en || levelTag[node.organization_level] || "Position"}
         </div>
         <div
           className={cn(
             "mt-1 font-bold leading-tight text-foreground",
-            isLevel2 ? "text-base md:text-lg" : "text-sm md:text-base",
+            isLevel2 ? "text-sm md:text-base" : "text-xs md:text-sm",
           )}
         >
           {node.position_th}
         </div>
-        <div className="mt-1 truncate text-sm text-muted-foreground">
+        <div className="mt-1 truncate text-xs text-muted-foreground">
           {node.employee_name || (
             <span className="italic">
               {node.status === "vacant" ? "ตำแหน่งว่าง" : "รอระบุ"}
