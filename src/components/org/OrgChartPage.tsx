@@ -482,7 +482,7 @@ export default function OrgChartPage() {
           limitToBounds={false}
           wheel={{ step: 0.1 }}
           doubleClick={{ disabled: true }}
-          onTransformed={(_, s) => setZoomPct(Math.round(s.scale * 100))}
+          onTransformed={(ref) => setZoomPct(Math.round(ref.state.scale * 100))}
         >
           {({ zoomIn, zoomOut, resetTransform, centerView }) => (
             <div className="relative">
