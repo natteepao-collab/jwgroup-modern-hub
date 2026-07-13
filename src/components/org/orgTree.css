@@ -9,14 +9,14 @@
 
 .org-tree ul {
   display: flex;
-  padding-top: 14px;
+  padding-top: 26px;
   justify-content: center;
   flex-wrap: nowrap;
 }
 
 .org-tree li {
   position: relative;
-  padding: 14px 3px 0 3px;
+  padding: 26px 10px 0 10px;
   text-align: center;
 }
 
@@ -28,14 +28,14 @@
   top: 0;
   right: 50%;
   width: 50%;
-  height: 14px;
-  border-top: 1px solid hsl(var(--border));
+  height: 26px;
+  border-top: 1.5px solid hsl(var(--border));
 }
 
 .org-tree li::after {
   right: auto;
   left: 50%;
-  border-left: 1px solid hsl(var(--border));
+  border-left: 1.5px solid hsl(var(--border));
 }
 
 .org-tree li:only-child::before,
@@ -44,7 +44,7 @@
 }
 
 .org-tree li:only-child {
-  padding-top: 14px;
+  padding-top: 26px;
 }
 
 .org-tree li:first-child::before,
@@ -53,12 +53,12 @@
 }
 
 .org-tree li:last-child::before {
-  border-right: 1px solid hsl(var(--border));
-  border-radius: 0 6px 0 0;
+  border-right: 1.5px solid hsl(var(--border));
+  border-radius: 0 8px 0 0;
 }
 
 .org-tree li:first-child::after {
-  border-radius: 6px 0 0 0;
+  border-radius: 8px 0 0 0;
 }
 
 /* vertical connector from card to horizontal line */
@@ -67,9 +67,9 @@
   position: absolute;
   top: 0;
   left: 50%;
-  border-left: 1px solid hsl(var(--border));
+  border-left: 1.5px solid hsl(var(--border));
   width: 0;
-  height: 14px;
+  height: 26px;
 }
 
 
@@ -92,4 +92,3 @@
   background-size: 32px 32px;
   background-position: -1px -1px;
 }
-
