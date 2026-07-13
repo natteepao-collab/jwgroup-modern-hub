@@ -418,12 +418,21 @@ export default function OrgChartPage() {
               ))}
             </SelectContent>
           </Select>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" onClick={() => expandToLevel(2)} className="gap-1" title="แสดงเฉพาะระดับ 1">
+              L1
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => expandToLevel(3)} className="gap-1" title="ขยายถึงระดับ 2">
+              L2
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => expandToLevel(4)} className="gap-1" title="ขยายถึงระดับ 3">
+              L3
+            </Button>
             <Button variant="outline" size="sm" onClick={expandAll} className="gap-1">
-              <ChevronsUpDown className="h-4 w-4" /> ขยาย
+              <ChevronsUpDown className="h-4 w-4" /> ขยายทั้งหมด
             </Button>
             <Button variant="outline" size="sm" onClick={collapseAll} className="gap-1">
-              <ChevronsDownUp className="h-4 w-4" /> ย่อ
+              <ChevronsDownUp className="h-4 w-4" /> ย่อทั้งหมด
             </Button>
           </div>
         </div>
