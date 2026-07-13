@@ -117,3 +117,62 @@
   background-size: 32px 32px;
   background-position: -1px -1px;
 }
+
+/* ============ Vertical layout variant ============ */
+/* Children stack top-to-bottom with an L-shaped connector on the left */
+.org-tree--vertical ul {
+  display: block;
+  padding-top: 0;
+  padding-left: 36px;
+  position: relative;
+}
+/* main vertical spine down the left side of the children list */
+.org-tree--vertical ul::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 0;
+  bottom: 18px;
+  width: 0;
+  border-left: 1.5px solid hsl(var(--border));
+}
+.org-tree--vertical li {
+  padding: 12px 0 0 22px;
+  text-align: left;
+  position: relative;
+}
+/* horizontal branch from spine to card */
+.org-tree--vertical li::before {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: -22px;
+  width: 22px;
+  height: 0;
+  border-top: 1.5px solid hsl(var(--border));
+  right: auto;
+  border-right: 0;
+  border-radius: 0;
+}
+.org-tree--vertical li::after {
+  display: none;
+}
+.org-tree--vertical li:only-child {
+  padding-top: 12px;
+}
+/* highlight path in vertical mode */
+.org-tree--vertical li[data-on-path="true"]::before {
+  border-top-color: hsl(var(--primary));
+  border-top-width: 2px;
+}
+.org-tree--vertical li[data-on-path="true"] > ul::before {
+  border-left-color: hsl(var(--primary));
+  border-left-width: 2px;
+}
+/* dashed for advisory / support */
+.org-tree--vertical li[data-relationship="advisory"]::before,
+.org-tree--vertical li[data-relationship="executive-support"]::before {
+  border-top-style: dashed;
+  border-top-color: hsl(var(--accent) / 0.7);
+}
+

@@ -224,14 +224,16 @@ export default function OrgChartPage() {
     return s;
   }, [roots]);
 
-  // auto-expand only the CEO (level 1) by default so level-2 cards sit close together
+  // auto-expand ALL nodes by default so every level is visible vertically
   useMemo(() => {
     if (roots && expandedIds.size === 0) {
-      const rootIds = new Set(roots.map((r) => r.id));
-      setExpandedIds(rootIds);
+      const s = new Set<string>();
+      roots.forEach((r) => collectIds(r, s));
+      setExpandedIds(s);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roots]);
+
 
   const matchIds = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -620,7 +622,7 @@ export default function OrgChartPage() {
                   contentStyle={{ width: "100%" }}
                 >
                   <div ref={captureRef} className="w-max min-w-full p-6">
-                    <ul className="org-tree">
+                    <ul className="org-tree org-tree--vertical">
                       {filteredRoots.map((r) => (
                         <TreeNode
                           key={r.id}
