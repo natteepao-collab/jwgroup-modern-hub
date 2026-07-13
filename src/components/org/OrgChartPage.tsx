@@ -18,6 +18,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import {
   ChevronsDownUp,
   ChevronsUpDown,
+  ChevronRight,
   Download,
   FileImage,
   FileText,
@@ -88,17 +89,25 @@ function TreeNode({
   onToggle,
   onSelect,
   matchIds,
+  pathIds,
+  selectedId,
 }: {
   node: OrgTreeNode;
   expandedIds: Set<string>;
   onToggle: (id: string) => void;
   onSelect: (n: OrgTreeNode) => void;
   matchIds: Set<string>;
+  pathIds: Set<string>;
+  selectedId?: string | null;
 }) {
   const expanded = expandedIds.has(node.id);
   const hasChildren = node.children.length > 0;
+  const onPath = pathIds.has(node.id);
   return (
-    <li data-relationship={node.relationship_type}>
+    <li
+      data-relationship={node.relationship_type}
+      data-on-path={onPath ? "true" : undefined}
+    >
       <OrgNodeCard
         node={node}
         onClick={onSelect}
@@ -106,6 +115,8 @@ function TreeNode({
         expanded={expanded}
         hasChildren={hasChildren}
         highlight={matchIds.has(node.id)}
+        onPath={onPath}
+        isSelected={selectedId === node.id}
       />
       {hasChildren && expanded && (
         <ul>
@@ -117,6 +128,8 @@ function TreeNode({
               onToggle={onToggle}
               onSelect={onSelect}
               matchIds={matchIds}
+              pathIds={pathIds}
+              selectedId={selectedId}
             />
           ))}
         </ul>
@@ -270,12 +283,26 @@ export default function OrgChartPage() {
   const handleSelect = (n: OrgNode) => {
     setSelected(n);
     setPanelOpen(true);
+    // auto-expand all ancestors so the branch stays visible
+    if (roots) {
+      const path = findPath(roots, n.id) ?? [];
+      setExpandedIds((prev) => {
+        const next = new Set(prev);
+        path.slice(0, -1).forEach((p) => next.add(p.id));
+        return next;
+      });
+    }
   };
 
   const selectedPath = useMemo(() => {
     if (!selected || !roots) return [];
     return findPath(roots, selected.id) ?? [];
   }, [selected, roots]);
+
+  const pathIds = useMemo(
+    () => new Set(selectedPath.map((n) => n.id)),
+    [selectedPath],
+  );
 
   // ---- export ----
   const exportPNG = async () => {
@@ -464,6 +491,51 @@ export default function OrgChartPage() {
         </div>
       </div>
 
+      {/* Breadcrumb: CEO -> selected node */}
+      {selectedPath.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-4 py-2.5 shadow-sm animate-fade-in">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+            เส้นทาง
+          </span>
+          <div className="flex flex-wrap items-center gap-1 text-sm">
+            {selectedPath.map((p, i) => {
+              const isLast = i === selectedPath.length - 1;
+              return (
+                <span key={p.id} className="flex items-center gap-1">
+                  {i > 0 && (
+                    <ChevronRight className="h-3.5 w-3.5 text-primary/60" />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleSelect(p)}
+                    className={cn(
+                      "rounded-md px-2 py-0.5 transition-colors",
+                      isLast
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "text-foreground hover:bg-primary/10",
+                    )}
+                  >
+                    {p.position_th}
+                    {p.employee_name && (
+                      <span className={cn("ml-1 text-[11px]", isLast ? "opacity-80" : "text-muted-foreground")}>
+                        · {p.employee_name}
+                      </span>
+                    )}
+                  </button>
+                </span>
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            onClick={() => { setSelected(null); setPanelOpen(false); }}
+            className="ml-auto text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+          >
+            ล้างเส้นทาง
+          </button>
+        </div>
+      )}
+
       {/* Chart */}
       {isMobile ? (
         <div className="space-y-2">
@@ -514,6 +586,8 @@ export default function OrgChartPage() {
                           onToggle={toggle}
                           onSelect={handleSelect}
                           matchIds={matchIds}
+                          pathIds={pathIds}
+                          selectedId={selected?.id}
                         />
                       ))}
                     </ul>

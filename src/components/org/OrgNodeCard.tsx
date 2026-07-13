@@ -10,6 +10,8 @@ interface Props {
   expanded?: boolean;
   hasChildren?: boolean;
   highlight?: boolean;
+  onPath?: boolean;
+  isSelected?: boolean;
 }
 
 // Editorial / annual-report style tag per level
@@ -27,6 +29,8 @@ export function OrgNodeCard({
   expanded,
   hasChildren,
   highlight,
+  onPath,
+  isSelected,
 }: Props) {
   const isCEO = node.organization_level === 1;
   const isLevel2 = node.organization_level === 2;
@@ -117,6 +121,8 @@ export function OrgNodeCard({
           isLevel2 && "border-t-2 border-t-primary",
           isAdvisory && "border-l-[3px] border-l-primary/40 border-dashed",
           highlight && "ring-2 ring-primary/60 shadow-lg",
+          onPath && !isSelected && "border-primary/60 shadow-[0_8px_24px_-12px_hsl(var(--primary)/0.5)]",
+          isSelected && "ring-2 ring-primary shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.6)] border-primary",
         )}
       >
         <div className="text-[9px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
