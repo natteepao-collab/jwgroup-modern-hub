@@ -622,7 +622,7 @@ export default function OrgChartPage() {
                   contentStyle={{ width: "100%" }}
                 >
                   <div ref={captureRef} className="w-max min-w-full p-6">
-                    <ul className="org-tree org-tree--vertical">
+                    <ul className="org-tree org-tree--compact">
                       {filteredRoots.map((r) => (
                         <TreeNode
                           key={r.id}
