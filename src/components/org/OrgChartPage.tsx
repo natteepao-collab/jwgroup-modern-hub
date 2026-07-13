@@ -282,12 +282,26 @@ export default function OrgChartPage() {
   const handleSelect = (n: OrgNode) => {
     setSelected(n);
     setPanelOpen(true);
+    // auto-expand all ancestors so the branch stays visible
+    if (roots) {
+      const path = findPath(roots, n.id) ?? [];
+      setExpandedIds((prev) => {
+        const next = new Set(prev);
+        path.slice(0, -1).forEach((p) => next.add(p.id));
+        return next;
+      });
+    }
   };
 
   const selectedPath = useMemo(() => {
     if (!selected || !roots) return [];
     return findPath(roots, selected.id) ?? [];
   }, [selected, roots]);
+
+  const pathIds = useMemo(
+    () => new Set(selectedPath.map((n) => n.id)),
+    [selectedPath],
+  );
 
   // ---- export ----
   const exportPNG = async () => {
