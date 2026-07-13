@@ -6,6 +6,7 @@ import { useOrgTree, type OrgNode, type OrgTreeNode } from "@/hooks/useOrgTree";
 import { OrgNodeCard } from "./OrgNodeCard";
 import { OrgDetailPanel } from "./OrgDetailPanel";
 import OrganizationChart from "@/components/OrganizationChart";
+import { useBusinessTypes } from "@/hooks/useBusinessTypes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -207,7 +208,10 @@ export default function OrgChartPage() {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<OrgNode | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [businessKey, setBusinessKey] = useState<string>("realestate");
   const captureRef = useRef<HTMLDivElement>(null);
+  const { data: businessTypes = [] } = useBusinessTypes();
+  const isRealEstate = businessKey === "realestate";
 
   const filteredRoots = useMemo(
     () => (roots ? filterTree(roots, search, filter) : []),
@@ -373,7 +377,45 @@ export default function OrgChartPage() {
         </div>
       </header>
 
+      {/* Business Unit Selector */}
+      <div className="rounded-2xl border bg-card/60 backdrop-blur p-3 md:p-4 shadow-sm">
+        <div className="mb-2 flex items-center gap-2">
+          <span className="h-[1px] w-6 bg-primary" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-primary">
+            หน่วยธุรกิจ
+          </span>
+          <span className="text-[11px] text-muted-foreground">/ Business Unit</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {businessTypes.map((b) => {
+            const active = b.business_key === businessKey;
+            return (
+              <button
+                key={b.business_key}
+                type="button"
+                onClick={() => setBusinessKey(b.business_key)}
+                className={cn(
+                  "rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                  active
+                    ? "border-primary bg-primary text-primary-foreground shadow-md"
+                    : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-primary/5",
+                )}
+                style={active ? undefined : { borderLeftColor: b.color || undefined, borderLeftWidth: 3 }}
+              >
+                {b.name_th}
+                {b.business_key === "realestate" && (
+                  <span className={cn("ml-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold", active ? "bg-primary-foreground/20" : "bg-primary/10 text-primary")}>
+                    แผนผังละเอียด
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
+      {isRealEstate && (
+      <>
       {/* Level Legend */}
       <div className="rounded-2xl border bg-card/60 backdrop-blur p-4 md:p-5 shadow-sm">
         <div className="mb-3 flex items-center gap-2">
@@ -599,26 +641,19 @@ export default function OrgChartPage() {
           )}
         </TransformWrapper>
       )}
+      </>
+      )}
 
-      {/* Per-business department structures */}
-      <section className="mt-10 rounded-3xl border border-border bg-card/60 backdrop-blur p-6 md:p-8 shadow-sm">
-        <div className="mb-6 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2">
-            <span className="h-[1px] w-8 bg-primary" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-primary">
-              Business Units
-            </span>
-            <span className="h-[1px] w-8 bg-primary" />
-          </div>
-          <h2 className="mt-3 font-display text-2xl md:text-3xl font-bold text-foreground">
-            โครงสร้างองค์กรตามหน่วยธุรกิจ
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            เลือกดูโครงสร้างของแต่ละธุรกิจในเครือ JW Group
-          </p>
-        </div>
-        <OrganizationChart />
-      </section>
+      {/* Non-Real Estate business units: department layout */}
+      {!isRealEstate && (
+        <section className="rounded-3xl border border-border bg-card/60 backdrop-blur p-6 md:p-8 shadow-sm">
+          <OrganizationChart
+            businessKey={businessKey}
+            hideSelector
+            hideHeader
+          />
+        </section>
+      )}
 
       <OrgDetailPanel
         node={selected}

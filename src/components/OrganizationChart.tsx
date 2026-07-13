@@ -41,7 +41,13 @@ const getTextColorClass = (color: string | null): string => {
   return 'text-primary';
 };
 
-const OrganizationChart = () => {
+interface OrganizationChartProps {
+  businessKey?: string;
+  hideSelector?: boolean;
+  hideHeader?: boolean;
+}
+
+const OrganizationChart = ({ businessKey, hideSelector, hideHeader }: OrganizationChartProps = {}) => {
   const { i18n } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const isEnglish = i18n.language === 'en';
@@ -51,18 +57,20 @@ const OrganizationChart = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDept, setSelectedDept] = useState<OrgDepartment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBusiness, setSelectedBusiness] = useState('');
+  const [internalSelected, setInternalSelected] = useState('');
+  const selectedBusiness = businessKey ?? internalSelected;
+  const setSelectedBusiness = (v: string) => setInternalSelected(v);
 
   useEffect(() => {
     fetchDepartments();
   }, []);
 
-  // Set default selected business when data loads
+  // Set default selected business when data loads (only in uncontrolled mode)
   useEffect(() => {
-    if (businessTypesData.length > 0 && !selectedBusiness) {
-      setSelectedBusiness(businessTypesData[0].business_key);
+    if (!businessKey && businessTypesData.length > 0 && !internalSelected) {
+      setInternalSelected(businessTypesData[0].business_key);
     }
-  }, [businessTypesData, selectedBusiness]);
+  }, [businessTypesData, internalSelected, businessKey]);
 
   const fetchDepartments = async () => {
     try {
@@ -130,17 +138,21 @@ const OrganizationChart = () => {
     <>
       <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display text-foreground">
-            {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            {isEnglish 
-              ? 'Select a business unit to view its organizational structure'
-              : 'เลือกหน่วยธุรกิจเพื่อดูโครงสร้างองค์กร'}
-          </p>
+        {!hideHeader && (
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display text-foreground">
+              {isEnglish ? 'Organizational Structure' : 'โครงสร้างองค์กร'}
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              {isEnglish 
+                ? 'Select a business unit to view its organizational structure'
+                : 'เลือกหน่วยธุรกิจเพื่อดูโครงสร้างองค์กร'}
+            </p>
+          </div>
+        )}
 
-          {/* Business Selector Dropdown */}
+        {/* Business Selector Dropdown */}
+        {!hideSelector && (
           <div className="flex justify-center mb-8">
             <Select value={selectedBusiness} onValueChange={setSelectedBusiness}>
               <SelectTrigger className="w-[320px] h-14 text-lg font-medium border-2 border-primary/20 bg-card shadow-lg hover:border-primary/40 transition-all">
@@ -172,7 +184,7 @@ const OrganizationChart = () => {
               </SelectContent>
             </Select>
           </div>
-        </div>
+        )}
 
         {/* Organization Chart or Empty State */}
         {hasData ? (
