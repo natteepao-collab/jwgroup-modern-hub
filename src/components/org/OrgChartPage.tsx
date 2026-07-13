@@ -208,10 +208,10 @@ export default function OrgChartPage() {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<OrgNode | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [businessKey, setBusinessKey] = useState<string>("real_estate");
+  const [businessKey, setBusinessKey] = useState<string>("realestate");
   const captureRef = useRef<HTMLDivElement>(null);
   const { data: businessTypes = [] } = useBusinessTypes();
-  const isRealEstate = businessKey === "real_estate";
+  const isRealEstate = businessKey === "realestate";
 
   const filteredRoots = useMemo(
     () => (roots ? filterTree(roots, search, filter) : []),
@@ -403,7 +403,7 @@ export default function OrgChartPage() {
                 style={active ? undefined : { borderLeftColor: b.color || undefined, borderLeftWidth: 3 }}
               >
                 {b.name_th}
-                {b.business_key === "real_estate" && (
+                {b.business_key === "realestate" && (
                   <span className={cn("ml-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold", active ? "bg-primary-foreground/20" : "bg-primary/10 text-primary")}>
                     แผนผังละเอียด
                   </span>
