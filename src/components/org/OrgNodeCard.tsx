@@ -43,30 +43,30 @@ export function OrgNodeCard({
           onClick={() => onClick?.(node)}
           className={cn(
             "group relative rounded-3xl p-[2px] text-left transition-all duration-300",
-            "bg-gradient-to-br from-accent via-primary to-primary",
-            "shadow-[0_20px_60px_-20px_hsl(var(--primary)/0.55)] hover:-translate-y-0.5 hover:shadow-[0_28px_70px_-20px_hsl(var(--primary)/0.65)]",
-            "focus:outline-none focus:ring-2 focus:ring-accent/60",
-            highlight && "ring-2 ring-accent",
+            "bg-gradient-to-br from-primary via-secondary to-secondary",
+            "shadow-[0_20px_60px_-20px_hsl(var(--secondary)/0.55)] hover:-translate-y-0.5 hover:shadow-[0_28px_70px_-20px_hsl(var(--secondary)/0.7)]",
+            "focus:outline-none focus:ring-2 focus:ring-primary/60",
+            highlight && "ring-2 ring-primary",
           )}
         >
-          <div className="relative flex items-center gap-5 rounded-[22px] border border-white/10 bg-primary px-6 py-5 md:px-8 md:py-6 min-w-[320px] max-w-[420px]">
+          <div className="relative flex items-center gap-5 rounded-[22px] border border-white/10 bg-secondary px-6 py-5 md:px-8 md:py-6 min-w-[320px] max-w-[420px]">
             {/* monogram square */}
             <div className="relative shrink-0">
-              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl border-2 border-accent/50 bg-gradient-to-b from-primary/60 to-primary text-accent">
+              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl border-2 border-primary/50 bg-gradient-to-b from-secondary/60 to-secondary text-primary">
                 <Crown className="h-8 w-8 md:h-9 md:w-9" />
               </div>
-              <div className="absolute -bottom-2 -right-2 rounded-full bg-accent px-2 py-0.5 text-[9px] font-bold uppercase tracking-tighter text-accent-foreground shadow">
+              <div className="absolute -bottom-2 -right-2 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold uppercase tracking-tighter text-primary-foreground shadow">
                 Level 1
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
                 {node.position_en || levelTag[1]}
               </div>
-              <div className="mt-1 text-lg md:text-xl font-bold leading-tight text-primary-foreground">
+              <div className="mt-1 text-lg md:text-xl font-bold leading-tight text-secondary-foreground">
                 {node.position_th}
               </div>
-              <div className="mt-1 truncate text-sm text-primary-foreground/70">
+              <div className="mt-1 truncate text-sm text-secondary-foreground/70">
                 {node.employee_name || (
                   <span className="italic">
                     {node.status === "vacant" ? "ตำแหน่งว่าง" : "รอระบุผู้รับผิดชอบ"}
@@ -75,6 +75,7 @@ export function OrgNodeCard({
               </div>
             </div>
           </div>
+
 
           {hasChildren && (
             <span
