@@ -10,6 +10,8 @@ interface Props {
   expanded?: boolean;
   hasChildren?: boolean;
   highlight?: boolean;
+  onPath?: boolean;
+  isSelected?: boolean;
 }
 
 // Editorial / annual-report style tag per level
