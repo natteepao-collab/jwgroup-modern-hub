@@ -29,6 +29,8 @@ export function OrgNodeCard({
   expanded,
   hasChildren,
   highlight,
+  onPath,
+  isSelected,
 }: Props) {
   const isCEO = node.organization_level === 1;
   const isLevel2 = node.organization_level === 2;
