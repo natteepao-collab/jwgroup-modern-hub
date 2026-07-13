@@ -85,7 +85,7 @@ export function OrgNodeCard({
                 e.stopPropagation();
                 onToggle?.(node.id);
               }}
-              className="absolute -bottom-3 left-1/2 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full border-2 border-accent bg-accent text-accent-foreground shadow-lg transition-transform hover:scale-110"
+              className="absolute -bottom-3 left-1/2 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full border-2 border-primary bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
             >
               {expanded ? (
                 <ChevronUp className="h-4 w-4" />
@@ -112,17 +112,17 @@ export function OrgNodeCard({
         className={cn(
           "group relative rounded-2xl bg-card p-4 md:p-5 text-left transition-all duration-300",
           "border-2 border-slate-200 dark:border-border shadow-sm",
-          "hover:-translate-y-0.5 hover:shadow-lg hover:border-accent/70",
-          "focus:outline-none focus:ring-2 focus:ring-accent/60",
+          "hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/70",
+          "focus:outline-none focus:ring-2 focus:ring-primary/60",
           widthCls,
-          isAdvisory && "border-l-[3px] border-l-accent",
-          highlight && "ring-2 ring-accent shadow-accent/30 shadow-lg",
+          isAdvisory && "border-l-[3px] border-l-primary",
+          highlight && "ring-2 ring-primary shadow-primary/30 shadow-lg",
         )}
       >
         {/* accent top bar */}
-        <div className="mb-3 h-1 w-8 rounded-full bg-accent" />
+        <div className="mb-3 h-1 w-8 rounded-full bg-primary" />
 
-        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
           {node.position_en || levelTag[node.organization_level] || "Position"}
         </div>
         <div
@@ -161,7 +161,7 @@ export function OrgNodeCard({
             {node.relationship_type === "advisory" && (
               <Badge
                 variant="outline"
-                className="h-5 border-accent/60 px-1.5 text-[10px] text-accent"
+                className="h-5 border-primary/60 px-1.5 text-[10px] text-primary"
               >
                 ที่ปรึกษา
               </Badge>
@@ -169,13 +169,14 @@ export function OrgNodeCard({
             {node.relationship_type === "executive-support" && (
               <Badge
                 variant="outline"
-                className="h-5 border-accent/60 px-1.5 text-[10px] text-accent"
+                className="h-5 border-primary/60 px-1.5 text-[10px] text-primary"
               >
                 สนับสนุนผู้บริหาร
               </Badge>
             )}
           </div>
         )}
+
 
         {hasChildren && (
           <span
