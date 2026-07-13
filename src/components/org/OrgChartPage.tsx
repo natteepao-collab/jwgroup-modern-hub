@@ -109,6 +109,10 @@ function TreeNode({
     <li
       data-relationship={node.relationship_type}
       data-on-path={onPath ? "true" : undefined}
+      onMouseEnter={(e) => {
+        e.stopPropagation();
+        if (hasChildren && !expanded) onToggle(node.id);
+      }}
     >
       <OrgNodeCard
         node={node}
@@ -139,6 +143,7 @@ function TreeNode({
     </li>
   );
 }
+
 
 // ---------- Mobile accordion tree ----------
 function MobileTreeItem({
