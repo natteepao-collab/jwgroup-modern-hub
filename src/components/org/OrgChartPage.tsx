@@ -6,6 +6,7 @@ import { useOrgTree, type OrgNode, type OrgTreeNode } from "@/hooks/useOrgTree";
 import { OrgNodeCard } from "./OrgNodeCard";
 import { OrgDetailPanel } from "./OrgDetailPanel";
 import OrganizationChart from "@/components/OrganizationChart";
+import { useBusinessTypes } from "@/hooks/useBusinessTypes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
