@@ -34,7 +34,7 @@ export function OrgNodeCard({
     node.relationship_type === "advisory" ||
     node.relationship_type === "executive-support";
 
-  // ============ CEO card — navy-dominant with thin gold hairline ============
+  // ============ CEO card — minimal white with orange accent ============
   if (isCEO) {
     return (
       <div className="inline-block">
@@ -43,30 +43,29 @@ export function OrgNodeCard({
           onClick={() => onClick?.(node)}
           className={cn(
             "group relative rounded-2xl text-left transition-all duration-300",
-            "border border-primary/40 bg-secondary",
-            "shadow-[0_20px_60px_-20px_hsl(var(--secondary)/0.55)] hover:-translate-y-0.5 hover:shadow-[0_28px_70px_-20px_hsl(var(--secondary)/0.7)]",
-            "focus:outline-none focus:ring-2 focus:ring-primary/50",
+            "border border-primary/40 bg-white",
+            "shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)] hover:-translate-y-0.5 hover:shadow-[0_28px_70px_-25px_hsl(var(--primary)/0.5)]",
+            "focus:outline-none focus:ring-2 focus:ring-primary/40",
             highlight && "ring-2 ring-primary",
           )}
         >
           <div className="relative flex items-center gap-5 rounded-2xl px-6 py-5 md:px-8 md:py-6 min-w-[320px] max-w-[420px]">
-            {/* monogram square */}
             <div className="relative shrink-0">
-              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-xl border border-primary/40 bg-white/[0.03] text-primary">
+              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-xl border border-primary/40 bg-primary/5 text-primary">
                 <Crown className="h-8 w-8 md:h-9 md:w-9" />
               </div>
-              <div className="absolute -bottom-2 -right-2 rounded-full border border-primary/40 bg-secondary px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-primary">
+              <div className="absolute -bottom-2 -right-2 rounded-full bg-primary px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-primary-foreground shadow-sm">
                 Level 1
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-secondary-foreground/60">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
                 {node.position_en || levelTag[1]}
               </div>
-              <div className="mt-1 text-lg md:text-xl font-bold leading-tight text-secondary-foreground">
+              <div className="mt-1 text-lg md:text-xl font-bold leading-tight text-foreground">
                 {node.position_th}
               </div>
-              <div className="mt-1 truncate text-sm text-secondary-foreground/70">
+              <div className="mt-1 truncate text-sm text-muted-foreground">
                 {node.employee_name || (
                   <span className="italic">
                     {node.status === "vacant" ? "ตำแหน่งว่าง" : "รอระบุผู้รับผิดชอบ"}
@@ -85,7 +84,7 @@ export function OrgNodeCard({
                 e.stopPropagation();
                 onToggle?.(node.id);
               }}
-              className="absolute -bottom-3 left-1/2 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full border border-primary/50 bg-secondary text-primary shadow-lg transition-transform hover:scale-110"
+              className="absolute -bottom-3 left-1/2 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full border border-primary bg-primary text-primary-foreground shadow-md transition-transform hover:scale-110"
             >
               {expanded ? (
                 <ChevronUp className="h-4 w-4" />
@@ -115,8 +114,8 @@ export function OrgNodeCard({
           "hover:-translate-y-0.5 hover:shadow-lg hover:border-secondary/40",
           "focus:outline-none focus:ring-2 focus:ring-secondary/40",
           widthCls,
-          isLevel2 && "border-t-2 border-t-secondary",
-          isAdvisory && "border-l-[3px] border-l-muted-foreground/50 border-dashed",
+          isLevel2 && "border-t-2 border-t-primary",
+          isAdvisory && "border-l-[3px] border-l-primary/40 border-dashed",
           highlight && "ring-2 ring-primary/60 shadow-lg",
         )}
       >

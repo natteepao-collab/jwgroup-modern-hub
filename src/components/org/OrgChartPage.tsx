@@ -305,10 +305,11 @@ export default function OrgChartPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header — Editorial */}
-      <header className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-secondary via-secondary to-secondary/90 px-6 py-8 md:px-10 md:py-12 text-secondary-foreground shadow-xl">
-        <div className="absolute inset-0 opacity-[0.07] org-canvas pointer-events-none" />
-        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+      {/* Header — Minimal White & Orange */}
+      <header className="relative overflow-hidden rounded-3xl border border-border bg-white px-6 py-10 md:px-10 md:py-14 text-foreground shadow-sm">
+        <div className="absolute inset-0 opacity-[0.5] org-canvas pointer-events-none" />
+        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-primary/5 blur-3xl" />
         <div className="relative flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2">
             <span className="h-[1px] w-8 bg-primary" />
@@ -317,13 +318,13 @@ export default function OrgChartPage() {
             </span>
             <span className="h-[1px] w-8 bg-primary" />
           </div>
-          <h1 className="mt-4 font-display text-3xl md:text-5xl font-bold leading-tight">
+          <h1 className="mt-4 font-display text-3xl md:text-5xl font-bold leading-tight text-foreground">
             ผังโครงสร้างองค์กรและผู้บริหาร
           </h1>
-          <p className="mt-2 text-sm md:text-base text-secondary-foreground/70 tracking-widest uppercase">
+          <p className="mt-2 text-sm md:text-base text-muted-foreground tracking-widest uppercase">
             Organization Chart &amp; Management
           </p>
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs md:text-sm backdrop-blur">
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs md:text-sm text-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
             วันที่มีผลบังคับใช้:
             <span className="font-semibold text-primary">1 กรกฎาคม 2569</span>
