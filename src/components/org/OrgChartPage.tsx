@@ -18,6 +18,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import {
   ChevronsDownUp,
   ChevronsUpDown,
+  ChevronRight,
   Download,
   FileImage,
   FileText,
