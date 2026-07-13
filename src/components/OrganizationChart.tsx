@@ -41,7 +41,13 @@ const getTextColorClass = (color: string | null): string => {
   return 'text-primary';
 };
 
-const OrganizationChart = () => {
+interface OrganizationChartProps {
+  businessKey?: string;
+  hideSelector?: boolean;
+  hideHeader?: boolean;
+}
+
+const OrganizationChart = ({ businessKey, hideSelector, hideHeader }: OrganizationChartProps = {}) => {
   const { i18n } = useTranslation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const isEnglish = i18n.language === 'en';
@@ -51,18 +57,20 @@ const OrganizationChart = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDept, setSelectedDept] = useState<OrgDepartment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBusiness, setSelectedBusiness] = useState('');
+  const [internalSelected, setInternalSelected] = useState('');
+  const selectedBusiness = businessKey ?? internalSelected;
+  const setSelectedBusiness = (v: string) => setInternalSelected(v);
 
   useEffect(() => {
     fetchDepartments();
   }, []);
 
-  // Set default selected business when data loads
+  // Set default selected business when data loads (only in uncontrolled mode)
   useEffect(() => {
-    if (businessTypesData.length > 0 && !selectedBusiness) {
-      setSelectedBusiness(businessTypesData[0].business_key);
+    if (!businessKey && businessTypesData.length > 0 && !internalSelected) {
+      setInternalSelected(businessTypesData[0].business_key);
     }
-  }, [businessTypesData, selectedBusiness]);
+  }, [businessTypesData, internalSelected, businessKey]);
 
   const fetchDepartments = async () => {
     try {
