@@ -540,6 +540,8 @@ export default function OrgChartPage() {
                           onToggle={toggle}
                           onSelect={handleSelect}
                           matchIds={matchIds}
+                          pathIds={pathIds}
+                          selectedId={selected?.id}
                         />
                       ))}
                     </ul>
