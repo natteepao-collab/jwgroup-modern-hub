@@ -100,8 +100,8 @@ export function OrgNodeCard({
 
   // ============ Level 2+ — editorial white card ============
   const widthCls = isLevel2
-    ? "min-w-[240px] max-w-[280px]"
-    : "min-w-[210px] max-w-[240px]";
+    ? "w-[190px]"
+    : "w-[170px]";
 
   return (
     <div className="inline-block">

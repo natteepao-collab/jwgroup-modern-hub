@@ -28,7 +28,7 @@
   top: 0;
   right: 50%;
   width: 50%;
-  height: 28px;
+  height: 22px;
   border-top: 1px solid hsl(var(--border));
 }
 
@@ -44,7 +44,7 @@
 }
 
 .org-tree li:only-child {
-  padding-top: 28px;
+  padding-top: 22px;
 }
 
 .org-tree li:first-child::before,
@@ -69,7 +69,7 @@
   left: 50%;
   border-left: 1px solid hsl(var(--border));
   width: 0;
-  height: 28px;
+  height: 22px;
 }
 
 
