@@ -1,63 +1,67 @@
-## Phase 3: Trust & Corporate Credibility
+# แผนพัฒนา Organization Chart (JW Real Estate)
 
-ปรับ 3 ส่วนหลักให้ดู "เป็นองค์กรน่าเชื่อถือ" ไม่ใช่หน้ารวมข้อมูล
+## เป้าหมาย
+สร้างระบบแผนผังองค์กรแบบ Interactive ระดับ Corporate Premium พร้อมระบบจัดการหลังบ้าน แทน slide viewer เดิมในหน้า `/about/structure`
 
----
+## สิ่งที่จะสร้าง
 
-### 1. Awards Hub (`/awards` + `AwardsSection.tsx`)
+### 1. Database (Lovable Cloud)
+ตาราง `organization_nodes`:
+- `id`, `parent_id` (self-ref), `position_th`, `position_en`, `employee_name`
+- `department`, `division`, `organization_level` (1-5)
+- `relationship_type`: direct | advisory | executive-support
+- `status`: active | vacant | pending
+- `display_order`, `effective_date`, `is_active`
+- RLS: อ่าน public (เฉพาะ active), แก้ไข admin เท่านั้น
+- Seed ข้อมูลตามที่ระบุ (CEO, รองประธาน, MD, ที่ปรึกษา, เลขา, ผู้จัดการ 6 ฝ่าย + หน่วยงานย่อย)
 
-**ปัจจุบัน**: Awards page เป็นแค่ wrapper บาง ๆ แสดง AwardsSection อย่างเดียว
+### 2. Public Org Chart Page (`/about/structure`)
+**Header**: JW GROUP / ผังโครงสร้างองค์กรและผู้บริหาร / Organization Chart & Management / วันที่มีผลบังคับใช้: 1 กรกฎาคม 2569
 
-**ปรับใหม่**:
-- เพิ่ม Hero header ของหน้า: หัวข้อ "รางวัลและการรับรอง" + คำโปรย + 3 stat tiles (จำนวนรางวัลรวม, จำนวนใบรับรอง, ช่วงปีที่ได้รับ)
-- เพิ่ม Filter tabs: ทั้งหมด / รางวัล (award) / ใบรับรอง (certification)
-- ปรับการ์ดรางวัลให้แสดง 4 ข้อมูลครบทุกใบ:
-  - ปีที่ได้รับ (badge มุมบน)
-  - ชื่อรางวัล/ใบรับรอง
-  - หน่วยงานที่มอบ (พร้อม icon Building/Award)
-  - หมวด (award/certification) เป็น tag สี
-- จัดกลุ่มตามปีแบบ section header (2025 → 2023 → 2022) เพื่ออ่านง่าย
-- เพิ่ม trust strip ด้านล่าง: "ได้รับการรับรองโดย" + รายชื่อหน่วยงาน
+**Desktop View** (`OrgChartCanvas.tsx`):
+- Top-down tree แบบ SVG + HTML cards
+- CEO card ใหญ่สุด กึ่งกลางบน (Navy gradient + Gold accent)
+- ระดับ 2 ขนาดรอง, ระดับฝ่าย/แผนก uniform
+- เส้นทึบ = direct, เส้นประ = advisory/executive-support
+- Zoom / Pan / Fit / Reset controls (ใช้ react-zoom-pan-pinch)
+- Expand/Collapse ทั้งหมด + toggle รายกิ่ง
+- ค้นหา + filter ตามระดับและฝ่าย
+- คลิกการ์ด → Side Panel (Sheet) แสดง detail
+- Badge "Vacant" / "รอระบุ" สำหรับตำแหน่งไม่มีคน
+- ปุ่ม Print / Export PNG (html-to-image) / Export PDF (jspdf)
 
-### 2. Timeline Storytelling (`CompanyTimeline.tsx`)
+**Mobile View** (`OrgChartMobile.tsx`):
+- Accordion tree จาก CEO ลงล่าง
+- แตะเพื่อ expand/collapse
+- Breadcrumb แสดง path เมื่อเปิด detail
 
-**ปัจจุบัน**: timeline 17 ปี แต่ดูเป็น list เฉย ๆ
+### 3. Admin Panel (แท็บใหม่ใน `/admin`)
+`OrgStructureManagement.tsx`:
+- ตารางแบบ tree list (ไม่ใช่ react-flow เพื่อความ simple)
+- เพิ่ม/แก้ไข/ลบ/toggle active
+- เลือก parent, ระดับ, ประเภทสายงาน, สถานะ
+- Drag-drop เรียงลำดับ (dnd-kit — มีอยู่แล้วในโปรเจกต์)
+- Validation: กันวนกลับ, กัน parent = self, เตือนหลาย CEO, เตือน active แต่ไม่มีชื่อ
 
-**ปรับใหม่**:
-- เพิ่ม intro: "เส้นทาง 30+ ปีของ JW Group" + 3 milestone badges (ก่อตั้ง / จุดเปลี่ยน / ปัจจุบัน)
-- จัด timeline เป็น "chapters" 3 ช่วง: จุดเริ่มต้น (2536-2549) / เติบโต (2550-2562) / ขยายธุรกิจ (2563-ปัจจุบัน) — มีหัวเรื่องบรรยายสั้น ๆ คั่นแต่ละช่วง
-- เน้น highlight years ด้วย card ขนาดใหญ่ขึ้น + ribbon "ก้าวสำคัญ"
-- เพิ่ม connector line ที่ชัดเจน + dot ขนาดต่างกันตาม `is_highlight`
-- มี "อ่านเรื่องราวเพิ่มเติม" CTA ปลาย timeline ไปหน้า About/History
+### 4. Design System
+- ใช้ token เดิม (Navy `--primary`, Orange `--accent`) + เพิ่ม Gold accent สำหรับ CEO card
+- การ์ดทั้งหมด: rounded-2xl, subtle shadow, hover lift 2px
+- ห้าม hardcode สี — ใช้ semantic tokens
 
-### 3. Leadership Section (`ChairmanQuote.tsx`)
+## ไฟล์ที่จะเปลี่ยน/สร้าง
+- **สร้าง**: `src/components/org/OrgChartCanvas.tsx`, `OrgChartMobile.tsx`, `OrgNodeCard.tsx`, `OrgDetailPanel.tsx`, `OrgToolbar.tsx`, `useOrgTree.ts`, `src/components/admin/OrgStructureManagement.tsx`
+- **แก้**: `src/pages/About.tsx` (route `/about/structure` ใช้ chart ใหม่แทน `InteractiveOrgChart`), `src/pages/Admin.tsx` (เพิ่มแท็บ)
+- **Migration**: สร้างตาราง `organization_nodes` + seed data
+- **Dependencies**: เพิ่ม `react-zoom-pan-pinch`, `html-to-image`, `jspdf`
 
-**ปัจจุบัน**: ประธาน + กรรมการผู้จัดการ + ผู้จัดการ 9 คน แต่มี placeholder "ผู้จัดการใหม่ / ตำแหน่ง" 1 รายการ + ดูเหมือนสไลด์ส่วนตัว
+## ขั้นตอน (สั่งเมื่อ approve)
+1. Migration + seed
+2. เพิ่ม deps
+3. สร้าง hooks + components chart
+4. Integrate ในหน้า About
+5. สร้าง Admin management
+6. ทดสอบด้วย Playwright (screenshot desktop + mobile)
 
-**ปรับใหม่**:
-- ลบ/ซ่อน executive ที่ชื่อ "ผู้จัดการใหม่" (placeholder) ผ่าน insert query (set position_order ไกล + ไม่แสดง) — หรือ filter ใน frontend
-- ปรับ Chairman card: เพิ่ม credentials line ใต้ชื่อ (ตำแหน่ง + ปีก่อตั้ง/ประสบการณ์) ใช้ typography แบบ editorial (serif quote marks, generous spacing)
-- Managing Directors: 2 การ์ดวางคู่กัน เน้น hierarchy ชัดเจน (ไม่ใช่ family tree เล่น ๆ)
-- Department Managers: เปลี่ยนจาก "horizontally scrollable cards" เป็น grid ที่นิ่งกว่า + แสดง department badge สีตาม business_type
-- โทนสี: ใช้ navy primary + แบ็คกราวด์ off-white/ครีม ลด gradient จัด ๆ ออก เพิ่มความ professional
-
----
-
-### Technical Notes
-
-**Files to edit:**
-- `src/pages/Awards.tsx` — เพิ่ม hero + stats + filter container
-- `src/components/AwardsSection.tsx` — group by year, filter tabs, year badge, org icon, certification tag
-- `src/components/CompanyTimeline.tsx` — chapter grouping, intro stats, highlight emphasis
-- `src/components/ChairmanQuote.tsx` — refined editorial styling, hide placeholder exec, grid manager layout
-
-**Data cleanup (insert tool):**
-- `UPDATE executives SET is_chairman = false WHERE name = 'ผู้จัดการใหม่'` + ซ่อน (เพิ่ม filter `name != 'ผู้จัดการใหม่'`)
-
-**ไม่แตะ:**
-- DB schema (ข้อมูลครบแล้ว)
-- Admin panel
-- Routes
-- i18n keys หลัก (เพิ่มเฉพาะที่จำเป็น)
-
-ทำต่อเนื่องในรอบเดียว ถ้า approve ครับ
+## หมายเหตุ
+- ตาราง `org_departments` เดิมเก็บไว้ (ใช้กับส่วนอื่น) — เราสร้างตารางใหม่แยกเพื่อโครงสร้างลำดับชั้นเต็มรูป
+- Interactive slide viewer เดิม (`InteractiveOrgChart`) ยังคงเก็บไว้ ไม่ลบ เผื่อ rollback

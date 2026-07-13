@@ -45,6 +45,7 @@ import NewsletterManagement from '@/components/admin/NewsletterManagement';
 import { SnowfallControl } from '@/components/admin/SnowfallControl';
 import ChristmasThemeControl from '@/components/admin/ChristmasThemeControl';
 import OrgDepartmentManagement from '@/components/admin/OrgDepartmentManagement';
+import OrgStructureManagement from '@/components/admin/OrgStructureManagement';
 import SocialMediaManagement from '@/components/admin/SocialMediaManagement';
 import CookieManagement from '@/components/admin/CookieManagement';
 import BusinessTypesManagement from '@/components/admin/BusinessTypesManagement';
@@ -241,7 +242,8 @@ const Admin = () => {
             <ExecutiveManagement />
           </TabsContent>
 
-          <TabsContent value="orgchart">
+          <TabsContent value="orgchart" className="space-y-6">
+            <OrgStructureManagement />
             <OrgDepartmentManagement />
           </TabsContent>
 
