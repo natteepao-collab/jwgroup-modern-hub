@@ -207,7 +207,10 @@ export default function OrgChartPage() {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<OrgNode | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [businessKey, setBusinessKey] = useState<string>("realestate");
   const captureRef = useRef<HTMLDivElement>(null);
+  const { data: businessTypes = [] } = useBusinessTypes();
+  const isRealEstate = businessKey === "realestate";
 
   const filteredRoots = useMemo(
     () => (roots ? filterTree(roots, search, filter) : []),
