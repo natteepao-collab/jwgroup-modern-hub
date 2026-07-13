@@ -642,6 +642,71 @@ export type Database = {
         }
         Relationships: []
       }
+      organization_nodes: {
+        Row: {
+          created_at: string
+          department: string | null
+          display_order: number
+          division: string | null
+          effective_date: string
+          employee_name: string | null
+          id: string
+          is_active: boolean
+          notes: string | null
+          organization_level: number
+          parent_id: string | null
+          position_en: string | null
+          position_th: string
+          relationship_type: Database["public"]["Enums"]["org_relationship_type"]
+          status: Database["public"]["Enums"]["org_node_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          display_order?: number
+          division?: string | null
+          effective_date?: string
+          employee_name?: string | null
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          organization_level?: number
+          parent_id?: string | null
+          position_en?: string | null
+          position_th: string
+          relationship_type?: Database["public"]["Enums"]["org_relationship_type"]
+          status?: Database["public"]["Enums"]["org_node_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          display_order?: number
+          division?: string | null
+          effective_date?: string
+          employee_name?: string | null
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          organization_level?: number
+          parent_id?: string | null
+          position_en?: string | null
+          position_th?: string
+          relationship_type?: Database["public"]["Enums"]["org_relationship_type"]
+          status?: Database["public"]["Enums"]["org_node_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_nodes_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "organization_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1026,6 +1091,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      org_node_status: "active" | "vacant" | "pending"
+      org_relationship_type: "direct" | "advisory" | "executive-support"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1154,6 +1221,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      org_node_status: ["active", "vacant", "pending"],
+      org_relationship_type: ["direct", "advisory", "executive-support"],
     },
   },
 } as const
