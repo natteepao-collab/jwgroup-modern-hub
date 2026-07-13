@@ -256,6 +256,16 @@ export default function OrgChartPage() {
 
   const expandAll = () => setExpandedIds(new Set(allIds));
   const collapseAll = () => setExpandedIds(new Set());
+  const expandToLevel = (maxLevel: number) => {
+    const s = new Set<string>();
+    const walk = (n: OrgTreeNode) => {
+      if (n.organization_level < maxLevel) s.add(n.id);
+      n.children.forEach(walk);
+    };
+    (roots ?? []).forEach(walk);
+    setExpandedIds(s);
+  };
+  const [zoomPct, setZoomPct] = useState(85);
 
   const handleSelect = (n: OrgNode) => {
     setSelected(n);
