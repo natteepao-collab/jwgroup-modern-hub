@@ -88,17 +88,25 @@ function TreeNode({
   onToggle,
   onSelect,
   matchIds,
+  pathIds,
+  selectedId,
 }: {
   node: OrgTreeNode;
   expandedIds: Set<string>;
   onToggle: (id: string) => void;
   onSelect: (n: OrgTreeNode) => void;
   matchIds: Set<string>;
+  pathIds: Set<string>;
+  selectedId?: string | null;
 }) {
   const expanded = expandedIds.has(node.id);
   const hasChildren = node.children.length > 0;
+  const onPath = pathIds.has(node.id);
   return (
-    <li data-relationship={node.relationship_type}>
+    <li
+      data-relationship={node.relationship_type}
+      data-on-path={onPath ? "true" : undefined}
+    >
       <OrgNodeCard
         node={node}
         onClick={onSelect}
@@ -106,6 +114,8 @@ function TreeNode({
         expanded={expanded}
         hasChildren={hasChildren}
         highlight={matchIds.has(node.id)}
+        onPath={onPath}
+        isSelected={selectedId === node.id}
       />
       {hasChildren && expanded && (
         <ul>
@@ -117,6 +127,8 @@ function TreeNode({
               onToggle={onToggle}
               onSelect={onSelect}
               matchIds={matchIds}
+              pathIds={pathIds}
+              selectedId={selectedId}
             />
           ))}
         </ul>
