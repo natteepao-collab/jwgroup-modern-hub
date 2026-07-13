@@ -6,6 +6,7 @@ import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink, User, Quot
 import { useInView } from 'react-intersection-observer';
 import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
 import OrganizationChart from '@/components/OrganizationChart';
+import OrgChartPage from '@/components/org/OrgChartPage';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -368,7 +369,7 @@ const AboutVision = () => {
 };
 
 const AboutStructure = () => {
-  return <OrganizationChart />;
+  return <OrgChartPage />;
 };
 
 const AboutTeam = () => {
