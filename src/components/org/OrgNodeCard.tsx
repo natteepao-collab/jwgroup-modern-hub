@@ -109,7 +109,7 @@ export function OrgNodeCard({
         type="button"
         onClick={() => onClick?.(node)}
         className={cn(
-          "group relative rounded-xl bg-card p-4 md:p-5 text-left transition-all duration-300",
+          "group relative rounded-xl bg-card p-3 md:p-3.5 text-left transition-all duration-300",
           "border border-border shadow-sm",
           "hover:-translate-y-0.5 hover:shadow-lg hover:border-secondary/40",
           "focus:outline-none focus:ring-2 focus:ring-secondary/40",
