@@ -109,6 +109,10 @@ function TreeNode({
     <li
       data-relationship={node.relationship_type}
       data-on-path={onPath ? "true" : undefined}
+      onMouseEnter={(e) => {
+        e.stopPropagation();
+        if (hasChildren && !expanded) onToggle(node.id);
+      }}
     >
       <OrgNodeCard
         node={node}
@@ -139,6 +143,7 @@ function TreeNode({
     </li>
   );
 }
+
 
 // ---------- Mobile accordion tree ----------
 function MobileTreeItem({
@@ -224,15 +229,15 @@ export default function OrgChartPage() {
     return s;
   }, [roots]);
 
-  // auto-expand ALL nodes by default so every level is visible vertically
+  // Start with only the CEO expanded — sub-branches expand on hover
   useMemo(() => {
     if (roots && expandedIds.size === 0) {
-      const s = new Set<string>();
-      roots.forEach((r) => collectIds(r, s));
-      setExpandedIds(s);
+      const rootIds = new Set(roots.map((r) => r.id));
+      setExpandedIds(rootIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roots]);
+
 
 
   const matchIds = useMemo(() => {
