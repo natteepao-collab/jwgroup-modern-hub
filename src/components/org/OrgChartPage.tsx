@@ -599,6 +599,26 @@ export default function OrgChartPage() {
         </TransformWrapper>
       )}
 
+      {/* Per-business department structures */}
+      <section className="mt-10 rounded-3xl border border-border bg-card/60 backdrop-blur p-6 md:p-8 shadow-sm">
+        <div className="mb-6 flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2">
+            <span className="h-[1px] w-8 bg-primary" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-primary">
+              Business Units
+            </span>
+            <span className="h-[1px] w-8 bg-primary" />
+          </div>
+          <h2 className="mt-3 font-display text-2xl md:text-3xl font-bold text-foreground">
+            โครงสร้างองค์กรตามหน่วยธุรกิจ
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            เลือกดูโครงสร้างของแต่ละธุรกิจในเครือ JW Group
+          </p>
+        </div>
+        <OrganizationChart />
+      </section>
+
       <OrgDetailPanel
         node={selected}
         path={selectedPath}
