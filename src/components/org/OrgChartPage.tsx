@@ -256,6 +256,16 @@ export default function OrgChartPage() {
 
   const expandAll = () => setExpandedIds(new Set(allIds));
   const collapseAll = () => setExpandedIds(new Set());
+  const expandToLevel = (maxLevel: number) => {
+    const s = new Set<string>();
+    const walk = (n: OrgTreeNode) => {
+      if (n.organization_level < maxLevel) s.add(n.id);
+      n.children.forEach(walk);
+    };
+    (roots ?? []).forEach(walk);
+    setExpandedIds(s);
+  };
+  const [zoomPct, setZoomPct] = useState(85);
 
   const handleSelect = (n: OrgNode) => {
     setSelected(n);
@@ -408,12 +418,21 @@ export default function OrgChartPage() {
               ))}
             </SelectContent>
           </Select>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" onClick={() => expandToLevel(2)} className="gap-1" title="แสดงเฉพาะระดับ 1">
+              L1
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => expandToLevel(3)} className="gap-1" title="ขยายถึงระดับ 2">
+              L2
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => expandToLevel(4)} className="gap-1" title="ขยายถึงระดับ 3">
+              L3
+            </Button>
             <Button variant="outline" size="sm" onClick={expandAll} className="gap-1">
-              <ChevronsUpDown className="h-4 w-4" /> ขยาย
+              <ChevronsUpDown className="h-4 w-4" /> ขยายทั้งหมด
             </Button>
             <Button variant="outline" size="sm" onClick={collapseAll} className="gap-1">
-              <ChevronsDownUp className="h-4 w-4" /> ย่อ
+              <ChevronsDownUp className="h-4 w-4" /> ย่อทั้งหมด
             </Button>
           </div>
         </div>
@@ -463,14 +482,22 @@ export default function OrgChartPage() {
           limitToBounds={false}
           wheel={{ step: 0.1 }}
           doubleClick={{ disabled: true }}
+          onTransform={(ref: any) => setZoomPct(Math.round((ref?.state?.scale ?? 1) * 100))}
         >
           {({ zoomIn, zoomOut, resetTransform, centerView }) => (
             <div className="relative">
-              <div className="absolute right-3 top-3 z-10 flex flex-col gap-1 rounded-xl border bg-card/95 p-1 shadow-md">
-                <Button variant="ghost" size="icon" onClick={() => zoomIn()} title="Zoom in"><Plus className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => zoomOut()} title="Zoom out"><Minus className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => centerView(0.85)} title="Fit"><Maximize className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => resetTransform()} title="Reset"><RotateCcw className="h-4 w-4" /></Button>
+              <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full border bg-card/95 px-2 py-1 shadow-md backdrop-blur">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomOut()} title="Zoom out"><Minus className="h-4 w-4" /></Button>
+                <span className="min-w-[42px] text-center text-xs font-semibold tabular-nums text-foreground">
+                  {zoomPct}%
+                </span>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomIn()} title="Zoom in"><Plus className="h-4 w-4" /></Button>
+                <span className="mx-1 h-4 w-px bg-border" />
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => centerView(0.85)} title="Fit to view"><Maximize className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => resetTransform()} title="Reset"><RotateCcw className="h-4 w-4" /></Button>
+              </div>
+              <div className="absolute left-3 top-3 z-10 rounded-full border bg-card/95 px-3 py-1 text-[10px] font-medium text-muted-foreground shadow-sm backdrop-blur hidden md:block">
+                ลากเพื่อเลื่อน · เลื่อนล้อเมาส์เพื่อซูม
               </div>
               <div className="min-h-[600px] cursor-grab overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 to-background dark:from-muted/30 active:cursor-grabbing org-canvas">
                 <TransformComponent
