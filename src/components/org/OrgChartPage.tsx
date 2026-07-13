@@ -304,22 +304,34 @@ export default function OrgChartPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <header className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
-          JW GROUP
+    <div className="space-y-6 animate-fade-in">
+      {/* Header — Editorial */}
+      <header className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-secondary via-secondary to-secondary/90 px-6 py-8 md:px-10 md:py-12 text-secondary-foreground shadow-xl">
+        <div className="absolute inset-0 opacity-[0.07] org-canvas pointer-events-none" />
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+        <div className="relative flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2">
+            <span className="h-[1px] w-8 bg-primary" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-primary">
+              JW Group
+            </span>
+            <span className="h-[1px] w-8 bg-primary" />
+          </div>
+          <h1 className="mt-4 font-display text-3xl md:text-5xl font-bold leading-tight">
+            ผังโครงสร้างองค์กรและผู้บริหาร
+          </h1>
+          <p className="mt-2 text-sm md:text-base text-secondary-foreground/70 tracking-widest uppercase">
+            Organization Chart &amp; Management
+          </p>
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs md:text-sm backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            วันที่มีผลบังคับใช้:
+            <span className="font-semibold text-primary">1 กรกฎาคม 2569</span>
+          </div>
         </div>
-        <h1 className="mt-3 font-display text-3xl md:text-4xl font-bold text-foreground">
-          ผังโครงสร้างองค์กรและผู้บริหาร
-        </h1>
-        <p className="mt-1 text-base text-muted-foreground">
-          Organization Chart &amp; Management
-        </p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          วันที่มีผลบังคับใช้: <span className="font-medium text-foreground">1 กรกฎาคม 2569</span>
-        </p>
       </header>
+
+
 
       {/* Toolbar */}
       <div className="rounded-2xl border bg-card/60 backdrop-blur p-3 md:p-4 shadow-sm">
@@ -416,7 +428,7 @@ export default function OrgChartPage() {
                 <Button variant="ghost" size="icon" onClick={() => centerView(0.9)} title="Fit"><Maximize className="h-4 w-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => resetTransform()} title="Reset"><RotateCcw className="h-4 w-4" /></Button>
               </div>
-              <div className="min-h-[600px] cursor-grab overflow-hidden rounded-2xl border bg-gradient-to-br from-muted/30 to-background active:cursor-grabbing">
+              <div className="min-h-[600px] cursor-grab overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 to-background dark:from-muted/30 active:cursor-grabbing org-canvas">
                 <TransformComponent
                   wrapperStyle={{ width: "100%", height: "700px" }}
                   contentStyle={{ width: "100%" }}

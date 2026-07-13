@@ -29,13 +29,13 @@
   right: 50%;
   width: 50%;
   height: 28px;
-  border-top: 2px solid hsl(var(--border));
+  border-top: 1px solid hsl(var(--border));
 }
 
 .org-tree li::after {
   right: auto;
   left: 50%;
-  border-left: 2px solid hsl(var(--border));
+  border-left: 1px solid hsl(var(--border));
 }
 
 .org-tree li:only-child::before,
@@ -53,7 +53,7 @@
 }
 
 .org-tree li:last-child::before {
-  border-right: 2px solid hsl(var(--border));
+  border-right: 1px solid hsl(var(--border));
   border-radius: 0 6px 0 0;
 }
 
@@ -67,10 +67,11 @@
   position: absolute;
   top: 0;
   left: 50%;
-  border-left: 2px solid hsl(var(--border));
+  border-left: 1px solid hsl(var(--border));
   width: 0;
   height: 28px;
 }
+
 
 /* dashed lines for advisory / executive-support children */
 .org-tree li[data-relationship="advisory"]::before,
@@ -80,5 +81,15 @@
   border-top-style: dashed;
   border-left-style: dashed;
   border-right-style: dashed;
-  border-color: hsl(var(--accent));
+  border-color: hsl(var(--accent) / 0.7);
 }
+
+/* subtle blueprint grid background for chart canvas */
+.org-canvas {
+  background-image:
+    linear-gradient(hsl(var(--border) / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border) / 0.35) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
