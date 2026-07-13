@@ -333,6 +333,46 @@ export default function OrgChartPage() {
       </header>
 
 
+      {/* Level Legend */}
+      <div className="rounded-2xl border bg-card/60 backdrop-blur p-4 md:p-5 shadow-sm">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="h-[1px] w-6 bg-primary" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-primary">
+            คำอธิบายระดับ
+          </span>
+          <span className="text-[11px] text-muted-foreground">/ Level Guide</span>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { lv: 1, th: "บริหารสูงสุด", en: "Chief Executive", desc: "ประธานกรรมการบริหาร" },
+            { lv: 2, th: "ผู้บริหาร", en: "Management", desc: "รองประธาน, กรรมการผู้จัดการ, ที่ปรึกษาอาวุโส, เลขานุการประธาน" },
+            { lv: 3, th: "ฝ่าย", en: "Department", desc: "ผู้จัดการฝ่าย (ขาย, บัญชี, กฎหมาย, HR ฯลฯ)" },
+            { lv: 4, th: "แผนก", en: "Division", desc: "หัวหน้าแผนก / ผู้ช่วยผู้จัดการ" },
+          ].map((l) => (
+            <div
+              key={l.lv}
+              className="group rounded-xl border border-border bg-background p-3 transition hover:border-primary/40 hover:shadow-sm"
+            >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+                  {l.lv}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-bold text-foreground leading-tight">
+                    ระดับ {l.lv} · {l.th}
+                  </div>
+                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {l.en}
+                  </div>
+                </div>
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                {l.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Toolbar */}
       <div className="rounded-2xl border bg-card/60 backdrop-blur p-3 md:p-4 shadow-sm">
