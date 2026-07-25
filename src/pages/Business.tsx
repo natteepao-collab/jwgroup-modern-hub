@@ -98,7 +98,7 @@ const Business = () => {
     {
       name: t('business.realEstate.name'),
       description: t('business.realEstate.description'),
-      url: 'https://jwrealestate.com',
+      url: 'https://www.jwrealestate.co.th',
       ctaText: 'ดูโครงการของ JW Real Estates',
       image: getBusinessImage('business_realestate_image'),
       backgroundImage: getBusinessImage('business_realestate_bg'),
