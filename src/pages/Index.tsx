@@ -120,7 +120,7 @@ const Index = () => {
     {
       name: realEstateContent.title || t('business.realEstate.name'),
       description: realEstateContent.content || t('business.realEstate.description'),
-      url: getBusinessUrl(realEstateContent, 'https://jwrealestate.com'),
+      url: getBusinessUrl(realEstateContent, 'https://www.jwrealestate.co.th'),
       image: getBusinessImage('business_realestate_image'),
       backgroundImage: getBusinessImage('business_realestate_bg'),
     },
