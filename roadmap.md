@@ -27,6 +27,6 @@
 
 # Read-only Impeccable critique
 
-- [ ] Audit current public pages, visual quality, content integrity, and media without changing the website.
-- [ ] Inventory existing public content and preserve existing news URLs.
-- [ ] Deliver confirmed findings, verification requests, visual direction, proposed structure, and prioritized implementation risks for review.
+- [x] Audit current public pages, visual quality, content integrity, and media without changing the website.
+- [x] Inventory existing public content and preserve existing news URLs.
+- [x] Deliver confirmed findings, verification requests, visual direction, proposed structure, and prioritized implementation risks for review.
