@@ -37,6 +37,12 @@
 
 # Approved audit-led implementation
 
+# Production-readiness audit
+
+- [ ] Audit mobile navigation, Thai typography, media/gallery, video fallback, links, forms, accessibility, metadata, motion and managed content.
+- [ ] Fix safe reproducible problems and verify their original failing checks pass.
+- [ ] Verify managed-content fingerprints remain unchanged and deliver severity-ranked findings with approval blockers.
+
 - [x] Restore the preview after the incomplete entry-delay removal and verify the page renders.
 - [x] Retain Navy/Orange as confirmed, remove invented leadership fallbacks, and simplify floating assistance while preserving its functions.
 
