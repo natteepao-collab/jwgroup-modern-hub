@@ -182,7 +182,8 @@ const Contact = () => {
                 custom={4} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
                 className="relative group"
               >
-                <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" strokeWidth={1.8} />
+                <label htmlFor="contact-message" className="block text-sm font-medium mb-2">{t('contact.form.message')} <span className="text-primary">*</span></label>
+                <MessageSquare className="absolute left-4 top-12 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" strokeWidth={1.8} />
                 <Textarea
                   id="contact-message" aria-label={t('contact.form.message')} name="message" required value={formData.message} onChange={handleChange}
                   placeholder={t('contact.form.message')} rows={5}

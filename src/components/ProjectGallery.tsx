@@ -205,7 +205,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
       </div>
 
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] max-h-[95dvh] md:max-h-[85vh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0 rounded-xl">
+        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] h-[90dvh] md:h-[80vh] max-h-[95dvh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0 rounded-xl">
           {selectedProject && (
             <>
               <DialogTitle className="sr-only">{getName(selectedProject)}</DialogTitle>

@@ -465,6 +465,11 @@ All colors MUST be HSL.
 .public-page-heading { text-align: left; }
 .public-page-heading h1::after { content: ''; display: block; height: 2px; width: 3rem; background: hsl(var(--primary)); margin-top: 1.5rem; }
 .business-expanded-overlay { background: var(--business-expanded-surface); }
+.business-panel-active .business-expanded-overlay { background: hsl(var(--card) / 0.94); }
+.sustainability-image-overlay { background: linear-gradient(to right, hsl(var(--media-ink) / 0.8), hsl(var(--media-ink) / 0.35)); }
+.sustainability-page h1 { line-height: 1.5; }
+.public-page .sustainability-page h1 { font-size: 2.5rem; }
+@media (max-width: 639px) { .public-page .sustainability-page h1 { font-size: 1.875rem; } }
 .business-collapsed-overlay { background: var(--business-image-shade); }
 .business-logo-surface { background: hsl(var(--logo-surface)); }
 .business-panel-active a { min-height: 44px; height: auto; max-width: 100%; padding-block: 0.75rem; }
