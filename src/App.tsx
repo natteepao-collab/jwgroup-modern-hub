@@ -88,12 +88,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  return () => clearTimeout(timer);
-  }, [initialLoading]);
-
-  if (initialLoading) return <Loading />;
-
-
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
