@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { useTheme } from 'next-themes';
+import { corporateLinks } from './CorporateLayout';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -73,7 +74,7 @@ export const Navbar = () => {
   }, [isMenuOpen]);
 
   const isActive = (path: string) => location.pathname === path;
-  const isAboutActive = location.pathname.startsWith('/about');
+  const isAboutActive = corporateLinks.some(item => item.path === location.pathname);
 
   const menuItems = [
     { path: '/', labelKey: 'nav.home', icon: Home },
@@ -84,12 +85,7 @@ export const Navbar = () => {
     { path: '/contact', labelKey: 'nav.contact', icon: Phone },
   ];
 
-  const aboutSubItems = [
-    { path: '/about/history', labelKey: 'about.history', icon: Info },
-    { path: '/about/structure', labelKey: 'about.structure', icon: Network },
-    { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
-    { path: '/about/awards', labelKey: 'about.awards', icon: Award },
-  ];
+  const aboutSubItems = corporateLinks;
 
   // Quick Access Tab Items (Secondary Bar)
   const quickAccessItems = [

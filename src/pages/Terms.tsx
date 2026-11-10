@@ -1,20 +1,20 @@
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
+import CorporateLayout from '@/components/CorporateLayout';
 
 const Terms = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="app-page-safe min-h-screen bg-background">
+    <CorporateLayout title={t('legal.terms.title')} document>
       <SEO
         title={t('legal.terms.title')}
         description={t('legal.terms.seoDesc')}
         canonicalUrl="/terms"
       />
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <h1 className="text-4xl font-bold mb-8">{t('legal.terms.title')}</h1>
+      <div>
 
-        <div className="prose max-w-none space-y-6">
+        <div className="space-y-8">
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <section key={n}>
               <h2 className="text-2xl font-semibold mb-4">{t(`legal.terms.s${n}Title`)}</h2>
@@ -23,7 +23,7 @@ const Terms = () => {
           ))}
         </div>
       </div>
-    </div>
+    </CorporateLayout>
   );
 };
 
