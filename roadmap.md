@@ -17,3 +17,10 @@
 - [x] Connect existing corporate pages through consistent About navigation without changing factual or policy content.
 - [x] Verify navigation, business content, image viewing, and cookie settings on desktop and mobile.
 - [ ] Confirm legal-contact email addresses and replace existing placeholder phone numbers (awaiting owner-provided details).
+
+# Site-wide Impeccable polish
+
+- [ ] Polish all public pages and shared navigation/footer while preserving existing brand, content, and behavior.
+- [ ] Refine Contact form and information layout with semantic brand colors.
+- [ ] Polish all five Business panels, project galleries, About pages, news/details, careers, legal and remaining public routes.
+- [ ] Verify desktop, laptop, tablet, mobile, reduced motion, and central interaction flows.
