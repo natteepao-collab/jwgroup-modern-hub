@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@ import { trackEvent } from '@/lib/analytics';
 const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const reduceMotion = useReducedMotion();
   const { getContent } = useSiteContent();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -63,15 +64,15 @@ const Contact = () => {
   ];
 
   const fadeUp = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 1, y: reduceMotion ? 0 : 12 },
     show: (i: number) => ({
       opacity: 1, y: 0,
-      transition: { delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+      transition: { delay: i * 0.08, duration: reduceMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] as const },
     }),
   };
 
   return (
-    <div className="app-page-safe min-h-screen relative overflow-hidden bg-gradient-to-b from-[#fdf7f4] via-[#fbeee7] to-[#fdf7f4]">
+    <div className="contact-page app-page-safe min-h-screen bg-background">
       <SEO
         title="ติดต่อ JW Group | ที่อยู่ เบอร์โทร อีเมล สำนักงานใหญ่ดอนเมือง"
         description="ติดต่อ JW Group สำนักงานใหญ่ ดอนเมือง กรุงเทพฯ โทร 02-566-1111 อีเมล jwgroupmkt@gmail.com หรือทักผ่าน LINE @jwgroup สอบถามธุรกิจในเครือและร่วมงานกับเรา"
@@ -82,45 +83,13 @@ const Contact = () => {
         }}
       />
 
-      {/* Decorative line corners */}
-      <svg className="pointer-events-none absolute top-0 left-0 w-72 h-72 opacity-40" viewBox="0 0 300 300" fill="none">
-        <motion.path
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2.5, ease: 'easeInOut' }}
-          d="M0,140 Q60,80 140,60 T280,0" stroke="#8B2E2E" strokeWidth="0.8" />
-        <circle cx="40" cy="120" r="2" fill="#8B2E2E" />
-        <circle cx="140" cy="60" r="2" fill="#8B2E2E" />
-        <circle cx="240" cy="20" r="2" fill="#8B2E2E" />
-      </svg>
-      <svg className="pointer-events-none absolute bottom-0 right-0 w-72 h-72 opacity-40 rotate-180" viewBox="0 0 300 300" fill="none">
-        <motion.path
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2.5, ease: 'easeInOut' }}
-          d="M0,140 Q60,80 140,60 T280,0" stroke="#8B2E2E" strokeWidth="0.8" />
-        <circle cx="40" cy="120" r="2" fill="#8B2E2E" />
-        <circle cx="240" cy="20" r="2" fill="#8B2E2E" />
-      </svg>
-
       <div className="container mx-auto px-4 py-16 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
-          className="text-center mb-14"
-        >
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <span className="h-px w-12 bg-[#8B2E2E]/40" />
-            <span className="text-[#8B2E2E] text-lg">✦</span>
-            <span className="h-px w-12 bg-[#8B2E2E]/40" />
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold font-display text-[#7a1f1f] tracking-wide">
-            {t('contact.title')}
-          </h1>
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <span className="h-px w-10 bg-[#8B2E2E]/40" />
-            <p className="text-[#7a1f1f]/70 text-base">{t('contact.subtitle')}</p>
-            <span className="h-px w-10 bg-[#8B2E2E]/40" />
-          </div>
-        </motion.div>
+        <header className="public-page-heading mb-10 border-b border-border pb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground">{t('contact.title')}</h1>
+          <p className="mt-4 text-muted-foreground max-w-2xl">{t('contact.subtitle')}</p>
+        </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-16 max-w-6xl mx-auto">
           {/* Info column */}
           <div className="space-y-4">
             {infoCards.map((item, i) => {
@@ -129,25 +98,24 @@ const Contact = () => {
                 <motion.div
                   key={item.title}
                   custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
-                  className="group relative bg-white rounded-2xl shadow-[0_8px_24px_-12px_rgba(122,31,31,0.15)] hover:shadow-[0_16px_40px_-12px_rgba(122,31,31,0.25)] transition-shadow overflow-hidden"
+                  whileHover={reduceMotion ? undefined : { y: -2, transition: { duration: 0.3 } }}
+                  className="group relative border-b border-border transition-colors"
                 >
-                  <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-[#8B2E2E] to-[#5d1414] rounded-l-2xl" />
-                  <div className="flex items-center gap-5 p-5 pl-7">
+                  <div className="flex items-start gap-4 py-5">
                     <div className="relative shrink-0">
-                      <div className="absolute inset-0 rounded-full bg-[#8B2E2E]/5 group-hover:bg-[#8B2E2E]/10 transition-colors scale-110" />
-                      <div className="relative w-16 h-16 rounded-full border-2 border-[#8B2E2E]/30 flex items-center justify-center group-hover:border-[#8B2E2E] group-hover:rotate-6 transition-all duration-300">
-                        <Icon className="w-7 h-7 text-[#8B2E2E]" strokeWidth={1.7} />
+                      <div className="absolute inset-0 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors scale-110" />
+                      <div className="relative w-12 h-12 rounded-lg border border-border flex items-center justify-center group-hover:border-primary  transition-all duration-300">
+                        <Icon className="w-7 h-7 text-primary" strokeWidth={1.7} />
                       </div>
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-xl font-bold text-[#7a1f1f] mb-1">{item.title}</h3>
+                      <h3 className="text-xl font-bold text-foreground mb-1">{item.title}</h3>
                       {item.lines.map((line, idx) => (
-                        <p key={idx} className="text-[#3a2424]/80 text-sm leading-relaxed whitespace-pre-line">
+                        <p key={idx} className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
                           {item.title === t('contact.phone') && idx === 0 ? (
-                            <a href={`tel:${line.replace(/[^0-9+]/g, '')}`} className="hover:text-[#8B2E2E] transition-colors">{line}</a>
+                            <a href={`tel:${line.replace(/[^0-9+]/g, '')}`} className="hover:text-primary transition-colors">{line}</a>
                           ) : item.title === t('contact.email') ? (
-                            <a href={`mailto:${line}`} className="hover:text-[#8B2E2E] transition-colors">{line}</a>
+                            <a href={`mailto:${line}`} className="hover:text-primary transition-colors">{line}</a>
                           ) : line}
                         </p>
                       ))}
@@ -160,9 +128,9 @@ const Contact = () => {
             {/* Follow us */}
             <motion.div
               custom={infoCards.length} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-              className="bg-white rounded-2xl shadow-[0_8px_24px_-12px_rgba(122,31,31,0.15)] p-5"
+              className="py-5"
             >
-              <h3 className="text-xl font-bold text-[#7a1f1f] mb-3">{t('footer.followUs')}</h3>
+              <h3 className="text-xl font-bold text-foreground mb-3">{t('footer.followUs')}</h3>
               <div className="flex gap-3">
                 {[
                   { href: 'https://facebook.com', Icon: Facebook },
@@ -170,8 +138,8 @@ const Contact = () => {
                 ].map(({ href, Icon }, idx) => (
                   <motion.a
                     key={idx} href={href} target="_blank" rel="noopener noreferrer"
-                    whileHover={{ scale: 1.12, rotate: 6 }} whileTap={{ scale: 0.95 }}
-                    className="w-11 h-11 rounded-full border-2 border-[#8B2E2E]/30 flex items-center justify-center text-[#8B2E2E] hover:border-[#8B2E2E] hover:bg-[#8B2E2E] hover:text-white transition-colors"
+                    whileHover={reduceMotion ? undefined : { scale: 1.05 }}
+                    className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-primary hover:border-primary hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     <Icon className="w-5 h-5" />
                   </motion.a>
@@ -182,13 +150,12 @@ const Contact = () => {
 
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+            initial={false} viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative bg-white rounded-2xl shadow-[0_12px_40px_-12px_rgba(122,31,31,0.2)] p-7 md:p-9 overflow-hidden"
+            className="relative bg-card rounded-lg border border-border p-5 sm:p-8"
           >
-            <span className="absolute left-0 top-6 bottom-6 w-1 bg-[#8B2E2E] rounded-r" />
-            <h3 className="text-2xl font-bold text-[#7a1f1f] mb-1 pl-3">{t('contact.sendMessage')}</h3>
-            <p className="text-[#3a2424]/70 text-sm mb-6 pl-3">{t('contact.sendMessageDesc')}</p>
+            <h3 className="text-2xl font-bold text-foreground mb-1 pl-3">{t('contact.sendMessage')}</h3>
+            <p className="text-muted-foreground text-sm mb-6 pl-3">{t('contact.sendMessageDesc')}</p>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               {[
@@ -201,11 +168,12 @@ const Contact = () => {
                   key={name} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
                   className="relative group"
                 >
-                  <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8B2E2E]/60 group-focus-within:text-[#8B2E2E] transition-colors" strokeWidth={1.8} />
+                  <label htmlFor={`contact-${name}`} className="block text-sm font-medium mb-2">{placeholder}{required && <span className="text-primary"> *</span>}</label>
+                  <Icon className="absolute left-4 bottom-3.5 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" strokeWidth={1.8} />
                   <Input
-                    name={name} type={type} required={required}
+                    id={`contact-${name}`} aria-label={placeholder} name={name} type={type} required={required} autoComplete={name === "name" ? "name" : name === "email" ? "email" : name === "phone" ? "tel" : "off"}
                     value={formData[name as keyof typeof formData]} onChange={handleChange} placeholder={placeholder}
-                    className="h-12 pl-12 bg-[#fdf7f4]/50 border-[#e8d5cc] focus-visible:border-[#8B2E2E] focus-visible:ring-[#8B2E2E]/20 rounded-xl text-[#3a2424] placeholder:text-[#3a2424]/40"
+                    className="h-12 pl-12 bg-background border-input focus-visible:border-primary focus-visible:ring-ring/20 rounded-xl text-foreground placeholder:text-muted-foreground"
                   />
                 </motion.div>
               ))}
@@ -214,18 +182,18 @@ const Contact = () => {
                 custom={4} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
                 className="relative group"
               >
-                <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-[#8B2E2E]/60 group-focus-within:text-[#8B2E2E] transition-colors" strokeWidth={1.8} />
+                <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" strokeWidth={1.8} />
                 <Textarea
-                  name="message" required value={formData.message} onChange={handleChange}
+                  id="contact-message" aria-label={t('contact.form.message')} name="message" required value={formData.message} onChange={handleChange}
                   placeholder={t('contact.form.message')} rows={5}
-                  className="pl-12 pt-3 bg-[#fdf7f4]/50 border-[#e8d5cc] focus-visible:border-[#8B2E2E] focus-visible:ring-[#8B2E2E]/20 rounded-xl text-[#3a2424] placeholder:text-[#3a2424]/40 resize-none"
+                  className="pl-12 pt-3 bg-background border-input focus-visible:border-primary focus-visible:ring-ring/20 rounded-xl text-foreground placeholder:text-muted-foreground resize-none"
                 />
               </motion.div>
 
               <motion.div custom={5} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
                 <Button
                   type="submit" disabled={isSubmitting} size="lg"
-                  className="w-full h-14 rounded-xl bg-gradient-to-r from-[#8B2E2E] to-[#5d1414] hover:from-[#7a1f1f] hover:to-[#4a0f0f] text-white text-base font-semibold shadow-[0_10px_30px_-10px_rgba(122,31,31,0.5)] hover:shadow-[0_14px_40px_-10px_rgba(122,31,31,0.7)] hover:-translate-y-0.5 transition-all duration-300 group"
+                  className="w-full min-h-12 h-auto py-3 whitespace-normal text-base font-bold group"
                 >
                   {isSubmitting ? (
                     <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> {t('common.sending')}</>
@@ -240,9 +208,9 @@ const Contact = () => {
 
         {/* Map */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          initial={false} viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mt-10 max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-[0_12px_40px_-12px_rgba(122,31,31,0.2)] bg-white"
+          className="mt-12 max-w-6xl mx-auto overflow-hidden border-t border-border bg-muted"
         >
           <iframe
             src={mapSrc} width="100%" height="400" style={{ border: 0 }}

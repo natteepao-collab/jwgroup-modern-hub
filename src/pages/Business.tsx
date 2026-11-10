@@ -30,36 +30,36 @@ const businessTabs = [
     id: 'realestate',
     label: 'JW Real Estates',
     icon: Building,
-    activeColor: 'data-[state=active]:bg-[#D97706] data-[state=active]:text-white',
-    hoverColor: 'hover:bg-[#D97706]/10 hover:text-[#D97706]'
+    activeColor: 'business-tab-active',
+    hoverColor: 'business-tab-hover'
   },
   {
     id: 'hotel',
     label: '12 The Residence',
     icon: Hotel,
-    activeColor: 'data-[state=active]:bg-[#1A1A1A] data-[state=active]:text-white',
-    hoverColor: 'hover:bg-[#1A1A1A]/10 hover:text-[#1A1A1A]'
+    activeColor: 'business-tab-active',
+    hoverColor: 'business-tab-hover'
   },
   {
     id: 'pet',
     label: '3DPet Hospital',
     icon: Heart,
-    activeColor: 'data-[state=active]:bg-[#14B8A6] data-[state=active]:text-white',
-    hoverColor: 'hover:bg-[#14B8A6]/10 hover:text-[#14B8A6]'
+    activeColor: 'business-tab-active',
+    hoverColor: 'business-tab-hover'
   },
   {
     id: 'wellness',
     label: 'JW Herbal',
     icon: Leaf,
-    activeColor: 'data-[state=active]:bg-[#22C55E] data-[state=active]:text-white',
-    hoverColor: 'hover:bg-[#22C55E]/10 hover:text-[#22C55E]'
+    activeColor: 'business-tab-active',
+    hoverColor: 'business-tab-hover'
   },
   {
     id: 'construction',
     label: 'ธนบูลย์',
     icon: HardHat,
-    activeColor: 'data-[state=active]:bg-[#3B82F6] data-[state=active]:text-white',
-    hoverColor: 'hover:bg-[#3B82F6]/10 hover:text-[#3B82F6]'
+    activeColor: 'business-tab-active',
+    hoverColor: 'business-tab-hover'
   },
 ];
 
@@ -166,7 +166,7 @@ const Business = () => {
   ];
 
   return (
-    <div className="app-page-safe min-h-screen bg-background">
+    <div className="business-page app-page-safe min-h-screen bg-background">
       <SEO
         title={seoTitle}
         description={seoDesc}
@@ -176,17 +176,17 @@ const Business = () => {
       <div className="container mx-auto px-4 py-12">
         <div
           ref={ref}
-          className={`text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          className={`public-page-heading mb-10 border-b border-border pb-8 transition-all duration-300 ${inView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'
             }`}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('business.title')}</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">{t('business.title')}</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
             {t('business.subtitle')}
           </p>
         </div>
 
         <div
-          className={`transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          className={`transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'
             }`}
           style={{ transitionDelay: '200ms' }}
         >
@@ -225,19 +225,15 @@ const Business = () => {
         {/* Project Gallery Section */}
         <div
           ref={galleryRef}
-          className={`mt-24 transition-all duration-1000 ${galleryInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          className={`mt-24 transition-all duration-1000 ${galleryInView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'
             }`}
         >
           {/* Section Header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/15 to-primary/5 text-primary text-sm font-semibold mb-6 border border-primary/20 shadow-sm">
-              <Images className="w-4 h-4" />
-              <span>แกลเลอรี่โครงการ</span>
-            </div>
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
               ผลงานโครงการของเรา
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+            <p className="text-muted-foreground max-w-2xl text-base md:text-lg leading-relaxed">
               รวมผลงานโครงการที่ประสบความสำเร็จจากทุกสายธุรกิจของ JW Group
             </p>
           </div>
@@ -246,18 +242,20 @@ const Business = () => {
           <div ref={galleryContainerRef}>
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               {/* Enhanced Tab List */}
-              <TabsList className="flex w-full max-w-4xl mx-auto mb-12 h-auto p-2 bg-card/80 backdrop-blur-lg border border-border/40 rounded-2xl shadow-xl">
+              <TabsList className="business-gallery-tabs flex w-full mb-8 h-auto justify-start overflow-x-auto p-1 bg-card border border-border rounded-lg">
                 {businessTabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex-1 gap-2.5 py-4 px-4 rounded-xl font-bold text-base transition-all duration-300
+                    aria-label={tab.label}
+                    title={tab.label}
+                    className={`shrink-0 gap-2 py-3 px-4 rounded-md font-bold text-sm transition-all duration-300
                       ${tab.activeColor} ${tab.hoverColor}
-                      data-[state=active]:shadow-lg data-[state=active]:scale-105
+                      data-[state=active]:shadow-none
                       text-muted-foreground`}
                   >
                     <tab.icon className="w-5 h-5 mb-0.5" />
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span className="hidden md:inline">{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>

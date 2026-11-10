@@ -72,7 +72,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <GlobalAutoTranslator />
       </Suspense>
       {!isAdminRoute && <Navbar />}
-      <main className="flex-grow">
+      <main className={location.pathname === "/admin" ? "flex-grow" : location.pathname === "/" ? "flex-grow" : "public-page flex-grow"}>
         {children}
       </main>
       {!isAdminRoute && <Footer />}
