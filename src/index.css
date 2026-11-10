@@ -448,6 +448,34 @@ All colors MUST be HSL.
 }
 
 /* Homepage polish stays local: shared pages retain their existing visual system. */
+.corporate-page { letter-spacing: 0; }
+.corporate-page ::selection { background: hsl(var(--primary) / 0.2); }
+.corporate-page h1, .corporate-page h2, .corporate-page h3 { letter-spacing: 0; text-wrap: balance; font-weight: 700; }
+.corporate-page p { line-height: 1.85; }
+.corporate-page .corporate-document { max-width: 75ch; }
+.corporate-document > div > div > section { padding-bottom: 1.5rem; border-bottom: 1px solid hsl(var(--border)); }
+.corporate-document h2 { font-size: 1.25rem; line-height: 1.6; margin-bottom: 0.75rem; }
+.corporate-document li { line-height: 1.85; padding-block: 0.25rem; }
+.corporate-nav-link { border-radius: 6px; }
+.corporate-page .corporate-title-band { border-radius: 0; }
+.corporate-about-body > div > div:first-child:has(> span) { display: none; }
+.corporate-about-body .rounded-3xl, .corporate-about-body .rounded-2xl { border-radius: 8px; }
+.corporate-about-body [class*="blur-"] { display: none; }
+.corporate-page .corporate-cookie-section button { height: auto; min-height: 44px; white-space: normal; text-align: left; }
+.corporate-page .corporate-business-image { border-radius: 0; }
+@media (max-width: 639px) {
+  .corporate-nav-link { gap: 0.5rem; padding-inline: 0.625rem; }
+  .corporate-nav-link span { font-size: 0.75rem; }
+  .corporate-history-image > img { height: 22rem; }
+  .corporate-history-image > div:last-child { padding: 1.25rem; }
+  .corporate-history-image h2 { font-size: 1.75rem; }
+  .corporate-history-image p { font-size: 0.875rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .corporate-title-band { animation: corporate-arrival 450ms cubic-bezier(0.16,1,0.3,1); }
+  @keyframes corporate-arrival { from { transform: translateY(8px); } to { transform: translateY(0); } }
+}
+
 .home-page {
   --home-media-foreground: 0 0% 100%;
   --home-media-shade: 222 47% 11%;
