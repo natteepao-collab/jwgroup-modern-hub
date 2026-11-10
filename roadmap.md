@@ -7,6 +7,6 @@
 
 # Product context and organization structure
 
-- [ ] Confirm the central JW Group product record and capture it with Impeccable init.
-- [ ] Refine `/about/structure` in the existing navy/orange brand while preserving all business charts and interactions.
-- [ ] Verify chart navigation and layouts on desktop and mobile.
+- [x] Confirm the central JW Group product record and capture it with Impeccable init.
+- [x] Refine `/about/structure` in the existing navy/orange brand while preserving all business charts and interactions.
+- [x] Verify chart navigation and layouts on desktop and mobile.

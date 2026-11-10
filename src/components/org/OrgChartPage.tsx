@@ -21,7 +21,6 @@ import {
   ChevronsDownUp,
   ChevronsUpDown,
   ChevronRight,
-  Download,
   FileImage,
   FileText,
   Maximize,
@@ -170,7 +169,7 @@ function MobileTreeItem({
   }
   return (
     <AccordionItem value={node.id} className={cn("border-none", depth > 0 && "ml-3")}>
-      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+      <div className="rounded-lg border bg-card overflow-hidden">
         <AccordionTrigger className="px-3 py-3 hover:no-underline">
           <div className="flex-1 text-left" onClick={(e) => { e.stopPropagation(); onSelect(node); }}>
             <MobileLine node={node} />
@@ -191,7 +190,7 @@ function MobileTreeItem({
 function MobileLine({ node }: { node: OrgTreeNode }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+      <div className="text-xs text-muted-foreground">
         {node.position_en}
       </div>
       <div className="text-sm font-bold">{node.position_th}</div>
@@ -216,7 +215,7 @@ export default function OrgChartPage() {
   const [businessKey, setBusinessKey] = useState<string>("realestate");
   const captureRef = useRef<HTMLDivElement>(null);
   const { data: businessTypes = [] } = useBusinessTypes();
-  const isRealEstate = businessKey === "realestate";
+  const isRealEstate = businessKey === "realestate" || businessKey === "real_estate";
 
   const filteredRoots = useMemo(
     () => (roots ? filterTree(roots, search, filter) : []),
@@ -356,66 +355,46 @@ export default function OrgChartPage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header — Minimal White & Orange */}
-      <header className="relative overflow-hidden rounded-3xl border border-border bg-white px-6 py-10 md:px-10 md:py-14 text-foreground shadow-sm">
-        <div className="absolute inset-0 opacity-[0.5] org-canvas pointer-events-none" />
-        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-primary/5 blur-3xl" />
-        <div className="relative flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2">
-            <span className="h-[1px] w-8 bg-primary" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-primary">
-              JW Group
-            </span>
-            <span className="h-[1px] w-8 bg-primary" />
-          </div>
-          <h1 className="mt-4 font-display text-3xl md:text-5xl font-bold leading-tight text-foreground">
-            ผังโครงสร้างองค์กรและผู้บริหาร
-          </h1>
-          <p className="mt-2 text-sm md:text-base text-muted-foreground tracking-widest uppercase">
-            Organization Chart &amp; Management
-          </p>
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs md:text-sm text-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-            วันที่มีผลบังคับใช้:
-            <span className="font-semibold text-primary">1 กรกฎาคม 2569</span>
-          </div>
-        </div>
+    <div className="org-page space-y-6">
+      <header className="org-page-header bg-secondary text-secondary-foreground px-6 py-7 md:px-8 md:py-9">
+        <h1 className="text-2xl md:text-3xl font-bold leading-relaxed">ผังโครงสร้างองค์กรและผู้บริหาร</h1>
+        <p className="mt-2 text-sm text-secondary-foreground/80">Organization Chart &amp; Management</p>
+        <p className="mt-5 text-xs text-secondary-foreground/80">วันที่มีผลบังคับใช้: <span className="font-semibold text-secondary-foreground">1 กรกฎาคม 2569</span></p>
       </header>
 
       {/* Business Unit Selector */}
-      <div className="rounded-2xl border bg-card/60 backdrop-blur p-3 md:p-4 shadow-sm">
-        <div className="mb-2 flex items-center gap-2">
+      <div className="org-section border-b border-border pb-5">
+        <div className="mb-3 flex items-center gap-2">
           <span className="h-[1px] w-6 bg-primary" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-primary">
+          <span className="text-sm font-bold text-foreground">
             หน่วยธุรกิจ
           </span>
           <span className="text-[11px] text-muted-foreground">/ Business Unit</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {businessTypes.map((b) => {
-            const active = b.business_key === businessKey;
+            const active = b.business_key === businessKey || (isRealEstate && (b.business_key === "realestate" || b.business_key === "real_estate"));
             return (
-              <button
+              <Button
+                variant="ghost"
                 key={b.business_key}
                 type="button"
                 onClick={() => setBusinessKey(b.business_key)}
                 className={cn(
-                  "rounded-full border px-4 py-2 text-sm font-medium transition-all",
+                  "h-auto min-h-11 whitespace-normal rounded-md border px-4 py-2.5 text-sm font-medium transition-all",
                   active
-                    ? "border-primary bg-primary text-primary-foreground shadow-md"
+                    ? "border-secondary bg-secondary text-secondary-foreground hover:bg-secondary hover:text-secondary-foreground"
                     : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-primary/5",
                 )}
-                style={active ? undefined : { borderLeftColor: b.color || undefined, borderLeftWidth: 3 }}
+                aria-pressed={active}
               >
                 {b.name_th}
-                {b.business_key === "realestate" && (
+                {(b.business_key === "realestate" || b.business_key === "real_estate") && (
                   <span className={cn("ml-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold", active ? "bg-primary-foreground/20" : "bg-primary/10 text-primary")}>
                     แผนผังละเอียด
                   </span>
                 )}
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -424,10 +403,10 @@ export default function OrgChartPage() {
       {isRealEstate && (
       <>
       {/* Level Legend */}
-      <div className="rounded-2xl border bg-card/60 backdrop-blur p-4 md:p-5 shadow-sm">
+      <div className="org-section border-b border-border pb-5">
         <div className="mb-3 flex items-center gap-2">
           <span className="h-[1px] w-6 bg-primary" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-primary">
+          <span className="text-sm font-bold text-foreground">
             คำอธิบายระดับ
           </span>
           <span className="text-[11px] text-muted-foreground">/ Level Guide</span>
@@ -441,7 +420,7 @@ export default function OrgChartPage() {
           ].map((l) => (
             <div
               key={l.lv}
-              className="group rounded-xl border border-border bg-background p-3 transition hover:border-primary/40 hover:shadow-sm"
+              className="px-1 py-2"
             >
               <div className="flex items-center gap-2">
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
@@ -451,7 +430,7 @@ export default function OrgChartPage() {
                   <div className="text-sm font-bold text-foreground leading-tight">
                     ระดับ {l.lv} · {l.th}
                   </div>
-                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     {l.en}
                   </div>
                 </div>
@@ -465,19 +444,20 @@ export default function OrgChartPage() {
       </div>
 
       {/* Toolbar */}
-      <div className="rounded-2xl border bg-card/60 backdrop-blur p-3 md:p-4 shadow-sm">
-        <div className="grid gap-3 md:grid-cols-[1fr_auto_auto_auto]">
+      <div className="org-section border-b border-border pb-5">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_160px_180px]">
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="ค้นหาชื่อบุคคล ตำแหน่ง ฝ่าย หรือแผนก"
+              aria-label="ค้นหาโครงสร้างองค์กร"
               className="pl-9"
             />
           </div>
           <Select value={filter.level} onValueChange={(v) => setFilter((f) => ({ ...f, level: v }))}>
-            <SelectTrigger className="w-full md:w-[160px]"><SelectValue placeholder="ระดับ" /></SelectTrigger>
+            <SelectTrigger className="w-full"><SelectValue placeholder="ระดับ" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">ทุกระดับ</SelectItem>
               <SelectItem value="1">ระดับ 1 (บริหารสูงสุด)</SelectItem>
@@ -487,7 +467,7 @@ export default function OrgChartPage() {
             </SelectContent>
           </Select>
           <Select value={filter.department} onValueChange={(v) => setFilter((f) => ({ ...f, department: v }))}>
-            <SelectTrigger className="w-full md:w-[220px]"><SelectValue placeholder="ฝ่าย" /></SelectTrigger>
+            <SelectTrigger className="w-full"><SelectValue placeholder="ฝ่าย" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">ทุกฝ่าย</SelectItem>
               {departments.map((d) => (
@@ -495,15 +475,15 @@ export default function OrgChartPage() {
               ))}
             </SelectContent>
           </Select>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 sm:col-span-2 xl:col-span-3">
             <Button variant="outline" size="sm" onClick={() => expandToLevel(2)} className="gap-1" title="แสดงเฉพาะระดับ 1">
-              L1
+              ระดับ 1
             </Button>
             <Button variant="outline" size="sm" onClick={() => expandToLevel(3)} className="gap-1" title="ขยายถึงระดับ 2">
-              L2
+              ระดับ 2
             </Button>
             <Button variant="outline" size="sm" onClick={() => expandToLevel(4)} className="gap-1" title="ขยายถึงระดับ 3">
-              L3
+              ระดับ 3
             </Button>
             <Button variant="outline" size="sm" onClick={expandAll} className="gap-1">
               <ChevronsUpDown className="h-4 w-4" /> ขยายทั้งหมด
@@ -543,7 +523,7 @@ export default function OrgChartPage() {
 
       {/* Breadcrumb: CEO -> selected node */}
       {selectedPath.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-4 py-2.5 shadow-sm animate-fade-in">
+        <nav aria-label="เส้นทางตำแหน่งที่เลือก" className="flex flex-wrap items-center gap-2 border-y border-primary/30 bg-primary/5 px-4 py-3">
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
             เส้นทาง
           </span>
@@ -555,11 +535,12 @@ export default function OrgChartPage() {
                   {i > 0 && (
                     <ChevronRight className="h-3.5 w-3.5 text-primary/60" />
                   )}
-                  <button
+                  <Button
+                    variant="ghost"
                     type="button"
                     onClick={() => handleSelect(p)}
                     className={cn(
-                      "rounded-md px-2 py-0.5 transition-colors",
+                      "h-auto whitespace-normal rounded-md px-2 py-1 transition-colors",
                       isLast
                         ? "bg-primary text-primary-foreground font-semibold"
                         : "text-foreground hover:bg-primary/10",
@@ -571,23 +552,26 @@ export default function OrgChartPage() {
                         · {p.employee_name}
                       </span>
                     )}
-                  </button>
+                  </Button>
                 </span>
               );
             })}
           </div>
-          <button
+          <Button
+            variant="ghost"
             type="button"
             onClick={() => { setSelected(null); setPanelOpen(false); }}
             className="ml-auto text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
           >
             ล้างเส้นทาง
-          </button>
-        </div>
+          </Button>
+        </nav>
       )}
 
       {/* Chart */}
-      {isMobile ? (
+      {filteredRoots.length === 0 ? (
+        <p role="status" className="py-16 text-center text-muted-foreground">ไม่พบตำแหน่งที่ตรงกับการค้นหา</p>
+      ) : isMobile ? (
         <div className="space-y-2">
           <Accordion type="multiple" defaultValue={Array.from(allIds)} className="space-y-2">
             {filteredRoots.map((r) => (
@@ -600,34 +584,43 @@ export default function OrgChartPage() {
           minScale={0.3}
           maxScale={2}
           initialScale={0.85}
-          centerOnInit
+          onInit={(ref) => {
+            const wrapper = ref.instance.wrapperComponent;
+            const content = ref.instance.contentComponent;
+            if (wrapper && content) ref.setTransform((wrapper.clientWidth - content.offsetWidth * 0.85) / 2, 0, 0.85, 0);
+          }}
           limitToBounds={false}
           wheel={{ step: 0.1 }}
           doubleClick={{ disabled: true }}
           onTransform={(ref: any) => setZoomPct(Math.round((ref?.state?.scale ?? 1) * 100))}
         >
-          {({ zoomIn, zoomOut, resetTransform, centerView }) => (
+          {({ zoomIn, zoomOut, setTransform }) => (
             <div className="relative">
-              <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full border bg-card/95 px-2 py-1 shadow-md backdrop-blur">
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomOut()} title="Zoom out"><Minus className="h-4 w-4" /></Button>
+              <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-lg border bg-card px-2 py-1">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomOut()} title="ย่อผัง" aria-label="ย่อผัง"><Minus className="h-4 w-4" /></Button>
                 <span className="min-w-[42px] text-center text-xs font-semibold tabular-nums text-foreground">
                   {zoomPct}%
                 </span>
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomIn()} title="Zoom in"><Plus className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomIn()} title="ขยายผัง" aria-label="ขยายผัง"><Plus className="h-4 w-4" /></Button>
                 <span className="mx-1 h-4 w-px bg-border" />
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => centerView(0.85)} title="Fit to view"><Maximize className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => resetTransform()} title="Reset"><RotateCcw className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {
+                  const capture = captureRef.current;
+                  const wrapper = capture?.closest(".react-transform-wrapper");
+                  if (capture && wrapper) setTransform((wrapper.clientWidth - capture.offsetWidth * 0.85) / 2, 0, 0.85);
+                }} title="จัดผังกึ่งกลาง" aria-label="จัดผังกึ่งกลาง"><Maximize className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {
+                  const capture = captureRef.current;
+                  const wrapper = capture?.closest(".react-transform-wrapper");
+                  if (capture && wrapper) setTransform((wrapper.clientWidth - capture.offsetWidth * 0.85) / 2, 0, 0.85);
+                }} title="คืนค่า 85%" aria-label="คืนค่า 85%"><RotateCcw className="h-4 w-4" /></Button>
               </div>
-              <div className="absolute left-3 top-3 z-10 rounded-full border bg-card/95 px-3 py-1 text-[10px] font-medium text-muted-foreground shadow-sm backdrop-blur hidden md:block">
-                ลากเพื่อเลื่อน · เลื่อนล้อเมาส์เพื่อซูม
-              </div>
-              <div className="min-h-[600px] cursor-grab overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 to-background dark:from-muted/30 active:cursor-grabbing org-canvas">
+              <div className="min-h-[600px] cursor-grab overflow-hidden rounded-lg border bg-background active:cursor-grabbing org-canvas">
                 <TransformComponent
                   wrapperStyle={{ width: "100%", height: "750px" }}
-                  contentStyle={{ width: "100%" }}
+                  contentStyle={{ minWidth: "100%" }}
                 >
-                  <div ref={captureRef} className="w-max min-w-full p-6">
-                    <ul className="org-tree org-tree--compact">
+                  <div ref={captureRef} className="w-max min-w-full px-6 pt-20 pb-10">
+                    <ul className="org-tree org-tree--compact org-tree--branch-columns">
                       {filteredRoots.map((r) => (
                         <TreeNode
                           key={r.id}
@@ -653,7 +646,7 @@ export default function OrgChartPage() {
 
       {/* Non-Real Estate business units: department layout */}
       {!isRealEstate && (
-        <section className="rounded-3xl border border-border bg-card/60 backdrop-blur p-6 md:p-8 shadow-sm">
+        <section className="org-business-chart">
           <OrganizationChart
             businessKey={businessKey}
             hideSelector
