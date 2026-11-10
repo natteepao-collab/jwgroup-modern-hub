@@ -352,7 +352,7 @@ export const Navbar = () => {
       {/* Bottom Tab Bar - Mobile & Tablet Only */}
       <div className={cn(
         "fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
-        "bg-card/98 backdrop-blur-2xl border-t border-border/30",
+        "bg-card border-t border-border/30",
         "shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.15)]",
         isBottomBarVisible ? "translate-y-0" : "translate-y-full"
       )}>
@@ -432,7 +432,7 @@ export const Navbar = () => {
           role="dialog" aria-modal={isMenuOpen} aria-label="Menu"
           className={cn(
             "absolute top-0 left-0 h-full w-[88%] max-w-[420px] flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
-            "bg-card/98 backdrop-blur-2xl shadow-[20px_0_60px_-15px_rgba(0,0,0,0.3)]",
+            "bg-card shadow-xl",
             "border-r border-border/30",
             isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           )}
