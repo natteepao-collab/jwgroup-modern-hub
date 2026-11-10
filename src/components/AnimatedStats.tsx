@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { publicAchievementCount } from '@/lib/publicContent';
 
 interface TimelineEvent {
   id: string;
@@ -70,7 +71,7 @@ const StatCard = ({
   children
 }: { 
   icon: React.ReactNode;
-  value: number;
+  value: number | null;
   suffix: string;
   label: string;
   index: number;
@@ -80,7 +81,7 @@ const StatCard = ({
   onClick?: () => void;
   children?: React.ReactNode;
 }) => {
-  const count = useCountUp(value, 2500, inView);
+  const count = useCountUp(value ?? 0, 2500, inView);
 
   return (
     <div className="relative">
@@ -113,12 +114,14 @@ const StatCard = ({
 
         {/* Value */}
         <div className="relative flex items-baseline gap-1 sm:gap-2 flex-wrap tabular-nums">
+          {value !== null && <>
           <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-none">
             {value === 2550 ? count : count.toLocaleString()}
           </span>
           <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-none">
             {suffix}
           </span>
+          </>}
           {isClickable && (
             <div className="ml-auto">
               {isExpanded ? (
@@ -215,34 +218,24 @@ const AnimatedStats = () => {
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            {t('stats.sectionTitle')}
+            {t('refinement.portfolio')}
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
-            {t('stats.sectionDesc')}
+            {t('refinement.portfolioDesc')}
           </p>
         </div>
 
         {/* Stats Grid - 3 stat cards */}
         <div
           ref={ref}
-          className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 [&>div:last-child]:col-span-2 sm:[&>div:last-child]:col-span-1 max-w-5xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto"
         >
-          {/* Years of Experience */}
-          <StatCard
-            icon={<Calendar className="w-8 h-8" />}
-            value={30}
-            suffix="+"
-            label={t('stats.years')}
-            index={0}
-            inView={inView}
-          />
-
           {/* Completed Projects - Clickable */}
           <StatCard
             icon={<Briefcase className="w-8 h-8" />}
-            value={Math.max(projects.length, 17)}
-            suffix="+"
-            label={t('stats.projects')}
+            value={publicAchievementCount(projects)}
+            suffix=""
+            label={t('about.history')}
             index={1}
             inView={inView}
             isClickable={projects.length > 0}
@@ -253,9 +246,9 @@ const AnimatedStats = () => {
           {/* Awards - Clickable */}
           <StatCard
             icon={<Award className="w-8 h-8" />}
-            value={awards.length || 1}
-            suffix="+"
-            label={t('stats.awards')}
+            value={publicAchievementCount(awards)}
+            suffix=""
+            label={t('about.awards')}
             index={2}
             inView={inView}
             isClickable={awards.length > 0}
@@ -275,7 +268,7 @@ const AnimatedStats = () => {
             <div className="bg-card border border-border/50 rounded-xl p-4 shadow-lg max-h-[500px] overflow-y-auto">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border/50">
                 <Calendar className="w-5 h-5 text-primary" />
-                <h4 className="font-bold text-foreground">{t('stats.allProjects')}</h4>
+                <h4 className="font-bold text-foreground">{t('about.history')}</h4>
               </div>
               <div className="space-y-3">
                 {projects.map((project) => (
