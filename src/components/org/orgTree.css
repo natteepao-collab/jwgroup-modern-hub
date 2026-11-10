@@ -173,7 +173,13 @@
 .org-page .org-canvas { background-image: none; }
 .org-page ::selection { background: hsl(var(--primary) / 0.2); }
 .about-structure-page aside { width: 224px; }
-@media (max-width: 1023px) { .about-structure-page aside { width: 100%; } }
+@media (max-width: 1023px) {
+  .about-structure-page aside { width: 100%; }
+  .about-structure-page aside nav > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; margin: 0; padding: 0; gap: 8px; }
+  .about-structure-page aside nav a { min-width: 0; gap: 8px; padding: 10px; border-radius: 8px; }
+  .about-structure-page aside nav a > div:first-of-type { width: 32px; height: 32px; flex-shrink: 0; border-radius: 6px; }
+  .about-structure-page aside nav a span { white-space: normal; font-size: 13px; letter-spacing: 0; }
+}
 @media print {
   .org-page .org-section, .org-page-header { display: none; }
   .org-tree { break-inside: avoid; }
