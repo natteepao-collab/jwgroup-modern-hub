@@ -222,6 +222,7 @@ const Business = () => {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
+                    data-business={tab.id}
                     aria-label={tab.label}
                     title={tab.label}
                     className={`shrink-0 gap-2 py-3 px-4 rounded-md font-bold text-sm transition-all duration-300

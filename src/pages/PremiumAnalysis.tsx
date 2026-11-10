@@ -28,7 +28,7 @@ const PremiumAnalysis = () => {
     };
 
     return (
-        <div className="app-page-safe min-h-screen bg-background text-foreground pb-12 px-4 relative overflow-hidden">
+        <div className="premium-analysis-page app-page-safe min-h-screen bg-background text-foreground pb-12 px-4 relative overflow-hidden">
             <SEO
                 title={t('premium.title') || "วิเคราะห์ชื่อมงคลขั้นสูง"}
                 description="บริการวิเคราะห์ชื่อมงคลขั้นสูง ด้วยศาสตร์ทักษาปกรณ์และเลขศาสตร์ชั้นสูง โดย JW Group"

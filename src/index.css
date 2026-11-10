@@ -478,11 +478,12 @@ All colors MUST be HSL.
 .business-mobile-toggle h3 { min-width: 0; overflow-wrap: anywhere; }
 .business-gallery-tabs [data-state=active] { background: hsl(var(--business-tab-color)); color: hsl(var(--primary-foreground)); }
 .business-gallery-tabs [data-state=inactive]:hover { color: hsl(var(--business-tab-color)); }
-.business-gallery-tabs [data-state][aria-controls*="realestate"] { --business-tab-color: var(--business-estate); }
-.business-gallery-tabs [data-state][aria-controls*="hotel"] { --business-tab-color: var(--business-hotel); }
-.business-gallery-tabs [data-state][aria-controls*="pet"] { --business-tab-color: var(--business-pet); }
-.business-gallery-tabs [data-state][aria-controls*="wellness"] { --business-tab-color: var(--business-herbal); }
-.business-gallery-tabs [data-state][aria-controls*="construction"] { --business-tab-color: var(--business-construction); }
+.business-gallery-tabs [data-business="realestate"] { --business-tab-color: var(--business-estate); }
+.business-gallery-tabs [data-business="hotel"] { --business-tab-color: var(--business-hotel); }
+.business-gallery-tabs [data-business="pet"] { --business-tab-color: var(--business-pet); }
+.business-gallery-tabs [data-business="wellness"] { --business-tab-color: var(--business-herbal); }
+.business-gallery-tabs [data-business="construction"] { --business-tab-color: var(--business-construction); }
+.premium-analysis-page > .container { padding-top: 2rem; }
 .project-gallery-item [class*="shadow-2xl"] { box-shadow: var(--shadow-md); }
 .news-detail-page article { max-width: 64rem; }
 .news-detail-page article > .prose { max-width: 75ch; margin-inline: auto; }

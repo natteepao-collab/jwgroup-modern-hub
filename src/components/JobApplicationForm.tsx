@@ -269,6 +269,7 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
                 <Button variant="outline" type="button" onClick={() => resumeInput.current?.click()}>
                   <Upload className="w-4 h-4" />
                   <span className="text-sm">{isEnglish ? 'Choose File' : 'เลือกไฟล์'}</span>
+                </Button>
                   <input
                     ref={resumeInput}
                     type="file"
@@ -276,7 +277,6 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
                     onChange={handleFileChange}
                     className="hidden"
                   />
-                </Button>
                 {resumeFile && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span className="truncate max-w-[150px]">{resumeFile.name}</span>
