@@ -60,15 +60,16 @@ const ImageLightbox = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl w-full p-0 bg-black/95 border-0 text-white overflow-hidden">
+      <DialogContent aria-describedby={undefined} onKeyDown={(event) => { if (event.key === 'ArrowRight') { event.preventDefault(); nextImage(); } if (event.key === 'ArrowLeft') { event.preventDefault(); prevImage(); } }} className="max-w-6xl w-full p-0 bg-secondary border-0 text-secondary-foreground overflow-hidden">
+        <DialogTitle className="sr-only">{title}</DialogTitle>
         <div className="relative flex flex-col h-[90vh]">
           {/* Close button */}
-          <button
+          <Button variant="ghost" size="icon" aria-label="ปิดรูปภาพ"
             onClick={onClose}
             className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/50 hover:bg-white/20 flex items-center justify-center transition-colors"
           >
             <X className="w-6 h-6 text-white" />
-          </button>
+          </Button>
 
           {/* Main Image Area */}
           <div className="flex-1 relative flex items-center justify-center bg-black/40">
@@ -81,18 +82,18 @@ const ImageLightbox = ({
             {/* Navigation Arrows */}
             {images.length > 1 && (
               <>
-                <button
+                <Button variant="ghost" size="icon" aria-label="รูปภาพก่อนหน้า"
                   onClick={prevImage}
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 hover:bg-white/20 flex items-center justify-center transition-colors"
                 >
                   <ChevronLeft className="w-8 h-8 text-white" />
-                </button>
-                <button
+                </Button>
+                <Button variant="ghost" size="icon" aria-label="รูปภาพถัดไป"
                   onClick={nextImage}
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 hover:bg-white/20 flex items-center justify-center transition-colors"
                 >
                   <ChevronRight className="w-8 h-8 text-white" />
-                </button>
+                </Button>
               </>
             )}
           </div>
@@ -103,14 +104,14 @@ const ImageLightbox = ({
             {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto py-2">
                 {images.map((img, idx) => (
-                  <button
+                  <Button variant="ghost" aria-label={`รูปภาพ ${idx + 1}`} aria-pressed={idx === currentIndex}
                     key={idx}
                     onClick={() => onIndexChange(idx)}
                     className={`relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${idx === currentIndex ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'
                       }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
+                  </Button>
                 ))}
               </div>
             )}
@@ -269,6 +270,8 @@ const AwardItem = ({
     <div
       className="group bg-card hover:bg-accent/5 rounded-3xl overflow-hidden border border-border/40 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
       onClick={onClick}
+      role="button" tabIndex={0} aria-label={getTitle()}
+      onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onClick(); } }}
     >
       <div className="flex flex-col lg:flex-row">
         {/* Cover Image Section */}
@@ -389,7 +392,7 @@ const YearSection = ({
   return (
     <div className="mb-20 last:mb-0">
       <div className="flex items-center gap-6 mb-10">
-        <h2 className="text-6xl md:text-8xl font-bold text-primary/10 font-display select-none">
+        <h2 className="text-4xl md:text-6xl font-bold text-muted-foreground font-display">
           {year}
         </h2>
         <div className="h-px flex-1 bg-gradient-to-r from-primary/20 to-transparent" />

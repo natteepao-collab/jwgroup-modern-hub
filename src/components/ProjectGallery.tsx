@@ -83,7 +83,8 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
   };
 
   const openLightbox = (project: Project, imageIndex: number = 0) => {
-    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const active = document.activeElement;
+    opener.current = active instanceof HTMLElement ? active.closest<HTMLElement>('.project-gallery-item') || active : null;
     setSelectedProject(project);
     setCurrentImageIndex(imageIndex);
     setLightboxOpen(true);
@@ -208,7 +209,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
 
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
         <DialogContent aria-describedby={undefined}
-          onCloseAutoFocus={(event) => { event.preventDefault(); opener.current?.focus(); }}
+          onCloseAutoFocus={(event) => { event.preventDefault(); requestAnimationFrame(() => opener.current?.focus()); }}
           onKeyDown={(event) => { if (event.key === 'ArrowRight') { event.preventDefault(); nextImage(); } if (event.key === 'ArrowLeft') { event.preventDefault(); prevImage(); } }}
           className="max-w-5xl w-[95vw] sm:w-[90vw] h-[90dvh] md:h-[80vh] max-h-[95dvh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0 rounded-xl">
           {selectedProject && (

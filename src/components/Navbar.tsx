@@ -351,7 +351,7 @@ export const Navbar = () => {
 
       {/* Bottom Tab Bar - Mobile & Tablet Only */}
       <div className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+        "site-bottom-nav fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
         "bg-card border-t border-border/30",
         "shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.15)]",
         isBottomBarVisible ? "translate-y-0" : "translate-y-full"
