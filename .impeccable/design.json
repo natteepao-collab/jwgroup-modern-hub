@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T07:02:34.381917+00:00",
+  "title": "Design System: JW Group",
+  "extensions": {
+    "motion": [
+      {
+        "name": "interaction",
+        "value": "300ms ease-out",
+        "purpose": "State changes; reduced motion respected"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared command control",
+      "html": "<button class=\"ds-primary\">ติดต่อเรา</button>",
+      "css": ".ds-primary { background:hsl(var(--primary));color:hsl(var(--primary-foreground));border:0;border-radius:10px;padding:10px 16px;font:500 14px \"Noto Sans Thai\",sans-serif;transition:opacity 300ms; } .ds-primary:hover {opacity:.85} .ds-primary:focus-visible {outline:2px solid hsl(var(--ring));outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Shared command control",
+      "html": "<button class=\"ds-secondary\">ติดต่อเรา</button>",
+      "css": ".ds-secondary { background:hsl(var(--secondary));color:hsl(var(--secondary-foreground));border:0;border-radius:10px;padding:10px 16px;font:500 14px \"Noto Sans Thai\",sans-serif;transition:opacity 300ms; } .ds-secondary:hover {opacity:.85} .ds-secondary:focus-visible {outline:2px solid hsl(var(--ring));outline-offset:2px}"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "description": "Established shared visual pattern",
+      "html": "<input class=\"ds-input\" placeholder=\"ค้นหาโครงสร้างองค์กร\" />",
+      "css": ".ds-input{height:40px;padding:0 12px;border:1px solid hsl(var(--border));border-radius:10px;background:hsl(var(--background));color:hsl(var(--foreground))}.ds-input:focus-visible{outline:2px solid hsl(var(--ring))}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "description": "Established shared visual pattern",
+      "html": "<nav><a class=\"ds-nav\" href=\"#\">โครงสร้างองค์กร</a></nav>",
+      "css": ".ds-nav{display:inline-block;padding:12px;color:hsl(var(--secondary-foreground));background:hsl(var(--secondary));border-radius:8px;text-decoration:none}.ds-nav:focus-visible{outline:2px solid hsl(var(--ring))}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "description": "Established shared visual pattern",
+      "html": "<span class=\"ds-badge\">ที่ปรึกษา</span>",
+      "css": ".ds-badge{display:inline-block;padding:2px 8px;border:1px solid hsl(var(--border));border-radius:9999px;color:hsl(var(--muted-foreground));font-size:12px}"
+    },
+    {
+      "name": "Organization Node",
+      "kind": "card",
+      "description": "Established shared visual pattern",
+      "html": "<div class=\"ds-node\">ประธานกรรมการบริหาร</div>",
+      "css": ".ds-node{padding:16px;border-radius:8px;background:hsl(var(--secondary));color:hsl(var(--secondary-foreground));font-weight:700}"
+    }
+  ],
+  "narrative": {
+    "overview": "The established identity combines navy corporate surfaces, orange actions, and light neutral work areas.",
+    "keyCharacteristics": [
+      "Corporate navy",
+      "Orange interaction",
+      "Universal Noto Sans Thai"
+    ],
+    "rules": [],
+    "dos": [
+      "Preserve maintained hierarchy and business identities."
+    ],
+    "donts": [
+      "Do not turn route-specific refinements into a site-wide rebrand."
+    ]
+  }
+}
