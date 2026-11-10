@@ -63,7 +63,6 @@ const StatCard = ({
   value, 
   suffix, 
   label, 
-  index, 
   inView,
   isClickable,
   isExpanded,
@@ -102,10 +101,7 @@ const StatCard = ({
           }
         }}
         onClick={isClickable ? onClick : undefined}
-        className={`relative group block p-5 sm:p-7 rounded-lg bg-card border border-border hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 ${
-          inView ? 'opacity-100' : 'opacity-100'
-        } ${isClickable ? 'cursor-pointer' : ''} ${isExpanded ? 'ring-2 ring-primary/30' : ''}`}
-        style={{ animationDelay: `${index * 150}ms` }}
+        className={`relative group block p-5 sm:p-7 rounded-lg bg-card border border-border hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 ${isClickable ? 'cursor-pointer' : ''} ${isExpanded ? 'ring-2 ring-primary/30' : ''}`}
       >
         {/* Gradient background on hover */}
         <div className="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

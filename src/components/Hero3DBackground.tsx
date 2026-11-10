@@ -78,7 +78,7 @@ const Hero3DBackground = () => {
         aria-hidden="true"
         fetchPriority="high"
         decoding="async"
-        className={`home-media-image absolute inset-0 home-media-video w-full h-full object-cover transition-opacity duration-700 ${
+        className={`home-media-image absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
           isVideoLoaded && shouldLoadVideo && !isMobile && !reduceMotion ? 'opacity-0' : 'opacity-100'
         }`}
       />
