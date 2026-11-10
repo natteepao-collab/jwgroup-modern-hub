@@ -476,7 +476,7 @@ All colors MUST be HSL.
 .business-mobile-toggle:hover { color: inherit; box-shadow: none; }
 .business-mobile-toggle > div { min-width: 0; }
 .business-mobile-toggle h3 { min-width: 0; overflow-wrap: anywhere; }
-.business-gallery-tabs [data-state=active] { background: hsl(var(--business-tab-color)); color: hsl(var(--primary-foreground)); }
+.public-page .business-gallery-tabs [data-state=active] { background: hsl(var(--business-tab-color)); color: hsl(var(--primary-foreground)); }
 .business-gallery-tabs [data-state=inactive]:hover { color: hsl(var(--business-tab-color)); }
 .business-gallery-tabs [data-business="realestate"] { --business-tab-color: var(--business-estate); }
 .business-gallery-tabs [data-business="hotel"] { --business-tab-color: var(--business-hotel); }
