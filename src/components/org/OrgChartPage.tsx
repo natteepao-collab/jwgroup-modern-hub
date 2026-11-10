@@ -373,7 +373,7 @@ export default function OrgChartPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           {businessTypes.map((b) => {
-            const active = b.business_key === businessKey;
+            const active = b.business_key === businessKey || (isRealEstate && (b.business_key === "realestate" || b.business_key === "real_estate"));
             return (
               <Button
                 variant="ghost"
@@ -584,13 +584,17 @@ export default function OrgChartPage() {
           minScale={0.3}
           maxScale={2}
           initialScale={0.85}
-          centerOnInit
+          onInit={(ref) => {
+            const wrapper = ref.instance.wrapperComponent;
+            const content = ref.instance.contentComponent;
+            if (wrapper && content) ref.setTransform((wrapper.clientWidth - content.offsetWidth * 0.85) / 2, 0, 0.85, 0);
+          }}
           limitToBounds={false}
           wheel={{ step: 0.1 }}
           doubleClick={{ disabled: true }}
           onTransform={(ref: any) => setZoomPct(Math.round((ref?.state?.scale ?? 1) * 100))}
         >
-          {({ zoomIn, zoomOut, resetTransform, centerView }) => (
+          {({ zoomIn, zoomOut, setTransform }) => (
             <div className="relative">
               <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-lg border bg-card px-2 py-1">
                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomOut()} title="ย่อผัง" aria-label="ย่อผัง"><Minus className="h-4 w-4" /></Button>
@@ -599,8 +603,16 @@ export default function OrgChartPage() {
                 </span>
                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => zoomIn()} title="ขยายผัง" aria-label="ขยายผัง"><Plus className="h-4 w-4" /></Button>
                 <span className="mx-1 h-4 w-px bg-border" />
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => centerView(0.85)} title="จัดผังกึ่งกลาง" aria-label="จัดผังกึ่งกลาง"><Maximize className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => resetTransform()} title="คืนค่า 85%" aria-label="คืนค่า 85%"><RotateCcw className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {
+                  const capture = captureRef.current;
+                  const wrapper = capture?.closest(".react-transform-wrapper");
+                  if (capture && wrapper) setTransform((wrapper.clientWidth - capture.offsetWidth * 0.85) / 2, 0, 0.85);
+                }} title="จัดผังกึ่งกลาง" aria-label="จัดผังกึ่งกลาง"><Maximize className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => {
+                  const capture = captureRef.current;
+                  const wrapper = capture?.closest(".react-transform-wrapper");
+                  if (capture && wrapper) setTransform((wrapper.clientWidth - capture.offsetWidth * 0.85) / 2, 0, 0.85);
+                }} title="คืนค่า 85%" aria-label="คืนค่า 85%"><RotateCcw className="h-4 w-4" /></Button>
               </div>
               <div className="min-h-[600px] cursor-grab overflow-hidden rounded-lg border bg-background active:cursor-grabbing org-canvas">
                 <TransformComponent
