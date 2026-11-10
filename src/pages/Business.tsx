@@ -102,11 +102,6 @@ const Business = () => {
       ctaText: 'ดูโครงการของ JW Real Estates',
       image: getBusinessImage('business_realestate_image'),
       backgroundImage: getBusinessImage('business_realestate_bg'),
-      brandColor: {
-        collapsed: 'bg-orange-600/90 dark:bg-orange-700/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(60, 42, 30, 0.95), rgba(41, 37, 36, 0.9), rgba(60, 42, 30, 0.95))',
-      },
     },
     {
       name: t('business.hotel.name'),
@@ -115,11 +110,6 @@ const Business = () => {
       ctaText: 'จองห้องพักที่ 12 The Residence',
       image: getBusinessImage('business_hotel_image'),
       backgroundImage: getBusinessImage('business_hotel_bg'),
-      brandColor: {
-        collapsed: 'bg-neutral-900/95 dark:bg-black/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(23, 23, 23, 0.95), rgba(10, 10, 10, 0.9), rgba(23, 23, 23, 0.95))',
-      },
     },
     {
       name: t('business.pet.name'),
@@ -128,11 +118,6 @@ const Business = () => {
       ctaText: 'ดูบริการของ 3DPet Hospital',
       image: getBusinessImage('business_pet_image'),
       backgroundImage: getBusinessImage('business_pet_bg'),
-      brandColor: {
-        collapsed: 'bg-teal-500/90 dark:bg-teal-600/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(17, 94, 89, 0.95), rgba(19, 78, 74, 0.9), rgba(17, 94, 89, 0.95))',
-      },
       logoStyle: { scale: 1.3 },
     },
     {
@@ -142,11 +127,6 @@ const Business = () => {
       ctaText: 'เลือกซื้อผลิตภัณฑ์ JW Herbal',
       image: getBusinessImage('business_wellness_image'),
       backgroundImage: getBusinessImage('business_wellness_bg'),
-      brandColor: {
-        collapsed: 'bg-green-400/90 dark:bg-green-500/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(22, 101, 52, 0.95), rgba(20, 83, 45, 0.9), rgba(22, 101, 52, 0.95))',
-      },
       logoStyle: { scale: 1.4 },
     },
     {
@@ -156,11 +136,6 @@ const Business = () => {
       ctaText: 'ดูผลงานรับเหมาก่อสร้าง ธนบูลย์ พร็อพเพอร์ตี้',
       image: thanabulLogo,
       backgroundImage: getBusinessImage('business_construction_image'),
-      brandColor: {
-        collapsed: 'bg-blue-500/90 dark:bg-blue-600/90',
-        expanded: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.95), rgba(255, 255, 255, 0.98))',
-        expandedDark: 'linear-gradient(to bottom, rgba(30, 58, 138, 0.95), rgba(29, 78, 216, 0.9), rgba(30, 58, 138, 0.95))',
-      },
       logoStyle: { scale: 1.5 },
     },
   ];

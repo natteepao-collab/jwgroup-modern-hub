@@ -234,14 +234,14 @@ export const Navbar = () => {
               >
                 <Button variant="ghost" aria-expanded={aboutDropdownOpen} onClick={() => setAboutDropdownOpen(open => !open)}
                   className={cn(
-                    "relative flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
+                    "relative flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold tracking-normal transition-all duration-300",
                     aboutDropdownOpen || isAboutActive
                       ? isScrolled || isInnerPage
-                        ? "text-primary bg-primary/8"
-                        : "bg-black/35 backdrop-blur-md text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] ring-1 ring-white/20"
+                        ? "text-primary bg-primary/10"
+                        : "nav-on-media nav-on-media-active"
                       : isScrolled || isInnerPage
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] bg-black/20 backdrop-blur-md hover:bg-black/35 ring-1 ring-white/15"
+                        : "nav-on-media"
                   )}
                 >
                   {t('nav.about')}
@@ -305,14 +305,14 @@ export const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    "relative px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
+                    "relative px-5 py-2 rounded-xl text-[14px] font-semibold tracking-normal transition-all duration-300",
                     isActive(item.path)
-                      ? isScrolled
-                        ? "text-primary bg-primary/8"
-                        : "bg-black/35 backdrop-blur-md text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] ring-1 ring-white/20"
-                      : isScrolled
+                      ? isScrolled || isInnerPage
+                        ? "text-primary bg-primary/10"
+                        : "nav-on-media nav-on-media-active"
+                      : isScrolled || isInnerPage
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] bg-black/20 backdrop-blur-md hover:bg-black/35 ring-1 ring-white/15"
+                        : "nav-on-media"
                   )}
                 >
                   {t(item.labelKey)}
