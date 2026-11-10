@@ -316,7 +316,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               {/* Expandable Content */}
               <div
                 id={`business-mobile-${index}`}
-                inert={isActive ? undefined : "" as never}
+                hidden={!isActive}
                 className={cn(
                   "transition-all duration-500 ease-out relative z-10",
                   isActive ? "max-h-[800px] overflow-y-auto opacity-100" : "max-h-0 overflow-hidden opacity-0"
