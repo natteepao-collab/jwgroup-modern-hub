@@ -24,3 +24,9 @@
 - [x] Refine Contact form and information layout with semantic brand colors.
 - [x] Polish all five Business panels, project galleries, About pages, news/details, careers, legal and remaining public routes.
 - [x] Verify desktop, laptop, tablet, mobile, reduced motion, and central interaction flows (no real contact/application submissions sent).
+
+# Read-only Impeccable critique
+
+- [ ] Audit current public pages, visual quality, content integrity, and media without changing the website.
+- [ ] Inventory existing public content and preserve existing news URLs.
+- [ ] Deliver confirmed findings, verification requests, visual direction, proposed structure, and prioritized implementation risks for review.
