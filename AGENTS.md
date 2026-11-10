@@ -6,3 +6,4 @@
 - Store confirmed product context in `PRODUCT.md` and Impeccable workflow defaults in `.impeccable/config.json` so product truth and build preferences remain separate.
 - Use CorporateLayout and its shared navigation for corporate-information and legal pages; scope their presentation to `.corporate-page` so other pages retain their styling.
 - Scope cross-page public refinements to `.public-page`, excluding admin and homepage; keep media/brand surface colors in global CSS tokens so shared interactions remain theme-safe.
+- Proxy Lovable asset paths through the published app in the local Vite server so CDN pointer images render during browser QA; production keeps the same-origin asset path.
