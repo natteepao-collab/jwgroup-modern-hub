@@ -463,6 +463,11 @@ All colors MUST be HSL.
 .corporate-about-body [class*="blur-"] { display: none; }
 .corporate-page .corporate-cookie-section button { height: auto; min-height: 44px; white-space: normal; text-align: left; }
 .corporate-page .corporate-business-image { border-radius: 0; }
+.corporate-page .corporate-awards-summary .grid > div { border-radius: 0; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; }
+.corporate-page .corporate-awards-summary svg { color: hsl(var(--primary)); }
+.corporate-page .corporate-awards-summary + section { position: static; background: transparent; backdrop-filter: none; }
+.corporate-page .corporate-awards-summary + section button { border-radius: 6px; box-shadow: none; transform: none; }
+.corporate-page .corporate-awards-summary ~ section { padding-block: 2rem; }
 @media (max-width: 639px) {
   .corporate-nav-link { gap: 0.5rem; padding-inline: 0.625rem; }
   .corporate-nav-link span { font-size: 0.75rem; }

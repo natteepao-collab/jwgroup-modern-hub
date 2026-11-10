@@ -414,7 +414,7 @@ const YearSection = ({
   );
 };
 
-const AwardsSection = () => {
+const AwardsSection = ({ corporate = false }: { corporate?: boolean }) => {
   const [awards, setAwards] = useState<Award[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'award' | 'certification'>('all');
@@ -508,7 +508,8 @@ const AwardsSection = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header Banner */}
-      <section className="relative pt-16 pb-12 md:pt-24 md:pb-16 overflow-hidden">
+      <section className={corporate ? 'corporate-awards-summary pb-8' : 'relative pt-16 pb-12 md:pt-24 md:pb-16 overflow-hidden'}>
+        {!corporate && <>
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
         <div className="absolute top-10 right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
@@ -525,6 +526,9 @@ const AwardsSection = () => {
             เพื่อส่งมอบคุณค่าที่ยั่งยืนให้กับลูกค้าและสังคม
           </p>
 
+          </div>
+        </>}
+        <div className="relative container mx-auto px-4">
           {/* Stat Tiles */}
           <div className="grid grid-cols-3 gap-3 md:gap-6 max-w-3xl mx-auto">
             <div className="bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl p-4 md:p-6 shadow-sm hover:shadow-md transition-all">
@@ -553,8 +557,10 @@ const AwardsSection = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
             {filterTabs.map(tab => (
-              <button
+              <Button
                 key={tab.key}
+                variant={filter === tab.key ? 'secondary' : 'ghost'}
+                aria-pressed={filter === tab.key}
                 onClick={() => setFilter(tab.key)}
                 className={`group inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
                   filter === tab.key
@@ -567,7 +573,7 @@ const AwardsSection = () => {
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
                   filter === tab.key ? 'bg-primary-foreground/20' : 'bg-background/80 text-foreground/70'
                 }`}>{tab.count}</span>
-              </button>
+              </Button>
             ))}
           </div>
         </div>

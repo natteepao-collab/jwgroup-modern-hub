@@ -277,10 +277,7 @@ const AboutVision = () => {
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Vision Section */}
       <div className="mb-16">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-8 bg-primary rounded-full" />
-          <span className="text-sm font-medium text-primary tracking-wide uppercase">Vision</span>
-        </div>
+        
 
         <div className="relative">
           <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary/30 to-transparent rounded-full hidden md:block" />
@@ -302,10 +299,7 @@ const AboutVision = () => {
 
       {/* Mission Section */}
       <div>
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-1 h-8 bg-primary rounded-full" />
-          <span className="text-sm font-medium text-primary tracking-wide uppercase">Mission</span>
-        </div>
+        
 
         <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">
           พันธกิจ

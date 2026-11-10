@@ -14,7 +14,7 @@ const Awards = () => {
                 canonicalUrl="/awards"
                 structuredData={buildBreadcrumb([{ name: t('awards.title'), path: '/awards' }])}
             />
-            <AwardsSection />
+            <AwardsSection corporate />
         </CorporateLayout>
     );
 };
