@@ -10,3 +10,9 @@
 - [x] Confirm the central JW Group product record and capture it with Impeccable init.
 - [x] Refine `/about/structure` in the existing navy/orange brand while preserving all business charts and interactions.
 - [x] Verify chart navigation and layouts on desktop and mobile.
+
+# Corporate About pages
+
+- [ ] Align history, vision/values, leadership, awards, and privacy/PDPA pages with the organization-page navy/orange design.
+- [ ] Connect existing corporate pages through consistent About navigation without changing factual or policy content.
+- [ ] Verify navigation, business content, image viewing, and cookie settings on desktop and mobile.
