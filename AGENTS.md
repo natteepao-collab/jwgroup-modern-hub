@@ -10,3 +10,4 @@
 - Keep public destination, phone, testimonial and unverified-count safeguards in `src/lib/publicContent.ts`; presentation must never substitute mock claims for missing managed data.
 - Register audit-led interface translations separately from legacy copy so factual content and existing SEO metadata remain untouched.
 - Keep leadership fallback text empty when managed names, titles or quotations are missing so presentation never attributes invented statements.
+- Keep applicant and contact validation in `src/lib/applicationValidation.ts` so input rules can be tested without submissions.

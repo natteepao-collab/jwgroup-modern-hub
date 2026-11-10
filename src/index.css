@@ -42,6 +42,7 @@ All colors MUST be HSL.
     --popover-foreground: 222 47% 11%;
 
     --primary: 30 70% 45%;
+    --primary-readable: 30 70% 34%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 222 47% 11%;
@@ -610,6 +611,11 @@ All colors MUST be HSL.
 .cookie-panel button { letter-spacing: 0; }
 .cookie-panel p { line-height: 1.6; }
 .cookie-panel ::selection { background: hsl(var(--primary) / 0.2); }
+:root:not(.dark) .home-page, :root:not(.dark) .public-page, :root:not(.dark) .site-navbar, :root:not(.dark) .site-menu, :root:not(.dark) .cookie-panel { --primary: var(--primary-readable); }
+.public-page .bg-primary-foreground\/20 { background-color: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); }
+.premium-analysis-page .bg-muted { color: hsl(var(--foreground)); }
+:root:not(.dark) .site-bottom-nav { --primary: var(--primary-readable); }
+.public-page .text-muted-foreground\/50 { color: hsl(var(--muted-foreground)); }
 .site-assistant[hidden] { display: none; }
 .home-page .home-leadership > .absolute, .home-page .home-leadership [class*="blur"], .home-page .home-leadership .border-t-2, .home-page .home-leadership .border-b-2 { display: none; }
 .home-page .home-leadership [class*="bg-gradient"] { background: transparent; }

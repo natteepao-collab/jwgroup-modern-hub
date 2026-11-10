@@ -11,15 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Loader2, Upload, CheckCircle, X } from 'lucide-react';
-
-const applicationSchema = z.object({
-  full_name: z.string().min(2, 'กรุณากรอกชื่อ-นามสกุล').max(100),
-  email: z.string().email('กรุณากรอก email ที่ถูกต้อง').max(255),
-  phone: z.string().min(9, 'กรุณากรอกเบอร์โทรศัพท์').max(20),
-  education: z.string().max(500).optional(),
-  experience: z.string().max(2000).optional(),
-  cover_letter: z.string().max(3000).optional(),
-});
+import { applicationSchema, validResume } from '@/lib/applicationValidation';
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
@@ -52,15 +44,18 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setResumeFile(null);
     if (file) {
       // Validate file type
       const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
       if (!allowedTypes.includes(file.type)) {
+        e.target.value = '';
         toast.error(isEnglish ? 'Please upload PDF or Word document only' : 'กรุณาอัพโหลดไฟล์ PDF หรือ Word เท่านั้น');
         return;
       }
       // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      if (!validResume(file)) {
+        e.target.value = '';
         toast.error(isEnglish ? 'File size must be less than 5MB' : 'ขนาดไฟล์ต้องไม่เกิน 5MB');
         return;
       }
@@ -199,7 +194,7 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
                 <FormItem>
                   <FormLabel>{isEnglish ? 'Phone Number' : 'เบอร์โทรศัพท์'} *</FormLabel>
                   <FormControl>
-                    <Input placeholder={isEnglish ? 'Enter your phone number' : 'กรอกเบอร์โทรศัพท์'} {...field} />
+                    <Input type="tel" autoComplete="tel" placeholder={isEnglish ? 'Enter your phone number' : 'กรอกเบอร์โทรศัพท์'} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -262,7 +257,7 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
 
             {/* Resume Upload */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">
+              <label htmlFor="application-resume" className="text-sm font-medium">
                 {isEnglish ? 'Resume/CV' : 'เรซูเม่/ประวัติย่อ'} (PDF, DOC, DOCX)
               </label>
               <div className="flex items-center gap-2">
@@ -271,6 +266,7 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
                   <span className="text-sm">{isEnglish ? 'Choose File' : 'เลือกไฟล์'}</span>
                 </Button>
                   <input
+                    id="application-resume"
                     ref={resumeInput}
                     type="file"
                     accept=".pdf,.doc,.docx"

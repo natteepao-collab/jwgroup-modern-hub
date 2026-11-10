@@ -51,8 +51,9 @@ const PremiumAnalysis = () => {
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Surname Input */}
                         <div className="space-y-2">
-                            <Label className="text-muted-foreground">นามสกุล * (ใช้เพื่อคำนวณความเข้ากันได้)</Label>
+                            <Label htmlFor="analysis-surname" className="text-muted-foreground">นามสกุล * (ใช้เพื่อคำนวณความเข้ากันได้)</Label>
                             <Input
+                                id="analysis-surname"
                                 value={surname}
                                 onChange={(e) => setSurname(e.target.value)}
                                 placeholder="กรอกนามสกุลของคุณ"
@@ -90,10 +91,11 @@ const PremiumAnalysis = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-muted-foreground">เวลาเกิด (โดยประมาณ)</Label>
+                                <Label htmlFor="analysis-time" className="text-muted-foreground">เวลาเกิด (โดยประมาณ)</Label>
                                 <div className="relative">
                                     <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                     <Input
+                                        id="analysis-time"
                                         type="time"
                                         value={time}
                                         onChange={(e) => setTime(e.target.value)}

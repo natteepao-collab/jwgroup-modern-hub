@@ -8,6 +8,7 @@ const HERO_VIDEO_URL = 'https://storage.googleapis.com/nbcloudbucket/video/jw/JW
 const Hero3DBackground = () => {
   const { getImage } = useSiteContent();
   const heroPoster = getImage('business_realestate_bg')?.url || getImage('about_history_bento_1')?.url || headquarters;
+  const [posterFailed, setPosterFailed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -76,7 +77,8 @@ const Hero3DBackground = () => {
     >
       {/* Poster image - shown instantly for fast LCP, stays as fallback on mobile/slow networks */}
       <img
-        src={heroPoster}
+        src={posterFailed ? headquarters : heroPoster}
+        onError={() => setPosterFailed(true)}
         alt=""
         aria-hidden="true"
         fetchPriority="high"
@@ -104,7 +106,7 @@ const Hero3DBackground = () => {
             playsInline
             preload="metadata"
             poster={heroPoster}
-            onLoadedData={handleVideoLoaded}
+            onPlaying={handleVideoLoaded}
             onError={() => setIsVideoLoaded(false)}
             className={`home-media-video w-full h-full object-cover transition-opacity duration-700 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'

@@ -162,6 +162,8 @@ function MobileTreeItem({
           depth > 0 && "ml-3",
         )}
         onClick={() => onSelect(node)}
+        role="button" tabIndex={0} aria-label={`${node.position_th} ${node.employee_name || ''}`}
+        onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(node); } }}
       >
         <MobileLine node={node} />
       </div>
@@ -170,11 +172,12 @@ function MobileTreeItem({
   return (
     <AccordionItem value={node.id} className={cn("border-none", depth > 0 && "ml-3")}>
       <div className="rounded-lg border bg-card overflow-hidden">
-        <AccordionTrigger className="px-3 py-3 hover:no-underline">
-          <div className="flex-1 text-left" onClick={(e) => { e.stopPropagation(); onSelect(node); }}>
+        <AccordionTrigger className="px-3 py-3 hover:no-underline" aria-label={`ย่อหรือขยาย ${node.position_th}`}>
+          <div className="flex-1 text-left">
             <MobileLine node={node} />
           </div>
         </AccordionTrigger>
+        <Button variant="ghost" className="w-full min-h-11" onClick={() => onSelect(node)}>ดูรายละเอียด {node.position_th}</Button>
         <AccordionContent className="px-2 pb-2">
           <Accordion type="multiple" className="space-y-2">
             {node.children.map((c) => (
@@ -457,7 +460,7 @@ export default function OrgChartPage() {
             />
           </div>
           <Select value={filter.level} onValueChange={(v) => setFilter((f) => ({ ...f, level: v }))}>
-            <SelectTrigger className="w-full"><SelectValue placeholder="ระดับ" /></SelectTrigger>
+            <SelectTrigger aria-label="กรองระดับองค์กร" className="w-full"><SelectValue placeholder="ระดับ" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">ทุกระดับ</SelectItem>
               <SelectItem value="1">ระดับ 1 (บริหารสูงสุด)</SelectItem>
@@ -467,7 +470,7 @@ export default function OrgChartPage() {
             </SelectContent>
           </Select>
           <Select value={filter.department} onValueChange={(v) => setFilter((f) => ({ ...f, department: v }))}>
-            <SelectTrigger className="w-full"><SelectValue placeholder="ฝ่าย" /></SelectTrigger>
+            <SelectTrigger aria-label="กรองฝ่าย" className="w-full"><SelectValue placeholder="ฝ่าย" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">ทุกฝ่าย</SelectItem>
               {departments.map((d) => (

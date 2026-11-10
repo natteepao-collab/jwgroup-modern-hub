@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { managedPhone } from '@/lib/publicContent';
 import { trackEvent } from '@/lib/analytics';
+import { requiredContactFields } from '@/lib/applicationValidation';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!requiredContactFields(formData)) {
       toast({ title: t('common.fillRequired'), description: t('common.fillRequiredDesc'), variant: 'destructive' });
       return;
     }
