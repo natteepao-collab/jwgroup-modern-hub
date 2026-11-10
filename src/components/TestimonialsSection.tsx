@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import { Button } from '@/components/ui/button';
+import { publishedTestimonials } from '@/lib/publicContent';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface Testimonial {
@@ -19,61 +20,13 @@ interface Testimonial {
   rating: number;
 }
 
-// Mock data for initial display
-const mockTestimonials: Testimonial[] = [
-  {
-    id: '1',
-    client_name: 'คุณสมศักดิ์ เจริญสุข',
-    client_title: 'ผู้จัดการทั่วไป',
-    client_company: 'บริษัท ABC จำกัด',
-    client_image_url: null,
-    content_th: 'ประทับใจมากกับบริการของ JW Group ทีมงานมืออาชีพ ใส่ใจทุกรายละเอียด โครงการมีคุณภาพสูงมาก',
-    content_en: 'Very impressed with JW Group\'s service. Professional team, attention to detail, and high-quality projects.',
-    content_cn: null,
-    rating: 5,
-  },
-  {
-    id: '2',
-    client_name: 'คุณวิภา รักษ์ธรรม',
-    client_title: 'เจ้าของธุรกิจ',
-    client_company: 'ร้าน XYZ',
-    client_image_url: null,
-    content_th: 'เลือกใช้บริการ 12 The Residence Hotel สำหรับจัดประชุมบริษัท บรรยากาศดี อาหารอร่อย พนักงานบริการดีเยี่ยม',
-    content_en: 'Chose 12 The Residence Hotel for our company meeting. Great atmosphere, delicious food, and excellent staff service.',
-    content_cn: null,
-    rating: 5,
-  },
-  {
-    id: '3',
-    client_name: 'คุณนภา สุขใจ',
-    client_title: 'เจ้าของสัตว์เลี้ยง',
-    client_company: null,
-    client_image_url: null,
-    content_th: 'พาน้องหมาไปรักษาที่ 3DPet Hospital หมอใจดีมาก ดูแลสัตว์เลี้ยงเหมือนลูกหลานตัวเอง ขอบคุณมากค่ะ',
-    content_en: 'Brought my dog to 3DPet Hospital. The doctors are very kind and treat pets like their own family. Thank you so much!',
-    content_cn: null,
-    rating: 5,
-  },
-  {
-    id: '4',
-    client_name: 'คุณประเสริฐ มั่นคง',
-    client_title: 'นักลงทุนอสังหาริมทรัพย์',
-    client_company: null,
-    client_image_url: null,
-    content_th: 'ลงทุนกับโครงการของ JW Real Estate มาหลายปี ผลตอบแทนดี โครงการมีคุณภาพ ไว้วางใจได้',
-    content_en: 'Invested with JW Real Estate projects for many years. Good returns, quality projects, and trustworthy.',
-    content_cn: null,
-    rating: 5,
-  },
-];
-
 const TestimonialsSection = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { tr } = useAutoTranslate([
     'เสียงจากลูกค้าของเรา',
     'ความไว้วางใจจากลูกค้าคือความภาคภูมิใจของเรา',
   ]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(mockTestimonials);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
@@ -86,9 +39,7 @@ const TestimonialsSection = () => {
         .eq('is_published', true)
         .order('position_order', { ascending: true });
 
-      if (!error && data && data.length > 0) {
-        setTestimonials(data);
-      }
+      if (!error) setTestimonials(publishedTestimonials(data));
     };
 
     fetchTestimonials();
@@ -123,6 +74,8 @@ const TestimonialsSection = () => {
   };
 
   const currentTestimonial = testimonials[currentIndex];
+
+  if (!currentTestimonial) return null;
 
   return (
     <section ref={ref} className="py-20 md:py-28 bg-gradient-to-b from-muted/30 to-background">
@@ -163,7 +116,7 @@ const TestimonialsSection = () => {
                     key={i}
                     className={`w-5 h-5 ${
                       i < (currentTestimonial?.rating || 5)
-                        ? 'text-yellow-400 fill-yellow-400'
+                        ? 'text-primary fill-primary'
                         : 'text-muted-foreground'
                     }`}
                   />
@@ -199,15 +152,17 @@ const TestimonialsSection = () => {
             <div className="flex items-center justify-between mt-8 pt-6 border-t border-border/50">
               <div className="flex gap-2">
                 {testimonials.map((_, index) => (
-                  <button
+                  <Button variant="ghost" size="icon"
                     key={index}
+                    aria-label={`${index + 1}`}
+                    aria-pressed={index === currentIndex}
                     onClick={() => {
                       setIsAutoPlaying(false);
                       setCurrentIndex(index);
                     }}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    className={`h-8 w-8 rounded-full transition-all ${
                       index === currentIndex
-                        ? 'bg-primary w-8'
+                        ? 'bg-primary'
                         : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
                     }`}
                   />
@@ -218,6 +173,7 @@ const TestimonialsSection = () => {
                 <Button
                   variant="outline"
                   size="icon"
+                  aria-label={t("refinement.reviewsPrevious")}
                   onClick={goToPrev}
                   className="rounded-full"
                 >
@@ -226,6 +182,7 @@ const TestimonialsSection = () => {
                 <Button
                   variant="outline"
                   size="icon"
+                  aria-label={t("refinement.reviewsNext")}
                   onClick={goToNext}
                   className="rounded-full"
                 >

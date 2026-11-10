@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ExternalLink, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { publicDestination } from '@/lib/publicContent';
 import { cn } from '@/lib/utils';
 
 interface BusinessItem {
@@ -156,13 +157,13 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className="bg-primary hover:bg-accent text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8"
                 >
                   <a 
-                    href={business.url === "#" ? "/contact" : business.url} 
-                    target="_blank" 
+                    href={publicDestination(business.url).href} 
+                    target={publicDestination(business.url).external ? "_blank" : undefined} 
                     rel="noopener noreferrer"
-                    aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
+                    aria-label={`${publicDestination(business.url).external ? business.ctaText || t('business.viewWebsite') : t('nav.contact')} ${business.name}`}
                     className="flex items-center gap-2 whitespace-normal text-center"
                   >
-                    {business.ctaText || t('business.viewWebsite')}
+                    {publicDestination(business.url).external ? business.ctaText || t('business.viewWebsite') : t('nav.contact')}
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 </Button>
@@ -188,10 +189,10 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
           return (
             <a
               key={index}
-              href={business.url === "#" ? "/contact" : business.url}
-              target="_blank"
+              href={publicDestination(business.url).href}
+              target={publicDestination(business.url).external ? "_blank" : undefined}
               rel="noopener noreferrer"
-              aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
+              aria-label={`${publicDestination(business.url).external ? business.ctaText || t('business.viewWebsite') : t('nav.contact')} ${business.name}`}
               className="group relative overflow-hidden rounded-xl h-[280px] transition-all duration-500 hover:shadow-xl hover:scale-[1.02]"
             >
               {/* Background Image */}
@@ -233,7 +234,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   
                   {/* CTA */}
                   <div className="flex items-center gap-2 text-primary font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                    <span>{business.ctaText || t('business.viewWebsite')}</span>
+                    <span>{publicDestination(business.url).external ? business.ctaText || t('business.viewWebsite') : t('nav.contact')}</span>
                     <ExternalLink className="h-4 w-4" />
                   </div>
                 </div>
@@ -332,13 +333,13 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                     className="w-full bg-primary hover:bg-accent text-primary-foreground"
                   >
                     <a 
-                      href={business.url === "#" ? "/contact" : business.url} 
-                      target="_blank" 
+                      href={publicDestination(business.url).href} 
+                      target={publicDestination(business.url).external ? "_blank" : undefined} 
                       rel="noopener noreferrer"
-                      aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
+                      aria-label={`${publicDestination(business.url).external ? business.ctaText || t('business.viewWebsite') : t('nav.contact')} ${business.name}`}
                       className="flex items-center justify-center gap-2 whitespace-normal text-center"
                     >
-                      {business.ctaText || t('business.viewWebsite')}
+                      {publicDestination(business.url).external ? business.ctaText || t('business.viewWebsite') : t('nav.contact')}
                       <ExternalLink className="h-4 w-4" />
                     </a>
                   </Button>

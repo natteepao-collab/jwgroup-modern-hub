@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import {
-  MapPin, Phone, Mail, Clock, Facebook, Linkedin,
+  MapPin, Phone, Mail, Clock, Facebook, Youtube,
   Loader2, User, Tag, MessageSquare, Send,
 } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
@@ -13,6 +13,8 @@ import { SEO } from '@/components/SEO';
 import { buildBreadcrumb, localBusinessSchema } from '@/lib/seoSchemas';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useSocialLinks } from '@/hooks/useSocialLinks';
+import { managedPhone } from '@/lib/publicContent';
 import { trackEvent } from '@/lib/analytics';
 
 const Contact = () => {
@@ -20,6 +22,7 @@ const Contact = () => {
   const { toast } = useToast();
   const reduceMotion = useReducedMotion();
   const { getContent } = useSiteContent();
+  const { links: social } = useSocialLinks();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', subject: '', message: '',
@@ -51,14 +54,14 @@ const Contact = () => {
   };
 
   const address = getContent('contact_address').content || 'เลขที่ 9 ซอยสรณคมน์ 12 ถนนสรณคมน์ แขวงสีกัน เขตดอนเมือง กรุงเทพมหานคร 10210';
-  const phone = getContent('contact_phone').content || '02-566-1111';
+  const phone = managedPhone(getContent('contact_phone').content)?.display || '';
   const email = getContent('contact_email').content || 'jwgroupmkt@gmail.com';
   const hours = getContent('contact_hours').content || t('footer.hours');
   const mapSrc = getContent('contact_map').content || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5!3d13.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ1JzAwLjAiTiAxMDDCsDMwJzAwLjAiRQ!5e0!3m2!1sen!2sth!4v1234567890';
 
   const infoCards = [
     { icon: MapPin, title: t('contact.address'), lines: [address] },
-    { icon: Phone, title: t('contact.phone'), lines: [phone, 'LINE: @jwgroup'] },
+    { icon: Phone, title: t('contact.phone'), lines: [phone] },
     { icon: Mail, title: t('contact.email'), lines: [email] },
     { icon: Clock, title: t('contact.businessHours'), lines: [hours] },
   ];
@@ -92,7 +95,7 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-16 max-w-6xl mx-auto">
           {/* Info column */}
           <div className="space-y-4">
-            {infoCards.map((item, i) => {
+            {infoCards.filter(item => item.lines.some(Boolean)).map((item, i) => {
               const Icon = item.icon;
               return (
                 <motion.div
@@ -133,11 +136,11 @@ const Contact = () => {
               <h3 className="text-xl font-bold text-foreground mb-3">{t('footer.followUs')}</h3>
               <div className="flex gap-3">
                 {[
-                  { href: 'https://facebook.com', Icon: Facebook },
-                  { href: 'https://linkedin.com', Icon: Linkedin },
-                ].map(({ href, Icon }, idx) => (
+                  { href: social.facebook, Icon: Facebook, label: 'Facebook' },
+                  { href: social.youtube, Icon: Youtube, label: 'YouTube' },
+                ].filter(item => item.href).map(({ href, Icon, label }, idx) => (
                   <motion.a
-                    key={idx} href={href} target="_blank" rel="noopener noreferrer"
+                    key={idx} href={href} aria-label={label} title={label} target="_blank" rel="noopener noreferrer"
                     whileHover={reduceMotion ? undefined : { scale: 1.05 }}
                     className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-primary hover:border-primary hover:bg-primary hover:text-primary-foreground transition-colors"
                   >

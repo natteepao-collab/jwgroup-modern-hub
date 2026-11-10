@@ -86,22 +86,12 @@ const AboutHistory = () => {
 
   const heroImage = galleryImages[0]?.src;
 
-  if (galleryImages.length === 0) {
-    return (
-      <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="text-center py-16">
-          <div className="text-muted-foreground mb-4">กรุณาอัปโหลดรูปภาพในหน้า Admin Panel</div>
-          <a href="/admin" className="text-primary underline">ไปที่หน้า Admin</a>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Hero Section with Main Image */}
       {heroImage && (
-        <div className="corporate-history-image relative mb-10 overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
+        <div className="corporate-history-image relative mb-10 overflow-hidden group cursor-pointer" role="button" tabIndex={0} aria-label={titleContent.title || "JW Group"} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedImage(heroImage); } }} onClick={() => setSelectedImage(heroImage)}>
           <img
             src={heroImage}
             alt="JW GROUP Headquarters"
@@ -166,6 +156,8 @@ const AboutHistory = () => {
               {galleryImages[0] && (
                 <div
                   className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden cursor-pointer group"
+                  role="button" tabIndex={0} aria-label={galleryImages[0].alt}
+                  onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (galleryImages[0]?.src) setSelectedImage(galleryImages[0].src); } }}
                   onClick={() => galleryImages[0]?.src && setSelectedImage(galleryImages[0].src)}
                 >
                   <img
@@ -188,6 +180,8 @@ const AboutHistory = () => {
                 <div
                   key={index}
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
+                  role="button" tabIndex={0} aria-label={image.alt}
+                  onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (image.src) setSelectedImage(image.src); } }}
                   onClick={() => image.src && setSelectedImage(image.src)}
                 >
                   <img
@@ -207,6 +201,8 @@ const AboutHistory = () => {
                 <div
                   key={index + 3}
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group"
+                  role="button" tabIndex={0} aria-label={image.alt}
+                  onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (image.src) setSelectedImage(image.src); } }}
                   onClick={() => image.src && setSelectedImage(image.src)}
                 >
                   <img
