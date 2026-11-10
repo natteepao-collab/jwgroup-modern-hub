@@ -74,6 +74,12 @@ Shared Button variants own commands and selection. Inputs retain keyboard-visibl
 
 ## Do's and Don'ts
 
+## Public-page polish
+
+Public information, business, contact, news and careers pages use zero tracking, balanced headings and a light neutral reading surface. Page titles are left-aligned with a short orange rule; corporate documents retain the navy title band and shared About navigation. Contact uses labeled fields, white form surfaces and orange submission controls. Business panels preserve the accordion and official logos with a token-owned white logo surface; galleries keep full uncropped images in a bounded dialog. Business gallery identities use the semantic estate, hotel, pet, herbal and construction CSS tokens. Public refinements exclude the admin and preserve homepage-local media rules. News article reading measure is 75 characters and body leading is 1.9. Reduced-motion disables moving transforms without hiding content.
+
+## Do's and Don'ts
+
 - Do retain official logos, universal type, semantic tokens, and reduced-motion support.
 - Do keep all maintained businesses and preserve original hierarchy records.
 - Don't treat a route refinement as a global rebrand.
