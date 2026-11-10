@@ -1,11 +1,9 @@
-import { Route, Routes, Link, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink, User, Quote } from 'lucide-react';
+import { Eye, Award, MapPin, ExternalLink, User, Quote } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
-import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
-import OrganizationChart from '@/components/OrganizationChart';
+import { Building2, Leaf } from 'lucide-react';
 import OrgChartPage from '@/components/org/OrgChartPage';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
@@ -13,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
 import { SEO } from '@/components/SEO';
 import { buildBreadcrumb } from '@/lib/seoSchemas';
+import CorporateLayout from '@/components/CorporateLayout';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 // No hardcoded imports - all images from database
 
@@ -101,7 +101,7 @@ const AboutHistory = () => {
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Hero Section with Main Image */}
       {heroImage && (
-        <div className="relative mb-12 rounded-3xl overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
+        <div className="corporate-history-image relative mb-10 overflow-hidden group cursor-pointer" onClick={() => setSelectedImage(heroImage)}>
           <img
             src={heroImage}
             alt="JW GROUP Headquarters"
@@ -111,7 +111,7 @@ const AboutHistory = () => {
           <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-1.5 h-10 bg-primary rounded-full" />
-              <span className="text-primary font-medium text-sm uppercase tracking-widest">Since 2007</span>
+              
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-foreground mb-3">
               {titleContent.title || 'JW GROUP'}
@@ -169,7 +169,7 @@ const AboutHistory = () => {
                   onClick={() => galleryImages[0]?.src && setSelectedImage(galleryImages[0].src)}
                 >
                   <img
-                    src={galleryImages[0].src!}
+                    src={galleryImages[0].src || undefined}
                     alt={galleryImages[0].alt}
                     className="w-full h-full min-h-[300px] md:min-h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -191,7 +191,7 @@ const AboutHistory = () => {
                   onClick={() => image.src && setSelectedImage(image.src)}
                 >
                   <img
-                    src={image.src!}
+                    src={image.src || undefined}
                     alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -210,7 +210,7 @@ const AboutHistory = () => {
                   onClick={() => image.src && setSelectedImage(image.src)}
                 >
                   <img
-                    src={image.src!}
+                    src={image.src || undefined}
                     alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -239,27 +239,12 @@ const AboutHistory = () => {
         </div>
       </div>
 
-      {/* Image Lightbox Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-[95vw] max-h-[95vh]">
-            <img
-              src={selectedImage}
-              alt="Gallery Image"
-              className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
-            />
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors shadow-lg"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
+      <Dialog open={Boolean(selectedImage)} onOpenChange={open => { if (!open) setSelectedImage(null); }}>
+        <DialogContent className="max-w-[95vw] p-6">
+          <DialogTitle className="sr-only">{t('about.history')}</DialogTitle>
+          {selectedImage && <img src={selectedImage} alt="JW Group" className="mx-auto max-h-[85vh] max-w-full object-contain" />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
@@ -290,10 +275,7 @@ const AboutVision = () => {
     <div ref={ref} className={`transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
       {/* Vision Section */}
       <div className="mb-16">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-8 bg-primary rounded-full" />
-          <span className="text-sm font-medium text-primary tracking-wide uppercase">Vision</span>
-        </div>
+        
 
         <div className="relative">
           <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary/30 to-transparent rounded-full hidden md:block" />
@@ -315,10 +297,7 @@ const AboutVision = () => {
 
       {/* Mission Section */}
       <div>
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-1 h-8 bg-primary rounded-full" />
-          <span className="text-sm font-medium text-primary tracking-wide uppercase">Mission</span>
-        </div>
+        
 
         <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">
           พันธกิจ
@@ -328,7 +307,7 @@ const AboutVision = () => {
           {missions.map((mission, index) => (
             <div
               key={index}
-              className="group flex gap-5 p-5 rounded-2xl bg-gradient-to-r from-muted/50 to-transparent hover:from-primary/5 hover:to-primary/10 transition-all duration-300 border border-transparent hover:border-primary/20"
+              className="group flex gap-5 border-b border-border py-6 transition-colors duration-300"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
@@ -348,8 +327,8 @@ const AboutVision = () => {
       </div>
 
       {/* Core Values */}
-      <div className="mt-16 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/10">
-        <h3 className="text-lg font-semibold text-foreground mb-6 text-center">ค่านิยมองค์กร</h3>
+      <div className="mt-12 border-t border-border py-8">
+        <h3 className="text-lg font-semibold text-foreground mb-6 ">ค่านิยมองค์กร</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {[
             { label: "ซื่อสัตย์", value: "Integrity" },
@@ -358,7 +337,7 @@ const AboutVision = () => {
             { label: "ยั่งยืน", value: "Sustainability" }
           ].map((item, index) => (
             <div key={index} className="text-center">
-              <p className="text-lg md:text-xl font-semibold text-primary">{item.label}</p>
+              <p className="text-lg md:text-xl font-bold text-foreground">{item.label}</p>
               <p className="text-xs text-muted-foreground mt-1">{item.value}</p>
             </div>
           ))}
@@ -420,17 +399,11 @@ const AboutTeam = () => {
           {/* Chairman - Hero Card */}
           {chairman && (
             <div
-              className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-background border border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
+              className="group relative overflow-hidden rounded-lg bg-card border border-border hover:border-primary transition-all duration-300"
               onMouseEnter={() => setHoveredId(chairman.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => setSelectedExecutive(selectedExecutive === chairman.id ? null : chairman.id)}
             >
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
-              </div>
-
               <div className="relative flex flex-col md:flex-row gap-6 p-6 md:p-8">
                 {/* Image with Glow Effect */}
                 <div className="relative flex-shrink-0 mx-auto md:mx-0">
@@ -504,8 +477,8 @@ const AboutTeam = () => {
                   className={cn(
                     "group relative overflow-hidden rounded-2xl border transition-all duration-500 cursor-pointer",
                     hoveredId === director.id
-                      ? "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 shadow-xl shadow-primary/5 scale-[1.02]"
-                      : "bg-muted/30 border-border/50 hover:border-primary/20"
+                      ? "bg-card border-primary"
+                      : "bg-card border-border hover:border-primary"
                   )}
                   style={{ animationDelay: `${index * 150}ms` }}
                   onMouseEnter={() => setHoveredId(director.id)}
@@ -554,7 +527,7 @@ const AboutTeam = () => {
                           กรรมการผู้จัดการ
                         </span>
                         <h3 className={cn(
-                          "text-lg md:text-xl font-semibold mb-1 transition-colors duration-300 line-clamp-1",
+                          "text-lg md:text-xl font-bold mb-1 transition-colors duration-300",
                           hoveredId === director.id ? "text-primary" : "text-foreground"
                         )}>
                           {director.name}
@@ -641,145 +614,23 @@ const About = () => {
     breadcrumb: 'เกี่ยวกับเรา',
   };
 
-  const navItems = [
-    { path: '/about/history', labelKey: 'about.history', icon: Info },
-    { path: '/about/structure', labelKey: 'about.structure', icon: Network },
-    { path: '/about/team', labelKey: 'about.team', icon: UserCircle },
-    { path: '/about/awards', labelKey: 'about.awards', icon: Award },
-  ];
-
-  const isActive = (path: string) => location.pathname === path;
+  const isStructure = location.pathname === '/about/structure';
+  const title = location.pathname === '/about/vision' ? t('about.vision') : seo.breadcrumb;
 
   return (
-    <div className={cn("app-page-safe min-h-screen bg-background", location.pathname === "/about/structure" && "about-structure-page")}>
-      <SEO
-        title={seo.title}
-        description={seo.desc}
-        canonicalUrl={location.pathname.startsWith('/about') ? location.pathname : '/about'}
-        structuredData={buildBreadcrumb([{ name: seo.breadcrumb, path: location.pathname }])}
-      />
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Navigation */}
-          <aside className="w-full lg:w-72 shrink-0">
-            <div className="sticky app-sticky-below-navbar">
-              {/* Header */}
-              <div className="mb-6 relative">
-                <div className="absolute -left-2 top-0 w-1 h-full bg-gradient-to-b from-primary to-primary/30 rounded-full" />
-                <h2 className="text-xl font-bold text-foreground mb-1 pl-4">เกี่ยวกับเรา</h2>
-                <p className="text-sm text-muted-foreground pl-4">ข้อมูลองค์กร JW Group</p>
-              </div>
-
-              {/* Navigation Items */}
-              <nav className="relative">
-                {/* Decorative Line */}
-                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/30 via-primary/10 to-transparent hidden lg:block" />
-
-                <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-2 px-2 lg:mx-0 lg:px-0">
-                  {navItems.map((item, index) => {
-                    const active = isActive(item.path);
-                    return (
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        className={cn(
-                          "group relative flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 min-w-max lg:min-w-0 border backdrop-blur-sm",
-                          active
-                            ? "bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 border-primary/30 shadow-xl shadow-primary/15 lg:translate-x-1"
-                            : "bg-card/80 hover:bg-card border-border/60 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
-                        )}
-                      >
-                        {/* Icon Container with Premium Gradient */}
-                        <div className={cn(
-                          "relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 overflow-hidden",
-                          active
-                            ? "bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/40 scale-105"
-                            : "bg-gradient-to-br from-muted to-muted/70 group-hover:from-primary group-hover:to-accent group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110"
-                        )}>
-                          {/* Shine overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary-foreground/10 to-primary-foreground/20" />
-                          <item.icon className={cn(
-                            "relative h-5 w-5 z-10 transition-all duration-300",
-                            active
-                              ? "text-primary-foreground"
-                              : "text-muted-foreground group-hover:text-primary-foreground"
-                          )} strokeWidth={1.8} />
-
-                          {/* Active glow ring */}
-                          {active && (
-                            <span className="absolute inset-0 rounded-xl ring-2 ring-primary-foreground/20 animate-pulse" />
-                          )}
-                        </div>
-
-                        {/* Label with Premium Typography */}
-                        <div className="flex flex-col gap-0.5">
-                          <span className={cn(
-                            "text-[15px] font-bold tracking-wide transition-colors duration-300 whitespace-nowrap lg:whitespace-normal",
-                            active
-                              ? "text-primary-foreground"
-                              : "text-foreground group-hover:text-primary"
-                          )}>
-                            {t(item.labelKey)}
-                          </span>
-                        </div>
-
-                        {/* Premium Arrow Indicator */}
-                        <svg
-                          className={cn(
-                            "hidden lg:block w-5 h-5 ml-auto transition-all duration-300",
-                            active
-                              ? "opacity-100 text-primary translate-x-0"
-                              : "opacity-0 text-muted-foreground -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary"
-                          )}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                        </svg>
-
-                        {/* Active indicator bar */}
-                        {active && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-lg shadow-primary/50 hidden lg:block" />
-                        )}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </nav>
-
-              {/* Quick Stats with Premium Styling */}
-              <div className="hidden lg:block mt-8 p-5 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 rounded-2xl border border-primary/15 shadow-inner">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-2 rounded-xl bg-card/50">
-                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">17+</p>
-                    <p className="text-xs text-muted-foreground font-medium mt-1">ปีแห่งประสบการณ์</p>
-                  </div>
-                  <div className="text-center p-2 rounded-xl bg-card/50">
-                    <p className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">4</p>
-                    <p className="text-xs text-muted-foreground font-medium mt-1">กลุ่มธุรกิจหลัก</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Main Content */}
-          <main className="flex-1 min-w-0">
-            <div className={cn(location.pathname === "/about/structure" ? "org-content-surface" : "bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border/50")}>
-              <Routes>
-                <Route path="history" element={<AboutHistory />} />
-                <Route path="vision" element={<AboutVision />} />
-                <Route path="structure" element={<AboutStructure />} />
-                <Route path="team" element={<AboutTeam />} />
-                {/* Awards moved to detailed page */}
-                <Route path="*" element={<AboutHistory />} />
-              </Routes>
-            </div>
-          </main>
-        </div>
+    <CorporateLayout title={isStructure ? undefined : title}>
+      <SEO title={seo.title} description={seo.desc} canonicalUrl={location.pathname}
+        structuredData={buildBreadcrumb([{ name: seo.breadcrumb, path: location.pathname }])} />
+      <div className={isStructure ? 'org-content-surface' : 'corporate-about-body'}>
+        <Routes>
+          <Route path="history" element={<AboutHistory />} />
+          <Route path="vision" element={<AboutVision />} />
+          <Route path="structure" element={<AboutStructure />} />
+          <Route path="team" element={<AboutTeam />} />
+          <Route path="*" element={<AboutHistory />} />
+        </Routes>
       </div>
-    </div>
+    </CorporateLayout>
   );
 };
 

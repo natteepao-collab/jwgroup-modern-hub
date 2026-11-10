@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Building2, Hotel, Heart, Leaf, Target, CheckCircle, Sparkles, ChevronDown, Eye, ListChecks, Quote, Loader2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Building2, Hotel, Heart, Leaf, ChevronDown, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { SEO } from '@/components/SEO';
+import CorporateLayout from '@/components/CorporateLayout';
+import { Button } from '@/components/ui/button';
 
 // Default fallback images
 import realEstateImg from '@/assets/business-realestate.jpg';
@@ -13,57 +14,11 @@ import hotelImg from '@/assets/business-hotel.jpg';
 import petImg from '@/assets/business-pet.jpg';
 import herbalImg from '@/assets/business-wellness.jpg';
 
-// Business styling constants
-const businessStyles: Record<string, {
-  icon: React.ElementType;
-  color: string;
-  lightColor: string;
-  bgGradient: string;
-  accentColor: string;
-  borderColor: string;
-  dotColor: string;
-  defaultImage: string;
-}> = {
-  realestate: {
-    icon: Building2,
-    color: 'from-amber-500 to-orange-600',
-    lightColor: 'from-amber-400 to-orange-500',
-    bgGradient: 'from-amber-50/80 to-orange-50/80 dark:from-amber-950/50 dark:to-orange-950/50',
-    accentColor: 'text-amber-600 dark:text-amber-400',
-    borderColor: 'border-amber-500',
-    dotColor: 'bg-amber-500',
-    defaultImage: realEstateImg
-  },
-  hotel: {
-    icon: Hotel,
-    color: 'from-gray-700 to-gray-900',
-    lightColor: 'from-gray-600 to-gray-800',
-    bgGradient: 'from-gray-100/80 to-slate-100/80 dark:from-gray-900/50 dark:to-slate-900/50',
-    accentColor: 'text-gray-700 dark:text-gray-300',
-    borderColor: 'border-gray-700',
-    dotColor: 'bg-gray-700',
-    defaultImage: hotelImg
-  },
-  pet: {
-    icon: Heart,
-    color: 'from-teal-400 to-emerald-500',
-    lightColor: 'from-teal-300 to-emerald-400',
-    bgGradient: 'from-teal-50/80 to-emerald-50/80 dark:from-teal-950/50 dark:to-emerald-950/50',
-    accentColor: 'text-teal-600 dark:text-teal-400',
-    borderColor: 'border-teal-500',
-    dotColor: 'bg-teal-500',
-    defaultImage: petImg
-  },
-  herbal: {
-    icon: Leaf,
-    color: 'from-blue-800 to-indigo-900',
-    lightColor: 'from-blue-700 to-indigo-800',
-    bgGradient: 'from-blue-50/80 to-indigo-50/80 dark:from-blue-950/50 dark:to-indigo-950/50',
-    accentColor: 'text-blue-800 dark:text-blue-400',
-    borderColor: 'border-blue-800',
-    dotColor: 'bg-blue-800',
-    defaultImage: herbalImg
-  }
+const businessStyles: Record<string, { icon: React.ElementType; defaultImage: string }> = {
+  realestate: { icon: Building2, defaultImage: realEstateImg },
+  hotel: { icon: Hotel, defaultImage: hotelImg },
+  pet: { icon: Heart, defaultImage: petImg },
+  herbal: { icon: Leaf, defaultImage: herbalImg },
 };
 
 // Business display names
@@ -150,7 +105,6 @@ const VisionMission = () => {
   // Get current business data
   const currentData = visionMissions?.find(vm => vm.business_type === activeTab);
   const style = businessStyles[activeTab] || businessStyles.realestate;
-  const Icon = style.icon;
 
   // Get localized text helper
   const getLocalizedText = (th: string, en?: string | null, cn?: string | null) => {
@@ -168,337 +122,57 @@ const VisionMission = () => {
     return style.defaultImage;
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   const availableBusinessTypes = visionMissions?.map(vm => vm.business_type) || [];
 
   return (
-    <div className="min-h-screen bg-background">
-      <SEO
-        title="วิสัยทัศน์และพันธกิจ JW Group | ทิศทางธุรกิจกลุ่มในเครือ"
-        description="วิสัยทัศน์ พันธกิจ และแนวคิดหลักของกลุ่มธุรกิจในเครือ JW Group ทั้ง JW Real Estates, 12 The Residence, 3DPet Hospital และ JW Herbal"
-        canonicalUrl="/vision-mission"
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "หน้าแรก", item: "https://www.jwgroupthailand.com" },
-            { "@type": "ListItem", position: 2, name: "วิสัยทัศน์และพันธกิจ", item: "https://www.jwgroupthailand.com/vision-mission" },
-          ],
-        }}
-      />
-      {/* Hero Section */}
-      <section className="relative app-page-safe h-[28vh] sm:h-[40vh] min-h-[200px] sm:min-h-[350px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')] bg-cover bg-center" />
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-slate-800/80 to-slate-900/85" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/40" />
-
-
-
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-20 w-60 h-60 bg-white/5 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3.5 py-1.5 sm:px-5 sm:py-2 mb-3 sm:mb-5">
-            <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
-            <span className="text-white/90 text-xs sm:text-sm font-medium">{t('nav.visionMission')}</span>
-          </div>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-4 font-display">
-            {t('visionMission.title')}
-          </h1>
-          <p className="text-xs sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto line-clamp-2 sm:line-clamp-none">
-            {t('visionMission.subtitle')}
-          </p>
-        </div>
-      </section>
-
-
-      {/* Business Selector - Premium Pill Icons */}
-      <section className="py-3 sm:py-6 px-3 sm:px-4 bg-background/85 sticky app-sticky-below-navbar z-30 backdrop-blur-xl border-b border-border/40 shadow-sm">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-center gap-3 sm:gap-4 overflow-x-auto custom-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
-            {Object.keys(businessStyles).filter(key => availableBusinessTypes.includes(key)).map((businessKey) => {
-              const bStyle = businessStyles[businessKey];
-              const BIcon = bStyle.icon;
-              const isActive = activeTab === businessKey;
-              return (
-                <button
-                  key={businessKey}
-                  onClick={() => {
-                    setActiveTab(businessKey);
-                    setExpandedMission(null);
-                  }}
-                  aria-label={businessNames[businessKey]}
-                  title={businessNames[businessKey]}
-                  className="group flex flex-col items-center gap-1.5 sm:gap-2 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-2xl"
-                >
-                  {/* Icon ring */}
-                  <div className={cn(
-                    "relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300",
-                    isActive
-                      ? "scale-110"
-                      : "bg-card border border-border/60 shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 group-active:scale-95"
-                  )}
-                  style={isActive ? {
-                    background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                  } : undefined}
-                  >
-                    {/* Active gradient layer */}
-                    {isActive && (
-                      <span className={cn(
-                        "absolute inset-0 rounded-full bg-gradient-to-br shadow-lg",
-                        bStyle.color
-                      )}
-                      style={{ boxShadow: `0 10px 30px -8px hsl(var(--foreground) / 0.25)` }}
-                      />
-                    )}
-                    {/* Inactive gradient ring around icon */}
-                    {!isActive && (
-                      <span className={cn(
-                        "absolute inset-1.5 rounded-full bg-gradient-to-br opacity-90",
-                        bStyle.lightColor
-                      )} />
-                    )}
-                    <BIcon className={cn(
-                      "relative z-10 transition-all duration-300 text-white drop-shadow",
-                      isActive ? "w-7 h-7 sm:w-8 sm:h-8" : "w-5 h-5 sm:w-6 sm:h-6"
-                    )} />
-                    {/* Active outer halo */}
-                    {isActive && (
-                      <span className={cn(
-                        "absolute -inset-1 rounded-full ring-2 ring-offset-2 ring-offset-background animate-pulse",
-                      )}
-                      style={{ ['--tw-ring-color' as never]: 'currentColor' }}
-                      />
-                    )}
-                  </div>
-                  {/* Label */}
-                  <span className={cn(
-                    "text-[10px] sm:text-xs font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 max-w-[72px] sm:max-w-none truncate",
-                    isActive ? style.accentColor : "text-muted-foreground group-hover:text-foreground"
-                  )}>
-                    {businessNames[businessKey]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-
-      {/* Main Content */}
-      {currentData && (
-        <section className="py-6 sm:py-12 px-3 sm:px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Business Hero Card */}
-            <div className={cn(
-              "relative rounded-2xl sm:rounded-3xl overflow-hidden mb-6 sm:mb-12 transition-all duration-500",
-              `bg-gradient-to-br ${style.bgGradient}`
-            )}>
-              {/* Business Image + Info */}
-              <div className="grid lg:grid-cols-2 gap-0">
-                {/* Image Side */}
-                <div className="relative h-40 sm:h-64 lg:h-auto lg:min-h-[400px]">
-                  <img
-                    src={getImageUrl()}
-                    alt={businessNames[activeTab]}
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className={cn(
-                    "absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-transparent to-black/40"
-                  )} />
-                  {/* Floating Badge */}
-                  <div className={cn(
-                    "absolute bottom-3 left-3 sm:bottom-6 sm:left-6 flex items-center gap-2 sm:gap-3 px-3 py-2 sm:px-5 sm:py-3 rounded-lg sm:rounded-xl backdrop-blur-md",
-                    `bg-gradient-to-r ${style.color}`
-                  )}>
-                    <Icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-                    <span className="text-white font-bold text-sm sm:text-lg">{businessNames[activeTab]}</span>
-                  </div>
-                </div>
-
-                {/* Vision Side */}
-                <div className="p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className={cn(
-                      "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
-                      `bg-gradient-to-br ${style.color}`
-                    )}>
-                      <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                    </div>
-                    <div>
-                     <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMission.vision')}</h2>
-                      <p className="text-muted-foreground text-xs sm:text-sm">Vision</p>
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <Quote className={cn(
-                      "absolute -top-2 -left-2 w-6 h-6 sm:w-8 sm:h-8 opacity-20",
-                      style.accentColor
-                    )} />
-                    <p className={cn(
-                      "text-base sm:text-lg md:text-xl leading-relaxed font-medium pl-5 sm:pl-6",
-                      style.accentColor
-                    )}>
-                      "{getLocalizedText(currentData.vision_th, currentData.vision_en, currentData.vision_cn)}"
-                    </p>
-                  </div>
-
-                  {(currentData.vision_sub_th || currentData.vision_sub_en) && (
-                    <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed pl-5 sm:pl-6">
-                      {getLocalizedText(currentData.vision_sub_th || '', currentData.vision_sub_en, currentData.vision_sub_cn)}
-                    </p>
-                  )}
-                </div>
-              </div>
+    <CorporateLayout title={t('visionMission.title')} description={t('visionMission.subtitle')}>
+      <SEO title={t('visionMission.title')} description={t('visionMission.subtitle')} canonicalUrl="/vision-mission" />
+      {isLoading ? <div role="status" className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="sr-only">{t('common.loading', { defaultValue: 'Loading' })}</span></div> : <>
+        <nav aria-label={t('nav.business')} className="mb-8 flex flex-wrap gap-2">
+          {Object.keys(businessStyles).filter(key => availableBusinessTypes.includes(key)).map(key => {
+            const BusinessIcon = businessStyles[key].icon;
+            return <Button key={key} variant={activeTab === key ? 'secondary' : 'ghost'} aria-pressed={activeTab === key}
+              className="h-auto min-h-11 whitespace-normal text-left" onClick={() => { setActiveTab(key); setExpandedMission(null); }}>
+              <BusinessIcon className="text-primary" />{businessNames[key]}
+            </Button>;
+          })}
+        </nav>
+        {currentData ? <>
+          <div className="relative mb-10 overflow-hidden corporate-business-image">
+            <img src={getImageUrl()} alt={businessNames[activeTab]} className="h-64 w-full object-cover sm:h-80" />
+            <div className="absolute bottom-0 inset-x-0 bg-secondary/90 px-5 py-4 text-secondary-foreground">
+              <h2 className="text-xl font-bold">{businessNames[activeTab]}</h2>
             </div>
-
-
-            {/* Missions Section */}
-            {currentData.missions.length > 0 && (
-              <div className="mb-6 sm:mb-12">
-                <div className="flex items-center gap-3 mb-4 sm:mb-8">
-                  <div className={cn(
-                    "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
-                    `bg-gradient-to-br ${style.color}`
-                  )}>
-                    <ListChecks className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMission.mission')}</h2>
-                    <p className="text-muted-foreground text-xs sm:text-sm">Mission ({currentData.missions.length} {t('visionMission.missionCount')})</p>
-                  </div>
-                </div>
-
-                <div className="grid gap-2.5 sm:gap-4">
-                  {currentData.missions.map((mission, idx) => {
-                    const isExpanded = expandedMission === idx;
-                    return (
-                      <Card
-                        key={idx}
-                        className={cn(
-                          "border-l-4 transition-all duration-300 cursor-pointer hover:shadow-lg",
-                          style.borderColor
-                        )}
-                        onClick={() => setExpandedMission(isExpanded ? null : idx)}
-                      >
-                        <CardContent className="p-3.5 sm:p-5">
-                          <div className="flex items-start gap-3 sm:gap-4">
-                            <div className={cn(
-                              "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0",
-                              `bg-gradient-to-br ${style.color}`
-                            )}>
-                              <span className="text-white font-bold text-sm sm:text-base">{idx + 1}</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between gap-2">
-                                <h3 className="font-semibold text-sm sm:text-lg text-foreground leading-snug">
-                                  {getLocalizedText(mission.title_th, mission.title_en, mission.title_cn)}
-                                </h3>
-                                <ChevronDown className={cn(
-                                  "w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground transition-transform shrink-0",
-                                  isExpanded && "rotate-180"
-                                )} />
-                              </div>
-                              {isExpanded && mission.description_th && (
-                                <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                                  {getLocalizedText(mission.description_th, mission.description_en, mission.description_cn)}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-
-            {/* Core Concept Section */}
-            {currentData.core_concept && (
-              <div className={cn(
-                "relative rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-8 lg:p-12",
-                `bg-gradient-to-br ${style.bgGradient}`
-              )}>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className={cn(
-                      "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0",
-                      `bg-gradient-to-br ${style.color}`
-                    )}>
-                      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-foreground font-display leading-tight">{t('visionMissionExtras.coreConcept')}</h2>
-                      <p className="text-muted-foreground text-xs sm:text-sm">Core Concept</p>
-
-                    </div>
-                  </div>
-
-                  <div className="text-center max-w-2xl mx-auto">
-                    <h3 className={cn(
-                      "text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 font-display",
-                      style.accentColor
-                    )}>
-                      {getLocalizedText(
-                        currentData.core_concept.title_th,
-                        currentData.core_concept.title_en,
-                        currentData.core_concept.title_cn
-                      )}
-                    </h3>
-                    <p className="text-base sm:text-lg text-muted-foreground mb-3 sm:mb-4">
-                      {getLocalizedText(
-                        currentData.core_concept.subtitle_th,
-                        currentData.core_concept.subtitle_en,
-                        currentData.core_concept.subtitle_cn
-                      )}
-                    </p>
-                    {currentData.core_concept.description_th && (
-                      <p className="text-sm sm:text-base text-muted-foreground">
-                        {getLocalizedText(
-                          currentData.core_concept.description_th,
-                          currentData.core_concept.description_en,
-                          currentData.core_concept.description_cn
-                        )}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-              </div>
-            )}
-
           </div>
-        </section>
-      )}
-
-      {/* No data fallback */}
-      {!currentData && !isLoading && (
-        <section className="py-12 px-4">
-          <div className="max-w-6xl mx-auto text-center">
-            <p className="text-muted-foreground">{t('visionMissionExtras.noData')}</p>
-          </div>
-        </section>
-      )}
-    </div>
+          <section className="mb-12 border-b border-border pb-10">
+            <h2 className="mb-5 text-2xl font-bold">{t('visionMission.vision')}</h2>
+            <blockquote className="border-l-2 border-primary pl-5 text-xl font-medium leading-relaxed text-foreground">
+              {getLocalizedText(currentData.vision_th, currentData.vision_en, currentData.vision_cn)}
+            </blockquote>
+            {(currentData.vision_sub_th || currentData.vision_sub_en) && <p className="mt-5 max-w-3xl leading-relaxed text-muted-foreground">{getLocalizedText(currentData.vision_sub_th || '', currentData.vision_sub_en, currentData.vision_sub_cn)}</p>}
+          </section>
+          {currentData.missions.length > 0 && <section className="mb-12">
+            <h2 className="mb-5 text-2xl font-bold">{t('visionMission.mission')}</h2>
+            {currentData.missions.map((mission, idx) => {
+              const expanded = expandedMission === idx;
+              return <div key={idx} className="border-b border-border py-3">
+                <Button variant="ghost" aria-expanded={expanded} aria-controls={`mission-${idx}`} className="h-auto w-full justify-between whitespace-normal px-0 py-3 text-left text-base font-bold"
+                  onClick={() => setExpandedMission(expanded ? null : idx)}>
+                  <span>{getLocalizedText(mission.title_th, mission.title_en, mission.title_cn)}</span><ChevronDown className={cn('shrink-0 text-primary transition-transform', expanded && 'rotate-180')} />
+                </Button>
+                {expanded && <p id={`mission-${idx}`} className="pb-5 text-muted-foreground leading-relaxed">{getLocalizedText(mission.description_th, mission.description_en, mission.description_cn)}</p>}
+              </div>;
+            })}
+          </section>}
+          {currentData.core_concept && <section className="border-t border-border py-8">
+            <h2 className="mb-5 text-2xl font-bold">{t('visionMissionExtras.coreConcept')}</h2>
+            <h3 className="mb-4 text-xl font-bold text-primary">{getLocalizedText(currentData.core_concept.title_th, currentData.core_concept.title_en, currentData.core_concept.title_cn)}</h3>
+            <p className="mb-4 leading-relaxed text-foreground">{getLocalizedText(currentData.core_concept.subtitle_th, currentData.core_concept.subtitle_en, currentData.core_concept.subtitle_cn)}</p>
+            <p className="leading-relaxed text-muted-foreground">{getLocalizedText(currentData.core_concept.description_th, currentData.core_concept.description_en, currentData.core_concept.description_cn)}</p>
+          </section>}
+        </> : <p className="py-12 text-muted-foreground">{t('visionMissionExtras.noData')}</p>}
+      </>}
+    </CorporateLayout>
   );
 };
 
