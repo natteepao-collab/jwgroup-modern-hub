@@ -5,6 +5,7 @@ import { useSiteContent } from '@/hooks/useSiteContent';
 import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { useCookieConsent } from '@/components/CookieConsent';
 import jwLogo from '@/assets/jw-group-logo-full.png';
+import { Button } from '@/components/ui/button';
 
 // TikTok icon component (not in lucide-react)
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -26,7 +27,7 @@ export const Footer = () => {
   const hoursContent = getContent('contact_hours');
 
   return (
-    <footer className="bg-secondary text-secondary-foreground">
+    <footer className="site-footer bg-secondary text-secondary-foreground">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -150,13 +151,13 @@ export const Footer = () => {
             <Link to="/pdpa" className="hover:text-primary transition-colors">
               {t('footer.pdpa')}
             </Link>
-            <button
+            <Button variant="ghost"
               onClick={openCookieSettings}
-              className="hover:text-primary transition-colors flex items-center gap-1"
+              className="h-auto p-0 hover:bg-transparent hover:shadow-none hover:text-primary transition-colors flex items-center gap-1 text-inherit"
             >
               <Cookie className="h-3.5 w-3.5" />
               ตั้งค่าคุกกี้
-            </button>
+            </Button>
           </div>
         </div>
       </div>

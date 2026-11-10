@@ -34,7 +34,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
   return (
     <>
       {/* Desktop: Vertical Accordion Layout */}
-      <div className="hidden xl:flex h-[520px] gap-1.5 overflow-hidden rounded-2xl shadow-2xl bg-stone-200 dark:bg-stone-800 p-1.5">
+      <div className="hidden xl:flex h-[520px] gap-1 overflow-hidden rounded-lg bg-muted p-1">
         {businesses.map((business, index) => {
           const isActive = activeIndex === index;
           const bgImage = business.backgroundImage || business.image;
@@ -43,11 +43,15 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
             <div
               key={index}
               className={cn(
-                "relative cursor-pointer overflow-hidden rounded-xl transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
-                isActive ? "flex-[6]" : "flex-1"
+                "business-panel relative cursor-pointer overflow-hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
+                isActive ? "business-panel-active flex-[6]" : "flex-1"
               )}
               onMouseEnter={() => setActiveIndex(index)}
               onMouseLeave={() => setActiveIndex(null)}
+              onFocus={() => setActiveIndex(index)}
+              onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setActiveIndex(null); }}
+              tabIndex={0}
+              aria-label={business.name}
             >
               {/* Background Layer */}
               <div className="absolute inset-0">
@@ -61,7 +65,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                     className={cn(
                       "w-full h-full object-cover transition-all duration-700",
                       isActive 
-                        ? "opacity-100 scale-110" 
+                        ? "opacity-100 scale-105" 
                         : "opacity-100 scale-105"
                     )}
                     style={{
@@ -77,8 +81,8 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className={cn(
                     "absolute inset-0 transition-all duration-700",
                     isActive 
-                      ? "bg-gradient-to-t from-white/95 via-white/70 to-white/40 dark:from-stone-900/95 dark:via-stone-900/70 dark:to-stone-900/40" 
-                      : "bg-gradient-to-t from-black/55 via-black/15 to-black/5 dark:from-black/70 dark:via-black/25 dark:to-black/10"
+                      ? "business-expanded-overlay" 
+                      : "business-collapsed-overlay"
                   )}
                 />
 
@@ -92,7 +96,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 )}
               >
                 {/* Logo Container */}
-                <div className="w-20 h-20 bg-white rounded-xl p-3 shadow-lg flex items-center justify-center shrink-0 border border-stone-200/50">
+                <div className="business-logo-surface w-20 h-20 bg-card rounded-xl p-3 shadow-lg flex items-center justify-center shrink-0 border border-border">
                   <img
                     src={business.image}
                     alt={business.name}
@@ -109,7 +113,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className="flex-1 flex items-center justify-center mt-6"
                   style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
                 >
-                  <span className="text-white font-bold text-sm tracking-[0.2em] uppercase text-center whitespace-nowrap" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 4px 16px rgba(0,0,0,0.5)' }}>
+                  <span className="text-primary-foreground font-bold text-sm tracking-normal uppercase text-center whitespace-nowrap" >
                     {business.name}
                   </span>
                 </div>
@@ -123,7 +127,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 )}
               >
                 {/* Large Logo Container */}
-                <div className="w-32 h-32 bg-white rounded-2xl p-5 flex items-center justify-center mb-6">
+                <div className="business-logo-surface w-28 h-28 bg-card rounded-2xl p-5 flex items-center justify-center mb-6">
                   <img
                     src={business.image}
                     alt={business.name}
@@ -136,12 +140,12 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 </div>
                 
                 {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-white mb-4 text-center tracking-wide">
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 text-center tracking-normal">
                   {business.name}
                 </h3>
                 
                 {/* Description */}
-                <p className="text-stone-600 dark:text-stone-300 text-center mb-8 max-w-sm leading-relaxed text-sm md:text-base">
+                <p className="text-muted-foreground text-center mb-8 max-w-sm leading-relaxed text-sm md:text-base">
                   {business.description}
                 </p>
                 
@@ -152,11 +156,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   className="bg-primary hover:bg-accent text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8"
                 >
                   <a 
-                    href={business.url} 
+                    href={business.url === "#" ? "/contact" : business.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 whitespace-normal text-center"
                   >
                     {business.ctaText || t('business.viewWebsite')}
                     <ExternalLink className="h-4 w-4" />
@@ -177,14 +181,14 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
       </div>
 
       {/* Tablet: Grid 2x2 Layout */}
-      <div className="hidden md:grid xl:hidden grid-cols-2 gap-4 bg-stone-100 dark:bg-stone-800 p-4 rounded-2xl">
+      <div className="hidden md:grid xl:hidden grid-cols-2 gap-4 bg-transparent">
         {businesses.map((business, index) => {
           const bgImage = business.backgroundImage || business.image;
           
           return (
             <a
               key={index}
-              href={business.url}
+              href={business.url === "#" ? "/contact" : business.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
@@ -201,12 +205,12 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               </div>
               
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-all duration-500 group-hover:from-black/70" />
+              <div className="absolute inset-0 business-collapsed-overlay transition-all duration-300" />
               
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-end p-5 z-10">
                 {/* Logo */}
-                <div className="absolute top-4 left-4 w-16 h-16 bg-white rounded-xl p-2.5 shadow-lg flex items-center justify-center border border-stone-200/50 transition-all duration-300 group-hover:scale-110">
+                <div className="absolute top-4 left-4 business-logo-surface w-16 h-16 bg-card rounded-xl p-2.5 shadow-lg flex items-center justify-center border border-border transition-all duration-300 group-hover:scale-110">
                   <img
                     src={business.image}
                     alt={business.name}
@@ -220,10 +224,10 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 
                 {/* Title & Description */}
                 <div className="transform transition-all duration-300 group-hover:translate-y-[-4px]">
-                  <h3 className="text-xl font-bold text-white mb-2">
+                  <h3 className="text-xl font-bold text-primary-foreground mb-2">
                     {business.name}
                   </h3>
-                  <p className="text-stone-200 text-sm line-clamp-2 mb-3 opacity-90">
+                  <p className="text-primary-foreground/85 text-sm line-clamp-2 mb-3 opacity-90">
                     {business.description}
                   </p>
                   
@@ -243,7 +247,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
       </div>
 
       {/* Mobile: Accordion Stack */}
-      <div className="md:hidden flex flex-col gap-2 bg-stone-100 dark:bg-stone-800 p-2 rounded-2xl">
+      <div className="md:hidden flex flex-col gap-2 bg-transparent">
         {businesses.map((business, index) => {
           const isActive = mobileActiveIndex === index;
           const bgImage = business.backgroundImage || business.image;
@@ -254,8 +258,8 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               className={cn(
                 "rounded-xl overflow-hidden transition-all duration-500 relative",
                 isActive 
-                  ? "bg-white dark:bg-stone-900" 
-                  : "bg-stone-600 dark:bg-stone-700"
+                  ? "bg-card" 
+                  : "bg-secondary"
               )}
             >
               {/* Full-size Background Image for mobile */}
@@ -271,13 +275,15 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
               )}
               
               {/* Header - Always visible */}
-              <button
+              <Button variant="ghost"
+                aria-expanded={isActive}
+                aria-controls={`business-mobile-${index}`}
                 onClick={() => setMobileActiveIndex(isActive ? null : index)}
-                className="w-full flex items-center justify-between p-4 relative z-10"
+                className="business-mobile-toggle h-auto min-h-20 w-full flex items-center justify-between gap-3 whitespace-normal p-4 relative z-10 hover:bg-transparent"
               >
                 <div className="flex items-center gap-4">
                   {/* Logo */}
-                  <div className="w-12 h-12 bg-white rounded-lg p-2 shadow-sm flex items-center justify-center border border-stone-200/50 dark:border-stone-700">
+                  <div className="business-logo-surface w-12 h-12 bg-card rounded-lg p-2 shadow-sm flex items-center justify-center border border-border">
                     <img
                       src={business.image}
                       alt={business.name}
@@ -292,7 +298,7 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                   {/* Title */}
                   <h3 className={cn(
                     "font-bold text-left transition-colors",
-                    isActive ? "text-stone-800 dark:text-white" : "text-white"
+                    isActive ? "text-foreground" : "text-primary-foreground"
                   )}>
                     {business.name}
                   </h3>
@@ -302,20 +308,22 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                 <ChevronDown 
                   className={cn(
                     "h-5 w-5 transition-all duration-300 shrink-0",
-                    isActive ? "rotate-180 text-stone-500 dark:text-stone-400" : "text-white/80"
+                    isActive ? "rotate-180 text-muted-foreground" : "text-primary-foreground/80"
                   )} 
                 />
-              </button>
+              </Button>
               
               {/* Expandable Content */}
               <div
+                id={`business-mobile-${index}`}
+                hidden={!isActive}
                 className={cn(
                   "transition-all duration-500 ease-out relative z-10",
                   isActive ? "max-h-[800px] overflow-y-auto opacity-100" : "max-h-0 overflow-hidden opacity-0"
                 )}
               >
                 <div className="px-4 pb-6">
-                  <p className="text-stone-600 dark:text-stone-400 text-sm mb-5 leading-relaxed whitespace-pre-line">
+                  <p className="text-muted-foreground text-sm mb-5 leading-relaxed whitespace-pre-line">
                     {business.description}
                   </p>
                   
@@ -324,11 +332,11 @@ export const InteractiveSplitBusiness = ({ businesses }: InteractiveSplitBusines
                     className="w-full bg-primary hover:bg-accent text-primary-foreground"
                   >
                     <a 
-                      href={business.url} 
+                      href={business.url === "#" ? "/contact" : business.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       aria-label={business.ctaText || `${t('business.viewWebsite')} ${business.name}`}
-                      className="flex items-center justify-center gap-2"
+                      className="flex items-center justify-center gap-2 whitespace-normal text-center"
                     >
                       {business.ctaText || t('business.viewWebsite')}
                       <ExternalLink className="h-4 w-4" />

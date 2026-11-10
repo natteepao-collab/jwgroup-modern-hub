@@ -18,6 +18,7 @@ import { useSiteContent } from '@/hooks/useSiteContent';
 import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { useTheme } from 'next-themes';
 import { corporateLinks } from './CorporateLayout';
+import { Button } from '@/components/ui/button';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ export const Navbar = () => {
   const { links: socialLinks } = useSocialLinks();
   const { theme, setTheme } = useTheme();
   const location = useLocation();
+  const isInnerPage = location.pathname !== '/';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [aboutExpanded, setAboutExpanded] = useState(false);
@@ -164,7 +166,7 @@ export const Navbar = () => {
           'fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
           isScrolled
             ? 'top-0 bg-card/98 backdrop-blur-2xl shadow-[0_4px_30px_-12px_rgba(0,0,0,0.12)] border-b border-border/30'
-            : 'top-10 sm:top-11 lg:top-0 bg-transparent backdrop-blur-sm border-b border-white/5'
+            : isInnerPage ? 'top-10 sm:top-11 lg:top-0 bg-card border-b border-border' : 'top-10 sm:top-11 lg:top-0 bg-transparent backdrop-blur-sm border-b border-border/5'
         )}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -174,7 +176,7 @@ export const Navbar = () => {
             isScrolled ? "py-2.5" : "py-3.5"
           )}>
             {/* Left - Menu Button */}
-            <button
+            <Button variant="default" aria-label="Menu"
               onClick={() => setIsMenuOpen(true)}
               className={cn(
                 "flex items-center justify-center gap-2.5 h-10 w-10 lg:w-auto lg:h-10 lg:px-5 rounded-xl transition-all duration-300",
@@ -185,14 +187,14 @@ export const Navbar = () => {
             >
               <Menu className="h-[18px] w-[18px]" strokeWidth={2} />
               <span className="hidden lg:inline text-[13px] font-bold tracking-[0.15em] uppercase">Menu</span>
-            </button>
+            </Button>
 
             {/* Center - Logo */}
             <Link
               to="/"
               className={cn(
                 "absolute left-1/2 -translate-x-1/2 z-10 transition-all duration-500",
-                !isScrolled && "drop-shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
+                !isScrolled && !isInnerPage && "drop-shadow-sm"
               )}
             >
               <img
@@ -218,7 +220,7 @@ export const Navbar = () => {
             "hidden lg:flex items-center justify-center transition-all duration-500",
             isScrolled
               ? "py-2 border-t border-border/20"
-              : "py-2.5 border-t border-white/10"
+              : "py-2.5 border-t border-border/20"
           )}>
             <div className="flex items-center justify-center gap-1">
               {/* About Us with Dropdown */}
@@ -227,17 +229,19 @@ export const Navbar = () => {
                 className="relative"
                 onMouseEnter={() => setAboutDropdownOpen(true)}
                 onMouseLeave={() => setAboutDropdownOpen(false)}
+                onFocus={() => setAboutDropdownOpen(true)}
+                onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setAboutDropdownOpen(false); }}
               >
-                <button
+                <Button variant="ghost" aria-expanded={aboutDropdownOpen} onClick={() => setAboutDropdownOpen(open => !open)}
                   className={cn(
-                    "relative flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
+                    "relative flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold tracking-normal transition-all duration-300",
                     aboutDropdownOpen || isAboutActive
-                      ? isScrolled
-                        ? "text-primary bg-primary/8"
-                        : "bg-black/35 backdrop-blur-md text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] ring-1 ring-white/20"
-                      : isScrolled
+                      ? isScrolled || isInnerPage
+                        ? "text-primary bg-primary/10"
+                        : "nav-on-media nav-on-media-active"
+                      : isScrolled || isInnerPage
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] bg-black/20 backdrop-blur-md hover:bg-black/35 ring-1 ring-white/15"
+                        : "nav-on-media"
                   )}
                 >
                   {t('nav.about')}
@@ -245,7 +249,7 @@ export const Navbar = () => {
                     "h-3.5 w-3.5 transition-transform duration-300",
                     aboutDropdownOpen && "rotate-180"
                   )} />
-                </button>
+                </Button>
 
 
 
@@ -301,14 +305,14 @@ export const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    "relative px-5 py-2 rounded-xl text-[14px] font-semibold tracking-wide transition-all duration-300",
+                    "relative px-5 py-2 rounded-xl text-[14px] font-semibold tracking-normal transition-all duration-300",
                     isActive(item.path)
-                      ? isScrolled
-                        ? "text-primary bg-primary/8"
-                        : "bg-black/35 backdrop-blur-md text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] ring-1 ring-white/20"
-                      : isScrolled
+                      ? isScrolled || isInnerPage
+                        ? "text-primary bg-primary/10"
+                        : "nav-on-media nav-on-media-active"
+                      : isScrolled || isInnerPage
                         ? "text-foreground/80 hover:text-primary hover:bg-muted/50"
-                        : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.65)] bg-black/20 backdrop-blur-md hover:bg-black/35 ring-1 ring-white/15"
+                        : "nav-on-media"
                   )}
                 >
                   {t(item.labelKey)}

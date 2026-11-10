@@ -82,7 +82,7 @@ const Careers = () => {
   };
 
   return (
-    <div className="app-page-safe min-h-screen bg-background">
+    <div className="careers-page app-page-safe min-h-screen bg-background">
       <SEO
         title="ร่วมงานกับ JW Group | สมัครงาน ตำแหน่งว่าง สวัสดิการพนักงาน"
         description="ร่วมเป็นส่วนหนึ่งของ JW Group กลุ่มธุรกิจชั้นนำในไทย ดูตำแหน่งงานว่างประจำสำนักงานใหญ่ดอนเมือง พร้อมสวัสดิการครบครันและโอกาสเติบโตในสายอาชีพ"
@@ -93,11 +93,11 @@ const Careers = () => {
         {/* Header */}
         <div
           ref={ref}
-          className={`text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          className={`public-page-heading mb-10 border-b border-border pb-8 transition-all duration-300 ${inView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'
             }`}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('careers.title')}</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">{t('careers.title')}</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
             {t('careers.description')}
           </p>
         </div>
@@ -112,7 +112,7 @@ const Careers = () => {
                 return (
                   <Card
                     key={benefit.id}
-                    className={`transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    className={`transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'
                       }`}
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
@@ -146,16 +146,16 @@ const Careers = () => {
               {jobs.map((job, index) => (
                 <Card
                   key={job.id}
-                  className={`transition-all duration-500 hover:shadow-lg ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  className={`transition-all duration-500 hover:shadow-lg ${inView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'
                     }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardHeader>
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-2">
                       <CardTitle className="text-xl">
                         {isEnglish ? (job.title_en || job.title_th) : job.title_th}
                       </CardTitle>
-                      <Badge>
+                      <Badge className="whitespace-normal text-left">
                         {isEnglish
                           ? (job.department_en || job.department_th)
                           : job.department_th}
@@ -185,7 +185,7 @@ const Careers = () => {
                   </CardContent>
                   <CardFooter>
                     <Button
-                      className="w-full"
+                      className="w-full min-h-11"
                       onClick={() => setSelectedJob(job)}
                     >
                       {t('careers.apply')}

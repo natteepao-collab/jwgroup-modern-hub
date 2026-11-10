@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,6 +36,7 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
   const [loading, setLoading] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const resumeInput = useRef<HTMLInputElement>(null);
 
   const form = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
@@ -149,7 +150,7 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[90dvh] overflow-y-auto rounded-lg">
         <DialogHeader>
           <DialogTitle>
             {isEnglish ? 'Apply for ' : 'สมัครงาน: '}{jobTitle}
@@ -265,26 +266,27 @@ const JobApplicationForm = ({ jobId, jobTitle, open, onOpenChange }: JobApplicat
                 {isEnglish ? 'Resume/CV' : 'เรซูเม่/ประวัติย่อ'} (PDF, DOC, DOCX)
               </label>
               <div className="flex items-center gap-2">
-                <label className="flex items-center gap-2 px-4 py-2 border border-input rounded-md cursor-pointer hover:bg-accent transition-colors">
+                <Button variant="outline" type="button" onClick={() => resumeInput.current?.click()}>
                   <Upload className="w-4 h-4" />
                   <span className="text-sm">{isEnglish ? 'Choose File' : 'เลือกไฟล์'}</span>
+                </Button>
                   <input
+                    ref={resumeInput}
                     type="file"
                     accept=".pdf,.doc,.docx"
                     onChange={handleFileChange}
                     className="hidden"
                   />
-                </label>
                 {resumeFile && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span className="truncate max-w-[150px]">{resumeFile.name}</span>
-                    <button
+                    <Button variant="ghost" size="icon" aria-label={isEnglish ? 'Remove file' : 'นำไฟล์ออก'}
                       type="button"
                       onClick={() => setResumeFile(null)}
                       className="text-destructive hover:text-destructive/80"
                     >
                       <X className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>

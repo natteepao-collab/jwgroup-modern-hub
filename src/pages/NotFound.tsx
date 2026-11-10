@@ -8,18 +8,18 @@ const NotFound = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="app-page-safe min-h-screen flex items-center justify-center bg-gray-50 px-4 pb-12 sm:px-6 lg:px-8">
+    <div className="app-page-safe min-h-screen flex items-center justify-center bg-background px-4 pb-12 sm:px-6 lg:px-8">
       <SEO
         title="404 - Page Not Found"
         noindex={true}
       />
       <div className="max-w-md w-full space-y-8 text-center">
         <div>
-          <h1 className="text-9xl font-extrabold text-gray-200">404</h1>
-          <h2 className="mt-2 text-3xl font-bold text-gray-900 tracking-tight sm:text-4xl">
+          <h1 className="text-9xl font-extrabold text-muted">404</h1>
+          <h2 className="mt-2 text-3xl font-bold text-foreground tracking-normal sm:text-4xl">
             {t('common.notFound', 'Page Not Found')}
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="mt-4 text-lg text-muted-foreground">
             {t('common.notFoundDescription', "Sorry, we couldn't find the page you're looking for.")}
           </p>
         </div>

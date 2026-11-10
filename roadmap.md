@@ -20,7 +20,7 @@
 
 # Site-wide Impeccable polish
 
-- [ ] Polish all public pages and shared navigation/footer while preserving existing brand, content, and behavior.
-- [ ] Refine Contact form and information layout with semantic brand colors.
-- [ ] Polish all five Business panels, project galleries, About pages, news/details, careers, legal and remaining public routes.
-- [ ] Verify desktop, laptop, tablet, mobile, reduced motion, and central interaction flows.
+- [x] Polish all public pages and shared navigation/footer while preserving existing brand, content, and behavior.
+- [x] Refine Contact form and information layout with semantic brand colors.
+- [x] Polish all five Business panels, project galleries, About pages, news/details, careers, legal and remaining public routes.
+- [x] Verify desktop, laptop, tablet, mobile, reduced motion, and central interaction flows (no real contact/application submissions sent).

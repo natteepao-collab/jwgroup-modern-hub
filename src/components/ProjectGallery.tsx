@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { X, ChevronLeft, ChevronRight, MapPin, Calendar, Maximize2 } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import DOMPurify from 'dompurify';
 
 interface Project {
@@ -136,12 +137,14 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
         {projects.map((project, index) => (
           <div
             key={project.id}
-            className="group cursor-pointer"
+            className="project-gallery-item group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
+            role="button" tabIndex={0} aria-label={getName(project)}
+            onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openLightbox(project); } }}
             onClick={() => openLightbox(project)}
             style={{ animationDelay: `${index * 100}ms` }}
           >
             {/* Image Card */}
-            <div className="relative overflow-hidden rounded-3xl bg-card border border-border/30 shadow-md hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
+            <div className="relative overflow-hidden rounded-lg bg-card border border-border/30 shadow-md hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-1">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
                   src={project.image_url || '/placeholder.svg'}
@@ -161,13 +164,13 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
               {/* Featured Badge */}
               {project.is_featured && (
                 <div className="absolute top-4 left-4 px-4 py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-full shadow-lg">
-                  ✨ แนะนำ
+                  แนะนำ
                 </div>
               )}
 
               {/* Info on hover */}
               <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                <h4 className="text-primary-foreground font-bold text-xl mb-2 line-clamp-1">{getName(project)}</h4>
+                <h4 className="text-primary-foreground font-bold text-xl mb-2 line-clamp-2">{getName(project)}</h4>
                 {getLocation(project) && (
                   <div className="flex items-center gap-2 text-primary-foreground/80 text-sm">
                     <MapPin className="w-4 h-4" />
@@ -179,7 +182,7 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
 
             {/* Info below card */}
             <div className="mt-4 px-1">
-              <h4 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-1">
+              <h4 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
                 {getName(project)}
               </h4>
               <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
@@ -202,19 +205,20 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
       </div>
 
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] max-h-[95dvh] md:max-h-[85vh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0 rounded-xl">
+        <DialogContent className="max-w-5xl w-[95vw] sm:w-[90vw] h-[90dvh] md:h-[80vh] max-h-[95dvh] p-0 bg-background border-none overflow-hidden flex flex-col md:flex-row gap-0 rounded-xl">
           {selectedProject && (
             <>
+              <DialogTitle className="sr-only">{getName(selectedProject)}</DialogTitle>
               {/* Close Button Mobile */}
-              <button
-                onClick={closeLightbox}
-                className="absolute top-4 right-4 z-50 w-8 h-8 rounded-full bg-black/50 text-white md:hidden flex items-center justify-center transition-colors hover:bg-black/70"
+              <Button variant="ghost" type="button"
+                aria-label={t('common.close', { defaultValue: 'Close' })} onClick={closeLightbox}
+                className="absolute top-4 right-4 z-50 w-8 h-8 rounded-full bg-secondary/80 text-secondary-foreground md:hidden flex items-center justify-center transition-colors hover:bg-secondary"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
 
               {/* Image Section */}
-              <div className="relative w-full md:w-[65%] h-[35vh] md:h-full bg-black flex items-center justify-center shrink-0">
+              <div className="relative w-full md:w-[65%] h-[35vh] md:h-full bg-secondary flex items-center justify-center shrink-0">
                 <img
                   src={getAllImages(selectedProject)[currentImageIndex] || '/placeholder.svg'}
                   alt={getName(selectedProject)}
@@ -224,35 +228,35 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                 {/* Navigation Arrows */}
                 {getAllImages(selectedProject).length > 1 && (
                   <>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors text-white"
+                    <Button variant="ghost" type="button"
+                      aria-label="Previous image" onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-secondary/80 hover:bg-secondary flex items-center justify-center transition-colors text-secondary-foreground"
                     >
                       <ChevronLeft className="w-6 h-6" />
-                    </button>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors text-white"
+                    </Button>
+                    <Button variant="ghost" type="button"
+                      aria-label="Next image" onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-secondary/80 hover:bg-secondary flex items-center justify-center transition-colors text-secondary-foreground"
                     >
                       <ChevronRight className="w-6 h-6" />
-                    </button>
+                    </Button>
                   </>
                 )}
 
                 {/* Thumbnails (Desktop Overlay) */}
                 {getAllImages(selectedProject).length > 1 && (
-                  <div className="hidden md:flex absolute bottom-4 left-1/2 -translate-x-1/2 gap-2 overflow-x-auto max-w-[90%] p-2 bg-black/30 backdrop-blur-sm rounded-xl hide-scrollbar">
+                  <div className="hidden md:flex absolute bottom-4 left-1/2 -translate-x-1/2 gap-2 overflow-x-auto max-w-[90%] p-2 bg-secondary/80 backdrop-blur-sm rounded-xl hide-scrollbar">
                     {getAllImages(selectedProject).map((img, idx) => (
-                      <button
+                      <Button variant="ghost" type="button"
                         key={idx}
-                        onClick={() => setCurrentImageIndex(idx)}
+                        aria-label={`Image ${idx + 1}`} aria-pressed={currentImageIndex === idx} onClick={() => setCurrentImageIndex(idx)}
                         className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === idx
                           ? 'border-primary'
-                          : 'border-white/50 opacity-70 hover:opacity-100'
+                          : 'border-border opacity-70 hover:opacity-100'
                           }`}
                       >
                         <img src={img} alt="" className="w-full h-full object-cover" />
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 )}
@@ -262,12 +266,12 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
               <div className="flex-1 w-full md:w-[35%] min-h-0 flex flex-col bg-card relative">
                 {/* Desktop Close Button */}
                 <div className="hidden md:flex justify-end p-4 absolute top-0 right-0 z-10">
-                  <button
-                    onClick={closeLightbox}
+                  <Button variant="ghost" type="button"
+                    aria-label={t('common.close', { defaultValue: 'Close' })} onClick={closeLightbox}
                     className="w-8 h-8 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
                   >
                     <X className="w-4 h-4 text-foreground" />
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-6 md:pt-12 custom-scrollbar">
@@ -301,16 +305,16 @@ const ProjectGallery = ({ businessType, title }: ProjectGalleryProps) => {
                   {getAllImages(selectedProject).length > 1 && (
                     <div className="md:hidden flex gap-2 mt-6 overflow-x-auto pb-2">
                       {getAllImages(selectedProject).map((img, idx) => (
-                        <button
+                        <Button variant="ghost" type="button"
                           key={idx}
-                          onClick={() => setCurrentImageIndex(idx)}
+                          aria-label={`Image ${idx + 1}`} aria-pressed={currentImageIndex === idx} onClick={() => setCurrentImageIndex(idx)}
                           className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === idx
                             ? 'border-primary'
                             : 'border-transparent opacity-60 hover:opacity-100'
                             }`}
                         >
                           <img src={img} alt="" className="w-full h-full object-cover" />
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   )}

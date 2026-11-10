@@ -12,7 +12,7 @@ const News = () => {
   const { news, isLoading } = useNews(false);
 
   return (
-    <div className="app-page-safe min-h-screen bg-background">
+    <div className="news-page app-page-safe min-h-screen bg-background">
       <SEO
         title="ข่าวสารและกิจกรรม JW Group | อัปเดตธุรกิจในเครือ"
         description="ติดตามข่าวสาร ข่าวประชาสัมพันธ์ และกิจกรรม CSR ของ JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม โรงพยาบาลสัตว์ และผลิตภัณฑ์สุขภาพ"
@@ -22,9 +22,9 @@ const News = () => {
       <div className="container mx-auto px-4 py-12">
         <div
           ref={ref}
-          className={`text-center mb-12 transition-all duration-1000 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          className={`public-page-heading mb-10 border-b border-border pb-8 transition-all duration-300 ${inView ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'}`}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('news.title')}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">{t('news.title')}</h1>
           <p className="text-lg text-muted-foreground">
             {t('news.subtitle')}
           </p>
