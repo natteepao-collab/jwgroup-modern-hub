@@ -11,10 +11,12 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CookieConsentProvider } from './components/CookieConsent';
 import PageTransition from './components/PageTransition';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { trackEvent } from './lib/analytics';
 import { lazy, Suspense } from 'react';
-import Loading from "./components/Loading";
+import { registerPublicRefinement } from './i18n/publicRefinement';
+
+registerPublicRefinement(i18n);
 
 // Lazy load all pages
 const Index = lazy(() => import("./pages/Index"));
@@ -86,18 +88,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  const [initialLoading, setInitialLoading] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return !sessionStorage.getItem('jw_initial_loaded');
-  });
-
-  useEffect(() => {
-    if (!initialLoading) return;
-    const timer = setTimeout(() => {
-      sessionStorage.setItem('jw_initial_loaded', '1');
-      setInitialLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
+  return () => clearTimeout(timer);
   }, [initialLoading]);
 
   if (initialLoading) return <Loading />;

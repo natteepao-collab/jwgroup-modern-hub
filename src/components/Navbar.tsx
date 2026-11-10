@@ -18,6 +18,7 @@ import { useSiteContent } from '@/hooks/useSiteContent';
 import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { useTheme } from 'next-themes';
 import { corporateLinks } from './CorporateLayout';
+import { managedPhone } from '@/lib/publicContent';
 import { Button } from '@/components/ui/button';
 
 export const Navbar = () => {
@@ -34,11 +35,14 @@ export const Navbar = () => {
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [isBottomBarVisible, setIsBottomBarVisible] = useState(true);
   const aboutDropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const lastScrollY = useRef(0);
 
   // Get contact phone from database
   const phoneContent = getContent('contact_phone');
-  const phoneNumber = phoneContent.content || '02-234-5678';
+  const phone = managedPhone(phoneContent.content);
+  const phoneNumber = phone?.display || '';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,6 +77,22 @@ export const Navbar = () => {
     return () => {
       document.body.style.overflow = 'unset';
     };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const first = menuRef.current?.querySelector<HTMLElement>('a, button');
+    first?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { setIsMenuOpen(false); menuButtonRef.current?.focus(); }
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(menuRef.current?.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),input') || []).filter(el => el.getClientRects().length > 0);
+      const first = controls[0]; const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
   }, [isMenuOpen]);
 
   const isActive = (path: string) => location.pathname === path;
@@ -127,7 +147,7 @@ export const Navbar = () => {
                     key={item.path}
                     to={item.path}
                     className="relative group flex items-center justify-center p-2"
-                    title={t(item.labelKey)}
+                    title={t(item.labelKey)} aria-label={t(item.labelKey)}
                   >
                     <div className={cn(
                       "flex items-center justify-center transition-all duration-300",
@@ -162,10 +182,11 @@ export const Navbar = () => {
 
       {/* Main Navbar */}
       <nav
+        aria-label={t("nav.home")}
         className={cn(
-          'fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
+          'site-navbar fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
           isScrolled
-            ? 'top-0 bg-card/98 backdrop-blur-2xl shadow-[0_4px_30px_-12px_rgba(0,0,0,0.12)] border-b border-border/30'
+            ? 'top-0 bg-card border-b border-border shadow-md'
             : isInnerPage ? 'top-10 sm:top-11 lg:top-0 bg-card border-b border-border' : 'top-10 sm:top-11 lg:top-0 bg-transparent backdrop-blur-sm border-b border-border/5'
         )}
       >
@@ -176,7 +197,7 @@ export const Navbar = () => {
             isScrolled ? "py-2.5" : "py-3.5"
           )}>
             {/* Left - Menu Button */}
-            <Button variant="default" aria-label="Menu"
+            <Button ref={menuButtonRef} variant="default" aria-label="Menu" aria-expanded={isMenuOpen}
               onClick={() => setIsMenuOpen(true)}
               className={cn(
                 "flex items-center justify-center gap-2.5 h-10 w-10 lg:w-auto lg:h-10 lg:px-5 rounded-xl transition-all duration-300",
@@ -186,7 +207,7 @@ export const Navbar = () => {
               )}
             >
               <Menu className="h-[18px] w-[18px]" strokeWidth={2} />
-              <span className="hidden lg:inline text-[13px] font-bold tracking-[0.15em] uppercase">Menu</span>
+              <span className="hidden lg:inline text-sm font-semibold">{t("nav.home") === "หน้าแรก" ? "เมนู" : "Menu"}</span>
             </Button>
 
             {/* Center - Logo */}
@@ -347,7 +368,7 @@ export const Navbar = () => {
                   'nav.careers': 'ร่วมงาน',
                   'nav.contact': 'ติดต่อ',
                 };
-                return shortLabels[key] || t(key);
+                return t("nav.home") === "หน้าแรก" ? shortLabels[key] || t(key) : t(key);
               };
               return (
                 <Link
@@ -370,7 +391,7 @@ export const Navbar = () => {
                     )} strokeWidth={isItemActive ? 2 : 1.6} />
                   </div>
                   <span className={cn(
-                    "text-[9px] font-medium mt-0.5 transition-all duration-300",
+                    "text-xs font-medium mt-0.5 transition-all duration-300",
                     isItemActive ? "text-primary font-semibold" : "text-muted-foreground group-hover:text-foreground"
                   )}>
                     {getShortLabel(item.labelKey)}
@@ -391,9 +412,10 @@ export const Navbar = () => {
       {/* Drawer Overlay Menu */}
       <div
         className={cn(
-          'fixed inset-0 z-[100] transition-all duration-500',
+          'site-menu fixed inset-0 z-[100] transition-all duration-500',
           isMenuOpen ? 'visible' : 'invisible pointer-events-none'
         )}
+        {...(!isMenuOpen ? { inert: "" } : {})}
       >
         {/* Frosted Backdrop */}
         <div
@@ -406,6 +428,8 @@ export const Navbar = () => {
 
         {/* Drawer Panel */}
         <div
+          ref={menuRef}
+          role="dialog" aria-modal={isMenuOpen} aria-label="Menu"
           className={cn(
             "absolute top-0 left-0 h-full w-[88%] max-w-[420px] flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
             "bg-card/98 backdrop-blur-2xl shadow-[20px_0_60px_-15px_rgba(0,0,0,0.3)]",
@@ -614,7 +638,7 @@ export const Navbar = () => {
                   { href: socialLinks.instagram, icon: Instagram, label: 'Instagram', hoverBg: 'hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF]', textColor: 'text-[#E4405F]' },
                   { href: socialLinks.tiktok, icon: null, label: 'TikTok', hoverBg: 'hover:bg-foreground', textColor: 'text-foreground' },
                   { href: socialLinks.youtube, icon: Youtube, label: 'YouTube', hoverBg: 'hover:bg-[#FF0000]', textColor: 'text-[#FF0000]' },
-                ].map((social) => (
+                ].filter(social => social.href).map((social) => (
                   <a
                     key={social.label}
                     href={social.href}
@@ -623,14 +647,14 @@ export const Navbar = () => {
                     className={cn(
                       "group flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300",
                       "bg-muted/50 border border-border/50",
-                      social.hoverBg, "hover:border-transparent hover:text-white hover:scale-110 hover:shadow-lg"
+                      "hover:bg-primary/10 hover:border-primary text-foreground"
                     )}
                     aria-label={social.label}
                   >
                     {social.icon ? (
-                      <social.icon className={cn("h-[18px] w-[18px] transition-colors duration-300", social.textColor, "group-hover:text-white")} strokeWidth={1.8} />
+                      <social.icon className="h-[18px] w-[18px] text-primary" strokeWidth={1.8} />
                     ) : (
-                      <TikTokIcon className={cn("h-[18px] w-[18px] transition-colors duration-300", social.textColor, "group-hover:text-background")} />
+                      <TikTokIcon className="h-[18px] w-[18px] text-primary" />
                     )}
                   </a>
                 ))}
@@ -696,9 +720,9 @@ export const Navbar = () => {
           </div>
 
           {/* ── Footer Contact ── */}
-          <div className="px-6 py-5 border-t border-border/30 bg-muted/20">
+          {phone && <div className="px-6 py-5 border-t border-border/30 bg-muted/20">
             <a
-              href={`tel:${phoneNumber.replace(/[^0-9+]/g, '')}`}
+              href={phone.href}
               className="group flex items-center gap-3"
             >
               <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary shadow-sm shadow-primary/20 group-hover:scale-105 transition-transform duration-300">
@@ -709,7 +733,7 @@ export const Navbar = () => {
                 <span className="text-base font-bold text-foreground group-hover:text-primary transition-colors">{phoneNumber}</span>
               </div>
             </a>
-          </div>
+          </div>}
         </div>
       </div>
 

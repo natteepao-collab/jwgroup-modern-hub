@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { managedSocialLink } from '@/lib/publicContent';
 import { supabase } from '@/integrations/supabase/client';
 
 interface SocialLinks {
@@ -31,19 +32,19 @@ export const useSocialLinks = () => {
       const newLinks: SocialLinks = { ...defaultLinks };
       
       data?.forEach(item => {
-        if (item.content_th) {
+        if (managedSocialLink(item.content_th)) {
           switch (item.section_key) {
             case 'social_facebook':
-              newLinks.facebook = item.content_th;
+              newLinks.facebook = managedSocialLink(item.content_th) || "";
               break;
             case 'social_instagram':
-              newLinks.instagram = item.content_th;
+              newLinks.instagram = managedSocialLink(item.content_th) || "";
               break;
             case 'social_tiktok':
-              newLinks.tiktok = item.content_th;
+              newLinks.tiktok = managedSocialLink(item.content_th) || "";
               break;
             case 'social_youtube':
-              newLinks.youtube = item.content_th;
+              newLinks.youtube = managedSocialLink(item.content_th) || "";
               break;
           }
         }

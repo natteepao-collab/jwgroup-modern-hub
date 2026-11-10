@@ -14,7 +14,6 @@ import AnimatedStats from '@/components/AnimatedStats';
 import CompanyTimeline from '@/components/CompanyTimeline';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import NewsletterForm from '@/components/NewsletterForm';
-import HomeSkeleton from '@/components/HomeSkeleton';
 import realEstate from '@/assets/business-realestate.jpg';
 import hotel from '@/assets/business-hotel.jpg';
 import pet from '@/assets/business-pet.jpg';
@@ -158,20 +157,6 @@ const Index = () => {
   // Use database news or empty array while loading
   const displayNews = dbNews.length > 0 ? dbNews : [];
 
-  if (isLoading || newsLoading) {
-    return (
-      <div className="home-page min-h-screen">
-        <SEO
-          title={seoTitle}
-          description={seoDesc}
-          canonicalUrl="/"
-          structuredData={organizationSchema}
-        />
-        <HomeSkeleton />
-      </div>
-    );
-  }
-
   return (
     <div className="home-page min-h-screen">
       <SEO
@@ -180,11 +165,6 @@ const Index = () => {
         canonicalUrl="/"
         structuredData={organizationSchema}
       />
-
-      {/* Accessible H1 for SEO — visually hidden so the cinematic hero stays intact */}
-      <h1 className="sr-only">
-        JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม สุขภาพ และบริการครบวงจร
-      </h1>
 
       {/* Welcome modal disabled to reduce intrusion on first impression. 
           Trigger manually via state if ever needed. */}
@@ -198,12 +178,11 @@ const Index = () => {
       >
         <Hero3DBackground />
 
-        {/* Hero CTA buttons only - positioned near bottom to not cover the visual */}
-        <div className="absolute inset-x-0 bottom-9 sm:bottom-12 lg:bottom-16 z-10 flex justify-center px-6">
+        <div className="home-hero-content container absolute inset-x-0 bottom-9 sm:bottom-12 lg:bottom-16 z-10 px-6 lg:px-8">
+          <h1 className="home-hero-title font-bold">JW Group</h1>
+          <p className="home-hero-scope mt-4 mb-7 max-w-2xl text-base sm:text-lg leading-relaxed">{t('refinement.scope')}</p>
           <div
-            className={`flex w-full max-w-sm sm:max-w-none sm:w-auto flex-col sm:flex-row gap-3 justify-center items-center transition-all duration-700 ${
-              heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
+            className="flex w-full max-w-sm sm:max-w-none sm:w-auto flex-col sm:flex-row gap-3 sm:justify-start items-center"
           >
             <Button
               asChild

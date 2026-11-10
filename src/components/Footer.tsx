@@ -5,6 +5,7 @@ import { useSiteContent } from '@/hooks/useSiteContent';
 import { useSocialLinks } from '@/hooks/useSocialLinks';
 import { useCookieConsent } from '@/components/CookieConsent';
 import jwLogo from '@/assets/jw-group-logo-full.png';
+import { managedPhone } from '@/lib/publicContent';
 import { Button } from '@/components/ui/button';
 
 // TikTok icon component (not in lucide-react)
@@ -23,6 +24,7 @@ export const Footer = () => {
   // Get contact data from database
   const addressContent = getContent('contact_address');
   const phoneContent = getContent('contact_phone');
+  const phone = managedPhone(phoneContent.content);
   const emailContent = getContent('contact_email');
   const hoursContent = getContent('contact_hours');
 
@@ -82,16 +84,16 @@ export const Footer = () => {
                   {addressContent.content || 'เลขที่ 9 ซอยสรณคมน์ 12 ถนนสรณคมน์ แขวงสีกัน เขตดอนเมือง กรุงเทพฯ 10210'}
                 </address>
               </li>
-              <li className="flex items-center gap-2">
+              {phone && <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary" />
                 <a
-                  href={`tel:${(phoneContent.content || '025661111').replace(/[^\d+]/g, '')}`}
+                  href={phone.href}
                   className="hover:text-primary transition-colors opacity-90"
                   aria-label="โทรหา JW Group สำนักงานใหญ่"
                 >
-                  {phoneContent.content || '02-566-1111'}
+                  {phone.display}
                 </a>
-              </li>
+              </li>}
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary" />
                 <a
@@ -102,7 +104,7 @@ export const Footer = () => {
                   {emailContent.content || 'jwgroupmkt@gmail.com'}
                 </a>
               </li>
-              <li className="opacity-90">LINE: @jwgroup</li>
+
             </ul>
           </div>
 

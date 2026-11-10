@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import heroPoster from '@/assets/hero-bg.jpg';
+import { useSiteContent } from '@/hooks/useSiteContent';
+import headquarters from '@/assets/jw-headquarters-1.webp';
 
 const HERO_VIDEO_URL = 'https://storage.googleapis.com/nbcloudbucket/video/jw/JW%20PARK%20HOME%20OFFICE_Final_260623.mp4';
 
 const Hero3DBackground = () => {
+  const { getImage } = useSiteContent();
+  const heroPoster = getImage('business_realestate_bg')?.url || getImage('about_history_bento_1')?.url || headquarters;
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -102,11 +105,12 @@ const Hero3DBackground = () => {
             preload="metadata"
             poster={heroPoster}
             onLoadedData={handleVideoLoaded}
+            onError={() => setIsVideoLoaded(false)}
             className={`home-media-video w-full h-full object-cover transition-opacity duration-700 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <source src={HERO_VIDEO_URL} type="video/mp4" />
+            <source src={HERO_VIDEO_URL} type="video/mp4" onError={() => setIsVideoLoaded(false)} />
           </video>
         </div>
       )}

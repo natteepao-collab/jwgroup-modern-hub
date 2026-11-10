@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 import { Cookie, Shield, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -55,6 +56,8 @@ const CookieConsentPopup = ({
     marketing: false,
   });
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const reduceMotion = useReducedMotion();
 
   // Fetch cookie settings from database
   const { data: cookieSettings } = useQuery({
@@ -121,51 +124,51 @@ const CookieConsentPopup = ({
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: 100 }}
+          initial={{ opacity: 1, y: reduceMotion ? 0 : 12 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 100 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="fixed bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-auto md:max-w-md z-[101]"
+          exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+          transition={{ duration: reduceMotion ? 0 : 0.2 }}
+          role="region" aria-label={t('refinement.cookieTitle')}
+          className="cookie-panel fixed bottom-24 left-3 right-3 md:bottom-6 md:left-6 md:right-auto md:max-w-md z-[101]"
         >
 
-            <div className="bg-card border border-border rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-card rounded-lg shadow-xl overflow-hidden max-h-[70dvh] overflow-y-auto">
               {/* Header */}
-              <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-6 pb-4">
-                <div className="flex items-start gap-4">
+              <div className="p-4 pb-0">
+                <div className="flex items-start gap-3">
                   <div className="flex-shrink-0">
-                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-                      <Cookie className="w-7 h-7 text-primary" />
+                    <div className="w-8 h-8 flex items-center justify-center">
+                      <Cookie className="w-5 h-5 text-primary" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-foreground mb-1">
-                      🍪 {popupSettings?.title_th || "เราใช้คุกกี้"}
+                    <h3 className="text-base font-semibold text-foreground">
+                      {(i18n.language === 'th' ? popupSettings?.title_th : popupSettings?.title_en) || t('refinement.cookieTitle')}
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      {popupSettings?.description_th || "เว็บไซต์นี้ใช้คุกกี้เพื่อพัฒนาประสบการณ์การใช้งานของคุณ"}
+                      {t('refinement.cookieDescription')}
                     </p>
                   </div>
                 </div>
 
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
               </div>
 
               {/* Content */}
-              <div className="px-6 py-4">
+              <div className="px-4 pb-4 pt-2">
                 {/* Toggle Details Button */}
-                <button
+                <Button variant="ghost"
+                  aria-expanded={showDetails} aria-controls="cookie-types"
                   onClick={() => setShowDetails(!showDetails)}
-                  className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-4"
+                  className="h-9 p-0 flex items-center gap-2 text-sm text-primary hover:bg-transparent mb-2"
                 >
                   <Shield className="w-4 h-4" />
-                  <span>ตั้งค่าความเป็นส่วนตัว</span>
+                  <span>{t('refinement.settings')}</span>
                   {showDetails ? (
                     <ChevronUp className="w-4 h-4" />
                   ) : (
                     <ChevronDown className="w-4 h-4" />
                   )}
-                </button>
+                </Button>
 
                 {/* Cookie Details */}
                 <AnimatePresence>
@@ -177,20 +180,20 @@ const CookieConsentPopup = ({
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="space-y-3 mb-4 max-h-48 overflow-y-auto pr-2">
+                      <div id="cookie-types" className="space-y-3 mb-4 max-h-48 overflow-y-auto pr-2">
                         {cookieTypes.map((cookie) => (
                           <div
                             key={cookie.id}
-                            className="flex items-start justify-between gap-4 p-3 rounded-xl bg-muted/50 border border-border/50"
+                            className="flex items-start justify-between gap-4 py-3 border-b border-border"
                           >
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
                                 <span className="text-sm font-medium text-foreground">
-                                  {cookie.title_th}
+                                  {i18n.language === 'th' ? cookie.title_th : cookie.title_en || cookie.title_th}
                                 </span>
                                 {cookie.is_required && (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                                    จำเป็น
+                                    {t('refinement.required')}
                                   </span>
                                 )}
                               </div>
@@ -199,6 +202,7 @@ const CookieConsentPopup = ({
                               </p>
                             </div>
                             <Switch
+                              aria-label={(i18n.language === 'th' ? cookie.title_th : cookie.title_en) || cookie.setting_key}
                               checked={preferences[cookie.setting_key as keyof CookiePreferences] ?? false}
                               onCheckedChange={(checked) =>
                                 setPreferences((prev) => ({
@@ -217,61 +221,57 @@ const CookieConsentPopup = ({
                 </AnimatePresence>
 
                 {/* Privacy Policy Link */}
-                <p className="text-xs text-muted-foreground mb-4">
-                  อ่านเพิ่มเติมได้ที่{" "}
-                  <button
+                <p className="cookie-policy-links text-xs text-muted-foreground mb-3 flex flex-wrap gap-3">
+                  <Button variant="link" size="sm"
                     onClick={() => {
                       setIsVisible(false);
                       navigate("/privacy");
                     }}
-                    className="text-primary hover:underline"
+                    className="h-auto p-0 text-xs text-primary hover:underline"
                   >
-                    นโยบายความเป็นส่วนตัว
-                  </button>{" "}
-                  และ{" "}
-                  <button
+                    {t('footer.privacy')}
+                  </Button>
+                  <Button variant="link" size="sm"
                     onClick={() => {
                       setIsVisible(false);
                       navigate("/pdpa");
                     }}
-                    className="text-primary hover:underline"
+                    className="h-auto p-0 text-xs text-primary hover:underline"
                   >
-                    นโยบาย PDPA
-                  </button>
+                    {t('footer.pdpa')}
+                  </Button>
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <Button
                     onClick={handleDeclineAll}
                     variant="outline"
                     size="sm"
-                    className="flex-1 text-sm"
+                    className="min-h-11 h-auto py-2 px-2 whitespace-normal text-sm"
                   >
-                    ปฏิเสธทั้งหมด
+                    {t('refinement.reject')}
                   </Button>
                   {showDetails && (
                     <Button
                       onClick={handleAcceptSelected}
                       variant="secondary"
                       size="sm"
-                      className="flex-1 text-sm"
+                      className="col-span-2 min-h-11 h-auto whitespace-normal text-sm order-last"
                     >
-                      บันทึกการตั้งค่า
+                      {t('refinement.save')}
                     </Button>
                   )}
                   <Button
                     onClick={handleAcceptAll}
                     size="sm"
-                    className="flex-1 text-sm bg-primary hover:bg-primary/90"
+                    variant="outline" className="min-h-11 h-auto py-2 px-2 whitespace-normal text-sm"
                   >
-                    ยอมรับทั้งหมด
+                    {t('refinement.accept')}
                   </Button>
                 </div>
               </div>
 
-              {/* Bottom decoration */}
-              <div className="h-1 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
           </div>
         </motion.div>
       )}

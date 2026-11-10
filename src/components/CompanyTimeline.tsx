@@ -298,11 +298,11 @@ const CompanyTimeline = () => {
   const [isLoadingVisibility, setIsLoadingVisibility] = useState(true);
   const eventRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const { tr } = useAutoTranslate([
-    'เส้นทาง 30+ ปีของ JW Group',
+    'เส้นทางของ JW Group',
     'จากจุดเริ่มต้นเล็ก ๆ สู่กลุ่มธุรกิจหลายแขนงที่เติบโตอย่างมั่นคงในแต่ละช่วงเวลา',
     'เหตุการณ์',
     'คลิกเพื่อดูรายละเอียดทั้งหมด',
-    'สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน',
+    'สำรวจเส้นทางของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน',
   ]);
   const { ref: headerRef, inView: headerInView } = useInView({
     threshold: 0.3,
@@ -440,12 +440,8 @@ const CompanyTimeline = () => {
             headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest mb-4">
-            <Calendar className="w-4 h-4" />
-            Our Journey
-          </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
-            {tr('เส้นทาง 30+ ปีของ JW Group')}
+            {tr('เส้นทางของ JW Group')}
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
             {tr('จากจุดเริ่มต้นเล็ก ๆ สู่กลุ่มธุรกิจหลายแขนงที่เติบโตอย่างมั่นคงในแต่ละช่วงเวลา')}
@@ -698,7 +694,7 @@ const CompanyTimeline = () => {
                   <ChevronDown className="w-5 h-5" />
                 </button>
                 <p className="mt-3 text-xs text-muted-foreground">
-                  {tr('สำรวจเส้นทาง 30+ ปีของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน')}
+                  {tr('สำรวจเส้นทางของ JW Group จากจุดเริ่มต้นสู่ปัจจุบัน')}
                 </p>
               </div>
             )}

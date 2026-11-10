@@ -34,3 +34,13 @@
 # Audit-led whole-site plan
 
 - [x] Prepare a combined trust/content and visual plan for all public pages for approval.
+
+# Approved audit-led implementation
+
+- [x] Remove fictional testimonial fallbacks and unsupported social/phone destinations without database writes.
+- [x] Remove artificial entry delay and make group identity visible with persistent real-media fallback.
+- [x] Replace unverified achievement counters with existing history/award exploration and retain all records.
+- [x] Compact consent controls and refine public/corporate readability without changing authentication or SEO.
+- [ ] Verify public routes, all 24 news URLs, responsive layouts and interactions.
+- [ ] Obtain owner verification of founding dates, statistics, awards, personnel, careers, construction status and legal/LINE contacts.
+- [ ] Verify actual form delivery after explicit permission for test submissions and email delivery.
