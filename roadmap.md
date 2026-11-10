@@ -37,13 +37,14 @@
 
 # Approved audit-led implementation
 
-- [ ] Restore the preview after the incomplete entry-delay removal and verify the page renders.
-- [ ] Apply the uploaded editorial brief incrementally, preserving factual content and awaiting confirmation of its changed palette.
+- [x] Restore the preview after the incomplete entry-delay removal and verify the page renders.
+- [x] Retain Navy/Orange as confirmed, remove invented leadership fallbacks, and simplify floating assistance while preserving its functions.
 
 - [x] Remove fictional testimonial fallbacks and unsupported social/phone destinations without database writes.
 - [x] Remove artificial entry delay and make group identity visible with persistent real-media fallback.
 - [x] Replace unverified achievement counters with existing history/award exploration and retain all records.
 - [x] Compact consent controls and refine public/corporate readability without changing authentication or SEO.
-- [ ] Verify public routes, all 24 news URLs, responsive layouts and interactions.
+- [x] Verify 18 public routes at four viewport sizes, all 24 news URLs, cookie rejection, assistant controls, contact validation and reduced-motion poster rendering.
+- [ ] Complete keyboard/200% zoom, English continuity, gallery/chart interaction and original news-metadata comparison before considering publishing.
 - [ ] Obtain owner verification of founding dates, statistics, awards, personnel, careers, construction status and legal/LINE contacts.
 - [ ] Verify actual form delivery after explicit permission for test submissions and email delivery.

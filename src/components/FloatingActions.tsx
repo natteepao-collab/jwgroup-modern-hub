@@ -4,12 +4,14 @@ import { ArrowUp, MessageCircle } from 'lucide-react';
 import FAQChatbot from './FAQChatbot';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { trackEvent } from '@/lib/analytics';
+import { Button } from '@/components/ui/button';
+import { managedSocialLink } from '@/lib/publicContent';
 
 const FloatingActions = () => {
   const { t } = useTranslation();
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { getContent } = useSiteContent();
-  const lineUrl = (getContent('social_line').content || '').trim();
+  const lineUrl = managedSocialLink(getContent('social_line').content);
 
 
   useEffect(() => {
@@ -18,10 +20,10 @@ const FloatingActions = () => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-3">
+    <div className="site-floating-actions fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 flex flex-col items-center gap-3">
       <FAQChatbot />
 
       {/* LINE Official Account quick add */}
@@ -31,7 +33,7 @@ const FloatingActions = () => {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackEvent('line_click', { label: 'fab' })}
-          className="w-12 h-12 rounded-full bg-gradient-to-br from-[#06C755] to-[#00B900] text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-green-500/40 hover:-translate-y-1"
+          className="w-11 h-11 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center shadow-lg transition-colors hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
           aria-label={t('floating.line')}
           title={t('floating.line')}
         >
@@ -40,17 +42,15 @@ const FloatingActions = () => {
         </a>
       )}
 
-      <button
+      {showBackToTop && <Button
         onClick={scrollToTop}
-        className={`w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 via-orange-500 to-amber-500 text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1 ${
-          showBackToTop
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-4 pointer-events-none'
-        }`}
+        size="icon" variant="secondary"
+        className="w-11 h-11 rounded-full shadow-lg"
         aria-label="Back to top"
+        title="Back to top"
       >
         <ArrowUp className="w-5 h-5" />
-      </button>
+      </Button>}
     </div>
   );
 };

@@ -610,11 +610,28 @@ All colors MUST be HSL.
 .cookie-panel button { letter-spacing: 0; }
 .cookie-panel p { line-height: 1.6; }
 .cookie-panel ::selection { background: hsl(var(--primary) / 0.2); }
+.site-assistant[hidden] { display: none; }
+.home-page .home-leadership > .absolute, .home-page .home-leadership [class*="blur"], .home-page .home-leadership .border-t-2, .home-page .home-leadership .border-b-2 { display: none; }
+.home-page .home-leadership [class*="bg-gradient"] { background: transparent; }
+.home-page .home-leadership [class*="shadow"], .home-page .home-leadership [class*="ring-"] { box-shadow: none; }
+.home-page .home-leadership [class*="rounded"] { border-radius: 6px; }
+.home-page .home-leadership [role="button"]:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+.home-page .home-leadership [class*="tracking"] { letter-spacing: 0; }
+.home-page .home-leadership h2 { font-size: 2rem; }
+@media (min-width: 640px) { .home-page .home-leadership h2 { font-size: 3rem; } }
+@media (prefers-reduced-motion: reduce) { .home-page .home-leadership * { transform: none !important; transition: none !important; animation: none !important; } }
+.site-floating-actions [hidden] { display: none; }
+.site-floating-actions [aria-label="เปิดแชท FAQ"], .site-floating-actions [aria-label="ปิดแชท"] { height: auto; background: hsl(var(--card)); color: hsl(var(--card-foreground)); border: 0; border-radius: 6px 0 0 6px; box-shadow: var(--shadow-elegant); backdrop-filter: none; letter-spacing: 0; }
+.site-floating-actions [aria-label="เปิดแชท FAQ"] span, .site-floating-actions [aria-label="ปิดแชท"] span { letter-spacing: 0; }
+@media (prefers-reduced-motion: reduce) {
+ .site-floating-actions *, .cookie-panel * { animation: none !important; transition: none !important; }
+}
 @media (min-width: 640px) { .home-hero-title { font-size: 4rem; } }
 @media (min-width: 1024px) { .home-hero-title { font-size: 5rem; } }
 @media (max-width: 639px) {
  .home-page .home-hero { min-height: 580px; height: 72svh; }
  .home-hero-content { bottom: 2rem; }
+ .home-page .home-about { padding-top: 2rem; }
  .cookie-panel { bottom: max(6rem, env(safe-area-inset-bottom)); }
  .site-navbar [class*="text-xs"] { text-wrap: balance; }
 }

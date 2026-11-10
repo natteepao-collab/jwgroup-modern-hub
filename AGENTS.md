@@ -9,3 +9,4 @@
 - Proxy Lovable asset paths through the published app in the local Vite server so CDN pointer images render during browser QA; production keeps the same-origin asset path.
 - Keep public destination, phone, testimonial and unverified-count safeguards in `src/lib/publicContent.ts`; presentation must never substitute mock claims for missing managed data.
 - Register audit-led interface translations separately from legacy copy so factual content and existing SEO metadata remain untouched.
+- Keep leadership fallback text empty when managed names, titles or quotations are missing so presentation never attributes invented statements.

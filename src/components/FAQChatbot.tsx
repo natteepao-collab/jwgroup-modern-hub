@@ -176,8 +176,11 @@ const FAQChatbot = () => {
     <>
       {/* Chat Window */}
       <div
+        hidden={!isOpen}
+        role="dialog"
+        aria-label={t('chatbot.title')}
         className={cn(
-          "fixed bottom-24 right-6 z-[70] w-[360px] max-w-[calc(100vw-3rem)] bg-card rounded-2xl shadow-2xl border border-border overflow-hidden transition-all duration-300",
+          "site-assistant fixed bottom-24 right-4 md:right-6 z-[70] w-[360px] max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-12rem)] bg-card rounded-lg shadow-2xl overflow-y-auto",
           isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95 pointer-events-none"
         )}
       >
@@ -193,16 +196,17 @@ const FAQChatbot = () => {
             </div>
 
           </div>
-          <button
+          <Button size="icon" variant="ghost"
             onClick={() => setIsOpen(false)}
+            aria-label={t('common.close')}
             className="p-2 rounded-full hover:bg-primary-foreground/20 transition-colors"
           >
             <X className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
 
         {/* Messages */}
-        <ScrollArea className="h-[350px] p-4 [&>[data-radix-scroll-area-viewport]]:overscroll-contain" ref={scrollRef}>
+        <ScrollArea className="h-[min(350px,40dvh)] p-4 [&>[data-radix-scroll-area-viewport]]:overscroll-contain" ref={scrollRef}>
           <div className="space-y-4">
             {messages.map((msg, idx) => (
               <div
@@ -258,15 +262,15 @@ const FAQChatbot = () => {
               <p className="text-xs text-muted-foreground">{t('chatbot.popular')}</p>
 
               {quickQuestions.map((q, idx) => (
-                <button
+                <Button variant="ghost"
                   key={idx}
                   onClick={() => {
                     setInput(q);
                   }}
-                  className="block w-full text-left text-sm px-3 py-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors text-foreground"
+                  className="block w-full h-auto whitespace-normal text-left text-sm px-3 py-2 rounded-md bg-muted/50 hover:bg-muted transition-colors text-foreground"
                 >
                   {q}
-                </button>
+                </Button>
               ))}
             </div>
           )}
@@ -282,13 +286,14 @@ const FAQChatbot = () => {
             className="flex gap-2"
           >
             <Input
+              aria-label={t('chatbot.placeholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t('chatbot.placeholder')}
               className="flex-1"
               disabled={isLoading}
             />
-            <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+            <Button type="submit" size="icon" aria-label={t('contact.form.send')} disabled={isLoading || !input.trim()}>
               <Send className="w-4 h-4" />
             </Button>
           </form>
@@ -306,21 +311,23 @@ const FAQChatbot = () => {
           )}
         >
           {/* Toggle Handle - Chevron */}
-          <button
+          <Button variant="default" size="icon"
             onClick={() => setIsButtonVisible(!isButtonVisible)}
-            className="group flex items-center justify-center max-sm:w-5 max-sm:h-16 sm:w-6 sm:h-20 rounded-l-xl transition-all duration-300 bg-gradient-to-b from-primary to-primary/90 hover:from-accent hover:to-accent/90 shadow-[−4px_0_12px_rgba(15,23,42,0.15)]"
+            className="group flex items-center justify-center w-8 h-12 rounded-r-none rounded-l-md bg-primary shadow-lg"
+            aria-expanded={isButtonVisible}
             aria-label={isButtonVisible ? 'ซ่อนช่วยเหลือ' : 'แสดงช่วยเหลือ'}
           >
             <ChevronLeft className={cn(
               "w-4 h-4 text-primary-foreground transition-transform duration-300 group-hover:scale-110",
               isButtonVisible ? "" : "rotate-180"
             )} />
-          </button>
+          </Button>
 
           {/* Main Assistant Panel - Luxury Glass Card */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <button
+              <Button variant="ghost"
+                hidden={!isButtonVisible}
                 onClick={() => {
                   if (isOpen) {
                     setIsOpen(false);
@@ -389,7 +396,7 @@ const FAQChatbot = () => {
                     <span className="max-sm:text-[7px] sm:text-[8px] font-medium text-muted-foreground tracking-wider uppercase">Online</span>
                   </span>
                 </div>
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent side="left" align="center" className="max-w-[220px]">
               <p className="text-xs">{isOpen ? 'ปิดหน้าต่างแชท' : 'คลิกเพื่อสนทนากับ JW Group Assistant'}</p>

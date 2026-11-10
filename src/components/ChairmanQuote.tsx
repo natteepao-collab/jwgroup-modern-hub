@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Quote, Crown, Sparkles, Award, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAutoTranslate } from '@/hooks/useAutoTranslate';
@@ -30,6 +30,7 @@ export const ChairmanQuote = ({
   name: defaultName,
   title: defaultTitle,
 }: ChairmanQuoteProps) => {
+  const reduceMotion = useReducedMotion();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [executives, setExecutives] = useState<Executive[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,12 +64,11 @@ export const ChairmanQuote = ({
   const chairman = executives.find((e) => e.is_chairman);
   const directors = executives.filter((e) => !e.is_chairman && e.level !== 'manager');
 
-  const rawName = chairman?.name || defaultName || 'คุณวิสิษฐ กอวรกุล';
-  const rawTitle = chairman?.title || defaultTitle || 'ประธานกรรมการบริษัท';
+  const rawName = chairman?.name || defaultName || '';
+  const rawTitle = chairman?.title || defaultTitle || '';
   const rawQuote =
     chairman?.quote ||
-    defaultQuote ||
-    'เราเชื่อมั่นในการสร้างธุรกิจที่ยั่งยืน ควบคู่ไปกับการพัฒนาคุณภาพชีวิตของสังคม';
+    defaultQuote || '';
   const rawDescription = chairman?.description || '';
   const chairmanImage = chairman?.image_url || chairmanDefault;
 
@@ -104,10 +104,12 @@ export const ChairmanQuote = ({
     );
   }
 
+  if (!rawName) return null;
+
   return (
     <section
       ref={ref}
-      className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-b from-background via-muted/20 to-background"
+      className="home-leadership relative py-20 md:py-28 overflow-hidden bg-background"
     >
       {/* Subtle ambient accents — aligned with site theme */}
       <div className="absolute inset-0 pointer-events-none">
@@ -127,18 +129,11 @@ export const ChairmanQuote = ({
         <div className="max-w-7xl mx-auto">
           {/* Section Intro */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={false}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
             className="text-center mb-16 md:mb-20"
           >
-            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-accent/30 bg-accent/5 backdrop-blur-sm mb-6">
-              <Crown className="w-4 h-4 text-accent" />
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
-                Leadership
-              </span>
-              <Sparkles className="w-3.5 h-3.5 text-accent" />
-            </div>
             <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-foreground">
               {tr('คณะผู้บริหาร')}{' '}
               <span className="text-accent">JW Group</span>
@@ -155,7 +150,7 @@ export const ChairmanQuote = ({
 
           {/* Chairman — Editorial card */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={false}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1, delay: 0.2 }}
             className="relative mb-24 md:mb-28"
@@ -163,11 +158,11 @@ export const ChairmanQuote = ({
             {/* Soft accent glow */}
             <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 via-primary/10 to-accent/20 rounded-[2rem] blur-md opacity-60" />
 
-            <div className="relative grid md:grid-cols-12 gap-8 md:gap-0 bg-card rounded-[2rem] overflow-hidden border border-border/60 shadow-2xl shadow-primary/5">
+            <div className="relative grid md:grid-cols-12 gap-8 md:gap-0 overflow-hidden">
               {/* Portrait Column */}
               <div className="md:col-span-5 relative p-8 md:p-12 flex items-center justify-center bg-gradient-to-br from-accent/5 via-transparent to-primary/5">
                 <motion.div
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={reduceMotion ? undefined : { scale: 1.02 }}
                   transition={{ duration: 0.6, ease: 'easeOut' }}
                   className="relative group"
                 >
@@ -192,20 +187,13 @@ export const ChairmanQuote = ({
 
               {/* Content Column */}
               <div className="md:col-span-7 p-8 md:p-14 flex flex-col justify-center relative">
-                <div className="flex items-center gap-2 mb-5">
-                  <Award className="w-4 h-4 text-accent" />
-                  <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-accent">
-                    Chairman's Message
-                  </span>
-                </div>
+                {chairmanQuote && <Quote className="w-14 h-14 text-primary/25 mb-3 -ml-2" strokeWidth={1.5} />}
 
-                <Quote className="w-14 h-14 text-accent/25 mb-3 -ml-2" strokeWidth={1.5} />
-
-                <blockquote className="text-xl md:text-3xl text-foreground/90 font-light leading-relaxed italic mb-8">
+                {chairmanQuote && <blockquote className="text-xl md:text-3xl text-foreground/90 font-light leading-relaxed mb-8">
                   <span className="text-accent/70">"</span>
                   {chairmanQuote}
                   <span className="text-accent/70">"</span>
-                </blockquote>
+                </blockquote>}
 
                 {/* Signature */}
                 <div className="relative pt-6">
@@ -232,24 +220,14 @@ export const ChairmanQuote = ({
           {/* Managing Directors */}
           {directors.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={false}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="h-px w-10 bg-gradient-to-r from-transparent to-accent/60" />
-                  <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-accent">
-                    Managing Directors
-                  </span>
-                  <div className="h-px w-10 bg-gradient-to-l from-transparent to-accent/60" />
-                </div>
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
                   {tr('กรรมการผู้จัดการ')}
                 </h3>
-                <p className="text-muted-foreground text-sm md:text-base mt-3 font-light">
-                  {tr('คลิกที่การ์ดเพื่อดูรายละเอียดเพิ่มเติม')}
-                </p>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
@@ -258,10 +236,17 @@ export const ChairmanQuote = ({
                   return (
                     <motion.div
                       key={director.id}
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={false}
                       animate={inView ? { opacity: 1, y: 0 } : {}}
                       transition={{ duration: 0.6, delay: 0.5 + idx * 0.15 }}
                       onClick={() => setActiveDirector(isActive ? null : director.id)}
+                      role="button" tabIndex={0} aria-expanded={isActive}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          setActiveDirector(isActive ? null : director.id);
+                        }
+                      }}
                       onHoverStart={() => setActiveDirector(director.id)}
                       className="group relative cursor-pointer"
                     >
@@ -292,10 +277,7 @@ export const ChairmanQuote = ({
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <div className="text-xs font-bold uppercase tracking-[0.25em] text-accent/90 mb-1.5">
-                              Managing Director
-                            </div>
-                            <div className="text-xl md:text-2xl font-bold text-foreground truncate tracking-tight">
+                            <div className="text-xl md:text-2xl font-bold text-foreground break-words">
                               {tr(director.name)}
                             </div>
                             <div className="text-sm text-accent font-medium mt-1">
