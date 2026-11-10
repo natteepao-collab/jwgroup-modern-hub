@@ -37,8 +37,8 @@
 
 # Approved audit-led implementation
 
-- [ ] Restore the preview after the incomplete entry-delay removal and verify the page renders.
-- [ ] Apply the uploaded editorial brief incrementally, preserving factual content and awaiting confirmation of its changed palette.
+- [x] Restore the preview after the incomplete entry-delay removal and verify the page renders.
+- [x] Retain Navy/Orange as confirmed, remove invented leadership fallbacks, and simplify floating assistance while preserving its functions.
 
 - [x] Remove fictional testimonial fallbacks and unsupported social/phone destinations without database writes.
 - [x] Remove artificial entry delay and make group identity visible with persistent real-media fallback.

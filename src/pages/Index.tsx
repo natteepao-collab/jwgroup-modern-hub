@@ -235,11 +235,12 @@ const Index = () => {
       {(() => {
         const quoteContent = getContent('chairman_quote');
         const metadata = quoteContent.metadata as Record<string, string> | null;
+        if (!quoteContent.title || !quoteContent.content) return null;
         return (
           <ChairmanQuote
-            quote={quoteContent.content || 'เราเชื่อมั่นว่าคุณภาพและความใส่ใจในทุกรายละเอียด คือหัวใจสำคัญที่จะสร้างความไว้วางใจจากลูกค้า และนำพาองค์กรไปสู่ความสำเร็จอย่างยั่งยืน'}
-            name={quoteContent.title || 'คุณสมชาย วิสุทธิ์ธรรม'}
-            title={metadata?.position_th || metadata?.position_en || 'ประธานกรรมการบริหาร JW GROUP'}
+            quote={quoteContent.content}
+            name={quoteContent.title}
+            title={metadata?.position_th || metadata?.position_en || ''}
           />
         );
       })()}

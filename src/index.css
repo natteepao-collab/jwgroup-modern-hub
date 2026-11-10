@@ -610,6 +610,13 @@ All colors MUST be HSL.
 .cookie-panel button { letter-spacing: 0; }
 .cookie-panel p { line-height: 1.6; }
 .cookie-panel ::selection { background: hsl(var(--primary) / 0.2); }
+.site-assistant[hidden] { display: none; }
+.site-floating-actions [hidden] { display: none; }
+.site-floating-actions [aria-label="เปิดแชท FAQ"], .site-floating-actions [aria-label="ปิดแชท"] { height: auto; background: hsl(var(--card)); color: hsl(var(--card-foreground)); border: 0; border-radius: 6px 0 0 6px; box-shadow: var(--shadow-elegant); backdrop-filter: none; letter-spacing: 0; }
+.site-floating-actions [aria-label="เปิดแชท FAQ"] span, .site-floating-actions [aria-label="ปิดแชท"] span { letter-spacing: 0; }
+@media (prefers-reduced-motion: reduce) {
+ .site-floating-actions *, .cookie-panel * { animation: none !important; transition: none !important; }
+}
 @media (min-width: 640px) { .home-hero-title { font-size: 4rem; } }
 @media (min-width: 1024px) { .home-hero-title { font-size: 5rem; } }
 @media (max-width: 639px) {
