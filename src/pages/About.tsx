@@ -651,7 +651,7 @@ const About = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="app-page-safe min-h-screen bg-background">
+    <div className={cn("app-page-safe min-h-screen bg-background", location.pathname === "/about/structure" && "about-structure-page")}>
       <SEO
         title={seo.title}
         description={seo.desc}
@@ -766,7 +766,7 @@ const About = () => {
 
           {/* Main Content */}
           <main className="flex-1 min-w-0">
-            <div className="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border/50">
+            <div className={cn(location.pathname === "/about/structure" ? "org-content-surface" : "bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border/50")}>
               <Routes>
                 <Route path="history" element={<AboutHistory />} />
                 <Route path="vision" element={<AboutVision />} />

@@ -135,3 +135,46 @@
 }
 
 
+
+/* Branch columns preserve reporting relationships without reserving a wide row
+   for every department under every executive. */
+.org-tree--branch-columns > li > ul { align-items: flex-start; gap: 12px; }
+.org-tree--branch-columns > li > ul > li { width: 224px; padding-inline: 0; }
+.org-tree--branch-columns > li > ul > li > ul,
+.org-tree--branch-columns > li > ul > li > ul ul {
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: 24px 0 0 18px; margin-left: 12px; gap: 16px;
+}
+.org-tree--branch-columns > li > ul > li > ul li {
+  padding: 0 0 0 14px; text-align: left;
+}
+.org-tree--branch-columns > li > ul > li > ul li::before {
+  top: -16px; left: 0; right: auto; width: 14px; height: 50px;
+  display: block; border: 0; border-left: 1px solid hsl(var(--border));
+  border-bottom: 1px solid hsl(var(--border)); border-radius: 0;
+}
+.org-tree--branch-columns > li > ul > li > ul li::after { display: none; }
+.org-tree--branch-columns > li > ul > li > ul::before {
+  left: 18px; height: 24px; border-left-width: 1px;
+}
+.org-tree--branch-columns > li > ul > li > ul ul::before { display: none; }
+.org-tree--branch-columns > li > ul > li > ul li[data-on-path="true"]::before { border-color: hsl(var(--primary)); }
+.org-tree--branch-columns > li > ul > li > ul li[data-relationship="advisory"]::before,
+.org-tree--branch-columns > li > ul > li > ul li[data-relationship="executive-support"]::before { border-style: dashed; border-top: 0; border-right: 0; }
+.org-node-ceo { width: 336px; }
+.org-node-standard { width: 224px; }
+.org-tree--branch-columns > li > ul > li > ul .org-node-standard { width: 192px; }
+.org-node-main { min-height: 156px; }
+.org-node-ceo .org-node-main { min-height: 164px; }
+.org-node-toggle:hover { transform: translateX(-50%); }
+.org-page { letter-spacing: 0; }
+.org-page-header { border-bottom: 3px solid hsl(var(--primary)); }
+.org-content-surface { min-width: 0; }
+.org-page .org-canvas { background-image: none; }
+.org-page ::selection { background: hsl(var(--primary) / 0.2); }
+.about-structure-page aside { width: 224px; }
+@media (max-width: 1023px) { .about-structure-page aside { width: 100%; } }
+@media print {
+  .org-page .org-section, .org-page-header { display: none; }
+  .org-tree { break-inside: avoid; }
+}
