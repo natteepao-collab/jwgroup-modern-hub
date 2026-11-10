@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock, Navigation, ExternalLink } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { managedPhone } from '@/lib/publicContent';
 import { Button } from '@/components/ui/button';
 
 export const GoogleMapSection = () => {
@@ -10,6 +11,7 @@ export const GoogleMapSection = () => {
   // Get contact data from database
   const addressContent = getContent('contact_address');
   const phoneContent = getContent('contact_phone');
+  const phone = managedPhone(phoneContent.content);
   const emailContent = getContent('contact_email');
   const hoursContent = getContent('contact_hours');
   const mapContent = getContent('contact_map');
@@ -42,17 +44,12 @@ export const GoogleMapSection = () => {
         <div className="container mx-auto h-full px-4 flex items-center justify-center lg:justify-start">
 
           {/* Glassmorphism Card */}
-          <div className="pointer-events-auto max-w-md w-full bg-white/90 dark:bg-black/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl p-8 overflow-hidden relative group">
+          <div className="pointer-events-auto max-w-md w-full bg-card shadow-xl rounded-lg p-8 overflow-hidden relative group">
 
-            {/* Decorative Top Gradient Line */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-orange-400 to-primary" />
+
 
             <div className="space-y-6">
               <div>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-                  <MapPin className="h-3 w-3" />
-                  Head Office
-                </span>
                 <h2 className="text-3xl font-display font-bold text-foreground mb-2">
                   {t('contact.location', 'JW GROUP')}
                 </h2>
@@ -62,17 +59,17 @@ export const GoogleMapSection = () => {
               </div>
 
               <div className="space-y-4 pt-4 border-t border-dashed border-foreground/10">
-                <div className="flex items-center gap-3 group/item">
+                {phone && <div className="flex items-center gap-3 group/item">
                   <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/item:bg-primary group-hover/item:text-primary-foreground transition-colors duration-300">
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t('contact.phoneTitle', 'เบอร์ติดต่อ')}</div>
-                    <a href={`tel:${phoneContent.content?.replace(/\s/g, '') || '+6622345678'}`} className="font-medium hover:text-primary transition-colors">
-                      {phoneContent.content || '+66 2 234 5678'}
+                    <a href={phone.href} className="font-medium hover:text-primary transition-colors">
+                      {phone.display}
                     </a>
                   </div>
-                </div>
+                </div>}
 
                 <div className="flex items-center gap-3 group/item">
                   <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/item:bg-primary group-hover/item:text-primary-foreground transition-colors duration-300">

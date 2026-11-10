@@ -588,3 +588,33 @@ All colors MUST be HSL.
   .home-section.is-revealed > .container > .home-section-heading { animation: home-heading-reveal 600ms cubic-bezier(0.16, 1, 0.3, 1) both; }
   @keyframes home-heading-reveal { from { transform: translateY(12px); } to { transform: translateY(0); } }
 }
+
+/* Audit-led refinements preserve the established public-page boundaries. */
+.home-page { --home-media-overlay: linear-gradient(to top, hsl(var(--home-media-shade) / 0.88), hsl(var(--home-media-shade) / 0.4) 45%, hsl(var(--home-media-shade) / 0.05) 80%); }
+.home-hero-content { color: hsl(var(--home-media-foreground)); }
+.home-hero-title { font-size: 3rem; line-height: 1.1; letter-spacing: 0; text-wrap: balance; }
+.home-hero-scope { color: hsl(var(--home-media-foreground)); text-wrap: pretty; }
+.home-page h2, .home-page h3 { letter-spacing: 0; text-wrap: balance; }
+.home-page .home-business { background: hsl(var(--background)); }
+.home-page .home-careers .animate-float-particle, .home-page .home-careers .animate-sparkle { display: none; }
+.site-navbar, .site-menu { letter-spacing: 0; }
+.site-navbar a, .site-navbar button, .site-menu a, .site-menu button { letter-spacing: 0; }
+.site-menu [class*="shadow-["], .site-menu [class*="shadow-primary"] { box-shadow: none; }
+.site-menu [class*="rounded-2xl"] { border-radius: 8px; }
+.site-navbar a:focus-visible, .site-menu a:focus-visible, .corporate-history-image:focus-visible, .corporate-page [role="button"]:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 3px; }
+.public-page [class*="grid"] > *, .public-page [class*="flex"] > * { min-width: 0; }
+.public-page input, .public-page textarea { font-size: 1rem; }
+.public-page p, .public-page h1, .public-page h2, .public-page h3 { overflow-wrap: break-word; }
+.public-page a, .home-page a { text-underline-offset: 0.25em; }
+.cookie-panel { letter-spacing: 0; }
+.cookie-panel button { letter-spacing: 0; }
+.cookie-panel p { line-height: 1.6; }
+.cookie-panel ::selection { background: hsl(var(--primary) / 0.2); }
+@media (min-width: 640px) { .home-hero-title { font-size: 4rem; } }
+@media (min-width: 1024px) { .home-hero-title { font-size: 5rem; } }
+@media (max-width: 639px) {
+ .home-page .home-hero { min-height: 580px; height: 72svh; }
+ .home-hero-content { bottom: 2rem; }
+ .cookie-panel { bottom: max(6rem, env(safe-area-inset-bottom)); }
+ .site-navbar [class*="text-xs"] { text-wrap: balance; }
+}

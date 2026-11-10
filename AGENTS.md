@@ -7,3 +7,5 @@
 - Use CorporateLayout and its shared navigation for corporate-information and legal pages; scope their presentation to `.corporate-page` so other pages retain their styling.
 - Scope cross-page public refinements to `.public-page`, excluding admin and homepage; keep media/brand surface colors in global CSS tokens so shared interactions remain theme-safe.
 - Proxy Lovable asset paths through the published app in the local Vite server so CDN pointer images render during browser QA; production keeps the same-origin asset path.
+- Keep public destination, phone, testimonial and unverified-count safeguards in `src/lib/publicContent.ts`; presentation must never substitute mock claims for missing managed data.
+- Register audit-led interface translations separately from legacy copy so factual content and existing SEO metadata remain untouched.
