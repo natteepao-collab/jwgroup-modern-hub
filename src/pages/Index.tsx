@@ -2,10 +2,9 @@ import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Building2, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { InteractiveSplitBusiness } from '@/components/InteractiveSplitBusiness';
 import { BentoNewsSection } from '@/components/BentoNewsSection';
-import { AnnouncementModal } from '@/components/AnnouncementModal';
 import Hero3DBackground from '@/components/Hero3DBackground';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { useNews } from '@/hooks/useNews';
@@ -22,7 +21,6 @@ import pet from '@/assets/business-pet.jpg';
 import wellness from '@/assets/business-wellness.jpg';
 import construction from '@/assets/business-construction.jpg';
 import thanabulLogo from '@/assets/thanabul-logo.png';
-import jwLogo from '@/assets/jw-group-logo-full.png';
 import { SEO } from '@/components/SEO';
 import { trackEvent } from '@/lib/analytics';
 
@@ -162,7 +160,7 @@ const Index = () => {
 
   if (isLoading || newsLoading) {
     return (
-      <div className="min-h-screen">
+      <div className="home-page min-h-screen">
         <SEO
           title={seoTitle}
           description={seoDesc}
@@ -175,7 +173,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="home-page min-h-screen">
       <SEO
         title="JW Group กลุ่มธุรกิจอสังหาริมทรัพย์ โรงแรม สุขภาพ และบริการครบวงจร"
         description="JW Group กลุ่มธุรกิจชั้นนำในประเทศไทย ครอบคลุมอสังหาริมทรัพย์ โรงแรม 12 The Residence โรงพยาบาลสัตว์ 3DPet ผลิตภัณฑ์สุขภาพ JW Herbal และรับเหมาก่อสร้าง ธนบูลย์ พร็อพเพอร์ตี้"
@@ -196,32 +194,32 @@ const Index = () => {
       <section
         ref={heroRef}
         aria-label="JW Group hero"
-        className="relative h-[70vh] sm:h-[75vh] md:h-[85vh] lg:h-screen overflow-hidden"
+        className="home-hero relative h-[60svh] min-h-[460px] sm:h-[72svh] sm:min-h-[520px] lg:h-[82svh] lg:min-h-[600px] overflow-hidden"
       >
         <Hero3DBackground />
 
         {/* Hero CTA buttons only - positioned near bottom to not cover the visual */}
-        <div className="absolute inset-x-0 top-[72%] sm:top-[70%] md:top-[68%] z-10 flex justify-center px-4">
+        <div className="absolute inset-x-0 bottom-9 sm:bottom-12 lg:bottom-16 z-10 flex justify-center px-6">
           <div
-            className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center transition-all duration-1000 ${
+            className={`flex w-full max-w-sm sm:max-w-none sm:w-auto flex-col sm:flex-row gap-3 justify-center items-center transition-all duration-700 ${
               heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
           >
             <Button
               asChild
               size="lg"
-              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl text-base px-6 sm:px-8 h-12 sm:h-14 font-semibold"
+              className="home-hero-primary group w-full sm:w-auto text-base px-7 sm:px-9 h-12 sm:h-14 font-bold"
             >
               <Link to="/business" onClick={() => trackEvent('cta_click', { label: 'hero_explore_business' })}>
                 {t('hero.ctaBusiness')}
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="w-full sm:w-auto bg-white/10 backdrop-blur-md border-2 border-white/70 text-white hover:bg-white hover:text-foreground shadow-xl text-base px-6 sm:px-8 h-12 sm:h-14 font-semibold"
+              className="home-hero-contact w-full sm:w-auto text-base px-7 sm:px-9 h-12 sm:h-14 font-bold"
             >
               <Link to="/contact" onClick={() => trackEvent('cta_click', { label: 'hero_contact' })}>
                 {t('nav.contact')}
@@ -236,15 +234,15 @@ const Index = () => {
       {/* About Section with Stats */}
       <section
         ref={aboutRef}
-        className={`py-20 bg-background transition-all duration-1000 ${aboutInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        className={`home-section home-about bg-background ${aboutInView ? 'is-revealed' : ''}
           }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
+        <div className="container mx-auto px-6 lg:px-8 sm:px-6 lg:px-8">
+          <div className="home-section-heading text-center mb-10 sm:mb-14 max-w-4xl mx-auto">
+            <h2 className="home-heading font-bold text-foreground mb-5 leading-snug">
               {getContent('about_section').title || t('aboutSection.title')}
             </h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed px-2 sm:px-4 md:px-0 text-balance">
+            <p className="text-base sm:text-lg text-muted-foreground leading-loose max-w-[70ch] mx-auto text-pretty">
               {getContent('about_section').content || t('aboutSection.description')}
             </p>
           </div>
@@ -273,20 +271,15 @@ const Index = () => {
       {/* Business Section */}
       <section
         ref={businessRef}
-        className={`py-20 bg-accent/20 transition-all duration-1000 ${businessInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        className={`home-section home-business bg-muted/20 border-y border-border/60 ${businessInView ? 'is-revealed' : ''}
           }`}
       >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block mb-2">
-              <span className="text-primary font-semibold text-sm uppercase tracking-wider">
-                {t('business.sectionLabel')}
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="home-section-heading text-center mb-10 sm:mb-14">
+            <h2 className="home-heading font-bold text-foreground mb-5 leading-snug">
               {getContent('business_section').title || t('business.title')}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
               {getContent('business_section').content || t('business.subtitle')}
             </p>
           </div>
@@ -298,20 +291,15 @@ const Index = () => {
       {/* News Section */}
       <section
         ref={newsRef}
-        className={`py-20 bg-background transition-all duration-1000 ${newsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        className={`home-section home-news bg-background ${newsInView ? 'is-revealed' : ''}
           }`}
       >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block mb-2">
-              <span className="text-primary font-semibold text-sm uppercase tracking-wider">
-                {t('news.sectionLabel')}
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="home-section-heading text-center mb-10 sm:mb-14">
+            <h2 className="home-heading font-bold text-foreground mb-5 leading-snug">
               {getContent('news_section').title || t('news.title')}
             </h2>
-            <p className="text-lg text-muted-foreground mb-6">
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground mb-7">
               {getContent('news_section').content || t('news.subtitle')}
             </p>
             <Button asChild variant="outline" size="lg">
@@ -338,43 +326,37 @@ const Index = () => {
       {/* Careers Teaser Section */}
       <section
         ref={careersRef}
-        className={`py-20 relative overflow-hidden transition-all duration-1000 ${careersInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        className={`home-section home-careers relative overflow-hidden ${careersInView ? 'is-revealed' : ''}
           }`}
       >
-        {/* Orange Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-accent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/50 via-transparent to-primary/30" />
-        <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-
         {/* Animated Particles */}
-        {[...Array(20)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-white/20 animate-float-particle"
+            className="absolute rounded-full bg-primary-foreground/20 animate-float-particle"
             style={{
-              width: `${Math.random() * 8 + 4}px`,
-              height: `${Math.random() * 8 + 4}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${Math.random() * 10 + 10}s`,
+              width: `${(i % 3) * 2 + 4}px`,
+              height: `${(i % 3) * 2 + 4}px`,
+              left: `${(i * 37 + 11) % 100}%`,
+              top: `${(i * 37 + 11) % 100}%`,
+              animationDelay: `${i * 0.7}s`,
+              animationDuration: `${(i % 4) * 2 + 14}s`,
             }}
           />
         ))}
 
         {/* Sparkle Effects */}
-        {[...Array(12)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <div
             key={`sparkle-${i}`}
             className="absolute animate-sparkle"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
+              left: `${(i * 37 + 11) % 100}%`,
+              top: `${(i * 37 + 11) % 100}%`,
+              animationDelay: `${i * 0.8}s`,
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 20 20" className="text-white/40">
+            <svg width="20" height="20" viewBox="0 0 20 20" className="text-primary-foreground/40">
               <path
                 fill="currentColor"
                 d="M10 0L12 8L20 10L12 12L10 20L8 12L0 10L8 8L10 0Z"
@@ -383,11 +365,11 @@ const Index = () => {
           </div>
         ))}
 
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">
+        <div className="container mx-auto px-6 lg:px-8 text-center relative z-10">
+          <h2 className="home-heading font-bold mb-5 text-primary-foreground leading-snug">
             {getContent('careers_section').title || t('careers.title')}
           </h2>
-          <p className="text-xl mb-8 text-white/90 drop-shadow-md">
+          <p className="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-8 text-primary-foreground/90">
             {getContent('careers_section').content || t('careers.description')}
           </p>
           <Button
@@ -403,7 +385,7 @@ const Index = () => {
 
       {/* Newsletter Section */}
       <section className="py-16 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl">
+        <div className="container mx-auto px-6 lg:px-8 max-w-3xl">
           <NewsletterForm />
         </div>
       </section>
