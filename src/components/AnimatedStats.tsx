@@ -4,6 +4,7 @@ import { Building2, Users, Briefcase, Award, ChevronDown, ChevronUp, Calendar, T
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 interface TimelineEvent {
   id: string;
@@ -84,27 +85,42 @@ const StatCard = ({
 
   return (
     <div className="relative">
+      <Button
+        asChild
+        variant="ghost"
+        className="h-auto w-full whitespace-normal text-left justify-start"
+      >
       <div
-        onClick={onClick}
-        className={`relative group p-3 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${
-          inView ? 'animate-fade-in opacity-100' : 'opacity-0'
+        role={isClickable ? "button" : undefined}
+        tabIndex={isClickable ? 0 : undefined}
+        aria-expanded={isClickable ? Boolean(isExpanded) : undefined}
+        aria-label={isClickable ? label : undefined}
+        onKeyDown={(event) => {
+          if (isClickable && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            onClick?.();
+          }
+        }}
+        onClick={isClickable ? onClick : undefined}
+        className={`relative group block p-5 sm:p-7 rounded-lg bg-card border border-border hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 ${
+          inView ? 'opacity-100' : 'opacity-100'
         } ${isClickable ? 'cursor-pointer' : ''} ${isExpanded ? 'ring-2 ring-primary/30' : ''}`}
         style={{ animationDelay: `${index * 150}ms` }}
       >
         {/* Gradient background on hover */}
-        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Icon */}
-        <div className="relative mb-2 sm:mb-4 inline-flex items-center justify-center w-9 h-9 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 [&_svg]:w-5 [&_svg]:h-5 sm:[&_svg]:w-7 sm:[&_svg]:h-7 md:[&_svg]:w-8 md:[&_svg]:h-8">
+        <div className="relative mb-2 sm:mb-4 inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 [&_svg]:w-5 [&_svg]:h-5 sm:[&_svg]:w-7 sm:[&_svg]:h-7 md:[&_svg]:w-8 md:[&_svg]:h-8">
           {icon}
         </div>
 
         {/* Value */}
-        <div className="relative flex items-center gap-0.5 sm:gap-2 flex-wrap">
-          <span className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-none">
+        <div className="relative flex items-baseline gap-1 sm:gap-2 flex-wrap tabular-nums">
+          <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-none">
             {value === 2550 ? count : count.toLocaleString()}
           </span>
-          <span className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary leading-none">
+          <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-none">
             {suffix}
           </span>
           {isClickable && (
@@ -119,10 +135,12 @@ const StatCard = ({
         </div>
 
         {/* Label */}
-        <p className="relative mt-1 sm:mt-2 text-[11px] leading-tight sm:text-sm md:text-base text-muted-foreground font-medium">
+        <p className="relative mt-1 sm:mt-2 text-sm leading-relaxed md:text-base text-muted-foreground font-medium">
           {label}
         </p>
       </div>
+
+      </Button>
 
       {/* Dropdown Content */}
       {children && (
@@ -196,7 +214,7 @@ const AnimatedStats = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background to-muted/30">
+    <section className="pt-4 pb-16 sm:pb-24 bg-background">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
@@ -211,7 +229,7 @@ const AnimatedStats = () => {
         {/* Stats Grid - 3 stat cards */}
         <div
           ref={ref}
-          className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 max-w-5xl mx-auto"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 [&>div:last-child]:col-span-2 sm:[&>div:last-child]:col-span-1 max-w-5xl mx-auto"
         >
           {/* Years of Experience */}
           <StatCard
