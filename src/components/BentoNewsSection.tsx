@@ -10,55 +10,8 @@ import { useBusinessTypes } from '@/hooks/useBusinessTypes';
 
 // Enhanced Mockup placeholder for news without images
 const NewsMockupPlaceholder = ({ isLarge = false, title = '' }: { isLarge?: boolean; title?: string }) => {
-  const gradients = [
-    'from-blue-500/30 via-blue-400/20 to-indigo-500/30',
-    'from-orange-500/30 via-amber-400/20 to-yellow-500/30',
-    'from-green-500/30 via-emerald-400/20 to-teal-500/30',
-    'from-purple-500/30 via-violet-400/20 to-pink-500/30',
-    'from-rose-500/30 via-red-400/20 to-orange-500/30',
-  ];
+  return <div className="w-full h-full bg-muted flex flex-col items-center justify-center gap-4 text-muted-foreground"><ImageIcon className={isLarge ? "h-10 w-10" : "h-7 w-7"} /><span>JW GROUP</span></div>;
 
-  const gradientIndex = title ? title.charCodeAt(0) % gradients.length : 0;
-  const gradient = gradients[gradientIndex];
-
-  return (
-    <div className={cn(
-      "w-full h-full flex flex-col items-center justify-center relative overflow-hidden",
-      `bg-gradient-to-br ${gradient}`
-    )}>
-      <div className="absolute inset-0">
-        <div className="absolute top-4 left-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
-        <div className="absolute bottom-8 right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 text-center p-6">
-        <div className={cn(
-          "mx-auto mb-4 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center",
-          isLarge ? "w-20 h-20" : "w-14 h-14"
-        )}>
-          <ImageIcon className={cn(
-            "text-white/70",
-            isLarge ? "h-10 w-10" : "h-7 w-7"
-          )} />
-        </div>
-        <p className={cn(
-          "text-white/80 font-medium",
-          isLarge ? "text-base" : "text-sm"
-        )}>
-          JW GROUP
-        </p>
-      </div>
-
-
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-    </div>
-  );
 };
 
 // Icon mapping helper
@@ -142,7 +95,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
   const isTextOnly = news.size === 'text-only';
 
   const gridClasses = cn(
-    "relative overflow-hidden rounded-2xl cursor-pointer group",
+    "relative overflow-hidden rounded-lg cursor-pointer group",
     isLarge && "md:col-span-2 md:row-span-2",
     isMedium && "md:col-span-1 md:row-span-2",
     isTextOnly && "md:col-span-1 md:row-span-1",
@@ -170,7 +123,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           <div className="flex gap-2 mb-3">
             <Badge 
               className={cn(
-                "text-white text-xs",
+                "text-primary-foreground text-xs",
                 getBusinessTypeBadge(news.businessType).className
               )}
             >
@@ -231,7 +184,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
         onMouseLeave={handleMouseLeave}
         onMouseEnter={() => setIsHovered(true)}
       >
-        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 overflow-hidden rounded-lg">
           {news.image && news.image !== '/placeholder.svg' && news.image !== '' ? (
             <img
               src={news.image}
@@ -248,7 +201,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           {news.isVideo && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className={cn(
-                "w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl transition-all duration-300",
+                "w-16 h-16 rounded-full bg-card/90 flex items-center justify-center shadow-xl transition-all duration-300",
                 isHovered ? "scale-110" : "scale-100"
               )}>
                 <Play className="h-6 w-6 text-primary ml-1" />
@@ -259,17 +212,17 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
 
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl transition-all duration-500",
+            "absolute inset-0 rounded-lg transition-all duration-500",
             isHovered
-              ? "bg-gradient-to-t from-black/90 via-black/40 to-transparent"
-              : "bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+              ? "bg-gradient-to-t from-secondary/90 via-secondary/40 to-transparent"
+              : "bg-gradient-to-t from-secondary/80 via-secondary/20 to-transparent"
           )}
         />
 
         <div className="absolute top-4 left-4 z-10 flex gap-2">
           <Badge
             className={cn(
-              "text-white shadow-lg transition-all duration-300",
+              "text-primary-foreground shadow-lg transition-all duration-300",
               getBusinessTypeBadge(news.businessType).className,
               isHovered ? "scale-105" : ""
             )}
@@ -279,7 +232,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
           <Badge
             variant="secondary"
             className={cn(
-              "bg-black/50 text-white backdrop-blur-sm shadow-lg transition-all duration-300",
+              "bg-black/50 text-primary-foreground backdrop-blur-sm shadow-lg transition-all duration-300",
               isHovered ? "scale-105" : ""
             )}
           >
@@ -293,14 +246,14 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
             isHovered ? "translate-y-0" : "translate-y-4"
           )}
         >
-          <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
+          <div className="flex items-center gap-2 text-primary-foreground/80 text-sm mb-2">
             <Calendar className="h-4 w-4" />
             <span>{news.date}</span>
           </div>
 
           <h3
             className={cn(
-              "font-bold text-white mb-3 transition-all duration-300 line-clamp-2",
+              "font-bold text-primary-foreground mb-3 transition-all duration-300 line-clamp-2",
               isLarge ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
             )}
           >
@@ -309,7 +262,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
 
           <p
             className={cn(
-              "text-white/80 text-sm mb-4 line-clamp-2 transition-all duration-500",
+              "text-primary-foreground/80 text-sm mb-4 line-clamp-2 transition-all duration-500",
               isHovered ? "opacity-100 max-h-20" : "opacity-0 max-h-0"
             )}
           >
@@ -335,7 +288,7 @@ const BentoNewsCard = ({ news, index, inView }: BentoNewsCardProps) => {
 
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500",
+            "absolute inset-0 rounded-lg pointer-events-none transition-opacity duration-500",
             isHovered ? "opacity-100" : "opacity-0"
           )}
           style={{
@@ -381,7 +334,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
     <Link
       to={`/news/${news.id}`}
       className={cn(
-        "relative overflow-hidden rounded-2xl cursor-pointer group block transition-all duration-500",
+        "news-card relative overflow-hidden rounded-lg cursor-pointer group block transition-all duration-500",
         isFeatured ? "h-[240px] col-span-2 sm:col-span-1 sm:h-[320px]" : "h-[200px] sm:h-[320px]",
         inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       )}
@@ -400,7 +353,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
         onMouseLeave={handleMouseLeave}
         onMouseEnter={() => setIsHovered(true)}
       >
-        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 overflow-hidden rounded-lg">
           {news.image && news.image !== '/placeholder.svg' && news.image !== '' ? (
             <img
               src={news.image}
@@ -417,7 +370,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
           {news.isVideo && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className={cn(
-                "w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-xl transition-all duration-300",
+                "w-14 h-14 rounded-full bg-card/90 flex items-center justify-center shadow-xl transition-all duration-300",
                 isHovered ? "scale-110" : "scale-100"
               )}>
                 <Play className="h-5 w-5 text-primary ml-1" />
@@ -428,10 +381,10 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
 
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl transition-all duration-500",
+            "absolute inset-0 rounded-lg transition-all duration-500",
             isHovered
-              ? "bg-gradient-to-t from-black/90 via-black/40 to-transparent"
-              : "bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+              ? "bg-gradient-to-t from-secondary/90 via-secondary/40 to-transparent"
+              : "bg-gradient-to-t from-secondary/80 via-secondary/20 to-transparent"
           )}
         />
 
@@ -444,7 +397,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
             return (
               <Badge
                 className={cn(
-                  "text-white shadow-lg transition-all duration-300",
+                  "text-primary-foreground shadow-lg transition-all duration-300",
                   isFeatured ? "text-xs" : "text-[10px] px-1.5 py-0 sm:text-xs sm:px-2.5 sm:py-0.5",
                   badge.className,
                   isHovered ? "scale-105" : ""
@@ -466,7 +419,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
           )}
         >
           <div className={cn(
-            "flex items-center gap-1.5 text-white/80 mb-1.5",
+            "flex items-center gap-1.5 text-primary-foreground/80 mb-1.5",
             isFeatured ? "text-xs sm:text-sm" : "text-[10px] sm:text-sm"
           )}>
             <Calendar className={isFeatured ? "h-3 w-3 sm:h-3.5 sm:w-3.5" : "h-3 w-3"} />
@@ -474,7 +427,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
           </div>
 
           <h3 className={cn(
-            "font-bold text-white line-clamp-2 transition-all duration-300",
+            "font-bold text-primary-foreground line-clamp-2 transition-all duration-300",
             isFeatured ? "text-base sm:text-lg mb-2" : "text-sm sm:text-lg mb-1 sm:mb-2 leading-snug"
           )}>
             {news.title}
@@ -500,7 +453,7 @@ const UniformNewsCard = ({ news, index, inView, businessTypes }: BentoNewsCardPr
 
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500",
+            "absolute inset-0 rounded-lg pointer-events-none transition-opacity duration-500",
             isHovered ? "opacity-100" : "opacity-0"
           )}
           style={{
@@ -540,19 +493,19 @@ const BusinessTypeTabs = ({
   return (
     <div className="relative mb-10">
       {/* Horizontal scroll container for mobile */}
-      <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible scrollbar-hide">
-        <div className="bg-gradient-to-br from-background/80 via-card/60 to-background/80 backdrop-blur-xl rounded-2xl p-1.5 md:p-2 border border-border/30 shadow-lg shadow-black/5 dark:shadow-black/20 inline-flex min-w-max md:w-auto md:mx-auto">
+      <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:overflow-x-auto custom-scrollbar">
+        <div className="bg-gradient-to-br from-background/80 via-card/60 to-background/80 backdrop-blur-xl rounded-lg p-1.5 md:p-2 border border-border/30 shadow-lg shadow-black/5 dark:shadow-black/20 inline-flex min-w-max md:w-auto md:mx-auto">
           <div className="flex gap-1 md:gap-1.5">
             {businessTypes.map((type) => {
               const isActive = activeType === type.key;
               return (
-                <button
+                <Button variant="ghost" aria-pressed={isActive}
                   key={type.key}
                   onClick={() => onTypeChange(type.key)}
                   className={cn(
                     "relative flex items-center gap-1.5 md:gap-2.5 px-3 py-2 md:px-5 md:py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap text-xs md:text-sm tracking-wide",
                     isActive
-                      ? "text-white shadow-lg ring-1 ring-white/20"
+                      ? "text-primary-foreground shadow-lg ring-1 ring-primary-foreground/20"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:shadow-sm"
                   )}
                   style={isActive ? {
@@ -575,7 +528,7 @@ const BusinessTypeTabs = ({
                   {isActive && (
                     <span className="absolute inset-0 rounded-xl bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
                   )}
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -646,7 +599,7 @@ export const BentoNewsSection = ({ news, showFilters = true, maxItems }: BentoNe
 
       {displayNews.length === 0 && (
         <div className="text-center py-16">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-muted/50 flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-lg bg-muted/50 flex items-center justify-center">
             <ImageIcon className="h-10 w-10 text-muted-foreground/50" />
           </div>
           <h3 className="text-lg font-semibold text-foreground mb-2">{t('bento.noNews')}</h3>

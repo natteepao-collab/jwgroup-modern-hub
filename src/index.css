@@ -94,6 +94,15 @@ All colors MUST be HSL.
 
     --tracking-normal: 0em;
     --spacing: 0.25rem;
+    --business-estate: 30 85% 42%;
+    --business-hotel: 0 0% 15%;
+    --business-pet: 168 65% 30%;
+    --business-herbal: 222 47% 20%;
+    --business-construction: 215 25% 38%;
+    --media-ink: 222 47% 8%;
+    --logo-surface: 0 0% 100%;
+    --business-expanded-surface: linear-gradient(to top, hsl(var(--card) / 0.98), hsl(var(--card) / 0.88) 50%, hsl(var(--card) / 0.6));
+    --business-image-shade: linear-gradient(to top, hsl(var(--media-ink) / 0.85), hsl(var(--media-ink) / 0.35) 55%, hsl(var(--media-ink) / 0.1));
   }
 
   @media (min-width: 1024px) {
@@ -448,6 +457,51 @@ All colors MUST be HSL.
 }
 
 /* Homepage polish stays local: shared pages retain their existing visual system. */
+.public-page { letter-spacing: 0; }
+.public-page h1, .public-page h2, .public-page h3, .public-page h4 { letter-spacing: 0; text-wrap: balance; }
+.public-page p { line-height: 1.8; }
+.public-page ::selection { background: hsl(var(--primary) / 0.22); }
+.public-page input, .public-page textarea { caret-color: hsl(var(--primary)); }
+.public-page-heading { text-align: left; }
+.public-page-heading h1::after { content: ''; display: block; height: 2px; width: 3rem; background: hsl(var(--primary)); margin-top: 1.5rem; }
+.business-expanded-overlay { background: var(--business-expanded-surface); }
+.business-collapsed-overlay { background: var(--business-image-shade); }
+.business-logo-surface { background: hsl(var(--logo-surface)); }
+.business-panel-active a { min-height: 44px; height: auto; max-width: 100%; padding-block: 0.75rem; }
+.business-mobile-toggle:hover { color: inherit; box-shadow: none; }
+.business-mobile-toggle > div { min-width: 0; }
+.business-mobile-toggle h3 { min-width: 0; overflow-wrap: anywhere; }
+.business-gallery-tabs [data-state=active] { background: hsl(var(--business-tab-color)); color: hsl(var(--primary-foreground)); }
+.business-gallery-tabs [data-state=inactive]:hover { color: hsl(var(--business-tab-color)); }
+.business-gallery-tabs [data-state][aria-controls*="realestate"] { --business-tab-color: var(--business-estate); }
+.business-gallery-tabs [data-state][aria-controls*="hotel"] { --business-tab-color: var(--business-hotel); }
+.business-gallery-tabs [data-state][aria-controls*="pet"] { --business-tab-color: var(--business-pet); }
+.business-gallery-tabs [data-state][aria-controls*="wellness"] { --business-tab-color: var(--business-herbal); }
+.business-gallery-tabs [data-state][aria-controls*="construction"] { --business-tab-color: var(--business-construction); }
+.project-gallery-item [class*="shadow-2xl"] { box-shadow: var(--shadow-md); }
+.news-detail-page article { max-width: 64rem; }
+.news-detail-page article > .prose { max-width: 75ch; margin-inline: auto; }
+.news-detail-page article > .prose p { line-height: 1.9; }
+.careers-page [class*="rounded-"] { border-radius: 8px; }
+.contact-page .container { max-width: 1280px; }
+.contact-page form input, .contact-page form textarea { border-radius: 6px; }
+.public-page .news-card { border-radius: 8px; }
+.public-page .news-card > div { transform: none !important; }
+.public-page .news-card h3 { line-height: 1.55; }
+.public-page .news-card:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+.site-footer { border-top: 2px solid hsl(var(--primary)); }
+.site-footer a:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+@media (max-width: 639px) {
+  .public-page-heading h1 { font-size: 1.875rem; line-height: 1.5; }
+  .public-page-heading { padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .business-page .container, .careers-page .container, .news-page .container, .contact-page .container { padding-block: 2rem; }
+  .contact-page .container { padding-bottom: 3rem; }
+  .careers-page [class*="CardHeader"] { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .business-panel, .project-gallery-item img, .news-card > div { transform: none !important; }
+}
+
 .corporate-page { letter-spacing: 0; }
 .corporate-page ::selection { background: hsl(var(--primary) / 0.2); }
 .corporate-page h1, .corporate-page h2, .corporate-page h3 { letter-spacing: 0; text-wrap: balance; font-weight: 700; }

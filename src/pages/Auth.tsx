@@ -55,8 +55,8 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-accent/10 py-12 px-4">
-      <Card className="w-full max-w-md shadow-2xl border-border/50">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4">
+      <Card className="w-full max-w-md shadow-lg border-border border-t-2 border-t-primary rounded-lg">
         <CardHeader className="text-center pb-2">
           <div className="flex justify-center mb-4">
             <img src={jwLogo} alt="JW Group" className="h-16" />
@@ -76,12 +76,12 @@ const Auth = () => {
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  id="signin-email"
+                  id="signin-email" autoComplete="username" required
                   type="email"
                   placeholder="admin@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-12"
                 />
               </div>
             </div>
@@ -90,16 +90,16 @@ const Auth = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  id="signin-password"
+                  id="signin-password" autoComplete="current-password" required
                   type="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-12"
                 />
               </div>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full min-h-12" disabled={isLoading}>
               {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
             </Button>
             <p className="text-xs text-center text-muted-foreground pt-2">
