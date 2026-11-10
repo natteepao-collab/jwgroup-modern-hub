@@ -1,11 +1,9 @@
-import { Route, Routes, Link, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Info, Eye, Network, UserCircle, Award, MapPin, ExternalLink, User, Quote } from 'lucide-react';
+import { Eye, Award, MapPin, ExternalLink, User, Quote } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
-import { Building2, Hotel, Stethoscope, Leaf } from 'lucide-react';
-import OrganizationChart from '@/components/OrganizationChart';
+import { Building2, Leaf } from 'lucide-react';
 import OrgChartPage from '@/components/org/OrgChartPage';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';

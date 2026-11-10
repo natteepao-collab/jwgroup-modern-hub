@@ -13,6 +13,7 @@
 
 # Corporate About pages
 
-- [ ] Align history, vision/values, leadership, awards, and privacy/PDPA pages with the organization-page navy/orange design.
-- [ ] Connect existing corporate pages through consistent About navigation without changing factual or policy content.
-- [ ] Verify navigation, business content, image viewing, and cookie settings on desktop and mobile.
+- [x] Align history, vision/values, leadership, awards, and privacy/PDPA pages with the organization-page navy/orange design.
+- [x] Connect existing corporate pages through consistent About navigation without changing factual or policy content.
+- [x] Verify navigation, business content, image viewing, and cookie settings on desktop and mobile.
+- [ ] Confirm legal-contact email addresses and replace existing placeholder phone numbers (awaiting owner-provided details).
