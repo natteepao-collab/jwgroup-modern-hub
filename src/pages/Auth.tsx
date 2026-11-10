@@ -56,7 +56,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4">
-      <Card className="w-full max-w-md shadow-lg border-border border-t-2 border-t-primary rounded-lg">
+      <Card className="w-full max-w-md shadow-lg border-border rounded-lg">
         <CardHeader className="text-center pb-2">
           <div className="flex justify-center mb-4">
             <img src={jwLogo} alt="JW Group" className="h-16" />
