@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { managedPhone, managedSocialLink, publicAchievementCount, publicDestination, publishedTestimonials } from './publicContent';
+import { managedPhone, managedSocialLink, publicAchievementCount, publicDestination, publishedTestimonials } from './publicContent.ts';
 
 describe('approved public content safeguards', () => {
   test('zero managed reviews shows zero reviews rather than four examples', () => {
