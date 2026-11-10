@@ -28,55 +28,48 @@ const PremiumAnalysis = () => {
     };
 
     return (
-        <div className="app-page-safe min-h-screen bg-[#0F172A] text-white pb-12 px-4 relative overflow-hidden">
+        <div className="app-page-safe min-h-screen bg-background text-foreground pb-12 px-4 relative overflow-hidden">
             <SEO
                 title={t('premium.title') || "วิเคราะห์ชื่อมงคลขั้นสูง"}
                 description="บริการวิเคราะห์ชื่อมงคลขั้นสูง ด้วยศาสตร์ทักษาปกรณ์และเลขศาสตร์ชั้นสูง โดย JW Group"
                 canonicalUrl="/premium-search"
                 ogImage="/og-premium.jpg"
             />
-            {/* Background Ambience */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-
             <div className="container mx-auto max-w-3xl relative z-10">
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium mb-4">
-                        <Sparkles className="w-4 h-4" />
-                        Advanced Analysis (PRO)
-                    </div>
-                    <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 mb-2">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                         วิเคราะห์ชื่อมงคลขั้นสูง
                     </h1>
-                    <p className="text-slate-400">
+                    <p className="text-muted-foreground">
                         ค้นหาชื่อที่เหมาะสมที่สุดด้วยศาสตร์ทักษาปกรณ์และเลขศาสตร์ชั้นสูง
                         <br />
                         วิเคราะห์เจาะลึกเฉพาะบุคคล ตามวันเวลาเกิดจริง
                     </p>
                 </div>
 
-                <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm shadow-2xl">
+                <Card className="bg-card border-border backdrop-blur-sm shadow-2xl">
                     <CardContent className="p-6 md:p-8 space-y-8">
                         {/* Surname Input */}
                         <div className="space-y-2">
-                            <Label className="text-slate-200">นามสกุล * (ใช้เพื่อคำนวณความเข้ากันได้)</Label>
+                            <Label className="text-muted-foreground">นามสกุล * (ใช้เพื่อคำนวณความเข้ากันได้)</Label>
                             <Input
                                 value={surname}
                                 onChange={(e) => setSurname(e.target.value)}
                                 placeholder="กรอกนามสกุลของคุณ"
-                                className="bg-slate-950/50 border-slate-800 text-slate-200 focus:ring-amber-500/50 focus:border-amber-500/50 py-6"
+                                className="bg-card border-border text-muted-foreground focus:ring-ring focus:border-primary py-6"
                             />
                         </div>
 
                         {/* Date and Time Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label className="text-slate-200">วันเกิด</Label>
+                                <Label className="text-muted-foreground">วันเกิด</Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant={"outline"}
                                             className={cn(
-                                                "w-full justify-start text-left font-normal bg-slate-950/50 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white py-6",
+                                                "w-full justify-start text-left font-normal bg-card border-border text-muted-foreground hover:bg-card hover:text-foreground py-6",
                                                 !date && "text-muted-foreground"
                                             )}
                                         >
@@ -84,27 +77,27 @@ const PremiumAnalysis = () => {
                                             {date ? format(date, "PPP", { locale: th }) : <span>วัน/เดือน/ปี</span>}
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0 bg-slate-900 border-slate-800 text-white">
+                                    <PopoverContent className="w-auto p-0 bg-card border-border text-foreground">
                                         <Calendar
                                             mode="single"
                                             selected={date}
                                             onSelect={setDate}
                                             initialFocus
-                                            className="bg-slate-900 text-white"
+                                            className="bg-card text-foreground"
                                         />
                                     </PopoverContent>
                                 </Popover>
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-slate-200">เวลาเกิด (โดยประมาณ)</Label>
+                                <Label className="text-muted-foreground">เวลาเกิด (โดยประมาณ)</Label>
                                 <div className="relative">
-                                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                     <Input
                                         type="time"
                                         value={time}
                                         onChange={(e) => setTime(e.target.value)}
-                                        className="bg-slate-950/50 border-slate-800 text-slate-200 pl-10 py-6 [color-scheme:dark]"
+                                        className="bg-card border-border text-muted-foreground pl-10 py-6 "
                                     />
                                 </div>
                             </div>
@@ -112,38 +105,38 @@ const PremiumAnalysis = () => {
 
                         {/* Gender Selection */}
                         <div className="space-y-2">
-                            <Label className="text-slate-200">เพศ</Label>
-                            <div className="grid grid-cols-2 gap-4 bg-slate-950/50 p-1.5 rounded-lg border border-slate-800">
-                                <button
+                            <Label className="text-muted-foreground">เพศ</Label>
+                            <div className="grid grid-cols-2 gap-4 bg-card p-1.5 rounded-lg border border-border">
+                                <Button variant="ghost"
                                     type="button"
                                     onClick={() => setSex('male')}
                                     className={cn(
                                         "py-2.5 rounded-md text-sm font-medium transition-all duration-300",
                                         sex === 'male'
-                                            ? "bg-slate-700 text-white shadow-lg"
-                                            : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                                            ? "bg-card text-foreground shadow-lg"
+                                            : "text-muted-foreground hover:text-muted-foreground hover:bg-card"
                                     )}
                                 >
                                     ชาย
-                                </button>
-                                <button
+                                </Button>
+                                <Button variant="ghost"
                                     type="button"
                                     onClick={() => setSex('female')}
                                     className={cn(
                                         "py-2.5 rounded-md text-sm font-medium transition-all duration-300",
                                         sex === 'female'
-                                            ? "bg-slate-700 text-white shadow-lg"
-                                            : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                                            ? "bg-card text-foreground shadow-lg"
+                                            : "text-muted-foreground hover:text-muted-foreground hover:bg-card"
                                     )}
                                 >
                                     หญิง
-                                </button>
+                                </Button>
                             </div>
                         </div>
 
                         {/* Focus Selection - The Hero Component */}
                         <div className="space-y-4">
-                            <Label className="text-amber-400 flex items-center gap-2">
+                            <Label className="text-primary flex items-center gap-2">
                                 <Sparkles className="w-4 h-4" />
                                 เรื่องที่เน้นเสริม (FOCUS)
                             </Label>
@@ -159,14 +152,14 @@ const PremiumAnalysis = () => {
                         <div className="pt-4">
                             <Button
                                 onClick={handleAnalyze}
-                                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-8 text-lg rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] border-t border-amber-400/20"
+                                className="w-full min-h-16 h-auto py-4 text-lg font-bold"
                             >
                                 <div className="flex flex-col items-center gap-1">
                                     <div className="flex items-center gap-2">
                                         <Sparkles className="w-5 h-5" />
                                         วิเคราะห์ชื่อมงคล
                                     </div>
-                                    <span className="text-xs font-normal opacity-90 px-2 py-0.5 bg-black/20 rounded-full">
+                                    <span className="text-xs font-normal opacity-90 px-2 py-0.5 bg-muted rounded-full">
                                         ใช้ 10 Credits
                                     </span>
                                 </div>
