@@ -30,3 +30,7 @@
 - [x] Audit current public pages, visual quality, content integrity, and media without changing the website.
 - [x] Inventory existing public content and preserve existing news URLs.
 - [x] Deliver confirmed findings, verification requests, visual direction, proposed structure, and prioritized implementation risks for review.
+
+# Audit-led whole-site plan
+
+- [x] Prepare a combined trust/content and visual plan for all public pages for approval.
