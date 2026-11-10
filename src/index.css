@@ -631,6 +631,7 @@ All colors MUST be HSL.
 @media (max-width: 639px) {
  .home-page .home-hero { min-height: 580px; height: 72svh; }
  .home-hero-content { bottom: 2rem; }
+ .home-page .home-about { padding-top: 2rem; }
  .cookie-panel { bottom: max(6rem, env(safe-area-inset-bottom)); }
  .site-navbar [class*="text-xs"] { text-wrap: balance; }
 }

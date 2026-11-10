@@ -235,7 +235,6 @@ const Index = () => {
       {(() => {
         const quoteContent = getContent('chairman_quote');
         const metadata = quoteContent.metadata as Record<string, string> | null;
-        if (!quoteContent.title || !quoteContent.content) return null;
         return (
           <ChairmanQuote
             quote={quoteContent.content}
