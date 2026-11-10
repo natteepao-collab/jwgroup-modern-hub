@@ -289,7 +289,7 @@ const chapters: Chapter[] = [
 ];
 
 const CompanyTimeline = () => {
-  const [events, setEvents] = useState<TimelineEvent[]>(mockTimelineEvents);
+  const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
@@ -358,7 +358,7 @@ const CompanyTimeline = () => {
         .eq('is_published', true)
         .order('position_order', { ascending: true });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         setEvents(data);
       }
     };
@@ -429,6 +429,7 @@ const CompanyTimeline = () => {
   const fullTimelineEnabled = isVisible;
   const showFull = fullTimelineEnabled && isOpen;
 
+  if (events.length === 0) return null;
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
